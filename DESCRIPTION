@@ -1,9 +1,12 @@
 Package: neonDivData
 Type: Package
-Title: Provide Standardized NEON Organismal Data for Biodiversity Research
+Title: Standardized NEON Organismal Data for Biodiversity Research
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: Daijiang Li <daijianglee@gmail.com>
+Authors@R: c(
+    person(given = "Daijiang", family = "Li", email = "daijianglee@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0925-3421")),
+    person(given = "Firstname", family = "Lastname", email = "emailaddress", role = c("aut")),
+    person(given = "Firstname", family = "Lastname", email = "emailaddress", role = c("aut"))
+    )
 Description: Cleaned and simplified NEON organismal data for biodiversity research. 
     The following taxonomic groups are included so far: plant, fish, bird, small mammal,
     ticks, etc.
@@ -14,3 +17,9 @@ Depends:
     R (>= 2.10)
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
+Imports: 
+    tibble
+Suggests: 
+    tidyverse,
+    neonUtilities,
+    lubridate
