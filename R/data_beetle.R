@@ -2,7 +2,14 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10022.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10022.001>.
 #'
-#' BRIEF STEPS WE HAVE TOOK TO PREPARE THIS PRODUCT...
+#' To process data we:
+#' 1. Remove all non-carabid bycatch samples.
+#' 2. Use the most expert taxonomy when available.
+#' 3. Update abundances based on new taxonomy.
+#' 4. Create a boutID that identifies all trap collection events at a site in the same bout (replacing eventID).
+#' 5. Update collectDate to reference the most common collection day in a bout, maintaining one collectDate per bout.
+#' 6. Create a new `trappingDays` column for the number of days a trap was set before being collected.
+#' 7. Correct trap days to account for entries where the trap set date was not updated based on a previous collection.
 #'
 #' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]).
 #'
