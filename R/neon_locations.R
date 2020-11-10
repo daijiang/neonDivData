@@ -2,6 +2,7 @@
 #'
 #' To reduce the size of this data package, we extracted location information from all
 #' taxanomic groups and saved as one file to avoid duplications.
+#' _Note that some aquatic sites do not have lat/long information though._
 #'
 #' @format A data frame with the following columns:
 #'

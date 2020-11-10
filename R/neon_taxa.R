@@ -3,6 +3,8 @@
 #' This data frame was put together from each data product, with the extra column of `identificationReferences`.
 #'
 #' @note Some taxonomic groups used `taxonID` in the data product while other groups used `acceptedTaxonID`.
+#' In addition, all data were from NEON and we did not do extra clean up. For example, sometimes, a species
+#' does not have family information (`NA`) while another co-genera species does.
 #'
 #' @format A data frame with the following columns:
 #'

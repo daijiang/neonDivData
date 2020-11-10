@@ -36,5 +36,6 @@ neon_locations
 \description{
 To reduce the size of this data package, we extracted location information from all
 taxanomic groups and saved as one file to avoid duplications.
+\emph{Note that some aquatic sites do not have lat/long information though.}
 }
 \keyword{datasets}
