@@ -161,7 +161,7 @@ map_neon_data_to_ecocomDP.BEETLE <- function(
     ux <- unique(x)
     ux[which.max(tabulate(match(x, ux)))]
   }
-  
+
   ### Clean Up Sample Data ###
 
   # start with the fielddata table, which describes all sampling events
@@ -170,11 +170,11 @@ map_neon_data_to_ecocomDP.BEETLE <- function(
                   trapID, setDate, collectDate, eventID, trappingDays) %>%
     # eventID's are inconsistently separated by periods, so we remove them
     dplyr::mutate(eventID = stringr::str_remove_all(eventID, "[.]")) %>%
-    #calculate a new trapdays column 
+    #calculate a new trapdays column
     dplyr::mutate(trappingDays = lubridate::interval(lubridate::ymd(setDate),
                                                      lubridate::ymd(collectDate)) %/%
                     lubridate::days(1))
-    
+
     #Find the traps that have multiple collectDates/bouts for the same setDate
     #need to calculate their trap days from the previous collectDate, not the setDate
   adjTrappingDays <- data_beetles %>%
@@ -185,10 +185,9 @@ map_neon_data_to_ecocomDP.BEETLE <- function(
     mutate(diffTrappingDays = trappingDays - min(trappingDays)) %>%
     mutate(adjTrappingDays = case_when(
       diffTrappingDays == 0 ~ trappingDays,
-      TRUE ~ diffTrappingDays
-    )) %>%
+      TRUE ~ diffTrappingDays)) %>%
     select(-c(trappingDays, diffTrappingDays))
-  
+
   data_beetles <- data_beetles %>%
     #update with adjusted trapping days where needed
     left_join(adjTrappingDays) %>%
@@ -210,12 +209,13 @@ map_neon_data_to_ecocomDP.BEETLE <- function(
     dplyr::left_join(beetles_raw$bet_sorting %>%
                        # only want carabid samples, not bycatch
                        dplyr::filter(sampleType %in% c("carabid", "other carabid")) %>%
-                       dplyr::select(sampleID, subsampleID, sampleType,
-                         taxonID, scientificName, taxonRank, individualCount),
+                       dplyr::select(sampleID, subsampleID, sampleType, taxonID,
+                                     scientificName, taxonRank, identificationReferences,
+                                     individualCount),
                      by = "sampleID")
-  
+
   ### Clean up Taxonomy of Samples ###
-  
+
   #Some samples were pinned and reidentified by more expert taxonomists, replace taxonomy with their ID's (in bet_parataxonomist) where available
   data_pin <- data_beetles %>%
     dplyr::left_join(beetles_raw$bet_parataxonomistID %>%
@@ -274,7 +274,9 @@ map_neon_data_to_ecocomDP.BEETLE <- function(
 
   # get relevant location info from the data
   table_location_raw <- beetles_raw$bet_fielddata %>%
-    dplyr::select(domainID, siteID, plotID, namedLocation, decimalLatitude, decimalLongitude) %>%
+    dplyr::select(domainID, siteID, plotID, namedLocation, plotType, nlcdClass, decimalLatitude,
+                  decimalLongitude, geodeticDatum, coordinateUncertainty,
+                  elevation, elevationUncertainty) %>%
     dplyr::distinct()
 
 
@@ -282,7 +284,7 @@ map_neon_data_to_ecocomDP.BEETLE <- function(
                                  by = c("domainID", "siteID", "namedLocation"))
   all(paste0(data_beetle$plotID, ".basePlot.bet") == data_beetle$namedLocation)
   # data_beetle = dplyr::select(data_beetle, -namedLocation)
-  return(data_beetle %>% select(-namedLocation))
+  return(data_beetle)
 }
 
 map_neon_data_to_ecocomDP.FISH <- function(
