@@ -17,6 +17,8 @@ map_neon_data_to_ecocomDP.ALGAE <- function(
   neon.data.product.id = "DP1.20166.001",
   ...){
 
+  # Authors:
+
   # get all tables
   all_tabs_in <- neonUtilities::loadByProduct(
     # hard coded arguments
@@ -152,6 +154,8 @@ map_neon_data_to_ecocomDP.ALGAE <- function(
 map_neon_data_to_ecocomDP.BEETLE <- function(
   neon.data.product.id = "DP1.10022.001",
   ...){
+  # author: Kari Norman
+
   # download data
   beetles_raw <- neonUtilities::loadByProduct(dpID = neon.data.product.id,
                                               ...)
@@ -290,7 +294,7 @@ map_neon_data_to_ecocomDP.BEETLE <- function(
 map_neon_data_to_ecocomDP.FISH <- function(
   neon.data.product.id = "DP1.20107.001",
   ...){
-  # Stephanie Parker, Thilina Surasinghe (sparker@battelleecology.org, tsurasinghe@bridgew.edu)
+  # Authors: Stephanie Parker, Thilina Surasinghe (sparker@battelleecology.org, tsurasinghe@bridgew.edu)
 
   # get taxon table from API, may take a few minutes to load
   # Fish electrofishing, gill netting, and fyke netting counts
@@ -487,6 +491,7 @@ map_neon_data_to_ecocomDP.FISH <- function(
 map_neon_data_to_ecocomDP.MACROINVERTEBRATE <- function(
   neon.data.product.id ="DP1.20120.001",
   ...){
+  # Authors:
   # get all tables for this data product for the specified sites in my_site_list, store them in a list called all_tabs
   all_tabs <- neonUtilities::loadByProduct(
     dpID = neon.data.product.id,
@@ -704,6 +709,7 @@ map_neon_data_to_ecocomDP.MOSQUITO <-
 map_neon_data_to_ecocomDP.PLANT <- function(
   neon.data.product.id = "DP1.10058.001",
   ...){
+  # Authors: Daijiang Li; Michael Just
   allTabs_plant <- neonUtilities::loadByProduct(
     dpID = neon.data.product.id, ...)
   # saveRDS(allTabs_plant, file = "~/Documents/allTabs_plant.rds")
@@ -795,6 +801,7 @@ map_neon_data_to_ecocomDP.PLANT <- function(
 map_neon_data_to_ecocomDP.SMALL.MAMMAL <- function(
   neon.data.product.id = "DP1.10072.001",
   ...){
+  # Authors: Marta Jarzyna
   ### This code downloads, unzips and restructures small mammal data (raw abundances) from NEON
   ### for each NEON site, we provide mammal raw abundance aggregated per day (across all years),
   ### per month (bout) (across all years), and per year
