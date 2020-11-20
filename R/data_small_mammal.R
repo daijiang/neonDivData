@@ -2,6 +2,11 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10072.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10072.001>.
 #'
+#' To process data we:
+#' 1. Remove all records that are designated as "dead", "escaped", or "nontarget".
+#' 2. Remove all records designated as recaptures (i.e., only first captures are retained)
+
+#' 
 #' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]).
 #' @format A data frame (also a tibble) with the following columns:
 #'
