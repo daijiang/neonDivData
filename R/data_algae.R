@@ -26,4 +26,6 @@
 #' - `algalSampleType`: Type of algal sample collected.
 #' - `benthicArea`: Area of the benthos sampled (square Meter).
 #'
+#' @author Lara Jansen
+#'
 "data_algae"

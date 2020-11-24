@@ -58,4 +58,7 @@ Details of locations (e.g. latitude/longitude coordinates can be found in \link{
 \references{
 Barnett, D.T., Adler, P.B., Chemel, B.R., Duffy, P.A., Enquist, B.J., Grace, J.B., Harrison, S., Peet, R.K., Schimel, D.S., Stohlgren, T.J. and Vellend, M., 2019. The plant diversity sampling design for the national ecological observatory network. Ecosphere, 10(2), p.e02603.
 }
+\author{
+Daijiang Li, Michael Just
+}
 \keyword{datasets}

@@ -18,4 +18,6 @@
 #' - `testResult`: Result of the test.
 #' - `testPathogenName`	The name of the pathogen.
 #'
+#' @author Melissa Chen, Wynne Moss, Brendan Hobart, Matt Bitters
+#'
 "data_tick_pathogen"

@@ -46,4 +46,7 @@ To process data we:
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
 }
+\author{
+Kari Norman
+}
 \keyword{datasets}

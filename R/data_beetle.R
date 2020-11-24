@@ -32,4 +32,6 @@
 #' - `scientificName`: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
 #' - `count`: Number of individuals. `NA` represents no beetles catche in the trap.
 #'
+#' @author Kari Norman
+#'
 "data_beetle"
