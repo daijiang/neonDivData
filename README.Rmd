@@ -24,10 +24,10 @@ Data products for all taxonomic groups are long data frames with names in the fo
 
 Despite the aim of this R data package is to facilitate biodiversity research, we keep `NA`s in data products so that information about sampling effort is saved. For some taxonomic groups, we removed observations with above genus level species identification. All codes to clean up the NEON data are available within our [Github repo](https://github.com/daijiang/neonDivData/tree/master/data-raw). Users can use them to customize their own data product if needed.
 
-Available taxonomic groups and their last update time:
+Available taxonomic groups and their brief summaries:
 
 ```{r}
-knitr::kable(neonDivData::data_modify_time)
+knitr::kable(neonDivData::data_summary)
 ```
 
 ## Installation
@@ -48,6 +48,7 @@ neonDivData::neon_locations
 
 neonDivData::data_algae
 neonDivData::data_beetle
+neonDivData::data_bird
 neonDivData::data_fish
 neonDivData::data_macroinvertebrate
 neonDivData::data_mosquito
