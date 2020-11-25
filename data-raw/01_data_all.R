@@ -344,21 +344,44 @@ usethis::use_data(neon_sites, overwrite = TRUE)
 
 # a table to record latest update date? ----
 data_modify_time = tibble::tribble(
-  ~taxa,       ~neonDPI,
-  "plant", "DP1.10058.001",
-  "algae", "DP1.20166.001",
-  "beetle", "DP1.10022.001",
-  "bird", "DP1.10003.001",
-  "fish", "DP1.20107.001",
-  "macroinvertebrate", "DP1.20120.001",
-  "mosquito", "DP1.10043.001",
-  "small_mammal", "DP1.10072.001",
-  "tick_pathogen", "DP1.10092.001",
-  "tick", "DP1.10093.001") %>%
+  ~taxa,       ~neon_DPI,    ~data_product,
+  "plant", "DP1.10058.001",  "data_plant",
+  "algae", "DP1.20166.001", "data_algae",
+  "beetle", "DP1.10022.001", "data_beetle",
+  "bird", "DP1.10003.001", "data_bird",
+  "fish", "DP1.20107.001", "data_fish",
+  "macroinvertebrate", "DP1.20120.001", "data_macroinvertebrate",
+  "mosquito", "DP1.10043.001", "data_mosquito",
+  "small_mammal", "DP1.10072.001", "data_small_mammal",
+  "tick_pathogen", "DP1.10092.001", "data_tick_pathogen",
+  "tick", "DP1.10093.001", "data_tick") %>%
   dplyr::arrange(taxa) %>%
-  mutate(modify_time = file.mtime(paste0("data/data_", taxa, ".rda")))
+  mutate(modify_time = lubridate::as_date(file.mtime(paste0("data/data_", taxa, ".rda"))))
 
-usethis::use_data(data_modify_time, overwrite = TRUE)
+data_summary = left_join(data_modify_time,
+                         group_by(data_modify_time, taxa) %>%
+                           summarise(n_site = n_distinct(get(data_product)$siteID),
+                                     n_species = n_distinct(get(data_product)$scientificName)))
+data_summary$n_species[data_summary$taxa == "tick_pathogen"] =
+  n_distinct(data_tick_pathogen$testPathogenName)
+data_summary = bind_cols(data_summary,
+                         bind_rows(
+                           data.frame(matrix(range(lubridate::year(data_algae$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_beetle$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_bird$startDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_fish$startDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_macroinvertebrate$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_mosquito$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_plant$endDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_tick$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_tick_pathogen$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(data_small_mammal$year), nrow = 1))
+                         ) %>%
+                           rename(start_year = X1, end_year = X2)
+)
+data_summary = dplyr::relocate(data_summary, modify_time, .after = end_year)
+
+usethis::use_data(data_summary, overwrite = TRUE)
 
 # all taxa names ----
 taxa_plant = dplyr::mutate(taxa_plant, taxa = "plant", neonDPI = "DP1.10058.001")
