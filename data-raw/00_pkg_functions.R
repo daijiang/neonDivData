@@ -1609,7 +1609,7 @@ map_neon_data_to_ecocomDP.BIRD <- function(
   table(data_bird$samplingImpracticalRemarks)
   data_bird = dplyr::select(data_bird, -uid, -identifiedBy, -publicationDate,
                             -eventID, # it is just plotID, pointID, startDate
-                            -laboratoryName, -samplingProtocolVersion, -measuredBy,
+                            -laboratoryName, -measuredBy,
                             -samplingImpractical, -samplingImpracticalRemarks)
 
   table(data_bird$clusterCode)
@@ -1617,6 +1617,7 @@ map_neon_data_to_ecocomDP.BIRD <- function(
   table(data_bird$targetTaxaPresent)
   table(data_bird$remarks)
   table(data_bird$taxonRank)
+  table(data_bird$samplingProtocolVersion)
   return(data_bird)
 }
 

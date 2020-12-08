@@ -4,7 +4,7 @@
 #'
 #' The bird data provided by NEON is already well organized. We only removed some columns that likely won't be used in biodiversity studies. Users may want to remove records with `targetTaxaPresent == "N"` (such records were reserved here to provide information about sampling effort) and those with species identified above genus levels.
 #'
-#' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]).
+#' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]). The sampling protocol has evolved over time, so users are advised to check whether the `samplingProtocolVersion` fits their data requirements and subset as necessary.
 #'
 #' @format A data frame (also a tibble) with the following columns:
 #'
@@ -36,6 +36,7 @@
 #' - `observedHabitat`: Observer assessment of dominant habitat at the sampling point at sampling time.
 #' - `observedAirTemp`: The air temperature (celsius) measured with a handheld weather meter.
 #' - `kmPerHourObservedWindSpeed`: The average wind speed measured with a handheld weather meter, in kilometers per hour.
+#' - `samplingProtocolVersion`: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 #'
 #' @author Daijiang Li
 #'
