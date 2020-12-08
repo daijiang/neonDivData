@@ -27,7 +27,21 @@ data_tick_pathogen
 \description{
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10092.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10092.001}.
 }
+\details{
+To clean the data, we:
+\enumerate{
+\item Removed samples with flagged quality checks
+\item Removed samples with missing metadata (domain/site/plotID; Lat/Long; plotType; nlcdClass, elevation, collectDate, subsampleID, batchID, testingID, testPathogenName
+\item Removed samples where sampleCondition!=“OK”
+\item Removed samples where testResult==NA
+\item Removed samples where HardTick DNA Quality (under testPathogenName) are not ‘Positive’, and then removed hardtack DNA and Ixodes pacificus tests.
+\item Combined B. burgdeferi and B burgdeferi sensu lato into a single test pathogen type (B. burgedferi sensu lato)
+}
+}
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+}
+\author{
+Melissa Chen, Wynne Moss, Brendan Hobart, Matt Bitters
 }
 \keyword{datasets}

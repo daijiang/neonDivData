@@ -29,4 +29,7 @@
 #' - `totalWeight`: Weight of entire sample in gram.
 #' - `subsampleWeight`:	Weight of subsample in gram.
 #'
+#' @author Natalie Robinson
+#'
+#'
 "data_mosquito"

@@ -2,6 +2,12 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.20166.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.20166.001>.
 #'
+#' Here, we:
+#' - Only records from the ‘alg_biomass’ with the ‘analysis_type’ taxonomy were used for the observation table.
+#' - Combined the preservative sample volume  and lab’s recorded volumes from the ‘alg_biomass’ file and ‘alg_tax_long’ for total sample volume. If missing ‘perBottleSampleVolume’, they were created using NEON domain lab volumes. This new volume column was labeled ‘perBSVol’.
+#' - Combined ‘Alg_field_data’ with ‘alg_biomass’ via ‘parentSampleID’ to add in field conditions and ‘benthicArea’.
+#' - Corrected sample units from ‘cellsperBottle’ to density by dividing ‘algalParameterValue’ updated sample volume ‘perBSVol. Benthic samples units were then corrected to density by multiplying ‘algalParameterValue’ by ‘fieldSampleVolume’ and dividing by ‘benthicArea’ sampled.
+#'
 #' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]).
 #' @format A data frame (also a tibble) with the following columns:
 #'
@@ -25,5 +31,7 @@
 #' - `fieldSampleVolume`: Sample volume collected in the field (milliliter).
 #' - `algalSampleType`: Type of algal sample collected.
 #' - `benthicArea`: Area of the benthos sampled (square Meter).
+#'
+#' @author Lara Jansen
 #'
 "data_algae"

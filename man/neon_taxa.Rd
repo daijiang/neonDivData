@@ -32,5 +32,7 @@ This data frame was put together from each data product, with the extra column o
 }
 \note{
 Some taxonomic groups used \code{taxonID} in the data product while other groups used \code{acceptedTaxonID}.
+In addition, all data were from NEON and we did not do extra clean up. For example, sometimes, a species
+does not have family information (\code{NA}) while another co-genera species does.
 }
 \keyword{datasets}
