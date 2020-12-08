@@ -40,7 +40,17 @@ data_small_mammal
 \description{
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10072.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10072.001}.
 }
+\details{
+To process data we:
+\enumerate{
+\item Remove all records that are designated as "dead", "escaped", or "nontarget".
+\item Remove all records designated as recaptures (i.e., only first captures are retained)
+}
+}
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+}
+\author{
+Marta Jarzyna
 }
 \keyword{datasets}

@@ -32,9 +32,21 @@ data_beetle
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10022.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10022.001}.
 }
 \details{
-BRIEF STEPS WE HAVE TOOK TO PREPARE THIS PRODUCT...
+To process data we:
+\enumerate{
+\item Remove all non-carabid bycatch samples.
+\item Use the most expert taxonomy when available.
+\item Update abundances based on new taxonomy.
+\item Create a boutID that identifies all trap collection events at a site in the same bout (replacing eventID).
+\item Update collectDate to reference the most common collection day in a bout, maintaining one collectDate per bout.
+\item Create a new \code{trappingDays} column for the number of days a trap was set before being collected.
+\item Correct trap days to account for entries where the trap set date was not updated based on a previous collection.
+}
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+}
+\author{
+Kari Norman
 }
 \keyword{datasets}

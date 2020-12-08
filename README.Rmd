@@ -1,0 +1,68 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# neonDivData
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of neonDivData is to provide cleaned NEON organismal data to facilitate biodiversity research. The authors of this R data package have all spend lots of effort to clean NEON data for our own research; it makes the most sense to document such processes and provide the clean data product so that the large community can use them readily. This will save us time to dig into the extensive documenations of NEON data and to clean up the data individually. 
+
+Data products for all taxonomic groups are long data frames with names in the format of `data_xxx` (e.g. `data_plant`, `data_fish`). Location inforamtions are in `neon_locations`; taxonomic informations are in `neon_taxa`.
+
+Despite the aim of this R data package is to facilitate biodiversity research, we keep `NA`s in data products so that information about sampling effort is saved. For some taxonomic groups, we removed observations with above genus level species identification. All codes to clean up the NEON data are available within our [Github repo](https://github.com/daijiang/neonDivData/tree/master/data-raw). Users can use them to customize their own data product if needed.
+
+Available taxonomic groups and their brief summaries:
+
+```{r}
+knitr::kable(neonDivData::data_summary)
+```
+
+## Installation
+
+You can install the development version of neonDivData from [Github](https://github.com/daijiang/neonDivData) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("daijiang/neonDivData")
+```
+
+## Available data products
+
+```{r example}
+neonDivData::neon_sites
+neonDivData::neon_taxa
+neonDivData::neon_locations
+
+neonDivData::data_algae
+neonDivData::data_beetle
+neonDivData::data_bird
+neonDivData::data_fish
+neonDivData::data_macroinvertebrate
+neonDivData::data_mosquito
+neonDivData::data_plant
+neonDivData::data_small_mammal
+neonDivData::data_tick
+neonDivData::data_tick_pathogen
+```
+
+# Contributing
+
+Contributions are welcome. You can provide comments and feedback or ask questions by filing an issue on Github [here](https://github.com/daijiang/neonDivData/issues) or making pull requests.
+
+# Code of conduct
+
+Please note that the 'neonDivData' project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+

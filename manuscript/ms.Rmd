@@ -1,0 +1,74 @@
+---
+title: "Tidy NEON data for biodiversity research"
+author: 
+  - "Daijiang Li^1,2†^, Sydne Record^3†^, Eric Sokol^4†^, Matthew E. Bitters, Melissa Y. Chen, Anny Y. Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta A. Jarzyna, Michael G. Just, Jalene M. LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output:
+ bookdown::pdf_document2:
+  includes:
+   before_body: doc_prefix.tex
+   in_header: preamble.tex
+  keep_tex: yes
+  latex_engine: xelatex
+  number_sections: no
+  toc: no
+ bookdown::tufte_html2:
+  number_sections: no
+  toc: no
+ bookdown::html_document2:
+  number_sections: no
+  theme: readable
+  toc: no
+  keep_md: yes
+ bookdown::word_document2:
+  toc: no
+  keep_md: yes
+fontsize: 12pt
+linestretch: 1.5
+link-citations: yes
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/ecology.csl
+bibliography: ref.bib
+always_allow_html: yes
+links-as-notes: false
+notes-after-punctuation: false
+---
+
+```{r knitr_options, include=FALSE}
+# https://raw.githubusercontent.com/citation-style-language/styles/master/vancouver-superscript.csl
+library(knitr)
+opts_chunk$set(fig.align='center', cache = FALSE, warning = FALSE,
+        message = FALSE, echo = FALSE, out.width = '95%')
+options(digits = 3, width = 88)
+tpl_1 = 'https://raw.githubusercontent.com/daijiang/workflow_demo/master/template/preamble.tex'
+tpl_2 = 'https://raw.githubusercontent.com/daijiang/workflow_demo/master/template/doc_prefix.tex'
+# bib_1 = 'https://raw.githubusercontent.com/daijiang/workflow_demo/master/template/ref.bib'
+if(!file.exists(tpl_1f <- 'preamble.tex')) download.file(tpl_1, tpl_1f)
+if(!file.exists(tpl_2f <- 'doc_prefix.tex')) download.file(tpl_2, tpl_2f)
+# if(!file.exists(bib_1f <- 'ref.bib')) download.file(bib_1, bib_1f)
+root_path = "."
+opts_knit$set(root.dir = normalizePath(root_path))
+# suppressMessages(library(tidyverse))
+# library(kableExtra)
+options(knitr.graphics.auto_pdf = TRUE, knitr.kable.NA = '')
+if(knitr::is_latex_output() | knitr::is_html_output()){
+ library(kableExtra)
+} else {
+ options(kableExtra.auto_format = FALSE) # for docx
+}
+```
+
+**Abstract**: Authors of this paper are all interested in using NEON data for biodiversity research. We have 	spent lots of time reading the documentations and cleaning up the data for our own studies. We believe that we can document our data cleaning process and provide the tidy NEON data for the community so that others can use the data readily for biodiversity research.
+
+**Key words**: NEON, Biodiversity, Data
+
+# Introduction (or why tidy NEON data)
+
+A central goal of ecology is to understand the patterns and processes of biodiversity, which is particularly important in an era of rapid global environmental change [@midgley2005global; @blowes2019geography]. Such understanding comes from addressing questions like: How is biodiversity distributed across large spatial scales, ranging from ecoregions to continents? What mechanisms drive spatial patterns of biodiversity? Are spatial patterns of biodiversity similar among different taxonomic groups, and if not, why do we see variation? How does community composition vary across geographies? What are the local and landscape scale drivers of community structure? How and why do biodiversity patterns change over time? Answers to such questions are essential to understanding, managing, and conserving biodiversity and the ecosystem services it influences. 
+
+Biodiversity research has a long history [@worm2018theory], beginning with major scientific expeditions (e.g., Alexander von Humboldt, Charles Darwin) that were undertaken to explore global biodiversity after the establishment of Linnaeus's Systema Naturae [@linnaeus1758systema]. Modern biodiversity research dates back to the 1950s [@curtis1959vegetation; @hutchinson1959homage] and aims to quantify patterns of species diversity and describe mechanisms underlying its heterogeneity. Since the beginning of this line of research, major theoretical breakthroughs [@macarthur1967theory; @hubbell2001unified; @brown2004toward] have advanced our understanding of potential mechanisms causing and maintaining biodiversity. Modern empirical studies, however, have been largely constrained to local or regional scales, and focused on one or a few specific taxonomic groups. Despite such constraints, field ecologists have compiled unprecedented numbers of observations, which support research into generalities through syntheses and meta-analyses [@vellend2013global; @blowes2019geography; @li2020changes]. Such work is challenged, however, by the difficulty of bringing together data from different studies and with varying limitations, including: differing collection methods (methodological uncertainties); varying levels of statistical robustness; inconsistent handling of missing data; spatial bias; publication bias; and design flaws [@martin2012mapping; @nakagawa2012methodological; @koricheva2014uses]. Additionally, it has historically been challenging for researchers to obtain and collate data from a diversity of sources, for use in syntheses and/or meta-analyses [@gurevitch1999statistical]. This has been remedied in recent years by large efforts to digitize museum and herbarium specimens (e.g., iDigBio), successful community science programs (e.g., iNaturalist, eBird), and advances in technology (e.g., remote sensing, automated acoustic recorders) that together bring biodiversity research into the big data era [@hampton2013big; @farley2018situating]. Yet, each of these comes with its own limitations. For example, museum/herbarium specimens and community science records are incidental (thus, unstructured in terms of the sampling design) and show obvious geographic and taxonomic biases [@martin2012mapping; @beck2014spatial; @geldmann2016determines]; remote sensing approaches can cover large spatial scales, but may be of  low spatial resolution and unable to reliably penetrate vegetation canopy [@palumbo2017building; @g2019remote]. Overall, our understanding of biodiversity is currently limited by the lack of standardized high quality and open-access data across large spatial scales and long time periods.   
+
+There is currently a major effort underway to overcome the issues above. For example, the  Long Term Ecological Research Network (LTER) consists of 28 sites that provide long term datasets for a diverse set of ecosystems. However, there is no standardization in the design and data collections across LTER sites. The National Ecological Observatory Network (NEON) is a continental-scale observatory network that collects long-term, standardized, and open access datasets broadly aimed at enabling better understanding of how U.S. ecosystems change through time [@keller2008continental]. Data collected include observations and field surveys, automated instrument measurements, airborne remote sensing surveys, and archival samples that characterize plants, animals, soils, nutrients, freshwater and atmospheric conditions. Data are collected at 81 field sites across both terrestrial and freshwater ecosystems across the United States and will continue for 30 years. These data provide a unique opportunity for advancing biodiversity research because consistent data collection protocols and the long-term nature of the observatory ensure sustained data availability and directly comparable measurements across locations. Spatio-temporal patterns in biodiversity, and the causes of changes to these patterns, can thus be confidently assessed and analyzed using NEON data. 
+
+
+
+# Reference

@@ -66,6 +66,36 @@ data_beetle = dplyr::relocate(data_beetle, plotID, .after = siteID)
 
 usethis::use_data(data_beetle, overwrite = TRUE)
 
+# bird data ----
+# https://data.neonscience.org/data-products/DP1.10003.001
+data_bird = map_neon_data_to_ecocomDP.BIRD(neon.data.product.id = "DP1.10003.001")
+
+loc_bird = dplyr::select(data_bird, domainID, siteID, plotID, namedLocation, nlcdClass, decimalLatitude,
+                           decimalLongitude, geodeticDatum, coordinateUncertainty,
+                           elevation, elevationUncertainty) %>%
+  dplyr::distinct()
+group_by(drop_na(data_bird, decimalLatitude), plotID) %>%
+  summarise(n_long = n_distinct(decimalLongitude),
+            n_lat = n_distinct(decimalLatitude)) %>%
+  pull(n_long) %>% table() # all pointID have the same lat/long coord
+
+
+taxa_bird = dplyr::select(data_bird, taxonID, scientificName, family,
+                            taxonRank) %>%
+  dplyr::distinct()
+# no identificationReferences for species;
+# it is available for each site though.
+
+any(duplicated(taxa_bird$taxonID))
+
+
+data_bird = dplyr::select(data_bird, -domainID, -plotType, -nlcdClass, -decimalLatitude,
+                            -decimalLongitude, -geodeticDatum, -coordinateUncertainty,
+                            -elevation, -elevationUncertainty, -remarks) %>%
+  dplyr::distinct()
+
+usethis::use_data(data_bird, overwrite = TRUE)
+
 
 # fish data ----
 # https://data.neonscience.org/data-products/DP1.20107.001
@@ -80,13 +110,13 @@ loc_fish = dplyr::select(data_fish, domainID, siteID, namedLocation,
 taxa_fish = dplyr::select(data_fish, taxonID, scientificName, # family,
                           taxonRank, identificationReferences) %>%
   dplyr::distinct()
-any(duplicated(taxa_beetle$taxonID))
+any(duplicated(taxa_fish$taxonID))
 
 data_fish = dplyr::select(data_fish, -domainID, -aquaticSiteType, -decimalLatitude,
                           -decimalLongitude, -geodeticDatum, -coordinateUncertainty,
                           -elevation, -elevationUncertainty, -identificationReferences) %>% dplyr::distinct() %>%
-  dplyr::select(siteID, namedLocation, reachID, eventID, samplerType, taxonID, scientificName, catch_per_effort,
-                number_of_fish, n_obs, dplyr::everything())
+  dplyr::select(siteID, namedLocation, reachID, eventID, samplerType, taxonID, taxonRank,
+                scientificName, catch_per_effort, number_of_fish, n_obs, dplyr::everything())
 
 usethis::use_data(data_fish, overwrite = TRUE)
 
@@ -294,6 +324,7 @@ usethis::use_data(data_tick_pathogen, overwrite = TRUE)
 loc_plant = dplyr::mutate(loc_plant, taxa = "plant", neonDPI = "DP1.10058.001")
 loc_algae = dplyr::mutate(loc_algae, taxa = "algae", neonDPI = "DP1.20166.001")
 loc_beetle = dplyr::mutate(loc_beetle, taxa = "beetle", neonDPI = "DP1.10022.001")
+loc_bird = dplyr::mutate(loc_bird, taxa = "bird", neonDPI = "DP1.10003.001")
 loc_fish = dplyr::mutate(loc_fish, taxa = "fish", neonDPI = "DP1.20107.001")
 loc_macroinvertebrate = dplyr::mutate(loc_macroinvertebrate, taxa = "macroinvertebrate", neonDPI = "DP1.20120.001")
 loc_mosquito = dplyr::mutate(loc_mosquito, taxa = "mosquito", neonDPI = "DP1.10043.001")
@@ -301,7 +332,7 @@ loc_small_mammal = dplyr::mutate(loc_small_mammal, taxa = "small_mammal", neonDP
 loc_tick_pathogen = dplyr::mutate(loc_tick_pathogen, taxa = "tick_pathogen", neonDPI = "DP1.10092.001")
 loc_tick = dplyr::mutate(loc_tick, taxa = "tick", neonDPI = "DP1.10093.001")
 
-neon_locations = dplyr::bind_rows(loc_plant, loc_algae, loc_beetle, loc_fish, loc_macroinvertebrate,
+neon_locations = dplyr::bind_rows(loc_plant, loc_algae, loc_beetle, loc_bird, loc_fish, loc_macroinvertebrate,
                                   loc_mosquito, loc_small_mammal, loc_tick_pathogen, loc_tick)
 
 usethis::use_data(neon_locations, overwrite = TRUE)
@@ -313,25 +344,50 @@ usethis::use_data(neon_sites, overwrite = TRUE)
 
 # a table to record latest update date? ----
 data_modify_time = tibble::tribble(
-  ~taxa,       ~neonDPI,
-  "plant", "DP1.10058.001",
-  "algae", "DP1.20166.001",
-  "beetle", "DP1.10022.001",
-  "fish", "DP1.20107.001",
-  "macroinvertebrate", "DP1.20120.001",
-  "mosquito", "DP1.10043.001",
-  "small_mammal", "DP1.10072.001",
-  "tick_pathogen", "DP1.10092.001",
-  "tick", "DP1.10093.001") %>%
+  ~taxa,       ~neon_DPI,    ~data_product,
+  "plant", "DP1.10058.001",  "data_plant",
+  "algae", "DP1.20166.001", "data_algae",
+  "beetle", "DP1.10022.001", "data_beetle",
+  "bird", "DP1.10003.001", "data_bird",
+  "fish", "DP1.20107.001", "data_fish",
+  "macroinvertebrate", "DP1.20120.001", "data_macroinvertebrate",
+  "mosquito", "DP1.10043.001", "data_mosquito",
+  "small_mammal", "DP1.10072.001", "data_small_mammal",
+  "tick_pathogen", "DP1.10092.001", "data_tick_pathogen",
+  "tick", "DP1.10093.001", "data_tick") %>%
   dplyr::arrange(taxa) %>%
-  mutate(modify_time = file.mtime(paste0("data/data_", taxa, ".rda")))
+  mutate(modify_time = lubridate::as_date(file.mtime(paste0("data/data_", taxa, ".rda"))))
 
-usethis::use_data(data_modify_time, overwrite = TRUE)
+data_summary = left_join(data_modify_time,
+                         group_by(data_modify_time, taxa) %>%
+                           summarise(n_site = n_distinct(get(data_product)$siteID),
+                                     n_species = n_distinct(get(data_product)$scientificName)))
+data_summary$n_species[data_summary$taxa == "tick_pathogen"] =
+  n_distinct(data_tick_pathogen$testPathogenName)
+data_summary = bind_cols(data_summary,
+                         bind_rows(
+                           data.frame(matrix(range(lubridate::year(data_algae$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_beetle$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_bird$startDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_fish$startDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_macroinvertebrate$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_mosquito$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_plant$endDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_tick$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_tick_pathogen$collectDate)), nrow = 1)),
+                           data.frame(matrix(range(data_small_mammal$year), nrow = 1))
+                         ) %>%
+                           rename(start_year = X1, end_year = X2)
+)
+data_summary = dplyr::relocate(data_summary, modify_time, .after = end_year)
+
+usethis::use_data(data_summary, overwrite = TRUE)
 
 # all taxa names ----
 taxa_plant = dplyr::mutate(taxa_plant, taxa = "plant", neonDPI = "DP1.10058.001")
 taxa_algae = dplyr::mutate(taxa_algae, taxa = "algae", neonDPI = "DP1.20166.001")
 taxa_beetle = dplyr::mutate(taxa_beetle, taxa = "beetle", neonDPI = "DP1.10022.001")
+taxa_bird = dplyr::mutate(taxa_bird, taxa = "bird", neonDPI = "DP1.10003.001")
 taxa_fish = dplyr::mutate(taxa_fish, taxa = "fish", neonDPI = "DP1.20107.001")
 taxa_macroinvertebrate = dplyr::mutate(taxa_macroinvertebrate, taxa = "macroinvertebrate", neonDPI = "DP1.20120.001")
 taxa_mosquito = dplyr::mutate(taxa_mosquito, taxa = "mosquito", neonDPI = "DP1.10043.001")
@@ -339,8 +395,9 @@ taxa_small_mammal = dplyr::mutate(taxa_small_mammal, taxa = "small_mammal", neon
 taxa_tick = dplyr::mutate(taxa_tick, taxa = "tick", neonDPI = "DP1.10093.001")
 # no tick pathogen taxa
 
-neon_taxa = dplyr::bind_rows(taxa_plant, taxa_algae, taxa_beetle, taxa_fish, taxa_macroinvertebrate,
-                                  taxa_mosquito, taxa_small_mammal, taxa_tick)
+neon_taxa = dplyr::bind_rows(taxa_plant, taxa_algae, taxa_beetle, taxa_bird,
+                             taxa_fish, taxa_macroinvertebrate,
+                             taxa_mosquito, taxa_small_mammal, taxa_tick)
 neon_taxa = dplyr::relocate(neon_taxa, acceptedTaxonID, .after = taxonID)
 usethis::use_data(neon_taxa, overwrite = TRUE)
 

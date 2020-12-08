@@ -18,4 +18,6 @@
 #' - `estimatedTotalCount`: Estimated total count of individuals within a sample,
 #' of given taxon, life stage, and size class.
 #'
+#' @author Stephanie Parker, Eric Sokol
+#'
 "data_macroinvertebrate"

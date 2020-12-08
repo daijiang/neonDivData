@@ -30,4 +30,7 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
 }
+\author{
+Stephanie Parker, Eric Sokol
+}
 \keyword{datasets}

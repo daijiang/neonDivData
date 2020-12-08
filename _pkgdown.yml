@@ -1,0 +1,27 @@
+reference:
+  - title: "Data summary"
+    desc: "Summary information about taxanomic groups included"
+    contents:
+      - data_summary
+  - title: "Occurrence data"
+    desc: "Occurrence data for different taxonomic groups"
+    contents:
+      - data_algae
+      - data_beetle
+      - data_bird
+      - data_fish
+      - data_macroinvertebrate
+      - data_mosquito
+      - data_plant
+      - data_small_mammal
+      - data_tick
+      - data_tick_pathogen
+  - title: "Location data"
+    desc: "Information about locations"
+    contents:
+      - neon_sites
+      - neon_locations
+  - title: "Taxonomic data"
+    desc: "Information about species identities"
+    contents:
+      - neon_taxa
