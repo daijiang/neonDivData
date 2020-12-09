@@ -695,7 +695,7 @@ map_neon_data_to_ecocomDP.MOSQUITO <-
     sum(is.na(data_mosquito$individualCount)) # 1824
     sum(is.na(data_mosquito$scientificName))
     sum(is.na(data_mosquito$taxonID))
-    table(data_mosquito$taxonRank)
+    table(data_mosquito$taxonRank) # family, genus, species, and subspecies
     table(data_mosquito$sampleCondition)
     table(data_mosquito$targetTaxaPresent)
 
@@ -760,8 +760,8 @@ map_neon_data_to_ecocomDP.PLANT <- function(
   # species in 100m2 only (remove species already in 1m2 or 10m2)
   div_10_100_m2_4 <- dplyr::filter(div_10_100_m2_2, key2 == key3,
                                    !key3 %in% unique(c(div_1m2_pla$key3, div_10_100_m2_3$key3)))
-  div_10_100_m2_5 = dplyr::bind_rows(dplyr::mutate(div_10_100_m2_3, sample_area_m2 = 10),
-                                     dplyr::mutate(div_10_100_m2_4, sample_area_m2 = 100))
+  div_10_100_m2_5 = dplyr::bind_rows(dplyr::mutate(div_10_100_m2_3, sample_area_m2 = 100),
+                                     dplyr::mutate(div_10_100_m2_4, sample_area_m2 = 10000))
 
   # stack data
   data_plant = dplyr::bind_rows(
@@ -842,10 +842,14 @@ map_neon_data_to_ecocomDP.SMALL.MAMMAL <- function(
   ### remove all where the fate of the individual, unless marked and released, is
   ### 'dead' = dead, 'escaped' = escaped while handling, 'nontarget' = released, non-target species,
   ### should 'released' (= target or opportunistic species released without full processing) be also removed?
+    ## D Li: probably not, released have 64,400 records and processed only have 7,365
+  table(dat.mam$fate)
   dat.mam <- dplyr::filter(dat.mam, !fate %in% c("dead", "escaped", "nontarget"))
   #dat.mam <- filter(dat.mam, fate != "released")
 
   # unique(dat.mam$scientificName)
+  group_by(dat.mam, taxonRank) %>% tally() # mostly are sp and genus level
+  dat.mam <- dplyr::filter(dat.mam, taxonRank %in% c("genus", "species", "subspecies", NA))
 
   ### Remove recaptures -- Y and U (unknown); only retain N
   # table(dat.mam$recapture)
