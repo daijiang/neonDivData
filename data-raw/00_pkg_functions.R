@@ -356,8 +356,13 @@ map_neon_data_to_ecocomDP.FISH <- function(
   fsh_dat_bulk$reachID <- ifelse(is.na(fsh_dat_bulk$reachID),
                                  substr(fsh_dat_bulk$eventID, 1, 16),
                                  fsh_dat_bulk$reachID)
-
-  # combine indiv and bulk counts
+  
+  # add taxonRank into fsh_dat from full_taxon_fish
+    # join the above with bulkCount dataset
+  fsh_dat_bulk <- dplyr::left_join(fsh_dat_bulk, dplyr::select(full_taxon_fish, taxonID, scientificName, taxonRank), 
+                                   by = c("taxonID", "scientificName"))
+    
+    # combine indiv and bulk counts
   fsh_dat <- dplyr::bind_rows(fsh_dat_indiv, fsh_dat_bulk)
 
   # add count = 1 for indiv data
@@ -365,17 +370,8 @@ map_neon_data_to_ecocomDP.FISH <- function(
   # after bind, the bulk count col has "NAs" need to add "1", since indiv col has individual fish per row
   fsh_dat$count <- ifelse(is.na(fsh_dat$bulkFishCount), 1, fsh_dat$bulkFishCount)
 
-
-  # in case the bulk count data set does not have a column on taxonomic rank, as such, need to add it here.
-  # in scientificName column-- species identified below species level (genus, family, order, phylum)-- appear as sp. or spp.
-  # both sp. and spp. identifications should be marked low-res identifications, aka above species level in ranking
-  # and exclude from this analyses
-  # fsh_dat <- fsh_dat %>%
-  #   dplyr::mutate(taxonRank = dplyr::case_when(stringr::str_detect(string = scientificName, pattern = " spp.$") ~ "not_sp_level1",
-  #                                              stringr::str_detect(string = scientificName, pattern = " sp.$") ~ "not_sp_level2", TRUE ~ "species"))
-
-  # get all records that have rank <= genus
-  fsh_dat_fine <- dplyr::filter(fsh_dat, taxonRank %in% c("species", "subspecies", "genus"))
+    # get all records that have rank upto subspecies, variable taxonomic resolution
+  fsh_dat_fine <- dplyr::filter(fsh_dat, taxonRank %in% c("class", "family", "genus", "order", "phylum", "species", "subgenus", "subspecies"))
 
   # select passes with no fish were caught
   no_fsh <- dplyr::filter(all_fish$fsh_perPass, targetTaxaPresent == "N")
