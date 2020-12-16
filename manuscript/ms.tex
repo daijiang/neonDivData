@@ -38,8 +38,8 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Tidy NEON data for biodiversity research},
-  pdfauthor={Daijiang Li1,2†, Sydne Record3†, Eric Sokol4†, Matthew E. Bitters, Melissa Y. Chen, Anny Y. Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta A. Jarzyna, Michael G. Just, Jalene M. LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske},
+  pdftitle={Tidy NEON organismal data for biodiversity research},
+  pdfauthor={Daijiang Li1,2, Sydne Record3, Eric Sokol4, Matthew E. Bitters, Melissa Y. Chen, Anny Y. Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta A. Jarzyna, Michael G. Just, Jalene M. LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -144,9 +144,9 @@
   \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
   {\par}
 
-\title{Tidy NEON data for biodiversity research}
-\author{Daijiang Li\textsuperscript{1,2†}, Sydne Record\textsuperscript{3†}, Eric Sokol\textsuperscript{4†}, Matthew E. Bitters, Melissa Y. Chen, Anny Y. Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta A. Jarzyna, Michael G. Just, Jalene M. LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske}
-\date{09 December, 2020}
+\title{Tidy NEON organismal data for biodiversity research}
+\author{Daijiang Li\textsuperscript{1,2}, Sydne Record\textsuperscript{3}, Eric Sokol\textsuperscript{4}, Matthew E. Bitters, Melissa Y. Chen, Anny Y. Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta A. Jarzyna, Michael G. Just, Jalene M. LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske}
+\date{16 December, 2020}
 
 \begin{document}
 \maketitle
@@ -159,14 +159,14 @@
 
 \textbf{Key words}: NEON, Biodiversity, Data
 
-\hypertarget{introduction-or-why-tidy-neon-data}{%
-\section{Introduction (or why tidy NEON data)}\label{introduction-or-why-tidy-neon-data}}
+\hypertarget{introduction-or-why-tidy-neon-organismal-data}{%
+\section{Introduction (or why tidy NEON organismal data)}\label{introduction-or-why-tidy-neon-organismal-data}}
 
 A central goal of ecology is to understand the patterns and processes of biodiversity, which is particularly important in an era of rapid global environmental change (Midgley and Thuiller \protect\hyperlink{ref-midgley2005global}{2005}, Blowes et al. \protect\hyperlink{ref-blowes2019geography}{2019}). Such understanding comes from addressing questions like: How is biodiversity distributed across large spatial scales, ranging from ecoregions to continents? What mechanisms drive spatial patterns of biodiversity? Are spatial patterns of biodiversity similar among different taxonomic groups, and if not, why do we see variation? How does community composition vary across geographies? What are the local and landscape scale drivers of community structure? How and why do biodiversity patterns change over time? Answers to such questions are essential to understanding, managing, and conserving biodiversity and the ecosystem services it influences.
 
 Biodiversity research has a long history (Worm and Tittensor \protect\hyperlink{ref-worm2018theory}{2018}), beginning with major scientific expeditions (e.g., Alexander von Humboldt, Charles Darwin) that were undertaken to explore global biodiversity after the establishment of Linnaeus's Systema Naturae (Linnaeus \protect\hyperlink{ref-linnaeus1758systema}{1758}). Modern biodiversity research dates back to the 1950s (Curtis \protect\hyperlink{ref-curtis1959vegetation}{1959}, Hutchinson \protect\hyperlink{ref-hutchinson1959homage}{1959}) and aims to quantify patterns of species diversity and describe mechanisms underlying its heterogeneity. Since the beginning of this line of research, major theoretical breakthroughs (MacArthur and Wilson \protect\hyperlink{ref-macarthur1967theory}{1967}, Hubbell \protect\hyperlink{ref-hubbell2001unified}{2001}, Brown et al. \protect\hyperlink{ref-brown2004toward}{2004}) have advanced our understanding of potential mechanisms causing and maintaining biodiversity. Modern empirical studies, however, have been largely constrained to local or regional scales, and focused on one or a few specific taxonomic groups. Despite such constraints, field ecologists have compiled unprecedented numbers of observations, which support research into generalities through syntheses and meta-analyses (Vellend et al. \protect\hyperlink{ref-vellend2013global}{2013}, Blowes et al. \protect\hyperlink{ref-blowes2019geography}{2019}, Li et al. \protect\hyperlink{ref-li2020changes}{2020}). Such work is challenged, however, by the difficulty of bringing together data from different studies and with varying limitations, including: differing collection methods (methodological uncertainties); varying levels of statistical robustness; inconsistent handling of missing data; spatial bias; publication bias; and design flaws (Martin et al. \protect\hyperlink{ref-martin2012mapping}{2012}, Nakagawa and Santos \protect\hyperlink{ref-nakagawa2012methodological}{2012}, Koricheva and Gurevitch \protect\hyperlink{ref-koricheva2014uses}{2014}). Additionally, it has historically been challenging for researchers to obtain and collate data from a diversity of sources, for use in syntheses and/or meta-analyses (Gurevitch and Hedges \protect\hyperlink{ref-gurevitch1999statistical}{1999}). This has been remedied in recent years by large efforts to digitize museum and herbarium specimens (e.g., iDigBio), successful community science programs (e.g., iNaturalist, eBird), and advances in technology (e.g., remote sensing, automated acoustic recorders) that together bring biodiversity research into the big data era (Hampton et al. \protect\hyperlink{ref-hampton2013big}{2013}, Farley et al. \protect\hyperlink{ref-farley2018situating}{2018}). Yet, each of these comes with its own limitations. For example, museum/herbarium specimens and community science records are incidental (thus, unstructured in terms of the sampling design) and show obvious geographic and taxonomic biases (Martin et al. \protect\hyperlink{ref-martin2012mapping}{2012}, Beck et al. \protect\hyperlink{ref-beck2014spatial}{2014}, Geldmann et al. \protect\hyperlink{ref-geldmann2016determines}{2016}); remote sensing approaches can cover large spatial scales, but may be of low spatial resolution and unable to reliably penetrate vegetation canopy (Palumbo et al. \protect\hyperlink{ref-palumbo2017building}{2017}, G Pricope et al. \protect\hyperlink{ref-g2019remote}{2019}). Overall, our understanding of biodiversity is currently limited by the lack of standardized high quality and open-access data across large spatial scales and long time periods.
 
-There is currently a major effort underway to overcome the issues above. For example, the Long Term Ecological Research Network (LTER) consists of 28 sites that provide long term datasets for a diverse set of ecosystems. However, there is no standardization in the design and data collections across LTER sites. The National Ecological Observatory Network (NEON) is a continental-scale observatory network that collects long-term, standardized, and open access datasets broadly aimed at enabling better understanding of how U.S. ecosystems change through time (Keller et al. \protect\hyperlink{ref-keller2008continental}{2008}). Data collected include observations and field surveys, automated instrument measurements, airborne remote sensing surveys, and archival samples that characterize plants, animals, soils, nutrients, freshwater and atmospheric conditions. Data are collected at 81 field sites across both terrestrial and freshwater ecosystems across the United States and will continue for 30 years. These data provide a unique opportunity for advancing biodiversity research because consistent data collection protocols and the long-term nature of the observatory ensure sustained data availability and directly comparable measurements across locations. Spatio-temporal patterns in biodiversity, and the causes of changes to these patterns, can thus be confidently assessed and analyzed using NEON data.
+There is currently a major effort underway to overcome the issues above. For example, the Long Term Ecological Research Network (LTER) consists of 28 sites that provide long term datasets for a diverse set of ecosystems. However, there is no standardization in the design and data collections across LTER sites. The National Ecological Observatory Network (NEON) is a continental-scale observatory network that collects long-term, standardized, and open access datasets broadly aimed at enabling better understanding of how U.S. ecosystems change through time (Keller et al. \protect\hyperlink{ref-keller2008continental}{2008}, Thorpe et al. \protect\hyperlink{ref-thorpe2016introduction}{2016}). Data collected include observations and field surveys, automated instrument measurements, airborne remote sensing surveys, and archival samples that characterize plants, animals, soils, nutrients, freshwater and atmospheric conditions. Data are collected at 81 field sites across both terrestrial and freshwater ecosystems across the United States and will continue for 30 years. These data provide a unique opportunity for advancing biodiversity research because consistent data collection protocols and the long-term nature of the observatory ensure sustained data availability and directly comparable measurements across locations. Spatio-temporal patterns in biodiversity, and the causes of changes to these patterns, can thus be confidently assessed and analyzed using NEON data.
 
 NEON data are designed to be maximally useful to ecologists by aligning with FAIR principles (findable, accessible, interoperable, and reusable Wilkinson et al. \protect\hyperlink{ref-wilkinson2016fair}{2016}), but there are still hurdles to overcome in the use of their organismal data for biodiversity research. For example, different NEON data products use different field names for similar measurements, some include sampling unit information while this must be calculated for others, etc. Furthermore, NEON organismal data products provide lots of raw data, most of them may not be needed to calculate biodiversity measurements. Therefore, users need to dive into the comprehensive documentation to better understand the organismal datasets, to extract the relevant essential variables, and to take additional steps to quantify biodiversity (e.g., clean datasets, change the data formats to feed the data to statistical programs, etc.). Such processes can be very time consuming and the path to get to that standard data format is different and not always obvious for each NEON organismal data product. A data product that simplifies and standardizes various NEON organismal datasets can remove such hurdles, enhance the interoperability and reusability, and facilitate wider usage of NEON organismal datasets for biodiversity research.
 
@@ -194,7 +194,7 @@ To protect species of concern, their taxonomic IDs are `fuzzed.' This means the 
 \hypertarget{ground-beetles}{%
 \subsubsection{Ground Beetles}\label{ground-beetles}}
 
-\textbf{NEON Sampling Design} Each site is sampled via pitfall trap, with 10 separate distributed plots at each site and four pitfall traps at each plot initially - placed in the ground at the cardinal direction points of the distributed plot boundary. This equates to a total of 40 pitfall traps per site. In 2018, sampling was reduced via the elimination of the North pitfall trap in each plot, resulting in 30 traps per site. Sampling begins when the temperature has been \textgreater4°C for 10 days in the spring and ends when temperatures dip below this threshold in the fall. Sampling occurs biweekly throughout the sampling season with no single trap being sampled more frequently than every 12 days. After collection, the samples are separated into carabid species and bycatch, with bycatch archived at either the trap (vertebrate) or plot (invertebrate) level. Carabid samples are sorted and identified by NEON technicians, after which a subset of individuals are sent to be pinned and re-identified by an expert taxonomist.
+\textbf{NEON Sampling Design} Each site is sampled via pitfall trap, with 10 separate distributed plots at each site and four pitfall traps at each plot initially - placed in the ground at the cardinal direction points of the distributed plot boundary. This equates to a total of 40 pitfall traps per site. In 2018, sampling was reduced via the elimination of the North pitfall trap in each plot, resulting in 30 traps per site. Sampling begins when the temperature has been \textgreater4°C for 10 days in the spring and ends when temperatures dip below this threshold in the fall. Sampling occurs biweekly throughout the sampling season with no single trap being sampled more frequently than every 12 days. After collection, the samples are separated into carabid species and bycatch, with bycatch archived at either the trap (vertebrate) or plot (invertebrate) level. Carabid samples are sorted and identified by NEON technicians, after which a subset of individuals are sent to be pinned and re-identified by an expert taxonomist. More details can be found in Hoekman et al. (\protect\hyperlink{ref-hoekman2017design}{2017}).
 
 \textbf{Data Wrangling Decisions} Beetle samples are identified at multiple levels of expertise. Beetles are first identified by the sorting technician and then the pinning technician. Identifications of more difficult specimens are additionally verified by an expert taxonomist. Whenever available, expert identification was used for a sample. For example, if taxonomic delineation between NEON staff and multiple expert taxonomist identifications do not agree, then the consensus expert taxonomist delineation is recorded in the data portal.
 
@@ -211,7 +211,7 @@ Prior to 2018, \texttt{trappingDays} values were not included for many sites. Mi
 
 Mosquito monitoring is divided into field season and off-season sampling. Off-season sampling takes place weekly at core sites, and begins after three consecutive zero-catch field sampling bouts at a core site. The goal of off-season sampling is to rapidly determine when the next field season should begin and to provide mosquito phenology data throughout the lifetime of the observatory. During the off season, overnight sampling occurs weekly at three dedicated mosquito plots spread throughout the terrestrial core sites for each domain, only if temperatures are above 10 °C. Traps are deployed at dusk and checked the following dawn. Field season sampling begins when the first mosquito is detected during off season sampling. Technicians collect samples every two weeks at core terrestrial sites and every four weeks at relocatable terrestrial sites. Sampling occurs at 10 dedicated mosquito plots at each site over a 24-hour period, or one sampling bout. During the sampling bout, traps are serviced twice and yield one night-active sample, taken at dawn or about 8 hours after trap is set, and one day-active sample, taken at dusk or about 16 hours after the trap is set. Thus, a 24-hour sampling bout yields 20 ``samples'' from ten traps.
 
-Following field collection, NEON's field ecologists process, pack up and ship the samples to an external lab where mosquitoes are identified to species and sex (when possible). A subset of identified mosquitoes are tested for infection by pathogens to quantify the presence/absence and prevalence of various arboviruses. Some mosquitoes are set aside for DNA barcode analysis as well as long-term archiving. Particularly rare or difficult to identify mosquito specimens are prioritized for DNA barcoding.
+Following field collection, NEON's field ecologists process, pack up and ship the samples to an external lab where mosquitoes are identified to species and sex (when possible). A subset of identified mosquitoes are tested for infection by pathogens to quantify the presence/absence and prevalence of various arboviruses. Some mosquitoes are set aside for DNA barcode analysis as well as long-term archiving. Particularly rare or difficult to identify mosquito specimens are prioritized for DNA barcoding. More details can be found in Hoekman et al. (\protect\hyperlink{ref-hoekman2016design}{2016}).
 
 \textbf{Data Wrangling Decisions} Mosquito data are mainly stored in four data frames: trapping data (\texttt{mos\_trapping}), sorting data (\texttt{mos\_sorting}), archiving data (\texttt{mos\_archivepooling}), and expert taxonomist processed data (\texttt{mos\_expertTaxonomistIDProcessed}). We first removed rows (records) with missing important information about location, collect date, and sample or subsample ID for all data frames. We then merged all four data frames into one while checked carefully during the process. In the merged data frame, we only kept records that have target taxa (i.e., \texttt{targetTaxaPresent\ ==\ "Y"}) or have no known compromised sampling condition (i.e., \texttt{sampleCondition\ ==\ "No\ known\ compromise"}). We further removed a small number of records with species identified at family level; all remaining records were identified at least at the genus level. We estimated the total individual count for each species within a trap as \texttt{individualCount\ *\ (totalWeight\ /\ subsampleWeight)}. We then removed columns that likely will not be used for calculating biodiversity values.
 
@@ -319,12 +319,48 @@ To demonstrate the use of data products, we used \texttt{data\_plant} to quickly
 \caption{Distribution of plant species richness across all NEON terrestrial sites. Alaska, Hawaii, and Puerto Rico were rearranged to save space.}\label{fig:Fig2Map}
 \end{figure}
 
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.95\linewidth]{/Users/dli/Github/neonDivData/manuscript/figures/beetle_rarefaction} 
+
+}
+
+\caption{Rarefaction of beetle abundance data from collections made at the Oak Ridge National Laboratory (ORNL) National Ecological Observatory Network (NEON) site from 2014-2020 generated using the iNEXT package in R (Hsieh et al. \protect\hyperlink{ref-hsieh2016inext}{2016}) based on different levels of taxonomic resolution (i.e., genus, species, subspecies). Different colors indicate Jost Indices (i.e., Hill Numbers quantifying species diversity that vary in how abundance is weighted with the parameter q). Higher values of q give lower weights to low-abundance species with q = 0 being equivalent to species richness and q = 1 representing the effective number of species given by the Shannon entropy (q = 1; Jost \protect\hyperlink{ref-jost2006entropy}{2006}).}\label{fig:Fig3Curve}
+\end{figure}
+
+\hypertarget{discussion-or-how-to-maintain-and-update-tidy-neon-organismal-data}{%
+\section{Discussion (or how to maintain and update tidy NEON organismal data)}\label{discussion-or-how-to-maintain-and-update-tidy-neon-organismal-data}}
+
+NEON organismal data hold lots of potential to understand biodiversity change across space and time (Balch et al. \protect\hyperlink{ref-balch2019neon}{2019}). Multiple biodiversity research and education programs have used NEON data even before NEON became fully operational in May 2019 {[}CITATION{]}. With the expected large investment to maintain NEON over the next 30 years, NEON organismal data, alone or coupled with other major environmental datasets, will be invaluable to help us understand and track biodiversity change in an era of fast environmental change. By providing a standardized and easy-to-use data product of NEON organismal data, our effort here will significantly lower the barriers to use the NEON organismal data for biodiversity research by many current and future researchers.
+
+There are some important notes about the data product we provided. First, we did not check the taxonomy of all groups given that NEON already did its best to make sure that species identifications are correct. However, not every record was identified to species, with genus, family, or even order level species IDs in all groups. IDs above genus level may not be useful for most biodiversity projects. We thus decided to remove records with such IDs for groups that are relatively easier to identify (fish, plant, small mammals) or have very few taxon IDs that are above genus level (mosquito). However, for groups that are hard to identify (algae, beetle, bird, macroinvertebrate, tick, and tick pathogen), we decided to keep all records no matter what level of taxon IDs they have. Such information can be useful if we are interested in questions such as species-to-genus ratio or species rarefaction curves at different taxonomic levels (e.g., Fig. \ref{fig:Fig3Curve}). Users thus need to think carefully about which level of taxon IDs they need for their research. Second, we kept records without any observed species/individuals in some taxonomic groups (beetle, bird, small mammal). Such empty records still provide information about sampling efforts, which can be critical for some projects to control for. For example, if two sites both have the same number of small mammals during the same time period, however, one site has many more empty records (traps), then we can infer that the abundances of small mammals are lower than the other side. If such information is not needed in a project, then we can simply remove them. For algae and birds, we added standardized measurements as density and number of fish caught per hour, respectively, in the data product. Third, there are other organismal groups (Aquatic Microbes and Aquatic Plants; soil microbes were covered in Qin et al.~in this issue) not included in this study given the complexity of microbial data.
+
+All codes that conducted the data wrangling decisions were available online (Github and Zenodo, URL HERE). Therefore, users can easily reproduce the standardized data product, modify the code if they need to make different decisions during the data wrangling process, and correct any mistakes of our code by submitting a pull request to our repository. It is also easy to update the standardized data product when new data is uploaded by NEON to their data portal because the whole data wrangling workflow was automated. In fact, our Github repository is scheduled to run the whole workflow every year.
+
+\begin{itemize}
+\tightlist
+\item
+  All code are open and freely available
+\item
+  Plans for future maintenance and (automated) updates.
+\end{itemize}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+highlight value of harmonized data for community of researchers to advance the field. Highlight value of collaboration between NEON user community and NEON staff for advancing NEON enabled science.
+
 \hypertarget{reference}{%
 \section*{Reference}\label{reference}}
 \addcontentsline{toc}{section}{Reference}
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-balch2019neon}{}%
+Balch, J. K., R. Nagy, and B. S. Halpern. 2019. NEON is seeding the next revolution in ecology. Frontiers in Ecology and the Environment 18.
+
 \leavevmode\hypertarget{ref-barnett2019plant}{}%
 Barnett, D. T., P. B. Adler, B. R. Chemel, P. A. Duffy, B. J. Enquist, J. B. Grace, S. Harrison, R. K. Peet, D. S. Schimel, T. J. Stohlgren, and others. 2019. The plant diversity sampling design for the national ecological observatory network. Ecosphere 10:e02603.
 
@@ -355,11 +391,23 @@ Gurevitch, J., and L. V. Hedges. 1999. Statistical issues in ecological meta-ana
 \leavevmode\hypertarget{ref-hampton2013big}{}%
 Hampton, S. E., C. A. Strasser, J. J. Tewksbury, W. K. Gram, A. E. Budden, A. L. Batcheller, C. S. Duke, and J. H. Porter. 2013. Big data and the future of ecology. Frontiers in Ecology and the Environment 11:156--162.
 
+\leavevmode\hypertarget{ref-hoekman2017design}{}%
+Hoekman, D., K. E. LeVan, C. Gibson, G. E. Ball, R. A. Browne, R. L. Davidson, T. L. Erwin, C. B. Knisley, J. R. LaBonte, J. Lundgren, and others. 2017. Design for ground beetle abundance and diversity sampling within the national ecological observatory network. Ecosphere 8:e01744.
+
+\leavevmode\hypertarget{ref-hoekman2016design}{}%
+Hoekman, D., Y. P. Springer, C. Barker, R. Barrera, M. Blackmore, W. Bradshaw, D. H. Foley, H. S. Ginsberg, M. Hayden, C. Holzapfel, and others. 2016. Design for mosquito abundance, diversity, and phenology sampling within the national ecological observatory network. Ecosphere 7:e01320.
+
+\leavevmode\hypertarget{ref-hsieh2016inext}{}%
+Hsieh, T., K. Ma, and A. Chao. 2016. INEXT: An r package for rarefaction and extrapolation of species diversity (h ill numbers). Methods in Ecology and Evolution 7:1451--1456.
+
 \leavevmode\hypertarget{ref-hubbell2001unified}{}%
 Hubbell, S. P. 2001. The unified neutral theory of biodiversity and biogeography (mpb-32). Princeton University Press.
 
 \leavevmode\hypertarget{ref-hutchinson1959homage}{}%
 Hutchinson, G. E. 1959. Homage to santa rosalia or why are there so many kinds of animals? The American Naturalist 93:145--159.
+
+\leavevmode\hypertarget{ref-jost2006entropy}{}%
+Jost, L. 2006. Entropy and diversity. Oikos 113:363--375.
 
 \leavevmode\hypertarget{ref-keller2008continental}{}%
 Keller, M., D. S. Schimel, W. W. Hargrove, and F. M. Hoffman. 2008. A continental strategy for the national ecological observatory network. The Ecological Society of America: 282-284.
@@ -390,6 +438,9 @@ Palumbo, I., R. A. Rose, R. M. Headley, J. Nackoney, A. Vodacek, and M. Wegmann.
 
 \leavevmode\hypertarget{ref-pavlacky2017statistically}{}%
 Pavlacky Jr, D. C., P. M. Lukacs, J. A. Blakesley, R. C. Skorkowsky, D. S. Klute, B. A. Hahn, V. J. Dreitz, T. L. George, and D. J. Hanni. 2017. A statistically rigorous sampling design to integrate avian monitoring and management within bird conservation regions. PloS one 12:e0185924.
+
+\leavevmode\hypertarget{ref-thorpe2016introduction}{}%
+Thorpe, A. S., D. T. Barnett, S. C. Elmendorf, E.-L. S. Hinckley, D. Hoekman, K. D. Jones, K. E. LeVan, C. L. Meier, L. F. Stanish, and K. M. Thibault. 2016. Introduction to the sampling designs of the n ational e cological o bservatory n etwork t errestrial o bservation s ystem. Ecosphere 7:e01627.
 
 \leavevmode\hypertarget{ref-vellend2013global}{}%
 Vellend, M., L. Baeten, I. H. Myers-Smith, S. C. Elmendorf, R. Beauséjour, C. D. Brown, P. De Frenne, K. Verheyen, and S. Wipf. 2013. Global meta-analysis reveals no net change in local-scale plant biodiversity over time. Proceedings of the National Academy of Sciences 110:19456--19459.
