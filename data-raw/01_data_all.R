@@ -310,6 +310,41 @@ data_tick_pathogen = dplyr::select(data_tick_pathogen, -domainID, -nlcdClass, -d
 
 usethis::use_data(data_tick_pathogen, overwrite = TRUE)
 
+# Zooplankton data ------------------
+# https://data.neonscience.org/data-products/DP1.20219.001
+data_zooplankton = map_neon_data_to_ecocomDP.ZOOPLANKTON(neon.data.product.id = "DP1.20219.001")
+group_by(data_zooplankton, namedLocation) %>%
+  summarise(n_lat = n_distinct(decimalLatitude),
+            n_long = n_distinct(decimalLongitude)) %>% as.data.frame()
+# all named locations have the same lat/long coord
+loc_zooplankton = dplyr::select(data_zooplankton, domainID, siteID, namedLocation, aquaticSiteType, decimalLatitude,
+                          decimalLongitude, geodeticDatum, coordinateUncertainty,
+                          elevation, elevationUncertainty) %>%
+  dplyr::distinct()
+
+
+taxa_zooplankton = dplyr::select(data_zooplankton, taxonID, scientificName, family,
+                           taxonRank, identificationReferences) %>%
+  dplyr::distinct()
+any(duplicated(taxa_zooplankton$taxonID))
+filter(taxa_zooplankton, duplicated(taxonID))
+filter(taxa_zooplankton, taxonID == "SKIMIS")
+# same species has multiple references; this can be problematic when join back to
+# the data frame...
+taxa_zooplankton = taxa_zooplankton %>%
+  group_by(taxonID, scientificName, family, taxonRank) %>%
+  summarise(identificationReferences = paste(unique(identificationReferences),
+                                             collapse = "; "), .groups = "drop")
+taxa_zooplankton$identificationReferences[1:5]
+
+data_zooplankton =  dplyr::select(data_zooplankton, siteID, namedLocation, sampleID,
+                                  samplerType, subsampleType, taxonID, scientificName,
+                                  taxonRank, density, collectDate, zooMinimumLength,
+                                  zooMaximumLength, zooMeanLength) %>%
+  dplyr::distinct()
+
+usethis::use_data(data_zooplankton, overwrite = TRUE)
+
 # all locations together ----
 # loc_plant = readRDS("~/Documents/loc_plant.rds")
 # loc_algae = readRDS("~/Documents/loc_algae.rds")
@@ -331,9 +366,10 @@ loc_mosquito = dplyr::mutate(loc_mosquito, taxa = "mosquito", neonDPI = "DP1.100
 loc_small_mammal = dplyr::mutate(loc_small_mammal, taxa = "small_mammal", neonDPI = "DP1.10072.001")
 loc_tick_pathogen = dplyr::mutate(loc_tick_pathogen, taxa = "tick_pathogen", neonDPI = "DP1.10092.001")
 loc_tick = dplyr::mutate(loc_tick, taxa = "tick", neonDPI = "DP1.10093.001")
+loc_zooplankton = dplyr::mutate(loc_zooplankton, taxa = "zooplankton", neonDPI = "DP1.20219.001")
 
 neon_locations = dplyr::bind_rows(loc_plant, loc_algae, loc_beetle, loc_bird, loc_fish, loc_macroinvertebrate,
-                                  loc_mosquito, loc_small_mammal, loc_tick_pathogen, loc_tick)
+                                  loc_mosquito, loc_small_mammal, loc_tick_pathogen, loc_tick, loc_zooplankton)
 
 usethis::use_data(neon_locations, overwrite = TRUE)
 
@@ -354,7 +390,8 @@ data_modify_time = tibble::tribble(
   "mosquito", "DP1.10043.001", "data_mosquito",
   "small_mammal", "DP1.10072.001", "data_small_mammal",
   "tick_pathogen", "DP1.10092.001", "data_tick_pathogen",
-  "tick", "DP1.10093.001", "data_tick") %>%
+  "tick", "DP1.10093.001", "data_tick",
+  "zooplankton", "DP1.20219.001", "data_zooplankton") %>%
   dplyr::arrange(taxa) %>%
   mutate(modify_time = lubridate::as_date(file.mtime(paste0("data/data_", taxa, ".rda"))))
 
@@ -375,7 +412,8 @@ data_summary = bind_cols(data_summary,
                            data.frame(matrix(range(lubridate::year(data_plant$endDate)), nrow = 1)),
                            data.frame(matrix(range(lubridate::year(data_tick$collectDate)), nrow = 1)),
                            data.frame(matrix(range(lubridate::year(data_tick_pathogen$collectDate)), nrow = 1)),
-                           data.frame(matrix(range(data_small_mammal$year), nrow = 1))
+                           data.frame(matrix(range(data_small_mammal$year), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_zooplankton$collectDate)), nrow = 1))
                          ) %>%
                            rename(start_year = X1, end_year = X2)
 )
@@ -393,11 +431,12 @@ taxa_macroinvertebrate = dplyr::mutate(taxa_macroinvertebrate, taxa = "macroinve
 taxa_mosquito = dplyr::mutate(taxa_mosquito, taxa = "mosquito", neonDPI = "DP1.10043.001")
 taxa_small_mammal = dplyr::mutate(taxa_small_mammal, taxa = "small_mammal", neonDPI = "DP1.10072.001")
 taxa_tick = dplyr::mutate(taxa_tick, taxa = "tick", neonDPI = "DP1.10093.001")
+taxa_zooplankton = dplyr::mutate(taxa_zooplankton, taxa = "zooplankton", neonDPI = "DP1.20219.001")
 # no tick pathogen taxa
 
 neon_taxa = dplyr::bind_rows(taxa_plant, taxa_algae, taxa_beetle, taxa_bird,
                              taxa_fish, taxa_macroinvertebrate,
-                             taxa_mosquito, taxa_small_mammal, taxa_tick)
+                             taxa_mosquito, taxa_small_mammal, taxa_tick, taxa_zooplankton)
 neon_taxa = dplyr::relocate(neon_taxa, acceptedTaxonID, .after = taxonID)
 usethis::use_data(neon_taxa, overwrite = TRUE)
 

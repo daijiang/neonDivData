@@ -356,12 +356,12 @@ map_neon_data_to_ecocomDP.FISH <- function(
   fsh_dat_bulk$reachID <- ifelse(is.na(fsh_dat_bulk$reachID),
                                  substr(fsh_dat_bulk$eventID, 1, 16),
                                  fsh_dat_bulk$reachID)
-  
+
   # add taxonRank into fsh_dat from full_taxon_fish
     # join the above with bulkCount dataset
-  fsh_dat_bulk <- dplyr::left_join(fsh_dat_bulk, dplyr::select(full_taxon_fish, taxonID, scientificName, taxonRank), 
+  fsh_dat_bulk <- dplyr::left_join(fsh_dat_bulk, dplyr::select(full_taxon_fish, taxonID, scientificName, taxonRank),
                                    by = c("taxonID", "scientificName"))
-    
+
     # combine indiv and bulk counts
   fsh_dat <- dplyr::bind_rows(fsh_dat_indiv, fsh_dat_bulk)
 
@@ -1621,3 +1621,43 @@ map_neon_data_to_ecocomDP.BIRD <- function(
   return(data_bird)
 }
 
+map_neon_data_to_ecocomDP.ZOOPLANKTON <- function(
+  neon.data.product.id = "DP1.20219.001",
+  ...){
+  # authors: Lara Janson, Stephanie Parker
+  allTabs_zoop <- neonUtilities::loadByProduct(
+    dpID = neon.data.product.id,
+    check.size = FALSE)
+  saveRDS(allTabs_zoop, file = "~/Documents/allTabs_zoop.rds")
+  allTabs_zoop = readRDS("~/Documents/allTabs_zoop.rds")
+
+  # download field data
+  zoo_fielddata <- tibble::as_tibble(allTabs_zoop$zoo_fieldData)
+
+  # download zooplankton counts
+  zoo_taxonomyProcessed <- tibble::as_tibble(allTabs_zoop$zoo_taxonomyProcessed)
+
+  # Location table
+  table_location <- zoo_fielddata %>%
+    select(domainID:sampleID, samplerType, towsTrapsVolume) %>%
+    select(-additionalCoordUncertainty) %>%
+    distinct()
+
+
+  # Observation table
+  data_zooplankton <- zoo_taxonomyProcessed %>%
+    filter(sampleCondition == "condition OK") %>%
+    select(sampleID, subsampleType,
+           taxonID, scientificName, family, taxonRank, identificationReferences,
+           # zooVolumePerBottle,
+           # zooSubsampleVolume,
+           # individualCount,
+           adjCountPerBottle,
+           zooMinimumLength, zooMaximumLength, zooMeanLength) %>%
+    left_join(table_location, by = "sampleID") %>%
+    mutate(density = adjCountPerBottle / towsTrapsVolume,
+           density_unit = 'count per liter') %>%
+    distinct()
+
+  return(data_zooplankton)
+}
