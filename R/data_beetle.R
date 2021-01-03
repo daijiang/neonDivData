@@ -30,7 +30,7 @@
 #' - `taxonID`: Species code, based on one or more sources.
 #' - `taxonRank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
 #' - `scientificName`: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
-#' - `count`: Number of individuals. `NA` represents no beetles catche in the trap.
+#' - `count`: Number of individuals. `NA` represents no beetles caught in the trap.
 #'
 #' @author Kari Norman
 #'
