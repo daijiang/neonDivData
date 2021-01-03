@@ -22,7 +22,7 @@ A data frame (also a tibble) with the following columns:
 \item \code{taxonID}: Species code, based on one or more sources.
 \item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{scientificName}: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
-\item \code{count}: Number of individuals. \code{NA} represents no beetles catche in the trap.
+\item \code{count}: Number of individuals. \code{NA} represents no beetles caught in the trap.
 }
 }
 \usage{

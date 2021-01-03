@@ -120,6 +120,41 @@ data_fish = dplyr::select(data_fish, -domainID, -aquaticSiteType, -decimalLatitu
 
 usethis::use_data(data_fish, overwrite = TRUE)
 
+# herps by catch  ----
+# https://data.neonscience.org/data-products/DP1.10022.001
+data_herp_bycatch = map_neon_data_to_ecocomDP.HERP(neon.data.product.id = "DP1.10022.001")
+
+loc_herp_bycatch = dplyr::select(data_herp_bycatch, domainID, siteID, plotID, namedLocation, nlcdClass, decimalLatitude,
+                                 decimalLongitude, geodeticDatum, coordinateUncertainty,
+                                 elevation, elevationUncertainty) %>%
+  dplyr::distinct()
+
+taxa_herp_bycatch = dplyr::select(data_herp_bycatch, taxonID, scientificName, # family,
+                                  taxonRank, identificationReferences) %>%
+  dplyr::distinct() %>%
+  drop_na(taxonID)
+any(duplicated(taxa_herp_bycatch$taxonID))
+filter(taxa_herp_bycatch, duplicated(taxonID))
+filter(taxa_herp_bycatch, taxonID == "PLECIN")
+# same species has multiple references; this can be problematic when join back to
+# the data frame...
+taxa_herp_bycatch = taxa_herp_bycatch %>%
+  group_by(taxonID, scientificName, taxonRank) %>%
+  summarise(# family = unique(family)[1],
+    identificationReferences = paste(unique(identificationReferences),
+                                     collapse = "; "), .groups = "drop")
+taxa_herp_bycatch$identificationReferences[1:5]
+any(duplicated(taxa_herp_bycatch$taxonID)) # should be FALSE
+# duplicated from beetles?
+intersect(taxa_herp_bycatch$taxonID, filter(neon_taxa, taxa == "beetle")$taxonID)
+
+data_herp_bycatch = dplyr::select(data_herp_bycatch, -domainID, -nlcdClass, -decimalLatitude,
+                                  -decimalLongitude, -geodeticDatum, -coordinateUncertainty,
+                                  -elevation, -elevationUncertainty, -identificationReferences) %>%
+  dplyr::distinct()
+data_herp_bycatch = relocate(data_herp_bycatch, remarksFielddata, .after = remarksSorting)
+
+usethis::use_data(data_herp_bycatch, overwrite = TRUE)
 
 # macro invertebrate data -------------------
 # https://data.neonscience.org/data-products/DP1.20120.001
@@ -361,6 +396,7 @@ loc_algae = dplyr::mutate(loc_algae, taxa = "algae", neonDPI = "DP1.20166.001")
 loc_beetle = dplyr::mutate(loc_beetle, taxa = "beetle", neonDPI = "DP1.10022.001")
 loc_bird = dplyr::mutate(loc_bird, taxa = "bird", neonDPI = "DP1.10003.001")
 loc_fish = dplyr::mutate(loc_fish, taxa = "fish", neonDPI = "DP1.20107.001")
+loc_herp_bycatch = dplyr::mutate(loc_herp_bycatch, taxa = "herp_bycatch", neonDPI = "DP1.10022.001")
 loc_macroinvertebrate = dplyr::mutate(loc_macroinvertebrate, taxa = "macroinvertebrate", neonDPI = "DP1.20120.001")
 loc_mosquito = dplyr::mutate(loc_mosquito, taxa = "mosquito", neonDPI = "DP1.10043.001")
 loc_small_mammal = dplyr::mutate(loc_small_mammal, taxa = "small_mammal", neonDPI = "DP1.10072.001")
@@ -369,7 +405,8 @@ loc_tick = dplyr::mutate(loc_tick, taxa = "tick", neonDPI = "DP1.10093.001")
 loc_zooplankton = dplyr::mutate(loc_zooplankton, taxa = "zooplankton", neonDPI = "DP1.20219.001")
 
 neon_locations = dplyr::bind_rows(loc_plant, loc_algae, loc_beetle, loc_bird, loc_fish, loc_macroinvertebrate,
-                                  loc_mosquito, loc_small_mammal, loc_tick_pathogen, loc_tick, loc_zooplankton)
+                                  loc_mosquito, loc_small_mammal, loc_tick_pathogen, loc_tick, loc_zooplankton,
+                                  loc_herp_bycatch)
 
 usethis::use_data(neon_locations, overwrite = TRUE)
 
@@ -386,6 +423,7 @@ data_modify_time = tibble::tribble(
   "beetle", "DP1.10022.001", "data_beetle",
   "bird", "DP1.10003.001", "data_bird",
   "fish", "DP1.20107.001", "data_fish",
+  "herp_bycatch", "DP1.10022.001", "data_herp_bycatch",
   "macroinvertebrate", "DP1.20120.001", "data_macroinvertebrate",
   "mosquito", "DP1.10043.001", "data_mosquito",
   "small_mammal", "DP1.10072.001", "data_small_mammal",
@@ -407,6 +445,7 @@ data_summary = bind_cols(data_summary,
                            data.frame(matrix(range(lubridate::year(data_beetle$collectDate)), nrow = 1)),
                            data.frame(matrix(range(lubridate::year(data_bird$startDate)), nrow = 1)),
                            data.frame(matrix(range(lubridate::year(data_fish$startDate)), nrow = 1)),
+                           data.frame(matrix(range(lubridate::year(data_herp_bycatch$collectDate)), nrow = 1)),
                            data.frame(matrix(range(lubridate::year(data_macroinvertebrate$collectDate)), nrow = 1)),
                            data.frame(matrix(range(lubridate::year(data_mosquito$collectDate)), nrow = 1)),
                            data.frame(matrix(range(lubridate::year(data_plant$endDate)), nrow = 1)),
@@ -427,6 +466,7 @@ taxa_algae = dplyr::mutate(taxa_algae, taxa = "algae", neonDPI = "DP1.20166.001"
 taxa_beetle = dplyr::mutate(taxa_beetle, taxa = "beetle", neonDPI = "DP1.10022.001")
 taxa_bird = dplyr::mutate(taxa_bird, taxa = "bird", neonDPI = "DP1.10003.001")
 taxa_fish = dplyr::mutate(taxa_fish, taxa = "fish", neonDPI = "DP1.20107.001")
+taxa_herp_bycatch = dplyr::mutate(taxa_herp_bycatch, taxa = "herp_bycatch", neonDPI = "DP1.10022.001")
 taxa_macroinvertebrate = dplyr::mutate(taxa_macroinvertebrate, taxa = "macroinvertebrate", neonDPI = "DP1.20120.001")
 taxa_mosquito = dplyr::mutate(taxa_mosquito, taxa = "mosquito", neonDPI = "DP1.10043.001")
 taxa_small_mammal = dplyr::mutate(taxa_small_mammal, taxa = "small_mammal", neonDPI = "DP1.10072.001")
@@ -435,7 +475,7 @@ taxa_zooplankton = dplyr::mutate(taxa_zooplankton, taxa = "zooplankton", neonDPI
 # no tick pathogen taxa
 
 neon_taxa = dplyr::bind_rows(taxa_plant, taxa_algae, taxa_beetle, taxa_bird,
-                             taxa_fish, taxa_macroinvertebrate,
+                             taxa_fish, taxa_herp_bycatch, taxa_macroinvertebrate,
                              taxa_mosquito, taxa_small_mammal, taxa_tick, taxa_zooplankton)
 neon_taxa = dplyr::relocate(neon_taxa, acceptedTaxonID, .after = taxonID)
 usethis::use_data(neon_taxa, overwrite = TRUE)
