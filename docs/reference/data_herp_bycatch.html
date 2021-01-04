@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Information of all locations included in this data package. — neon_locations • neonDivData</title>
+<title>Vertebrate Herpetofauna Bycatch sampled from pitfall traps — data_herp_bycatch • neonDivData</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Information of all locations included in this data package. — neon_locations" />
-<meta property="og:description" content="To reduce the size of this data package, we extracted location information from all
-taxanomic groups and saved as one file to avoid duplications.
-Note that some aquatic sites do not have lat/long information though." />
+<meta property="og:title" content="Vertebrate Herpetofauna Bycatch sampled from pitfall traps — data_herp_bycatch" />
+<meta property="og:description" content="This dataset was derived from NEON data portal with data product ID 'DP1.10022.001'. Details about this data product can be found at https://data.neonscience.org/data-products/DP1.10022.001." />
 
 
 
@@ -105,46 +103,68 @@ Note that some aquatic sites do not have lat/long information though." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Information of all locations included in this data package.</h1>
+    <h1>Vertebrate Herpetofauna Bycatch sampled from pitfall traps</h1>
     
-    <div class="hidden name"><code>neon_locations.Rd</code></div>
+    <div class="hidden name"><code>data_herp_bycatch.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>To reduce the size of this data package, we extracted location information from all
-taxanomic groups and saved as one file to avoid duplications.
-<em>Note that some aquatic sites do not have lat/long information though.</em></p>
+    <p>This dataset was derived from <a href='https://data.neonscience.org'>NEON data portal</a> with data product ID 'DP1.10022.001'. Details about this data product can be found at <a href='https://data.neonscience.org/data-products/DP1.10022.001'>https://data.neonscience.org/data-products/DP1.10022.001</a>.</p>
     </div>
 
-    <pre class="usage"><span class='va'>neon_locations</span></pre>
+    <pre class="usage"><span class='va'>data_herp_bycatch</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with the following columns:</p><ul>
-<li><p><code>domainID</code>: Unique identifier of the NEON domain.</p></li>
+    <p>A data frame (tibble) with the following columns:</p><ul>
+<li><p><code>namedLocation</code>: Name of the measurement location in the NEON database.</p></li>
 <li><p><code>siteID</code>: NEON site code.</p></li>
 <li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
-<li><p><code>nlcdClass</code>: National Land Cover Database Vegetation Type Name for terrestrial sites.</p></li>
-<li><p><code>decimalLatitude</code>: The geographic latitude (in decimal degrees, WGS84) of the
-geographic center of the reference area.</p></li>
-<li><p><code>decimalLongitude</code>: The geographic longitude (in decimal degrees, WGS84) of
-the geographic center of the reference area.</p></li>
-<li><p><code>geodeticDatum</code>: Model used to measure horizontal position on the earth.</p></li>
-<li><p><code>coordinateUncertainty</code>: The horizontal distance (in meters) from the given
-decimalLatitude and decimalLongitude describing the smallest circle containing
-the whole of the Location. Zero is not a valid value for this term.</p></li>
-<li><p><code>elevation</code>: Elevation (in meters) above sea level.</p></li>
-<li><p><code>elevationUncertainty</code>: Uncertainty in elevation values (in meters).</p></li>
-<li><p><code>taxa</code>: The taxa group that the location information can be used for.
-Note that some taxa groups may have the same 'plotID' but their
-latitude/longitude may differ slightly, which justifies the need of this column.</p></li>
-<li><p><code>neonDPI</code>: The NEON data product ID. See <code>neonUtilities:::table_types</code> for all
-available data types and their data product IDs provided by NEON.</p></li>
-<li><p><code>namedLocation</code>: Name of the measurement location in the NEON database.</p></li>
-<li><p><code>aquaticSiteType</code>: Type of aquatic systems ('lake', 'river', 'stream').</p></li>
+<li><p><code>trapID</code>: Identifier for trap.</p></li>
+<li><p><code>setDate</code>: Date that trap was set</p></li>
+<li><p><code>collectDate</code>: Date of the collection event</p></li>
+<li><p><code>eventID</code>: Cleaned up identifier for the set of information associated with the event, which includes information about the place and time of the event</p></li>
+<li><p><code>trappingDays</code>: Cleaned up decimal days between trap setting and collecting events</p></li>
+<li><p><code>taxonID</code>: Species code, based on one or more sources only provided for vert bycatch herp</p></li>
+<li><p><code>scientificName</code>: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined only provided for vert bycatch herp</p></li>
+<li><p><code>taxonRank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen only provided for vert bycatch herp</p></li>
+<li><p><code>individualCount</code>: Number of individuals of the same type, summed across types for all sampleTypes but vert bycatch herp</p></li>
+<li><p><code>nativeStatusCode</code>: 	The process by which the taxon became established in the location only provided for vert bycatch herp</p></li>
+<li><p><code>remarksSorting</code>: Technician notes; free text comments accompanying the record from sorting table</p></li>
+<li><p><code>remarksFielddata</code>: Technician notes; free text comments accompanying the record from fielddata table</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p><a href='https://data.neonscience.org'>https://data.neonscience.org</a></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>To process data we:</p><ol>
+<li><p>Cleaned trappingDays.</p><ul>
+<li><p>So that is is the number of days a trap was set before being collected.</p></li>
+<li><p>Correct trap days to account for entries where the trap set date was not updated based on a previous collection.</p></li>
+</ul></li>
+<li><p>Create a boutID that identifies all trap collection events at a site in the same bout essentially replacing eventID.</p></li>
+<li><p>Update collectDate to reference the most common collection day in a bout, maintaining one collectDate per bout.</p></li>
+<li><p>sampleType provides the group that was caught in the pit fall trap. This was changed to have three levels</p><ul>
+<li><p>"vert bycatch herp" - these are the samples</p></li>
+<li><p>"no data collected" - these samples in fielddata not in sorting</p></li>
+<li><p>"not herp" - this is a aggregate of all the other types "other carabid", "invert bycatch", "carabid", "vert bycatch mam"
+And we only kept "vert bycatch herp" in the final data product.</p></li>
+</ul></li>
+</ol>
+
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>This script was derived from the script written by Kari Norman to process the pit fall traps of beetles.
+Additional variables were added and missing samples were retained in herp_bycatch.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Hoekman, David, Katherine E. LeVan, Cara Gibson, George E. Ball, Robert A. Browne, Robert L. Davidson, Terry L. Erwin, et al. “Design for Ground Beetle Abundance and Diversity Sampling within the National Ecological Observatory Network.” Ecosphere 8, no. 4 (2017): e01744.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matt Helmus and Kari Norman</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

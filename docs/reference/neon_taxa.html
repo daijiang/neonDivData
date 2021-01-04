@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,13 +118,12 @@
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A data frame with the following columns:</p><ul>
-<li><p><code>taxonID</code>: Species code, based on one or more sources.</p></li>
-<li><p><code>acceptedTaxonID</code>: Accepted species code, based on one or more sources.</p></li>
+<li><p><code>taxonID</code>: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the <code>acceptedTaxonID</code> column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have <code>acceptedTaxonID</code> and we just renamed it to <code>taxonID</code> for these groups following other groups.</p></li>
 <li><p><code>scientificName</code>:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>taxonRank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
 <li><p><code>family</code>: The scientific name of the family in which the taxon is classified.
-Not every taxonomic group has this information here.</p></li>
+Not every taxonomic group has this information in the NEON data, but should be relatively easy to get from online databases.</p></li>
 <li><p><code>identificationReferences</code>: A list of sources (concatenated and semicolon separated)
 used to derive the specific taxon concept; including field guide editions, books,
 or versions of NEON keys used.</p></li>

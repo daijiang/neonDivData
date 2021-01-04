@@ -50,6 +50,7 @@ neonDivData::data_algae
 neonDivData::data_beetle
 neonDivData::data_bird
 neonDivData::data_fish
+neonDivData::data_herp_bycatch
 neonDivData::data_macroinvertebrate
 neonDivData::data_mosquito
 neonDivData::data_plant

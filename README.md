@@ -4,7 +4,6 @@
 # neonDivData
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 The goal of neonDivData is to provide cleaned NEON organismal data to
@@ -35,17 +34,19 @@ knitr::kable(neonDivData::data_summary)
 ```
 
 | taxa              | neon\_DPI     | data\_product           | n\_site | n\_species | start\_year | end\_year | modify\_time |
-| :---------------- | :------------ | :---------------------- | ------: | ---------: | ----------: | --------: | :----------- |
+|:------------------|:--------------|:------------------------|--------:|-----------:|------------:|----------:|:-------------|
 | algae             | DP1.20166.001 | data\_algae             |      33 |       1824 |        2014 |      2019 | 2020-10-30   |
 | beetle            | DP1.10022.001 | data\_beetle            |      47 |        756 |        2013 |      2020 | 2020-11-10   |
-| bird              | DP1.10003.001 | data\_bird              |      47 |        535 |        2013 |      2019 | 2020-11-23   |
+| bird              | DP1.10003.001 | data\_bird              |      47 |        535 |        2013 |      2019 | 2020-12-08   |
 | fish              | DP1.20107.001 | data\_fish              |      27 |        125 |        2016 |      2020 | 2020-11-11   |
+| herp\_bycatch     | DP1.10022.001 | data\_herp\_bycatch     |      41 |        125 |        2014 |      2020 | 2021-01-03   |
 | macroinvertebrate | DP1.20120.001 | data\_macroinvertebrate |      34 |       1276 |        2014 |      2020 | 2020-10-30   |
 | mosquito          | DP1.10043.001 | data\_mosquito          |      47 |        126 |        2015 |      2020 | 2020-10-30   |
-| plant             | DP1.10058.001 | data\_plant             |      47 |       6075 |        2013 |      2020 | 2020-10-30   |
-| small\_mammal     | DP1.10072.001 | data\_small\_mammal     |      46 |        145 |        2014 |      2019 | 2020-10-30   |
+| plant             | DP1.10058.001 | data\_plant             |      47 |       6075 |        2013 |      2020 | 2020-12-09   |
+| small\_mammal     | DP1.10072.001 | data\_small\_mammal     |      46 |        137 |        2014 |      2019 | 2020-12-08   |
 | tick              | DP1.10093.001 | data\_tick              |      41 |         19 |        2014 |      2018 | 2020-10-30   |
 | tick\_pathogen    | DP1.10092.001 | data\_tick\_pathogen    |      14 |         12 |        2013 |      2020 | 2020-10-30   |
+| zooplankton       | DP1.20219.001 | data\_zooplankton       |       7 |        154 |        2014 |      2020 | 2020-12-16   |
 
 ## Installation
 
@@ -77,22 +78,22 @@ neonDivData::neon_sites
 #> # … with 71 more rows, and 3 more variables: `Site Type` <chr>, `Site
 #> #   Subtype` <chr>, `Site Host` <chr>
 neonDivData::neon_taxa
-#> # A tibble: 10,976 x 8
-#>    taxonID acceptedTaxonID scientificName taxonRank family identificationR…
-#>    <chr>   <chr>           <chr>          <chr>     <chr>  <chr>           
-#>  1 <NA>    ACHNANTHIDIUMS… Achnanthidium… genus     Achna… NA; Academy of …
-#>  2 <NA>    ACTINELLASP     Actinella sp.  genus     Eunot… NA; Spaulding, …
-#>  3 <NA>    AMPHORASPP      Amphora spp.   genus     Caten… Academy of Natu…
-#>  4 <NA>    ANABAENASPP     Anabaena spp.  genus     Nosto… Academy of Natu…
-#>  5 <NA>    AUDHER          Audouinella h… species   Acroc… M.D. Guiry in G…
-#>  6 <NA>    AULACOSEIRASPP  Aulacoseira s… genus     Aulac… Academy of Natu…
-#>  7 <NA>    BACILLARIASPP   Bacillaria sp… genus     Bacil… NA              
-#>  8 <NA>    BACILLARIOCSP   Bacillariophy… class     <NA>   NA; Wehr, J.D. …
-#>  9 <NA>    BACILLARIOCSPP  Bacillariophy… class     <NA>   NA              
-#> 10 <NA>    BATRACHOSPFSP   Batrachosperm… family    Batra… NA; Wehr, J.D. …
-#> # … with 10,966 more rows, and 2 more variables: taxa <chr>, neonDPI <chr>
+#> # A tibble: 11,255 x 7
+#>    taxonID  scientificName   taxonRank family  identificationRefe… taxa  neonDPI
+#>    <chr>    <chr>            <chr>     <chr>   <chr>               <chr> <chr>  
+#>  1 ACHNANT… Achnanthidium s… genus     Achnan… NA; Academy of Nat… algae DP1.20…
+#>  2 ACTINEL… Actinella sp.    genus     Eunoti… NA; Spaulding, S.,… algae DP1.20…
+#>  3 AMPHORA… Amphora spp.     genus     Catenu… Academy of Natural… algae DP1.20…
+#>  4 ANABAEN… Anabaena spp.    genus     Nostoc… Academy of Natural… algae DP1.20…
+#>  5 AUDHER   Audouinella her… species   Acroch… M.D. Guiry in Guir… algae DP1.20…
+#>  6 AULACOS… Aulacoseira spp. genus     Aulaco… Academy of Natural… algae DP1.20…
+#>  7 BACILLA… Bacillaria spp.  genus     Bacill… NA                  algae DP1.20…
+#>  8 BACILLA… Bacillariophyce… class     <NA>    NA; Wehr, J.D. and… algae DP1.20…
+#>  9 BACILLA… Bacillariophyce… class     <NA>    NA                  algae DP1.20…
+#> 10 BATRACH… Batrachospermac… family    Batrac… NA; Wehr, J.D. and… algae DP1.20…
+#> # … with 11,245 more rows
 neonDivData::neon_locations
-#> # A tibble: 4,400 x 14
+#> # A tibble: 4,732 x 14
 #>    domainID siteID plotID namedLocation nlcdClass decimalLatitude
 #>    <chr>    <chr>  <chr>  <chr>         <chr>               <dbl>
 #>  1 D01      BART   BART_… BART_012.bas… deciduou…            44.0
@@ -105,27 +106,27 @@ neonDivData::neon_locations
 #>  8 D01      BART   BART_… BART_031.bas… evergree…            44.1
 #>  9 D01      BART   BART_… BART_029.bas… evergree…            44.1
 #> 10 D01      BART   BART_… BART_068.bas… mixedFor…            44.1
-#> # … with 4,390 more rows, and 8 more variables: decimalLongitude <dbl>,
+#> # … with 4,722 more rows, and 8 more variables: decimalLongitude <dbl>,
 #> #   geodeticDatum <chr>, coordinateUncertainty <dbl>, elevation <dbl>,
 #> #   elevationUncertainty <dbl>, taxa <chr>, neonDPI <chr>,
 #> #   aquaticSiteType <chr>
 
 neonDivData::data_algae
 #> # A tibble: 85,628 x 18
-#>    siteID sampleID eventID namedLocation habitatType acceptedTaxonID
-#>    <chr>  <chr>    <chr>   <chr>         <chr>       <chr>          
-#>  1 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX863016 
-#>  2 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX1010   
-#>  3 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX33169  
-#>  4 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX46504  
-#>  5 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX48347  
-#>  6 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX110091 
-#>  7 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX245003 
-#>  8 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX16003  
-#>  9 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX37178  
-#> 10 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDREX37473  
-#> # … with 85,618 more rows, and 12 more variables: scientificName <chr>,
-#> #   family <chr>, taxonRank <chr>, collectDate <dttm>, density <dbl>,
+#>    siteID sampleID eventID namedLocation habitatType taxonID scientificName
+#>    <chr>  <chr>    <chr>   <chr>         <chr>       <chr>   <chr>         
+#>  1 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Leptolyngbya …
+#>  2 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Achnanthidium…
+#>  3 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Eunotia musci…
+#>  4 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Navicula vene…
+#>  5 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Nitzschia aci…
+#>  6 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Encyonema ven…
+#>  7 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Ulnaria contr…
+#>  8 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Cocconeis pla…
+#>  9 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Gomphonema mi…
+#> 10 HOPB   HOPB.20… HOPB.2… HOPB.AOS.rea… riffle      NEONDR… Gomphonema sp.
+#> # … with 85,618 more rows, and 11 more variables: family <chr>,
+#> #   taxonRank <chr>, collectDate <dttm>, density <dbl>,
 #> #   cell_density_standardized_unit <chr>, algalParameterValue <dbl>,
 #> #   algalParameter <chr>, perBSVol <dbl>, fieldSampleVolume <dbl>,
 #> #   algalSampleType <chr>, benthicArea <dbl>
@@ -147,7 +148,7 @@ neonDivData::data_beetle
 #> #   family <chr>, taxonID <chr>, taxonRank <chr>, scientificName <chr>,
 #> #   count <dbl>
 neonDivData::data_bird
-#> # A tibble: 164,106 x 26
+#> # A tibble: 164,106 x 27
 #>    namedLocation siteID plotID pointID startDate           pointCountMinute
 #>    <chr>         <chr>  <chr>  <chr>   <dttm>                         <dbl>
 #>  1 BART_025.bir… BART   BART_… C1      2015-06-14 09:00:00                2
@@ -160,14 +161,14 @@ neonDivData::data_bird
 #>  8 BART_025.bir… BART   BART_… B1      2015-06-14 10:00:00                3
 #>  9 BART_025.bir… BART   BART_… B1      2015-06-14 10:00:00                1
 #> 10 BART_025.bir… BART   BART_… A1      2015-06-14 11:00:00                6
-#> # … with 164,096 more rows, and 20 more variables: targetTaxaPresent <chr>,
+#> # … with 164,096 more rows, and 21 more variables: targetTaxaPresent <chr>,
 #> #   taxonID <chr>, scientificName <chr>, taxonRank <chr>, vernacularName <chr>,
 #> #   family <chr>, nativeStatusCode <chr>, observerDistance <dbl>,
 #> #   detectionMethod <chr>, visualConfirmation <chr>, sexOrAge <chr>,
 #> #   clusterSize <dbl>, clusterCode <chr>, startCloudCoverPercentage <dbl>,
 #> #   endCloudCoverPercentage <dbl>, startRH <dbl>, endRH <dbl>,
 #> #   observedHabitat <chr>, observedAirTemp <dbl>,
-#> #   kmPerHourObservedWindSpeed <dbl>
+#> #   kmPerHourObservedWindSpeed <dbl>, samplingProtocolVersion <chr>
 neonDivData::data_fish
 #> # A tibble: 4,924 x 29
 #>    siteID namedLocation reachID eventID samplerType taxonID taxonRank
@@ -189,23 +190,41 @@ neonDivData::data_fish
 #> #   fixedRandomReach <chr>, measuredReachLength <dbl>, efTime <dbl>,
 #> #   efTime2 <dbl>, passStartTime <dttm>, passEndTime <dttm>, passNumber <dbl>,
 #> #   targetTaxaPresent <chr>, year <dbl>, month <dbl>, mean_efishtime <dbl>
+neonDivData::data_herp_bycatch
+#> # A tibble: 2,276 x 15
+#>    namedLocation siteID plotID trapID setDate             collectDate        
+#>    <chr>         <chr>  <chr>  <chr>  <dttm>              <dttm>             
+#>  1 BART_066.bas… BART   BART_… E      2014-06-12 00:00:00 2014-06-26 00:00:00
+#>  2 BART_028.bas… BART   BART_… W      2014-06-12 00:00:00 2014-06-26 00:00:00
+#>  3 BART_002.bas… BART   BART_… W      2014-06-12 00:00:00 2014-06-26 00:00:00
+#>  4 BART_031.bas… BART   BART_… E      2014-06-26 00:00:00 2014-07-10 00:00:00
+#>  5 BART_066.bas… BART   BART_… N      2014-06-26 00:00:00 2014-07-10 00:00:00
+#>  6 BART_068.bas… BART   BART_… W      2014-06-26 00:00:00 2014-07-10 00:00:00
+#>  7 BART_031.bas… BART   BART_… S      2014-07-10 00:00:00 2014-07-24 00:00:00
+#>  8 BART_002.bas… BART   BART_… N      2014-07-10 00:00:00 2014-07-24 00:00:00
+#>  9 BART_028.bas… BART   BART_… N      2014-07-10 00:00:00 2014-07-24 00:00:00
+#> 10 BART_028.bas… BART   BART_… W      2014-07-24 00:00:00 2014-08-07 00:00:00
+#> # … with 2,266 more rows, and 9 more variables: eventID <chr>,
+#> #   trappingDays <dbl>, taxonID <chr>, scientificName <chr>, taxonRank <chr>,
+#> #   individualCount <dbl>, nativeStatusCode <chr>, remarksSorting <chr>,
+#> #   remarksFielddata <chr>
 neonDivData::data_macroinvertebrate
 #> # A tibble: 119,871 x 11
-#>    siteID sampleID namedLocation collectDate         acceptedTaxonID
-#>    <chr>  <chr>    <chr>         <dttm>              <chr>          
-#>  1 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LUMSP2         
-#>  2 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 BRUSP          
-#>  3 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 PARSP15        
-#>  4 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 FELSP1         
-#>  5 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LUMSP2         
-#>  6 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LUMSP2         
-#>  7 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 PROSP37        
-#>  8 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LEUSP8         
-#>  9 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 CERSP10        
-#> 10 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LEPSP20        
-#> # … with 119,861 more rows, and 6 more variables: scientificName <chr>,
-#> #   family <chr>, taxonRank <chr>, subsamplePercent <dbl>,
-#> #   individualCount <dbl>, estimatedTotalCount <dbl>
+#>    siteID sampleID namedLocation collectDate         taxonID scientificName
+#>    <chr>  <chr>    <chr>         <dttm>              <chr>   <chr>         
+#>  1 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LUMSP2  Lumbriculidae…
+#>  2 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 BRUSP   Brundiniella …
+#>  3 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 PARSP15 Paracapnia sp.
+#>  4 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 FELSP1  Feltria sp.   
+#>  5 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LUMSP2  Lumbriculidae…
+#>  6 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LUMSP2  Lumbriculidae…
+#>  7 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 PROSP37 Prostoma sp.  
+#>  8 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LEUSP8  Leuctra sp.   
+#>  9 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 CERSP10 Ceratopogonin…
+#> 10 HOPB   HOPB.20… HOPB.AOS.rea… 2016-10-11 14:38:00 LEPSP20 Lepidostoma s…
+#> # … with 119,861 more rows, and 5 more variables: family <chr>,
+#> #   taxonRank <chr>, subsamplePercent <dbl>, individualCount <dbl>,
+#> #   estimatedTotalCount <dbl>
 neonDivData::data_mosquito
 #> # A tibble: 86,619 x 20
 #>    siteID plotID namedLocation eventID sampleID taxonID scientificName taxonRank
@@ -244,7 +263,7 @@ neonDivData::data_plant
 #> #   heightPlantOver300cm <chr>, heightPlantSpecies <dbl>, sample_area_m2 <dbl>,
 #> #   subplot_id <chr>, subsubplot_id <chr>, year <dbl>
 neonDivData::data_small_mammal
-#> # A tibble: 1,207,093 x 18
+#> # A tibble: 1,227,131 x 18
 #>    siteID plotID namedLocation trapCoordinate trapStatus  year month   day
 #>    <chr>  <chr>  <chr>         <chr>          <chr>      <dbl> <dbl> <int>
 #>  1 BART   BART_… BART_012.mam… H6             6 - trap …  2014     5    28
@@ -257,7 +276,7 @@ neonDivData::data_small_mammal
 #>  8 BART   BART_… BART_012.mam… G5             6 - trap …  2014     5    28
 #>  9 BART   BART_… BART_012.mam… G6             6 - trap …  2014     5    28
 #> 10 BART   BART_… BART_012.mam… G3             6 - trap …  2014     5    28
-#> # … with 1,207,083 more rows, and 10 more variables: taxonID <chr>,
+#> # … with 1,227,121 more rows, and 10 more variables: taxonID <chr>,
 #> #   scientificName <chr>, taxonRank <chr>, nativeStatusCode <chr>, sex <chr>,
 #> #   lifeStage <chr>, pregnancyStatus <chr>, tailLength <dbl>,
 #> #   totalLength <dbl>, weight <dbl>
@@ -277,8 +296,8 @@ neonDivData::data_tick
 #> 10 BART_011.tic… BART   BART_… 2014-06-02 18:32:00 BART.2… BART_01… <NA>      
 #> # … with 120,810 more rows, and 10 more variables: samplingMethod <chr>,
 #> #   totalSampledArea <dbl>, targetTaxaPresent <chr>, remarks_field <chr>,
-#> #   acceptedTaxonID <chr>, LifeStage <chr>, IndividualCount <dbl>,
-#> #   taxonRank <chr>, scientificName <chr>, family <chr>
+#> #   taxonID <chr>, LifeStage <chr>, IndividualCount <dbl>, taxonRank <chr>,
+#> #   scientificName <chr>, family <chr>
 neonDivData::data_tick_pathogen
 #> # A tibble: 59,920 x 12
 #>    namedLocation siteID plotID collectDate         endDate            
