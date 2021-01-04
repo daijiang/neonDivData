@@ -18,7 +18,7 @@ A data frame (also a tibble) with the following columns:
 \item \code{totalSampledArea}: Total area sampled (square Meter).
 \item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
 \item \code{remarks_field}: Technician notes; free text comments accompanying the record.
-\item \code{acceptedTaxonID}: Accepted species code, based on one or more sources.
+\item \code{taxonID}: Accepted species code, based on one or more sources. This is renamed from the \code{acceptedTaxonID} column so that column names are consistent across different taxonomic groups.
 \item \code{LifeStage}: Life stage of the sample ('Adult', 'Larva', or 'Nymph').
 \item \code{IndividualCount}: Number of individuals of the same type.
 \item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.

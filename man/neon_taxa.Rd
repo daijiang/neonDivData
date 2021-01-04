@@ -7,13 +7,12 @@
 \format{
 A data frame with the following columns:
 \itemize{
-\item \code{taxonID}: Species code, based on one or more sources.
-\item \code{acceptedTaxonID}: Accepted species code, based on one or more sources.
+\item \code{taxonID}: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the \code{acceptedTaxonID} column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have \code{acceptedTaxonID} and we just renamed it to \code{taxonID} for these groups following other groups.
 \item \code{scientificName}:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{family}: The scientific name of the family in which the taxon is classified.
-Not every taxonomic group has this information here.
+Not every taxonomic group has this information in the NEON data, but should be relatively easy to get from online databases.
 \item \code{identificationReferences}: A list of sources (concatenated and semicolon separated)
 used to derive the specific taxon concept; including field guide editions, books,
 or versions of NEON keys used.

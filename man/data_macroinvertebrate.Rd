@@ -13,7 +13,7 @@ A data frame (also a tibble) with the following columns:
 \item \code{collectDate}: Date of the collection event.
 \item \code{scientificName}:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
-\item \code{acceptedTaxonID}: Accepted species code, based on one or more sources.
+\item \code{taxonID}: Accepted species code, based on one or more sources. This is renamed from the \code{acceptedTaxonID} column so that column names are consistent across different taxonomic groups.
 \item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{subsamplePercent}: Percent of the total sample contained in the subsample.
 \item \code{individualCount}:	Number of individuals of the same type.

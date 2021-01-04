@@ -148,6 +148,8 @@ map_neon_data_to_ecocomDP.ALGAE <- function(
   table(data_algae$algalParameter)
   table(data_algae$cell_density_standardized_unit)
 
+  data_algae = dplyr::rename(data_algae, taxonID = acceptedTaxonID)
+
   return(data_algae)
 }
 
@@ -542,7 +544,7 @@ map_neon_data_to_ecocomDP.MACROINVERTEBRATE <- function(
                   sampleID,
                   namedLocation,
                   collectDate,
-                  acceptedTaxonID,
+                  taxonID = acceptedTaxonID,
                   scientificName,
                   family,
                   taxonRank,
@@ -1415,7 +1417,7 @@ map_neon_data_to_ecocomDP.TICK <- function(
   table(data_tick$plotType) # all distributed
   table(str_sub(data_tick$namedLocation, 10)) # all tickPlot.tck
   data_tick = dplyr::select(data_tick, -plotType) %>% dplyr::distinct()
-
+  data_tick = dplyr::rename(data_tick, taxonID = acceptedTaxonID)
   # NOTES FOR END USERS  #
   # be aware of higher order taxa ID -- they are individuals ASSIGNED at a higher taxonomic class, rather than the sum of lower tax. class
   # higher order taxonomic assignments could be semi-identified by looking at most likely ID (e.g. if 200 of 700 larvae are IXOSPAC, very likely that the Unidentified larvae are IXOSPAC)

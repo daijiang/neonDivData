@@ -34,7 +34,7 @@
 #' - `totalSampledArea`: Total area sampled (square Meter).
 #' - `targetTaxaPresent`: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
 #' - `remarks_field`: Technician notes; free text comments accompanying the record.
-#' - `acceptedTaxonID`: Accepted species code, based on one or more sources.
+#' - `taxonID`: Accepted species code, based on one or more sources. This is renamed from the `acceptedTaxonID` column so that column names are consistent across different taxonomic groups.
 #' - `LifeStage`: Life stage of the sample ('Adult', 'Larva', or 'Nymph').
 #' - `IndividualCount`: Number of individuals of the same type.
 #' - `taxonRank`: The lowest level taxonomic rank that can be determined for the individual or specimen.

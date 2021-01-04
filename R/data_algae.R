@@ -17,7 +17,7 @@
 #' which includes information about the place and time of the event.
 #' - `namedLocation`:	Name of the measurement location in the NEON database.
 #' - `habitatType`:	Habitat type sampled.
-#' - `taxonID`: Species code, based on one or more sources.
+#' - `taxonID`: Accepted species code, based on one or more sources. This is renamed from the `acceptedTaxonID` column so that column names are consistent across different taxonomic groups.
 #' - `scientificName`:	Scientific name, associated with the taxonID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
 #' - `family`: The scientific name of the family in which the taxon is classified.

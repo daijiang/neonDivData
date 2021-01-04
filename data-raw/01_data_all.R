@@ -8,16 +8,16 @@ loc_algae = dplyr::select(data_algae, domainID, siteID, namedLocation, aquaticSi
                           elevation, elevationUncertainty) %>%
   dplyr::distinct()
 
-taxa_algae = dplyr::select(data_algae, acceptedTaxonID, scientificName, family,
+taxa_algae = dplyr::select(data_algae, taxonID, scientificName, family,
                            taxonRank, identificationReferences) %>%
   dplyr::distinct()
-any(duplicated(taxa_algae$acceptedTaxonID))
-filter(taxa_algae, duplicated(acceptedTaxonID))
-filter(taxa_algae, acceptedTaxonID == "NEONDREX37010")
+any(duplicated(taxa_algae$taxonID))
+filter(taxa_algae, duplicated(taxonID))
+filter(taxa_algae, taxonID == "NEONDREX37010")
 # same species has multiple references; this can be problematic when join back to
 # the data frame...
 taxa_algae = taxa_algae %>%
-  group_by(acceptedTaxonID, scientificName, family, taxonRank) %>%
+  group_by(taxonID, scientificName, family, taxonRank) %>%
   summarise(identificationReferences = paste(unique(identificationReferences),
                                              collapse = "; "), .groups = "drop")
 taxa_algae$identificationReferences[1:5]
@@ -26,7 +26,6 @@ data_algae = dplyr::select(data_algae, -domainID, -aquaticSiteType, -decimalLati
                            -decimalLongitude, -geodeticDatum, -coordinateUncertainty,
                            -elevation, -elevationUncertainty, -identificationReferences) %>%
   dplyr::distinct()
-
 usethis::use_data(data_algae, overwrite = TRUE)
 
 
@@ -168,26 +167,27 @@ filter(loc_macroinvertebrate, namedLocation == "LECO.AOS.reach") %>% as.data.fra
 filter(loc_algae, namedLocation == "LECO.AOS.reach") %>% as.data.frame()
 bind_rows(loc_algae, loc_macroinvertebrate) %>% unique() %>% pull(namedLocation) %>% duplicated() %>% any()
 
-taxa_macroinvertebrate = dplyr::select(data_macroinvertebrate, acceptedTaxonID, scientificName, family,
+taxa_macroinvertebrate = dplyr::select(data_macroinvertebrate, taxonID, scientificName, family,
                             taxonRank, identificationReferences) %>%
   dplyr::distinct()
-any(duplicated(taxa_macroinvertebrate$acceptedTaxonID))
-filter(taxa_macroinvertebrate, duplicated(acceptedTaxonID))
-filter(taxa_macroinvertebrate, acceptedTaxonID == "EPESP")
+any(duplicated(taxa_macroinvertebrate$taxonID))
+filter(taxa_macroinvertebrate, duplicated(taxonID))
+filter(taxa_macroinvertebrate, taxonID == "EPESP")
 # same species has multiple references; this can be problematic when join back to
 # the data frame...
 taxa_macroinvertebrate = taxa_macroinvertebrate %>%
-  group_by(acceptedTaxonID, scientificName, taxonRank) %>%
+  group_by(taxonID, scientificName, taxonRank) %>%
   summarise(family = unique(family)[1],
             identificationReferences = paste(unique(identificationReferences),
                                              collapse = "; "), .groups = "drop")
 taxa_macroinvertebrate$identificationReferences[1:5]
-any(duplicated(taxa_macroinvertebrate$acceptedTaxonID)) # should be FALSE
+any(duplicated(taxa_macroinvertebrate$taxonID)) # should be FALSE
 
 data_macroinvertebrate = dplyr::select(data_macroinvertebrate, -domainID, -aquaticSiteType, -decimalLatitude,
                                        -decimalLongitude, -geodeticDatum, -coordinateUncertainty,
                                        -elevation, -elevationUncertainty, -identificationReferences) %>%
   dplyr::distinct()
+
 
 usethis::use_data(data_macroinvertebrate, overwrite = TRUE)
 
@@ -311,10 +311,10 @@ loc_tick = dplyr::select(data_tick, domainID, siteID, plotID, namedLocation, nlc
 filter(loc_tick, plotID == "BART_002")$decimalLatitude # different
 filter(loc_plant, plotID == "BART_002")$decimalLatitude
 
-taxa_tick = dplyr::select(data_tick, acceptedTaxonID, scientificName, family,
+taxa_tick = dplyr::select(data_tick, taxonID, scientificName, family,
                                        taxonRank, identificationReferences) %>%
   dplyr::distinct()
-any(duplicated(taxa_tick$acceptedTaxonID)) # should be FALSE
+any(duplicated(taxa_tick$taxonID)) # should be FALSE
 
 
 data_tick = dplyr::select(data_tick, -domainID, -nlcdClass, -decimalLatitude,
@@ -323,6 +323,8 @@ data_tick = dplyr::select(data_tick, -domainID, -nlcdClass, -decimalLatitude,
 
 dplyr::select(data_tick, targetTaxaPresent, IndividualCount) %>% distinct() %>%
   filter(targetTaxaPresent == "N")
+
+
 
 usethis::use_data(data_tick, overwrite = TRUE)
 
@@ -477,6 +479,5 @@ taxa_zooplankton = dplyr::mutate(taxa_zooplankton, taxa = "zooplankton", neonDPI
 neon_taxa = dplyr::bind_rows(taxa_plant, taxa_algae, taxa_beetle, taxa_bird,
                              taxa_fish, taxa_herp_bycatch, taxa_macroinvertebrate,
                              taxa_mosquito, taxa_small_mammal, taxa_tick, taxa_zooplankton)
-neon_taxa = dplyr::relocate(neon_taxa, acceptedTaxonID, .after = taxonID)
 usethis::use_data(neon_taxa, overwrite = TRUE)
 

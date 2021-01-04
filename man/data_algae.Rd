@@ -13,7 +13,7 @@ A data frame (also a tibble) with the following columns:
 which includes information about the place and time of the event.
 \item \code{namedLocation}:	Name of the measurement location in the NEON database.
 \item \code{habitatType}:	Habitat type sampled.
-\item \code{taxonID}: Species code, based on one or more sources.
+\item \code{taxonID}: Accepted species code, based on one or more sources. This is renamed from the \code{acceptedTaxonID} column so that column names are consistent across different taxonomic groups.
 \item \code{scientificName}:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{family}: The scientific name of the family in which the taxon is classified.

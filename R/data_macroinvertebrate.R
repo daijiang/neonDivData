@@ -11,7 +11,7 @@
 #' - `collectDate`: Date of the collection event.
 #' - `scientificName`:	Scientific name, associated with the taxonID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
-#' - `acceptedTaxonID`: Accepted species code, based on one or more sources.
+#' - `taxonID`: Accepted species code, based on one or more sources. This is renamed from the `acceptedTaxonID` column so that column names are consistent across different taxonomic groups.
 #' - `taxonRank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
 #' - `subsamplePercent`: Percent of the total sample contained in the subsample.
 #' - `individualCount`:	Number of individuals of the same type.
