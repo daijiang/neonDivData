@@ -17,6 +17,7 @@ reference:
       - data_small_mammal
       - data_tick
       - data_tick_pathogen
+      - data_zooplankton
   - title: "Location data"
     desc: "Information about locations"
     contents:
