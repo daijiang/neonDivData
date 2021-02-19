@@ -554,8 +554,9 @@ map_neon_data_to_ecocomDP.MACROINVERTEBRATE <- function(
                   estimatedTotalCount) %>%
     dplyr::distinct() %>%
     left_join(dplyr::select(inv_fielddata, namedLocation, aquaticSiteType, decimalLatitude, decimalLongitude,
-                            coordinateUncertainty, geodeticDatum, elevation, elevationUncertainty) %>%
-                dplyr::distinct(), by = "namedLocation")
+                            coordinateUncertainty, geodeticDatum, elevation, elevationUncertainty, benthicArea) %>%
+                dplyr::distinct(), by = "namedLocation") %>%
+    mutate(density = estimatedTotalCount / benthicArea)
 
   return(data_macroinvertebrate)
 }
@@ -758,8 +759,8 @@ map_neon_data_to_ecocomDP.PLANT <- function(
   # species in 100m2 only (remove species already in 1m2 or 10m2)
   div_10_100_m2_4 <- dplyr::filter(div_10_100_m2_2, key2 == key3,
                                    !key3 %in% unique(c(div_1m2_pla$key3, div_10_100_m2_3$key3)))
-  div_10_100_m2_5 = dplyr::bind_rows(dplyr::mutate(div_10_100_m2_3, sample_area_m2 = 100),
-                                     dplyr::mutate(div_10_100_m2_4, sample_area_m2 = 10000))
+  div_10_100_m2_5 = dplyr::bind_rows(dplyr::mutate(div_10_100_m2_3, sample_area_m2 = 10),
+                                     dplyr::mutate(div_10_100_m2_4, sample_area_m2 = 100))
 
   # stack data
   data_plant = dplyr::bind_rows(
@@ -829,7 +830,7 @@ map_neon_data_to_ecocomDP.SMALL.MAMMAL <- function(
                           # days within a given month, we consider each month to be a separate bout
                           bout = paste(year, month, sep = "_")) %>%
     tibble::as_tibble()
-  table(dat.mam$plotType) # all distributed
+  # table(dat.mam$plotType) # all distributed
 
   ### Here we provide the code that summarizes raw abundances per day, month (bout), and year
   ### We keep scientificName of NA or blank (no captures) at this point

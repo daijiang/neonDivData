@@ -17,6 +17,8 @@
 #' - `individualCount`:	Number of individuals of the same type.
 #' - `estimatedTotalCount`: Estimated total count of individuals within a sample,
 #' of given taxon, life stage, and size class.
+#' - `benthicArea`: Area sampled (square meter).
+#' - `density`: Number of macroinvertebrates per square meter.
 #'
 #' @author Stephanie Parker, Eric Sokol
 #'
