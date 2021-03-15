@@ -11,21 +11,27 @@
 #' 5. Removed samples where HardTick DNA Quality (under testPathogenName) are not ‘Positive’, and then removed hardtack DNA and Ixodes pacificus tests.
 #' 6. Combined B. burgdeferi and B burgdeferi sensu lato into a single test pathogen type (B. burgedferi sensu lato)
 #'
-#' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]).
+#' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #' @format A data frame (also a tibble) with the following columns:
 #'
-#' - `namedLocation`: Name of the measurement location in the NEON database.
+#' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
-#' - `collectDate`:	Date of the collection event.
-#' - `endDate`: The end date-time or interval during which an event occurred.
-#' - `hostSpecies`: Host tick species.
+#' - `observation_datetime`: Observation date and time.
+#' - `taxon_id`: Accepted species code, based on one or more sources.
+#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
+#'  of the lowest level taxonomic rank that can be determined.
+#' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
+#' - `variable_name`: The variable name(s) represented by the `value` column.
+#' - `value`: Value of the variable(s) specified by `variable_name`.
+#' - `unit`: Unit of the values in the `value` column.
 #' - `lifeStage`: Life stage of the host (all Nymph).
-#' - `testedDate`: Date test was conducted.
-#' - `testingID`: Identifier for the group of specimens for testing.
 #' - `batchID`: Identifier for batch or analytical run.
-#' - `testResult`: Result of the test.
-#' - `testPathogenName`	The name of the pathogen.
+#' - `testProtocolVersion`: The protocol version used to test the sample.
+#' - `release`: Version of data release by NEON.
+#' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `elevation`: Elevation (in meters) above sea level.
 #'
 #' @author Melissa Chen, Wynne Moss, Brendan Hobart, Matt Bitters
 #'

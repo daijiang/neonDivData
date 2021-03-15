@@ -7,9 +7,11 @@ Authors@R: c(
     person(given = "Firstname", family = "Lastname", email = "emailaddress", role = c("aut")),
     person(given = "Firstname", family = "Lastname", email = "emailaddress", role = c("aut"))
     )
-Description: Cleaned and simplified NEON organismal data for biodiversity research. 
-    The following taxonomic groups are included so far: plant, fish, bird, small mammal,
-    ticks, etc.
+Description: Cleaned, simplified, and standardized NEON organismal data for biodiversity research. 
+    The following taxonomic groups are included so far: algae, beetles, birds, fish, herptiles, 
+    macroinvertebrates, mosquitoes, plants, small_mammals, ticks, tick_pathogens, and zooplankton.
+    NEON input data (<https://data.neonscience.org>) were processed and standardized using R
+    package `ecocomDP` (<https://github.com/EDIorg/ecocomDP>).
 License: CC0
 Encoding: UTF-8
 LazyData: true

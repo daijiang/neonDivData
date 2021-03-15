@@ -7,18 +7,31 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
-\item \code{sampleID}: Identifier for sample.
-\item \code{namedLocation}:	Name of the measurement location in the NEON database.
-\item \code{collectDate}: Date of the collection event.
-\item \code{scientificName}:	Scientific name, associated with the taxonID. This is the name
+\item \code{plotID}: Plot identifier (NEON site code_XXX).
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
-\item \code{taxonID}: Accepted species code, based on one or more sources. This is renamed from the \code{acceptedTaxonID} column so that column names are consistent across different taxonomic groups.
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{subsamplePercent}: Percent of the total sample contained in the subsample.
-\item \code{individualCount}:	Number of individuals of the same type.
-\item \code{estimatedTotalCount}: Estimated total count of individuals within a sample,
-of given taxon, life stage, and size class.
+\item \code{release}: Version of data release by NEON.
+\item \code{benthicArea}: Area sampled (square meter).
+\item \code{habitatType}: Habitat type sampled.
+\item \code{samplerType}: Type of sampler used to collect the sample.
+\item \code{substratumSizeClass}: Size class of the substratum sampled.
+\item \code{neon_sample_id}: NEON sample ID.
+\item \code{remarks}: Remarks of record.
+\item \code{ponarDepth}: Depth of petite ponar sample.
+\item \code{snagLength}: Length of snag sampled.
+\item \code{snagDiameter}: Diameter of snag sampled.
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \usage{
@@ -28,7 +41,7 @@ data_macroinvertebrate
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.20120.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.20120.001}.
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
 Stephanie Parker, Eric Sokol

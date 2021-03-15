@@ -1,26 +1,17 @@
 #' Taxanomic names of all groups
 #'
-#' This data frame was put together from each data product, with the extra column of `identificationReferences`.
+#' This data frame was put together from each data product.
 #'
-#' @note Some taxonomic groups used `taxonID` in the data product while other groups used `acceptedTaxonID`.
-#' In addition, all data were from NEON and we did not do extra clean up. For example, sometimes, a species
-#' does not have family information (`NA`) while another co-genera species does.
+#' @note Some taxonomic groups used `taxonID` (renamed as `taxon_id` here) in the data product while other groups used `acceptedTaxonID`. In addition, all data were from NEON and we did not do extra clean up.
 #'
 #' @format A data frame with the following columns:
 #'
-#' - `taxonID`: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the `acceptedTaxonID` column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have `acceptedTaxonID` and we just renamed it to `taxonID` for these groups following other groups.
-#' - `scientificName`:	Scientific name, associated with the taxonID. This is the name
+#' - `taxon_id`: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the `acceptedTaxonID` column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have `acceptedTaxonID` and we just renamed it to `taxon_id` for these groups following other groups.
+#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
-#' - `taxonRank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
-#' - `family`: The scientific name of the family in which the taxon is classified.
-#' Not every taxonomic group has this information in the NEON data, but should be relatively easy to get from online databases.
-#' - `identificationReferences`: A list of sources (concatenated and semicolon separated)
-#' used to derive the specific taxon concept; including field guide editions, books,
-#' or versions of NEON keys used.
-#' - `taxa`: The taxa group that the location information can be used for.
+#' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
+#' - `taxon_group`: The taxonomic group that the location information can be used for.
 #' Note that some taxa groups may have the same 'plotID' but their
 #' latitude/longitude may differ slightly, which justifies the need of this column.
-#' - `neonDPI`: The NEON data product ID. See `neonUtilities:::table_types` for all
-#' available data types and their data product IDs provided by NEON.
 #'
 "neon_taxa"

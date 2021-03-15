@@ -19,26 +19,31 @@
 #' 11c. Some counts did not match because there were too many samples sent to the lab and the invoice limit was reached. If the taxonomy table contained remarks about "invoice limit" or "billing limit" for a given sample ID, we trusted the field counts and added any difference between field and lab counts to the IXOSP2 column. *Note this was a conservative decision but one could reasonably assume that counts assigned to IXOSP2 would really belong to whatever lower order taxonomy was commonly ID'd for the remaining samples.*.
 #' 11d. Removed any remaining samples where field and lab counts were off by >30% and there was no obvious explanation.
 #'
-#' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]).
+#' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #'
 #' @format A data frame (also a tibble) with the following columns:
 #'
-#' - `namedLocation`: Name of the measurement location in the NEON database.
+#' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
-#' - `collectDate`: Date of the collection event.
-#' - `eventID`: An identifier for the set of information associated with the event, which includes information about the place and time of the event.
-#' - `sampleID`: Identifier for sample.
-#' - `sampleCode`: Barcode of a sample.
+#' - `observation_datetime`: Observation date and time.
+#' - `taxon_id`: Accepted species code, based on one or more sources.
+#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
+#'  of the lowest level taxonomic rank that can be determined.
+#' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
+#' - `variable_name`: The variable name(s) represented by the `value` column.
+#' - `value`: Value of the variable(s) specified by `variable_name`.
+#' - `unit`: Unit of the values in the `value` column.
+#' - `neon_event_id`: NEON event ID.
 #' - `samplingMethod`: Name or code for the method used to collect or test a sample.
 #' - `totalSampledArea`: Total area sampled (square Meter).
 #' - `targetTaxaPresent`: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
-#' - `remarks_field`: Technician notes; free text comments accompanying the record.
-#' - `taxonID`: Accepted species code, based on one or more sources. This is renamed from the `acceptedTaxonID` column so that column names are consistent across different taxonomic groups.
+#' - `release`: Version of data release by NEON.
 #' - `LifeStage`: Life stage of the sample ('Adult', 'Larva', or 'Nymph').
-#' - `IndividualCount`: Number of individuals of the same type.
-#' - `taxonRank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
-#' - `scientificName`: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
+#' - `remarks_field`: Technician notes; free text comments accompanying the record.
+#' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `elevation`: Elevation (in meters) above sea level.
 #'
 #' @author Wynne Moss, Melissa Chen, Brendan Hobart, Matt Bitters
 #'

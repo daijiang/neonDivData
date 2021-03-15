@@ -7,18 +7,20 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
-\item \code{namedLocation}: Name of the measurement location in the NEON database.
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
 \item \code{pointID}: Identifier for a point location.
-\item \code{startDate}: The start date-time or interval during which an event occurred.
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}. \code{NA} represents no bird observed.
+\item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{pointCountMinute}: The minute of sampling within the point count period.
 \item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa.
-\item \code{taxonID}: Species code, based on one or more sources.
-\item \code{scientificName}: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
-\item \code{vernacularName}: A common or vernacular name.
-\item \code{family}: The scientific name of the family in which the taxon is classified.
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 'N': Native; 'I': Introduced; 'UNK': Status unknown.
@@ -26,16 +28,16 @@ A data frame (also a tibble) with the following columns:
 \item \code{detectionMethod}: How the individual(s) was (were) first detected by the observer.
 \item \code{visualConfirmation}: Whether the individual(s) was (were) seen after the initial detection.
 \item \code{sexOrAge}: Sex of individual if detectable, age of individual if individual can not be sexed.
-\item \code{clusterSize}: Number of individuals in a cluster (a group of individuals of the same species).
-\item \code{clusterCode}: Alphabetic code (A-Z) linked to clusters (groups of individuals of the same species) spanning multiple records. It is only used to link clusters that take up multiple lines on the data sheet.
-\item \code{startCloudCoverPercentage}: Observer estimate of percent cloud cover at start of sampling.
-\item \code{endCloudCoverPercentage}: Observer estimate of percent cloud cover at end of sampling.
-\item \code{startRH}: Relative humidity as measured by handheld weather meter at the start of sampling.
-\item \code{endRH}: Relative humidity as measured by handheld weather meter at the end of sampling.
+\item \code{release}: Version of data release by NEON.
 \item \code{observedHabitat}: Observer assessment of dominant habitat at the sampling point at sampling time.
 \item \code{observedAirTemp}: The air temperature (celsius) measured with a handheld weather meter.
 \item \code{kmPerHourObservedWindSpeed}: The average wind speed measured with a handheld weather meter, in kilometers per hour.
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
+\code{remarks}: Remarks of record.
+\item \code{clusterCode}: Alphabetic code (A-Z) linked to clusters (groups of individuals of the same species) spanning multiple records. It is only used to link clusters that take up multiple lines on the data sheet.
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \usage{
@@ -45,12 +47,12 @@ data_bird
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10003.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10003.001}.
 }
 \details{
-The bird data provided by NEON is already well organized. We only removed some columns that likely won't be used in biodiversity studies. Users may want to remove records with \code{targetTaxaPresent == "N"} (such records were reserved here to provide information about sampling effort) and those with species identified above genus levels.
+The bird data provided by NEON is already well organized. We only removed some columns that likely won't be used in biodiversity studies.
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}). The sampling protocol has evolved over time, so users are advised to check whether the \code{samplingProtocolVersion} fits their data requirements and subset as necessary.
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}). The sampling protocol has evolved over time, so users are advised to check whether the \code{samplingProtocolVersion} fits their data requirements and subset as necessary.
 }
 \author{
-Daijiang Li
+Daijiang Li, Eric Sokol
 }
 \keyword{datasets}

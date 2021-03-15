@@ -11,26 +11,34 @@
 #' 6. Create a new `trappingDays` column for the number of days a trap was set before being collected.
 #' 7. Correct trap days to account for entries where the trap set date was not updated based on a previous collection.
 #'
-#' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_locations]).
+#' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #'
 #' @format A data frame (also a tibble) with the following columns:
 #'
-#' - `sampleID`: Identifier for sample.
+#' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
-#' - `namedLocation`: Name of the measurement location in the NEON database.
+#' - `observation_datetime`: Observation date and time.
+#' - `taxon_id`: Accepted species code, based on one or more sources.
+#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
+#'  of the lowest level taxonomic rank that can be determined.
+#' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
+#' - `variable_name`: The variable name(s) represented by the `value` column.
+#' - `value`: Value of the variable(s) specified by `variable_name`.
+#' - `unit`: Unit of the values in the `value` column.
+#' - `boutID`: Identifier for bout.
 #' - `trapID`: Identifier for trap.
-#' - `setDate`: Date that trap was set.
-#' - `collectDate`: Date of the collection event.
 #' - `trappingDays`: Decimal days between trap setting and collecting events.
+#' - `release`: Version of data release by NEON.
+#' - `samplingProtocolVersion`: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 #' - `nativeStatusCode`: The process by which the taxon became established in the location.
 #' 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 #' 'N': Native; 'I': Introduced; 'UNK': Status unknown.
-#' - `identificationSource`: Source of identification.
-#' - `taxonID`: Species code, based on one or more sources.
-#' - `taxonRank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
-#' - `scientificName`: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
-#' - `count`: Number of individuals. `NA` represents no beetles caught in the trap.
+#' `remarks`: Remarks of record.
+#' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `elevation`: Elevation (in meters) above sea level.
+#'
 #'
 #' @author Kari Norman
 #'

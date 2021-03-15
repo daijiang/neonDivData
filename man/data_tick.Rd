@@ -7,22 +7,27 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
-\item \code{namedLocation}: Name of the measurement location in the NEON database.
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{collectDate}: Date of the collection event.
-\item \code{eventID}: An identifier for the set of information associated with the event, which includes information about the place and time of the event.
-\item \code{sampleID}: Identifier for sample.
-\item \code{sampleCode}: Barcode of a sample.
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{neon_event_id}: NEON event ID.
 \item \code{samplingMethod}: Name or code for the method used to collect or test a sample.
 \item \code{totalSampledArea}: Total area sampled (square Meter).
 \item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
-\item \code{remarks_field}: Technician notes; free text comments accompanying the record.
-\item \code{taxonID}: Accepted species code, based on one or more sources. This is renamed from the \code{acceptedTaxonID} column so that column names are consistent across different taxonomic groups.
+\item \code{release}: Version of data release by NEON.
 \item \code{LifeStage}: Life stage of the sample ('Adult', 'Larva', or 'Nymph').
-\item \code{IndividualCount}: Number of individuals of the same type.
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
-\item \code{scientificName}: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
+\item \code{remarks_field}: Technician notes; free text comments accompanying the record.
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \usage{
@@ -52,7 +57,7 @@ Here, we:
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
 Wynne Moss, Melissa Chen, Brendan Hobart, Matt Bitters

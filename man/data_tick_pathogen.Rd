@@ -7,18 +7,24 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
-\item \code{namedLocation}: Name of the measurement location in the NEON database.
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{collectDate}:	Date of the collection event.
-\item \code{endDate}: The end date-time or interval during which an event occurred.
-\item \code{hostSpecies}: Host tick species.
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{lifeStage}: Life stage of the host (all Nymph).
-\item \code{testedDate}: Date test was conducted.
-\item \code{testingID}: Identifier for the group of specimens for testing.
 \item \code{batchID}: Identifier for batch or analytical run.
-\item \code{testResult}: Result of the test.
-\item \code{testPathogenName}	The name of the pathogen.
+\item \code{testProtocolVersion}: The protocol version used to test the sample.
+\item \code{release}: Version of data release by NEON.
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \usage{
@@ -39,7 +45,7 @@ To clean the data, we:
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
 Melissa Chen, Wynne Moss, Brendan Hobart, Matt Bitters

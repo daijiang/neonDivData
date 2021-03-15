@@ -7,22 +7,29 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
-\item \code{sampleID}: Identifier for sample.
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{namedLocation}: Name of the measurement location in the NEON database.
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{boutID}: Identifier for bout.
 \item \code{trapID}: Identifier for trap.
-\item \code{setDate}: Date that trap was set.
-\item \code{collectDate}: Date of the collection event.
 \item \code{trappingDays}: Decimal days between trap setting and collecting events.
+\item \code{release}: Version of data release by NEON.
+\item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 'N': Native; 'I': Introduced; 'UNK': Status unknown.
-\item \code{identificationSource}: Source of identification.
-\item \code{taxonID}: Species code, based on one or more sources.
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
-\item \code{scientificName}: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
-\item \code{count}: Number of individuals. \code{NA} represents no beetles caught in the trap.
+\code{remarks}: Remarks of record.
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \usage{
@@ -44,7 +51,7 @@ To process data we:
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
 Kari Norman

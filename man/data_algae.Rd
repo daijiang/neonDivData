@@ -7,26 +7,31 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
-\item \code{sampleID}: Identifier for sample.
-\item \code{eventID}:	An identifier for the set of information associated with the event,
-which includes information about the place and time of the event.
-\item \code{namedLocation}:	Name of the measurement location in the NEON database.
-\item \code{habitatType}:	Habitat type sampled.
-\item \code{taxonID}: Accepted species code, based on one or more sources. This is renamed from the \code{acceptedTaxonID} column so that column names are consistent across different taxonomic groups.
-\item \code{scientificName}:	Scientific name, associated with the taxonID. This is the name
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
-\item \code{family}: The scientific name of the family in which the taxon is classified.
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
-\item \code{collectDate}: Date of the collection event.
-\item \code{density}: Density of algae.
-\item \code{cell_density_standardized_unit}: Unit of \code{density}.
-\item \code{algalParameterValue}: Value of the algalParameter.
-\item \code{algalParameter}: Parameter used for analysis of algal assemblages.
-\item \code{perBSVol}: Per bottle sample volumn (milliliter).
-\item \code{fieldSampleVolume}: Sample volume collected in the field (milliliter).
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{sampleCondition}: Condition of samples.
+\item \code{perBottleSampleVolume}: Per bottle sample volumn (milliliter).
+\item \code{release}: Version of data release by NEON.
+\item \code{habitatType}: Habitat type sampled.
 \item \code{algalSampleType}: Type of algal sample collected.
 \item \code{benthicArea}: Area of the benthos sampled (square Meter).
+\item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX.
+\item \code{substratumSizeClass}: Size class of the substratum sampled.
+\item \code{samplerType}: Type of sampler used to collect the sample.
+\item \code{phytoDepth1}: First phytoplankton sample depth at sampling location
+\item \code{phytoDepth2}: Second phytoplankton sample depth at sampling location
+\item \code{phytoDepth3}: Third phytoplankton sample depth at sampling location
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \usage{
@@ -45,7 +50,7 @@ Here, we:
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
 Lara Jansen

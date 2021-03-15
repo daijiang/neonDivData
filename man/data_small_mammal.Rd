@@ -7,28 +7,28 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{namedLocation}: Name of the measurement location in the NEON database.
-\item \code{trapCoordinate}: Relative coordinate of the trap within the given plotID (A1 - J10). If row or column coordinate is unknown, X is used.
-\item \code{trapStatus}: Categorical descriptor of trap status; 0 - no data; 1 - trap not set; 2 - trap disturbed/door closed but empty; 3 - trap door open or closed w/ spoor left; 4 - >1 capture in one trap; 5 - capture; 6 - trap set and empty.
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{year}: Observation year.
 \item \code{month}: Observation month.
-\item \code{day}: Observation day.
-\item \code{taxonID}: Species code, based on one or more sources.
-\item \code{scientificName}: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
-\item \code{family}: The family of the species.
+\item \code{n_trap_nights_per_bout_per_plot}: Number of trap nights per bout per plot.
+\item \code{n_nights_per_bout}: Number of nights per bout.
 \item \code{nativeStatusCode}: Whether the species is a native or non-native species.
 'A': Presumed absent, due to lack of data indicating a taxon's presence in a
 given location; 'N': Native; 'I': Introduced; 'UNK': Status unknown.
-\item \code{sex}: M for male, F for female, U for unknown.
-\item \code{lifeStage}:	The age class of the individual at the time the Occurrence was recorded.
-juvenile = obvious signs of a very young individual, small size, distinctive pelage coloration; subabult; adult.
-\item \code{pregnancyStatus}:	Condition at time of capture; if mature: 'pregnant' | 'not'.
-\item \code{tailLength}: length of tail; in millimeters.
-\item \code{totalLength}: total length (head + body); in millimeters.
-\item \code{weight}: Live weight as measured with a spring scale; in grams.
+\item \code{release}: Version of data release by NEON.
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \source{
@@ -48,7 +48,7 @@ To process data we:
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
 Marta Jarzyna

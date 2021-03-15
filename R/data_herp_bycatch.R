@@ -16,6 +16,7 @@
 #'
 #' @note  This script was derived from the script written by Kari Norman to process the pit fall traps of beetles.
 #' Additional variables were added and missing samples were retained in herp_bycatch.
+#'
 #' @format A data frame (tibble) with the following columns:
 #' - `namedLocation`: Name of the measurement location in the NEON database.
 #' - `siteID`: NEON site code.
@@ -34,7 +35,9 @@
 #' - `remarksFielddata`: Technician notes; free text comments accompanying the record from fielddata table
 #'
 #' @source <https://data.neonscience.org>
+#'
 #' @references Hoekman, David, Katherine E. LeVan, Cara Gibson, George E. Ball, Robert A. Browne, Robert L. Davidson, Terry L. Erwin, et al. “Design for Ground Beetle Abundance and Diversity Sampling within the National Ecological Observatory Network.” Ecosphere 8, no. 4 (2017): e01744.
+#'
 #' @author Matt Helmus and Kari Norman
 #'
 "data_herp_bycatch"

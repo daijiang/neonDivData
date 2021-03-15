@@ -7,20 +7,22 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
-\item \code{namedLocation}:	Name of the measurement location in the NEON database.
-\item \code{sampleID}: Identifier for sample.
-\item \code{samplerType}:	Type of sampler used to collect the sample.
-\item \code{subsampleType}:	Indicates type of subsample generated.
-\item \code{taxonID}: Species code, based on one or more sources.
-\item \code{scientificName}:	Scientific name, associated with the taxonID. This is the name
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
-\item \code{density}: Density of zooplankton, with unit to be count per liter.
-\item \code{collectDate}: Date of the collection event.
-\item \code{zooMinimumLength}: Minimum length of individuals in zooplankton taxonomic group subsample (millimeter).
-\item \code{zooMaximumLength}: Maximum length of individuals in zooplankton taxonomic group subsample (millimeter).
-\item \code{zooMeanLength}: Mean length of individuals in zooplankton taxonomic group subsample (millimeter).
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{release}: Version of data release by NEON.
+\item \code{samplerType}:	Type of sampler used to collect the sample.
+\item \code{towsTrapsVolumn}: Sample volume collected for zooplankton.
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
 }
 }
 \usage{
@@ -38,7 +40,7 @@ Here, we:
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_locations}).
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
 Lara Jansen; Stephanie Parker
