@@ -22,7 +22,7 @@ reference:
     desc: "Information about locations"
     contents:
       - neon_sites
-      - neon_locations
+      - neon_location
   - title: "Taxonomic data"
     desc: "Information about species identities"
     contents:

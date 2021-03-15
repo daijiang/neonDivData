@@ -122,35 +122,35 @@ We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fs
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A data frame (also a tibble) with the following columns:</p><ul>
-<li><p><code>siteID</code>: NEON site code.see https://www.neonscience.org/field-sites/field-sites-map</p></li>
-<li><p><code>namedLocation</code>:	Name of the measurement location in the NEON database.</p></li>
-<li><p><code>reachID</code>:	An identifier for the set of information associated with the sampling reach.</p></li>
-<li><p><code>eventID</code>:	An identifier for the set of information associated with the sampling event, which includes information about the location, sampling method, date, and time of the event.</p></li>
-<li><p><code>samplerType</code>:	Type of sampling method used to collect the sample.</p></li>
-<li><p><code>taxonID</code>: Species code, based on one or more sources.</p></li>
-<li><p><code>taxonRank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
-<li><p><code>scientificName</code>: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined.</p></li>
-<li><p><code>catch_per_effort</code>: Number of fish caught per hour.</p></li>
-<li><p><code>number_of_fish</code>: Number of fish caught.</p></li>
-<li><p><code>n_obs</code>: Number of observations.</p></li>
-<li><p><code>startDate</code>:	The start date-time or interval during which an event occurred.</p></li>
-<li><p><code>endDate</code>:	The end date-time or interval during which an event occurred.</p></li>
+<li><p><code>location_id</code>: Location id.</p></li>
+<li><p><code>siteID</code>: NEON site code.</p></li>
+<li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
+<li><p><code>observation_datetime</code>: Observation date and time.</p></li>
+<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
+<li><p><code>taxon_name</code>:	Scientific name, associated with the taxonID. This is the name
+of the lowest level taxonomic rank that can be determined.</p></li>
+<li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
+<li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
+<li><p><code>value</code>: Value of the variable(s) specified by <code>variable_name</code>.</p></li>
+<li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
+<li><p><code>samplerType</code>: Type of sampler used to collect the sample.</p></li>
+<li><p><code>fixedRandomReach</code>:	An indication of whether the reach is fixed or random.</p></li>
+<li><p><code>measuredReachLength</code>:	The length of the reach as measured by the technicians when the reach was established (meters).</p></li>
+<li><p><code>efTime</code>: Operational time of the electrofisher (second).</p></li>
+<li><p><code>passStartTime</code>: The start time of the pass.</p></li>
+<li><p><code>passEndTime</code>:	The end time of the pass.</p></li>
+<li><p><code>passNumber</code>:	Number of the sampling passed within a reach.</p></li>
+<li><p><code>mean_efishtime</code>: Average efish time (in second).</p></li>
 <li><p><code>netSetTime</code>: Time the net was set.</p></li>
 <li><p><code>netEndTime</code>: Time the net was pulled.</p></li>
 <li><p><code>netDeploymentTime</code>:	Total time of deployment of the net (hours).</p></li>
 <li><p><code>netLength</code>: Length of the net (meter).</p></li>
 <li><p><code>netDepth</code>:	Deployment depth of the net (meter).</p></li>
-<li><p><code>fixedRandomReach</code>:	An indication of whether the reach is fixed or random.</p></li>
-<li><p><code>measuredReachLength</code>:	The length of the reach as measured by the technicians when the reach was established (meters).</p></li>
-<li><p><code>efTime</code>: Operational time of the electrofisher (second).</p></li>
-<li><p><code>efTime2</code>:	Operational time of the electrofisher for the second electrofisher (second).</p></li>
-<li><p><code>passStartTime</code>: The start time of the pass.</p></li>
-<li><p><code>passEndTime</code>:	The end time of the pass.</p></li>
-<li><p><code>passNumber</code>:	Number of the sampling passed within a reach.</p></li>
-<li><p><code>targetTaxaPresent</code>: Indicator of whether the sample contained individuals of the target taxa.</p></li>
-<li><p><code>year</code>: Observation year.</p></li>
-<li><p><code>month</code>: Observation month.</p></li>
-<li><p><code>mean_efishtime</code>: Average efish time (in second).</p></li>
+<li><p><code>efTime2</code>:	Operational time of the electrofisher for the second electrofisher (second).
+<code>remarks</code>: Remarks of record.</p></li>
+<li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
+<li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
+<li><p><code>elevation</code>: Elevation (in meters) above sea level.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
@@ -159,7 +159,7 @@ We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fs
 #' @referencesJensen, Jensen, B., S. Parker, and C. Scott. 2017. Neon user guide to fish electrofishing, gill netting, and fyke netting counts (NEON.DP1.20107). NEON, National Ecological Observatory Network, Boulder, CO, USA.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href='neon_locations.html'>neon_locations</a>).</p>
+    <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href='neon_location.html'>neon_location</a>).</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Stephanie Parker, Thilina Surasinghe</p>
@@ -175,7 +175,7 @@ We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fs
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daijiang Li, Firstname Lastname, Firstname Lastname.</p>
+  <p>Developed by Daijiang Li, Eric Sokol, Melissa Chen, Matthew Helmus, Lara Jansen, Marta Jarzyna, Michael Just, Kari Norman, Stephanie Parker, Natalie Robinson, Thilina Surasinghe, Matthew Bitters, Wynne Moss.</p>
 </div>
 
 <div class="pkgdown">

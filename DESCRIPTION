@@ -4,8 +4,18 @@ Title: Standardized NEON Organismal Data for Biodiversity Research
 Version: 0.1.0
 Authors@R: c(
     person(given = "Daijiang", family = "Li", email = "daijianglee@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0925-3421")),
-    person(given = "Firstname", family = "Lastname", email = "emailaddress", role = c("aut")),
-    person(given = "Firstname", family = "Lastname", email = "emailaddress", role = c("aut"))
+    person(given = "Eric", family = "Sokol", email = "esokol@battelleecology.org", role = c("aut")),
+    person(given = "Melissa", family = "Chen", role = c("aut")),
+    person(given = "Matthew", family = "Helmus", role = c("aut")),
+    person(given = "Lara", family = "Jansen", role = c("aut")),
+    person(given = "Marta", family = "Jarzyna", role = c("aut")),
+    person(given = "Michael", family = "Just", role = c("aut")),
+    person(given = "Kari", family = "Norman", role = c("aut")),
+    person(given = "Stephanie", family = "Parker", role = c("aut")),
+    person(given = "Natalie", family = "Robinson", role = c("aut")),
+    person(given = "Thilina", family = "Surasinghe", role = c("aut")),
+    person(given = "Matthew", family = "Bitters", role = c("aut")),
+    person(given = "Wynne", family = "Moss", role = c("aut"))
     )
 Description: Cleaned, simplified, and standardized NEON organismal data for biodiversity research. 
     The following taxonomic groups are included so far: algae, beetles, birds, fish, herptiles, 

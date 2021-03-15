@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Taxanomic names of all groups — neon_taxa" />
-<meta property="og:description" content="This data frame was put together from each data product, with the extra column of identificationReferences." />
+<meta property="og:description" content="This data frame was put together from each data product." />
 
 
 
@@ -109,7 +109,7 @@
     </div>
 
     <div class="ref-description">
-    <p>This data frame was put together from each data product, with the extra column of <code>identificationReferences</code>.</p>
+    <p>This data frame was put together from each data product.</p>
     </div>
 
     <pre class="usage"><span class='va'>neon_taxa</span></pre>
@@ -118,27 +118,18 @@
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A data frame with the following columns:</p><ul>
-<li><p><code>taxonID</code>: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the <code>acceptedTaxonID</code> column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have <code>acceptedTaxonID</code> and we just renamed it to <code>taxonID</code> for these groups following other groups.</p></li>
-<li><p><code>scientificName</code>:	Scientific name, associated with the taxonID. This is the name
+<li><p><code>taxon_id</code>: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the <code>acceptedTaxonID</code> column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have <code>acceptedTaxonID</code> and we just renamed it to <code>taxon_id</code> for these groups following other groups.</p></li>
+<li><p><code>taxon_name</code>:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
-<li><p><code>taxonRank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
-<li><p><code>family</code>: The scientific name of the family in which the taxon is classified.
-Not every taxonomic group has this information in the NEON data, but should be relatively easy to get from online databases.</p></li>
-<li><p><code>identificationReferences</code>: A list of sources (concatenated and semicolon separated)
-used to derive the specific taxon concept; including field guide editions, books,
-or versions of NEON keys used.</p></li>
-<li><p><code>taxa</code>: The taxa group that the location information can be used for.
+<li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
+<li><p><code>taxon_group</code>: The taxonomic group that the location information can be used for.
 Note that some taxa groups may have the same 'plotID' but their
 latitude/longitude may differ slightly, which justifies the need of this column.</p></li>
-<li><p><code>neonDPI</code>: The NEON data product ID. See <code>neonUtilities:::table_types</code> for all
-available data types and their data product IDs provided by NEON.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Some taxonomic groups used <code>taxonID</code> in the data product while other groups used <code>acceptedTaxonID</code>.
-In addition, all data were from NEON and we did not do extra clean up. For example, sometimes, a species
-does not have family information (<code>NA</code>) while another co-genera species does.</p>
+    <p>Some taxonomic groups used <code>taxonID</code> (renamed as <code>taxon_id</code> here) in the data product while other groups used <code>acceptedTaxonID</code>. In addition, all data were from NEON and we did not do extra clean up.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -151,7 +142,7 @@ does not have family information (<code>NA</code>) while another co-genera speci
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daijiang Li, Firstname Lastname, Firstname Lastname.</p>
+  <p>Developed by Daijiang Li, Eric Sokol, Melissa Chen, Matthew Helmus, Lara Jansen, Marta Jarzyna, Michael Just, Kari Norman, Stephanie Parker, Natalie Robinson, Thilina Surasinghe, Matthew Bitters, Wynne Moss.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Zooplankton density data — data_zooplankton • neonDivData</title>
+<title>Information of all locations included in this data package. — neon_location • neonDivData</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Zooplankton density data — data_zooplankton" />
-<meta property="og:description" content="This dataset was derived from NEON data portal with data product ID 'DP1.20219.001'. Details about this data product can be found at https://data.neonscience.org/data-products/DP1.20219.001. Zooplankton are collected from the water column of lakes near NEON sensor infrastructure. The type of sampler used depends on the depth of water at the sampling location. Multiple tows or traps are collected at each location and composited into a single sample. Zooplankton sampling is quantitative and based on the volume of water collected during sampling." />
+<meta property="og:title" content="Information of all locations included in this data package. — neon_location" />
+<meta property="og:description" content="We extracted location information from all
+taxanomic groups and saved as one file here.
+Note that some aquatic sites do not have lat/long information though." />
 
 
 
@@ -103,53 +105,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Zooplankton density data</h1>
+    <h1>Information of all locations included in this data package.</h1>
     
-    <div class="hidden name"><code>data_zooplankton.Rd</code></div>
+    <div class="hidden name"><code>neon_location.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This dataset was derived from <a href='https://data.neonscience.org'>NEON data portal</a> with data product ID 'DP1.20219.001'. Details about this data product can be found at <a href='https://data.neonscience.org/data-products/DP1.20219.001'>https://data.neonscience.org/data-products/DP1.20219.001</a>. Zooplankton are collected from the water column of lakes near NEON sensor infrastructure. The type of sampler used depends on the depth of water at the sampling location. Multiple tows or traps are collected at each location and composited into a single sample. Zooplankton sampling is quantitative and based on the volume of water collected during sampling.</p>
+    <p>We extracted location information from all
+taxanomic groups and saved as one file here.
+<em>Note that some aquatic sites do not have lat/long information though.</em></p>
     </div>
 
-    <pre class="usage"><span class='va'>data_zooplankton</span></pre>
+    <pre class="usage"><span class='va'>neon_location</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame (also a tibble) with the following columns:</p><ul>
+    <p>A data frame with the following columns:</p><ul>
 <li><p><code>location_id</code>: Location id.</p></li>
 <li><p><code>siteID</code>: NEON site code.</p></li>
-<li><p><code>observation_datetime</code>: Observation date and time.</p></li>
-<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
-<li><p><code>taxon_name</code>:	Scientific name, associated with the taxonID. This is the name
-of the lowest level taxonomic rank that can be determined.</p></li>
-<li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
-<li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
-<li><p><code>value</code>: Value of the variable(s) specified by <code>variable_name</code>.</p></li>
-<li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
-<li><p><code>release</code>: Version of data release by NEON.</p></li>
-<li><p><code>samplerType</code>:	Type of sampler used to collect the sample.</p></li>
-<li><p><code>towsTrapsVolumn</code>: Sample volume collected for zooplankton.</p></li>
-<li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
-<li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
+<li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
+<li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the
+geographic center of the reference area.</p></li>
+<li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of
+the geographic center of the reference area.</p></li>
 <li><p><code>elevation</code>: Elevation (in meters) above sea level.</p></li>
+<li><p><code>nlcdClass</code>: National Land Cover Database Vegetation Type Name for terrestrial sites.</p></li>
+<li><p><code>aquaticSiteType</code>: Type of aquatic systems ('lake', 'river', 'stream').</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Here, we:</p><ul>
-<li><p>Only keep those with <code>sampleCondition</code> to be "condition OK" for the <code>zoo_taxonomyProcessed</code> table.</p></li>
-<li><p>Combined the <code>zoo_fieldData</code> and the <code>zoo_taxonomyProcessed</code>.</p></li>
-<li><p>Calculated zooplankton density as the ratio of <code>adjCountPerBottle</code> and <code>towsTrapsVolume</code>.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href='neon_location.html'>neon_location</a>).</p>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Lara Jansen; Stephanie Parker</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
