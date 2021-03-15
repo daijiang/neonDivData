@@ -1,5 +1,5 @@
 ---
-title: "Tidy NEON organismal data for biodiversity research"
+title: "Standardized NEON organismal data for biodiversity research"
 author: 
   - "Daijiang Li^1,2†‡^, Sydne Record^3†^, Eric Sokol^4,5†‡^, Matthew E. Bitters^6^, Melissa Y. Chen^6^, Anny Y. Chung^7^, Matthew R. Helmus^8^, Ruvi Jaimes^9^, Lara Jansen^10^, Marta A. Jarzyna^11,12^, Michael G. Just^13^, Jalene M. LaMontagne^14^, Brett Melbourne^6^, Wynne Moss^6^, Kari Norman^15^, Stephanie Parker^4^, Natalie Robinson^4^, Bijan Seyednasrollah^16^, Colin Smith^17^, Sarah Spaulding^5^, Thilina Surasinghe^18^, Sarah Thomsen^19^, Phoebe Zarnetske^20,21^"
 date: '`r format(Sys.time(), "%d %B, %Y")`'
@@ -81,8 +81,8 @@ library(stringr)
 ^18^ Department of Biological Sciences, Bridgewater State University, Bridgewater, MA, United States  
 ^19^ Department of Integrative Biology, Oregon State University, Corvallis, OR, United States  
 ^20^ Department of Integrative Biology, Michigan State University, East Lansing, MI, United States  
-^21^ Ecology, Evolution, and Behavior Program, Michigan State University, East Lansing, MI, United States
-^†^ Equal contributions
+^21^ Ecology, Evolution, and Behavior Program, Michigan State University, East Lansing, MI, United States  
+^†^ Equal contributions  
 ^‡^ Corresponding authors
 
 \normalsize
@@ -91,7 +91,7 @@ library(stringr)
 
 **Key words**: NEON, Biodiversity, Organismal Data, Data Product, R, Data package 
 
-# Introduction (or why tidy NEON organismal data)
+# Introduction (or why standardized NEON organismal data)
 
 A central goal of ecology is to understand the patterns and processes of biodiversity, and this is particularly important in an era of rapid global environmental change [@midgley2005global; @blowes2019geography]. Such understanding is only possible through studies that address questions like: How is biodiversity distributed across large spatial scales, ranging from ecoregions to continents? What mechanisms drive spatial patterns of biodiversity? Are spatial patterns of biodiversity similar among different taxonomic groups, and if not, why do we see variation? How does community composition vary across spatial and environmental gradients? What are the local and landscape scale drivers of community structure? How and why do biodiversity patterns change over time? Answers to such questions will enable better management and conservation of biodiversity and ecosystem services. 
 
@@ -107,7 +107,7 @@ One attractive standardized formatting style for NEON organismal data is that of
 
 Here, we briefly summarized NEON sampling designs for major taxonomic groups and major data wrangling decisions we made to simplify and standardize NEON data products following the ecocomDP format using the R package `ecocomDP`. All corresponding R code to process NEON data products were included in the R package `ecocomDP` for transparency and so future contributors may draw on this information in their work. To facilitate the distribution and usage of the standardized datasets, we deposited them in the EDI data portal (link) and provided them as an R data package [`neonDivData`](https://github.com/daijiang/neonDivData). Both of them will be maintained and updated as new data become available from the NEON portal. We hope this effort will substantially reduce data processing times for NEON data users and greatly facilitate the use of NEON organismal data to advance our understanding of Earth’s biodiversity. 
 
-# Materials and Methods (or how to tidy NEON organismal data)
+# Materials and Methods (or how to standardize NEON organismal data)
 
 There are many details to consider when starting to use NEON organismal data products. Below we outline key points relevant to community-level biodiversity analyses with regards to the NEON Sampling Design and decisions that were made as the data products presented in this paper were converted into the ecocomDP data model. While the methodological sections below are specific to particular taxonomic groups, there are some general points that we came across while reviewing NEON data collection documentation and through discussion with NEON staff that apply to all NEON organismal data products. First, species occurrence and abundance measures as reported in NEON biodiversity data products are not standardized to sampling effort. Because there are often multiple approaches to cleaning (e.g., dealing with multiple levels of taxonomic resolution, interpretations of absences, etc.) and standardizing biodiversity survey data, NEON publishes raw observations along with sampling effort data to preserve as much information as possible so that data users can clean and standardize data as they see fit. The workflows described here for twelve taxonomic groups represented in eleven NEON data products produce standardized counts based on sampling effort, such as count of individuals per area sampled or count standardized to the duration of trap deployment, as described in Table \@ref(tab:dataMapping). The data wrangling workflows described below can be used to access, download, and clean data from the NEON Data Portal by using the R `ecocomDP` package. To view a catalog of available NEON data products in the ecocomDP format, use `ecocomDP::search_data(“NEON”)`. To import data from a given NEON data product into your R environment, use `ecocomDP::read_data()`, and set the `id` argument to the selected NEON to ecocomDP mapping workflow (the “L0 to L1 ecocomDP workflow ID” in Table \@ref(tab:dataMapping)). This will return a list of ecocomDP formatted tables and accompanying metadata. To create a flat data table (similar to the L2 data packages described below), use the `ecocomDP::flatten_ecocomDP()` function. Second, it should be noted that NEON data collection efforts will continue well after this paper is published and new changes to data collection methods and/or processing may vary over time. Such changes (e.g., change in the number of traps used for ground beetle collection) or interruptions (e.g., due to COVID-19) to data collection are documented in the Issues log for each data product on the NEON Data Portal as well as the Readme text file that is included with NEON data downloads.
 
@@ -266,7 +266,7 @@ The fish data product (`DP1.20107.001`) consists of `fsh_perPass`, `fsh_fieldDat
 
 **Data Wrangling Decisions** The NEON zooplankton data product (`DP1.20219.001`) consists of dataframes for taxonomic identification and related field data. Zooplankton in NEON samples are identified at contracting labs to the lowest possible taxonomic resolution, usually genus, however some specimens can only be identified to the family (or even class) level, depending on the condition of the specimen. Ten percent of all samples are checked by two taxonomists and are noted in the `qcTaxonomyStatus` column. The taxonomic naming has been standardized in the `zoo_taxonomyProcessed` table, according to NEON’s master taxonomy, removing any synonyms. Density was calculated using `adjCountPerBottle` and `towsTrapsVolume` to correct count data to “count per liter”.
 
-# Results (or how to get and use tidy NEON organismal data)
+# Results (or how to get and use standardized NEON organismal data)
 
 All cleaned and standardized datasets can be obtained from the R package `neonDivData`, which can be installed from Github (we will submit it to CRAN in the future). Installation instructions can be found on the Github webpage (https://github.com/daijiang/neonDivData). Table \@ref(tab:dataSummary) shows the brief summary of all data objects. To get data for a specific taxonomic group, we can just call the objects in the `R object` column in Table \@ref(tab:dataSummary). Such data products include cleaned (and standardized if needed) occurrence data for the taxonomic groups covered and are equivalent to the “observation” table of the ecocomDP data format. If environmental information and species measurements were provided by NEON for some taxonomic groups, they are also included in these data objects. Information such as latitude, longitude, and elevation for all taxonomic groups were saved in the `neon_location` object of the R package, which is equivalent to the “sampling_location” table of the ecocomDP data format. Information about species scientific names of all taxonomic groups were saved in the `neon_taxa` object, which is equivalent to the “taxon” table of the ecocomDP data format. 
 
@@ -321,7 +321,7 @@ In addition to allowing for quick exploration of macroecological diversity patte
 include_graphics(here::here("manuscript/figures/beetle_rarefaction.png"))
 ```
 
-# Discussion (or how to maintain and update tidy NEON organismal data)
+# Discussion (or how to maintain and update standardized NEON organismal data)
 
 NEON organismal data hold enormous potential to understand biodiversity change across space and time [@balch2019neon, @jones2021synergies]. Multiple biodiversity research and education programs have used NEON data even before NEON became fully operational in May 2019 [e.g., @farrell2018power; @read2018among]. With the expected long-term investment to maintain NEON over the next 30 years, NEON organismal data will be an invaluable tool for understanding and tracking biodiversity change. NEON data are unique relative to data collected by other similar networks (e.g., LTER, CZO) because observation collection protocols are standardized across sites, enabling researchers to address macroscale questions in environmental science without having to synthesize disparate data sets that differ in collection methods [@jones2021synergies]. The data package presented in this paper holds great potential in making NEON data easier to use and more comparable across studies. Whereas the data collection protocols implemented by NEON staff are standardized, the decisions NEON data users make in wrangling their data after downloading NEON’s open data will not necessarily be similar unless the user community adopts a community data standard, such as the ecocomDP data model. Adopting such a data model early on in the life of the observatory will ensure that results of studies using NEON data will be easier to compare and synthesize. By providing a standardized and easy-to-use data package of NEON organismal data, our effort here will significantly lower the barriers to use the NEON organismal data for biodiversity research by many current and future researchers and will ensure that studies using NEON organismal data are comparable.
 
