@@ -214,7 +214,7 @@ summary {
 
 <h1 class="title toc-ignore">Standardized NEON organismal data for biodiversity research</h1>
 <h4 class="author">Daijiang Li<sup>1,2†‡</sup>, Sydne Record<sup>3†‡</sup>, Eric Sokol<sup>4,5†‡</sup>, Matthew E. Bitters<sup>6</sup>, Melissa Y. Chen<sup>6</sup>, Anny Y. Chung<sup>7</sup>, Matthew R. Helmus<sup>8</sup>, Ruvi Jaimes<sup>9</sup>, Lara Jansen<sup>10</sup>, Marta A. Jarzyna<sup>11,12</sup>, Michael G. Just<sup>13</sup>, Jalene M. LaMontagne<sup>14</sup>, Brett Melbourne<sup>6</sup>, Wynne Moss<sup>6</sup>, Kari Norman<sup>15</sup>, Stephanie Parker<sup>4</sup>, Natalie Robinson<sup>4</sup>, Bijan Seyednasrollah<sup>16</sup>, Colin Smith<sup>17</sup>, Sarah Spaulding<sup>5</sup>, Thilina Surasinghe<sup>18</sup>, Sarah Thomsen<sup>19</sup>, Phoebe Zarnetske<sup>20,21</sup></h4>
-<h4 class="date">14 March, 2021</h4>
+<h4 class="date">15 March, 2021</h4>
 
 </div>
 
@@ -297,7 +297,7 @@ Figure 1: Generalized sampling schematics for Terrestrial Observation System (A)
 
 <table class="table table-striped table-condensed table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:dataMapping">Table 1: </span>Mapping NEON data products to ecocomDP formatted data packages with abundances <em>standardized</em> to observation effort.
+<span id="tab:dataMapping">Table 1: </span>Mapping NEON data products to ecocomDP formatted data packages with abundances <em>standardized</em> to observation effort. *BIRD counts are reported per taxon per “cluster” observed in each point count in the NEON data product and have not been further standardized to sampling effort because standard methods for modeling bird abundances are beyond the scope of this paper. **Incidence rate per number of tests conducted is reported for TICK_PATHOGENS.
 </caption>
 <thead>
 <tr>
@@ -474,23 +474,6 @@ unique individuals per 100 trap nights per plot per month
 </tr>
 <tr>
 <td style="text-align:left;">
-Tick_pathogens
-</td>
-<td style="text-align:left;">
-DP1.10092.001
-</td>
-<td style="text-align:left;">
-neon.ecocomdp.10092.001.001
-</td>
-<td style="text-align:left;">
-positivity rate
-</td>
-<td style="text-align:left;">
-positive tests per pathogen per sampling event
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 Ticks
 </td>
 <td style="text-align:left;">
@@ -504,6 +487,23 @@ abundance
 </td>
 <td style="text-align:left;">
 count per square meter
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tick_pathogens
+</td>
+<td style="text-align:left;">
+DP1.10092.001
+</td>
+<td style="text-align:left;">
+neon.ecocomdp.10092.001.001
+</td>
+<td style="text-align:left;">
+positivity rate
+</td>
+<td style="text-align:left;">
+positive tests per pathogen per sampling event
 </td>
 </tr>
 <tr>
@@ -525,13 +525,11 @@ count per liter
 </tr>
 </tbody>
 </table>
-<p>*BIRD counts are reported per taxon per “cluster” observed in each point count in the NEON data product and have not been further standardized to sampling effort because standard methods for modeling bird abundances are beyond the scope of this paper.<br />
-**Incidence rate per number of tests conducted is reported for TICK_PATHOGENS.</p>
 <div id="terrestrial-organisms" class="section level2">
 <h2>Terrestrial Organisms</h2>
 <div id="breeding-land-birds" class="section level3">
 <h3>Breeding Land Birds</h3>
-<p><strong>NEON Sampling Design</strong> NEON designates breeding landbirds as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats’’ <span class="citation">(<a href="#ref-ralph1993handbook" role="doc-biblioref">Ralph 1993</a>)</span>. Most species observed are diurnal and include both resident and migrant species. Landbirds are surveyed via point counts in each of the 47 terrestrial sites. At most NEON sites, breeding landbird points are located in five to ten 3 x 3 m grids (Fig. <a href="#fig:Fig1Design">1</a>), which are themselves located in representative (dominant) vegetation. Whenever possible, grid centers are co-located with distributed base plot centers. When sites are too small to support a minimum of five grids, separated by at least 250 m from edge to edge, point counts are completed at single points instead of grids. In these cases, points are located at the southwest corners of distributed base plots within the site. Five to 25 points may be surveyed depending on the size and spatial layout of the site, with exact point locations dictated by a stratified-random spatial design that maintains a 250 m minimum separation between points.</p>
+<p><strong>NEON Sampling Design</strong> NEON designates breeding landbirds as “smaller birds (usually exclusive of raptors and upland game birds) not usually associated with aquatic habitats” <span class="citation">(<a href="#ref-ralph1993handbook" role="doc-biblioref">Ralph 1993</a>)</span>. Most species observed are diurnal and include both resident and migrant species. Landbirds are surveyed via point counts in each of the 47 terrestrial sites. At most NEON sites, breeding landbird points are located in five to ten 3 <span class="math inline">\(\times\)</span> 3 m grids (Fig. <a href="#fig:Fig1Design">1</a>), which are themselves located in representative (dominant) vegetation. Whenever possible, grid centers are co-located with distributed base plot centers. When sites are too small to support a minimum of five grids, separated by at least 250 m from edge to edge, point counts are completed at single points instead of grids. In these cases, points are located at the southwest corners of distributed base plots within the site. Five to 25 points may be surveyed depending on the size and spatial layout of the site, with exact point locations dictated by a stratified-random spatial design that maintains a 250 m minimum separation between points.</p>
 <p>Surveys occur during one or two sampling bouts per season, at large and small sites respectively. Observers go to the specified points early in the morning and track birds observed during each minute of a 6-minute period, following a 2-minute acclimation period, at each point. Each point count contains species, sex, and distance to each bird (measured with a laser rangefinder except in the case of flyovers) seen or heard. Information relevant for subsequent modeling of detectability is also collected during the point counts (e.g., weather, detection method). The point count surveys for NEON were modified from the Integrated Monitoring in Bird Conservation Regions (IMBCR) field protocol for spatially-balanced sampling of landbird populations <span class="citation">(<a href="#ref-pavlacky2017statistically" role="doc-biblioref">Pavlacky Jr et al. 2017</a>)</span>.</p>
 <p>To protect species of concern, breeding landbird taxonomic IDs are ‘fuzzed,’ whereby the data are provided with a taxonomic identification at one higher taxonomic level than where the protection occurs. For example, if a threatened Black-capped vireo (<em>Vireo atricapilla</em>) is recorded by a NEON technician, the taxonomic identification is fuzzed to Vireo in the data. Rare, threatened and endangered species are those listed as such by federal and/or state agencies.</p>
 <p><strong>Data Wrangling Decisions</strong> The bird point count data product (‘DP1.10003.001’) consists of a list of two associated data frames: <code>brd_countdata</code> and <code>brd_perpoint</code>. The former data frame contains information such as locations, species identities, and their counts. The latter data frame contains additional location information such as latitude and longitude coordinates and environmental conditions during the time of the observations. The separate data frames are linked by ‘eventID,’ which refers to the location, date and time of the observation.To prepare the bird point count data for the L1 ecocomDP model, we first merged both data frames into one and then removed columns that are likely not needed for most community-level biodiversity analyses (e.g., observer names, etc.). The field <code>taxon_id</code> consists of the standard AOU 4-letter species code, although <code>taxon_rank</code> refers to eight potential levels of identification (class, family, genus, species, speciesGroup, subfamily, and subspecies). Users can decide which level is appropriate, for example one might choose to exclude all unidentified birds (taxon_id = UNBI), where no further details are available below the class level (Aves sp.). The sampling protocol has evolved over time, so users are advised to check whether the ‘samplingProtocolVersion’ associated with bird point count data (‘DP1.10003.001’) fits their data requirements and subset as necessary. Older versions of protocols can be found at the <a href="https://data.neonscience.org/documents/-/document_library_display/JEygRkSpUBoq/view/1883155?_110_INSTANCE_JEygRkSpUBoq_topLink=home&amp;_110_INSTANCE_JEygRkSpUBoq_delta1=20&amp;_110_INSTANCE_JEygRkSpUBoq_keywords=&amp;_110_INSTANCE_JEygRkSpUBoq_advancedSearch=false&amp;_110_INSTANCE_JEygRkSpUBoq_andOperator=true&amp;p_r_p_564233524_resetCur=false&amp;_110_INSTANCE_JEygRkSpUBoq_delta2=20&amp;_110_INSTANCE_JEygRkSpUBoq_cur2=1">NEON document library</a>.</p>
@@ -554,7 +552,7 @@ Invertebrate bycatch is pooled to the plot level and archived. Vertebrate bycatc
 <p>Field season sampling begins when the first mosquito is detected during off season sampling. Technicians deploy traps at all 10 dedicated mosquito trap locations per site. Traps remain out for a 24-hour period, or sampling bout, and bouts occur every two or four weeks at core and relocatable terrestrial sites, respectively. During the sampling bout, traps are serviced twice and yield one night-active sample, collected at dawn or about eight hours after the trap was set, and one day-active sample, collected at dusk or ~16 hours after the trap was set. Thus, a 24-hour sampling bout yields 20 samples from 10 traps.</p>
 <p>NEON collects mosquito specimens using Center for Disease Control (CDC) CO<sub>2</sub> light traps. These traps have been used by other public health and mosquito-control agencies for a half-century, so that NEON mosquito data align across NEON field sites and with existing long-term data sets. A CDC CO<sub>2</sub> light trap consists of a cylindrical insulated cooler that contains dry ice, a plastic rain cover attached to a battery powered light/fan assembly, and a mesh collection cup. During deployment, the dry ice sublimates and releases CO<sub>2</sub>. Mosquitoes attracted to the CO<sub>2</sub> bait are sucked into the mesh collection cup by the battery-powered fan, where they remain alive until trap collection.</p>
 <p>Following field collection, NEON’s field ecologists process, package, and ship the samples to an external lab where mosquitoes are identified to species and sex (when possible). A subset of identified mosquitoes are tested for infection by pathogens to quantify the presence/absence and prevalence of various arboviruses. Some mosquitoes are set aside for DNA barcode analysis as well as long-term archiving. Particularly rare or difficult to identify mosquito specimens are prioritized for DNA barcoding. More details can be found in <span class="citation"><a href="#ref-hoekman2016design" role="doc-biblioref">Hoekman et al.</a> (<a href="#ref-hoekman2016design" role="doc-biblioref">2016</a>)</span>.</p>
-<p><strong>Data Wrangling Decisions</strong> The mosquito data product (<code>DP1.10043.001</code>) consists of four data frames: trapping data (<code>mos_trapping</code>), sorting data (<code>mos_sorting</code>), archiving data (<code>mos_archivepooling</code>), and expert taxonomist processed data (<code>mos_expertTaxonomistIDProcessed</code>). We first removed rows (records) with missing information about location, collection date, and sample or subsample ID for all data frames. We then merged all four data frames into one, wherein we only kept records for target taxa (i.e., <code>targetTaxaPresent == &quot;Y&quot;</code>) with no known compromised sampling condition (i.e., <code>sampleCondition == &quot;No known compromise&quot;</code>). We further removed a small number of records with species identified only to the family level; all remaining records were identified at least to the genus level. We estimated the total individual count per trap-hour for each species within a trap as <code>(individualCount/subsampleWeight) * totalWeight / trapHours</code>. We then removed columns that were not likely to be used for calculating biodiversity values.</p>
+<p><strong>Data Wrangling Decisions</strong> The mosquito data product (<code>DP1.10043.001</code>) consists of four data frames: trapping data (<code>mos_trapping</code>), sorting data (<code>mos_sorting</code>), archiving data (<code>mos_archivepooling</code>), and expert taxonomist processed data (<code>mos_expertTaxonomistIDProcessed</code>). We first removed rows (records) with missing information about location, collection date, and sample or subsample ID for all data frames. We then merged all four data frames into one, wherein we only kept records for target taxa (i.e., targetTaxaPresent = “Y”) with no known compromised sampling condition (i.e., sampleCondition = “No known compromise”). We further removed a small number of records with species identified only to the family level; all remaining records were identified at least to the genus level. We estimated the total individual count per trap-hour for each species within a trap as <code>(individualCount/subsampleWeight) * totalWeight / trapHours</code>. We then removed columns that were not likely to be used for calculating biodiversity values.</p>
 </div>
 <div id="small-mammals" class="section level3">
 <h3>Small Mammals</h3>
@@ -563,7 +561,7 @@ Invertebrate bycatch is pooled to the plot level and archived. Vertebrate bycatc
 </div>
 <div id="soil-microbes" class="section level3">
 <h3>Soil Microbes</h3>
-<p><strong>NEON Sampling Design</strong> Soil samples are collected at ten 40 x 40 m2 NEON plots per site. Four plots are within the tower airshed (tower plots), and six plots are distributed across the landscape (gradient plots). At each sampling time, soils are sampled from three of four subplots, and one sample is collected from a randomly-generated XY coordinate location within each subplot. At each sampling location, soils are taken at the surface horizon most years, but from both organic and mineral horizons every five years during coordinated microbe/biogeochemistry bouts. Most sites, except for the boreal/arctic sites, are sampled three times a year, once at peak vegetation greenness and two other times bracketing that period. This results in ~10 plots * 3 locations * 1 or 2 horizons * 3 periods = 90 - 180 soil samples per site per year for most sites. Samples for microbial biomass, composition, and metagenomics are stored on dry ice and shipped to an external lab (variable depending on year) for downstream processing.</p>
+<p><strong>NEON Sampling Design</strong> Soil samples are collected at ten 40 m <span class="math inline">\(\times\)</span> 40 m NEON plots per site. Four plots are within the tower airshed (tower plots), and six plots are distributed across the landscape (gradient plots). At each sampling time, soils are sampled from three of four subplots, and one sample is collected from a randomly-generated XY coordinate location within each subplot. At each sampling location, soils are taken at the surface horizon most years, but from both organic and mineral horizons every five years during coordinated microbe/biogeochemistry bouts. Most sites, except for the boreal/arctic sites, are sampled three times a year, once at peak vegetation greenness and two other times bracketing that period. This results in ~10 plots <span class="math inline">\(\times\)</span> 3 locations <span class="math inline">\(\times\)</span> 1 or 2 horizons <span class="math inline">\(\times\)</span> 3 periods = 90 - 180 soil samples per site per year for most sites. Samples for microbial biomass, composition, and metagenomics are stored on dry ice and shipped to an external lab (variable depending on year) for downstream processing.</p>
 <p><strong>Data Wrangling Decisions</strong> Unlike other NEON biodiversity data products, the soil microbial data product (<code>DP1.10107.001</code>) requires significant pre-processing to go from raw sequence data to a community matrix, and the exact bioinformatics methods will vary depending on use case. Briefly, major decisions during this process will depend on whether users are working with fungal (ITS) or bacterial (16S) data, if the goal is to maximize read quality and taxonomic resolution vs. number of reads retained through the quality filter process, and whether to remove or retain reverse complement reads for a merged sequence. The full description of a suggested bioinformatics pipeline, how to run sensitivity analyses on user-defined parameters, accompanying code, and vignettes are described in Qin et al. in this issue. At the end of the suggested bioinformatics pipeline, users will have a phyloseq object, which is a commonly-used format for sequence-based analysis software. The phyloseq object will contain a table of ASV (amplicon sequence variant) sequences, a table of taxonomic assignments, and soil chemical and physical data associated with corresponding sample locations and sampling bouts.</p>
 <p>Note that NEON provides both ITS and 16S marker gene sequence data for soil, benthic, and surface water microbes in data products DP1.10108.001, DP1.20280.001, and DP1.20282.001, respectively. Based on the input from the potential data user community, NEON staff scientists have recently developed an in-house bioinformatics pipeline to produce associated derived soil, benthic, and surface water microbe community composition data products, which are published as DP1.10081.001, DP1.20086.001, and DP1.20141.001, respectively. However, at the time of writing this, the completed community composition data products have not been fully published; thus, they focus on the soil microbial marker gene sequences data product (DP1.10108.001), which has the most extensive spatial and temporal coverage for data availability out of the marker gene sequence data products.</p>
 </div>
@@ -624,7 +622,7 @@ Invertebrate bycatch is pooled to the plot level and archived. Vertebrate bycatc
 
 <table class="table table-striped table-condensed table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:dataSummary">Table 2: </span>Summary of data products included in this study (as of 14 March, 2021). Users can call the R objects in the <code>R object</code> column from the R data package <code>neonDivData</code> to get the standardized data for specific taxonomic groups.
+<span id="tab:dataSummary">Table 2: </span>Summary of data products included in this study (as of 15 March, 2021). Users can call the R objects in the <code>R object</code> column from the R data package <code>neonDivData</code> to get the standardized data for specific taxonomic groups.
 </caption>
 <thead>
 <tr>
@@ -831,26 +829,6 @@ data_small_mammal
 </tr>
 <tr>
 <td style="text-align:left;">
-Tick_pathogens
-</td>
-<td style="text-align:left;">
-data_tick_pathogen
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-15
-</td>
-<td style="text-align:left;">
-2014-04-17
-</td>
-<td style="text-align:left;">
-2018-10-03
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 Ticks
 </td>
 <td style="text-align:left;">
@@ -867,6 +845,26 @@ data_tick
 </td>
 <td style="text-align:left;">
 2019-03-18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tick_pathogens
+</td>
+<td style="text-align:left;">
+data_tick_pathogen
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+2014-04-17
+</td>
+<td style="text-align:left;">
+2018-10-03
 </td>
 </tr>
 <tr>
@@ -926,7 +924,7 @@ Figure 3: Rarefaction of beetle abundance data from collections made at the Oak 
 </div>
 <div id="discussion-or-how-to-maintain-and-update-standardized-neon-organismal-data" class="section level1">
 <h1>Discussion (or how to maintain and update standardized NEON organismal data)</h1>
-<p>NEON organismal data hold enormous potential to understand biodiversity change across space and time <span class="citation"><a href="#ref-jones2021synergies" role="doc-biblioref">Jones et al.</a> (<a href="#ref-jones2021synergies" role="doc-biblioref">2021</a>)</span>. Multiple biodiversity research and education programs have used NEON data even before NEON became fully operational in May 2019 <span class="citation">(e.g., <a href="#ref-farrell2018power" role="doc-biblioref">Farrell and Carey 2018</a>, <a href="#ref-read2018among" role="doc-biblioref">Read et al. 2018</a>)</span>. With the expected long-term investment to maintain NEON over the next 30 years, NEON organismal data will be an invaluable tool for understanding and tracking biodiversity change. NEON data are unique relative to data collected by other similar networks (e.g., LTER, CZO) because observation collection protocols are standardized across sites, enabling researchers to address macroscale questions in environmental science without having to synthesize disparate data sets that differ in collection methods <span class="citation">(<a href="#ref-jones2021synergies" role="doc-biblioref">Jones et al. 2021</a>)</span>. The data package presented in this paper holds great potential in making NEON data easier to use and more comparable across studies. Whereas the data collection protocols implemented by NEON staff are standardized, the decisions NEON data users make in wrangling their data after downloading NEON’s open data will not necessarily be similar unless the user community adopts a community data standard, such as the ecocomDP data model. Adopting such a data model early on in the life of the observatory will ensure that results of studies using NEON data will be easier to compare and synthesize. By providing a standardized and easy-to-use data package of NEON organismal data, our effort here will significantly lower the barriers to use the NEON organismal data for biodiversity research by many current and future researchers and will ensure that studies using NEON organismal data are comparable.</p>
+<p>NEON organismal data hold enormous potential to understand biodiversity change across space and time <span class="citation">(<a href="#ref-balch2019neon" role="doc-biblioref">Balch et al. 2019</a>, <a href="#ref-jones2021synergies" role="doc-biblioref">Jones et al. 2021</a>)</span>. Multiple biodiversity research and education programs have used NEON data even before NEON became fully operational in May 2019 <span class="citation">(e.g., <a href="#ref-farrell2018power" role="doc-biblioref">Farrell and Carey 2018</a>, <a href="#ref-read2018among" role="doc-biblioref">Read et al. 2018</a>)</span>. With the expected long-term investment to maintain NEON over the next 30 years, NEON organismal data will be an invaluable tool for understanding and tracking biodiversity change. NEON data are unique relative to data collected by other similar networks (e.g., LTER, CZO) because observation collection protocols are standardized across sites, enabling researchers to address macroscale questions in environmental science without having to synthesize disparate data sets that differ in collection methods <span class="citation">(<a href="#ref-jones2021synergies" role="doc-biblioref">Jones et al. 2021</a>)</span>. The data package presented in this paper holds great potential in making NEON data easier to use and more comparable across studies. Whereas the data collection protocols implemented by NEON staff are standardized, the decisions NEON data users make in wrangling their data after downloading NEON’s open data will not necessarily be similar unless the user community adopts a community data standard, such as the ecocomDP data model. Adopting such a data model early on in the life of the observatory will ensure that results of studies using NEON data will be easier to compare and synthesize. By providing a standardized and easy-to-use data package of NEON organismal data, our effort here will significantly lower the barriers to use the NEON organismal data for biodiversity research by many current and future researchers and will ensure that studies using NEON organismal data are comparable.</p>
 <p>There are some important notes about the data package we provided. First, our processes assume that NEON already did its best to make sure that species identifications are correct. Since records may be identified to any level of taxonomic resolution, and IDs above the genus level may not be useful for most biodiversity projects, we removed records with such IDs for groups that are relatively easier to identify (i.e., fish, plant, small mammals) or have very few taxon IDs that are above genus level (i.e., mosquito). However, for groups that are hard to identify (i.e., algae, beetle, bird, macroinvertebrate, tick, and tick pathogen), we decided to keep all records no matter what level of taxon IDs they have. Such information can be useful if we are interested in questions such as species-to-genus ratio or species rarefaction curves at different taxonomic levels (e.g., Fig. <a href="#fig:Fig3Curve">3</a>). Users thus need to think carefully about which level of taxon IDs they need for their research. Another note regarding species names is the term ‘sp.’ vs ‘spp.’ across NEON organismal data collections. The term ‘sp.’ refers to a single morphospecies whereas the term ‘spp.’ refers to more than one morphospecies. This is an important point to consider for community ecology biodiversity analyses because it may add uncertainty into estimates of biodiversity metrics such as species richness. Second, we kept records without any observed species/individuals in some taxonomic groups (i.e., beetle, bird, small mammal), thus preserving “true zeroes.” Such empty records provide critical information about sampling efforts. For example, if two sites both have the same number of small mammals during the same time period, however, one site has many more empty records (traps), then we can infer that the abundances of small mammals are lower than the other site. If such information is not needed in a project, then they can be removed. Third, for algae, birds, and beetles, we added standardized measurements as density (algae) and number of fish caught per hour or number of beetles caught per trap night in the data package. And finally, there are other organismal groups (Aquatic Microbes and Aquatic Plants; soil microbes are covered in Qin et al. in this issue) not included in this study given the complexity of the data.</p>
 <p>All code for the Data Wrangling Decisions are available within the R package <code>ecocomDP</code> (Github and Zenodo, <a href="https://github.com/EDIorg/ecocomDP" class="uri">https://github.com/EDIorg/ecocomDP</a>). Users can modify the code if they need to make different decisions during the data wrangling process and correct any mistakes in our code by submitting a pull request to our Github repository. If researchers wish to generate their own derived organismal data sets from NEON data with slightly different decisions than the ones outlined in this paper, we recommend that they use the ecocomDP framework, contribute their workflow to the ecocomDP R package, upload the data to the EDI repository, and cite their data with the discoverable DOI given to them by EDI. Note that the ecocomDP data model was intended for community ecology analyses and may not be well suited for population-level analyses.</p>
 <p>Because <code>ecocomDP</code> is an R package to host code to harmonize different datasets following the ecocomDP format, we developed an R data package <code>neonDivData</code> to host and distribute the standardized NEON organismal data derived from <code>ecocomDP</code>. A separate dedicated data package has several advantages. First, it is easier and readily to use and saves time for users to run the code in <code>ecocomDP</code> to download and standardize NEON data products. Second, it is also easy to update the data package when new raw data products are uploaded by NEON to their data portal; and the updating process does not require any change in the <code>ecocomDP</code> package. This is ideal because <code>ecocomDP</code> harmonizes many different datasets besides NEON data. Third, the <a href="(https://github.com/daijiang/neonDivData)">Github repository page of <code>neonDivData</code></a> can serve as a discussion forum for researchers regarding the NEON data products without competing for attention in the <code>ecocomDP</code> Github repository page. By opening issues on the Github repository, users can discuss and contribute to improve our workflow of standardizing NEON data products. Users can also discuss whether there are other data models that the NEON user community should adopt at the inception of the observatory. As the observatory moves forward, this is an important discussion for the NEON user community and NEON technical working groups to promote synthesis of NEON data with data from other efforts (e.g., LTER, CZO, Ameriflux, the International LTER, National Phenology Network, Long Term Agricultural Research Network).</p>
