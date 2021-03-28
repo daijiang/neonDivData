@@ -8,20 +8,24 @@
 
 if(!require(neonDivData)) devtools::install_github("daijiang/neonDivData")
 library(neonDivData)
+library(dplyr)
+
+# filter provisional data out
+table(data_algae$release)
 
 # save all flatterned data frames to csv
-write.csv(data_algae, file = "data_algae.csv")
-write.csv(data_beetle, file = "data_beetle.csv")
-write.csv(data_bird, file = "data_bird.csv")
-write.csv(data_fish, file = "data_fish.csv")
-write.csv(data_herp_bycatch, file = "data_herp_bycatch.csv")
-write.csv(data_macroinvertebrate, file = "data_macroinvertebrate.csv")
-write.csv(data_mosquito, file = "data_mosquito.csv")
-write.csv(data_plant, file = "data_plant.csv")
-write.csv(data_small_mammal, file = "data_small_mammal.csv")
-write.csv(data_tick, file = "data_tick.csv")
-write.csv(data_tick_pathogen, file = "data_tick_pathogen.csv")
-write.csv(data_zooplankton, file = "data_zooplankton.csv")
+write.csv(filter(data_algae, release != "PROVISIONAL"), file = "data_algae.csv")
+write.csv(filter(data_beetle, release != "PROVISIONAL"), file = "data_beetle.csv")
+write.csv(filter(data_bird, release != "PROVISIONAL"), file = "data_bird.csv")
+write.csv(filter(data_fish, release != "PROVISIONAL"), file = "data_fish.csv")
+write.csv(filter(data_herp_bycatch, release != "PROVISIONAL"), file = "data_herp_bycatch.csv")
+write.csv(filter(data_macroinvertebrate, release != "PROVISIONAL"), file = "data_macroinvertebrate.csv")
+write.csv(filter(data_mosquito, release != "PROVISIONAL"), file = "data_mosquito.csv")
+write.csv(filter(data_plant, release != "PROVISIONAL"), file = "data_plant.csv")
+write.csv(filter(data_small_mammal, release != "PROVISIONAL"), file = "data_small_mammal.csv")
+write.csv(filter(data_tick, release != "PROVISIONAL"), file = "data_tick.csv")
+write.csv(filter(data_tick_pathogen, release != "PROVISIONAL"), file = "data_tick_pathogen.csv")
+write.csv(filter(data_zooplankton, release != "PROVISIONAL"), file = "data_zooplankton.csv")
 
 # location info are already in the above data objects,
 # but I did extract all of them and put them in one file
@@ -30,7 +34,7 @@ write.csv(neon_location, file = "neon_location.csv")
 # taxa code and scientific names
 write.csv(neon_taxa, file = "neon_taxa.csv")
 
-
+# how to deposit csv files to EDI? Or just rds file?
 
 # remove all RDS files
 system("rm -r data-raw/neon_div_data data-raw/NEON_raw_data")
