@@ -6,6 +6,30 @@
 
 # L2 data frames that will be available in this data package
 
+if(!require(neonDivData)) devtools::install_github("daijiang/neonDivData")
+library(neonDivData)
+
+# save all flatterned data frames to csv
+write.csv(data_algae, file = "data_algae.csv")
+write.csv(data_beetle, file = "data_beetle.csv")
+write.csv(data_bird, file = "data_bird.csv")
+write.csv(data_fish, file = "data_fish.csv")
+write.csv(data_herp_bycatch, file = "data_herp_bycatch.csv")
+write.csv(data_macroinvertebrate, file = "data_macroinvertebrate.csv")
+write.csv(data_mosquito, file = "data_mosquito.csv")
+write.csv(data_plant, file = "data_plant.csv")
+write.csv(data_small_mammal, file = "data_small_mammal.csv")
+write.csv(data_tick, file = "data_tick.csv")
+write.csv(data_tick_pathogen, file = "data_tick_pathogen.csv")
+write.csv(data_zooplankton, file = "data_zooplankton.csv")
+
+# location info are already in the above data objects,
+# but I did extract all of them and put them in one file
+write.csv(neon_location, file = "neon_location.csv")
+
+# taxa code and scientific names
+write.csv(neon_taxa, file = "neon_taxa.csv")
+
 
 
 # remove all RDS files
