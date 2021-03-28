@@ -9,6 +9,7 @@ A data frame (also a tibble) with the following columns:
 \itemize{
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
+\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
 \item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name

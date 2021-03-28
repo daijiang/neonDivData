@@ -26,6 +26,7 @@
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
+#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
 #' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
@@ -34,7 +35,6 @@
 #' - `variable_name`: The variable name(s) represented by the `value` column.
 #' - `value`: Value of the variable(s) specified by `variable_name`.
 #' - `unit`: Unit of the values in the `value` column.
-#' - `neon_event_id`: NEON event ID.
 #' - `samplingMethod`: Name or code for the method used to collect or test a sample.
 #' - `totalSampledArea`: Total area sampled (square Meter).
 #' - `targetTaxaPresent`: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
@@ -44,6 +44,9 @@
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.
+#' - `elevation`: Elevation (in meters) above sea level.
+#' - `nlcdClass`: National Land Cover Database Vegetation Type Name.
+#' - `plotType`: NEON plot type in which sampling occurred: tower, distributed or gradient.
 #'
 #' @author Wynne Moss, Melissa Chen, Brendan Hobart, Matt Bitters
 #'

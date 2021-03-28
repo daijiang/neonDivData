@@ -20,6 +20,7 @@
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
+#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
 #' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
@@ -41,6 +42,9 @@
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.
+#' - `plotType`: NEON plot type in which sampling occurred: tower, distributed or gradient.
+#' - `nlcdClass`: National Land Cover Database Vegetation Type Name.
+#'
 #'
 #' @source <https://data.neonscience.org>
 #' @references Barnett, D.T., Adler, P.B., Chemel, B.R., Duffy, P.A., Enquist, B.J., Grace, J.B., Harrison, S., Peet, R.K., Schimel, D.S., Stohlgren, T.J. and Vellend, M., 2019. The plant diversity sampling design for the national ecological observatory network. Ecosphere, 10(2), p.e02603.

@@ -11,6 +11,7 @@
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
+#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
 #' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
@@ -19,21 +20,21 @@
 #' - `variable_name`: The variable name(s) represented by the `value` column.
 #' - `value`: Value of the variable(s) specified by `variable_name`.
 #' - `unit`: Unit of the values in the `value` column.
+#' - `reachID`: An identifier for the set of information associated with the reach.
 #' - `samplerType`: Type of sampler used to collect the sample.
 #' - `fixedRandomReach`:	An indication of whether the reach is fixed or random.
 #' - `measuredReachLength`:	The length of the reach as measured by the technicians when the reach was established (meters).
 #' - `efTime`: Operational time of the electrofisher (second).
 #' - `passStartTime`: The start time of the pass.
 #' - `passEndTime`:	The end time of the pass.
-#' - `passNumber`:	Number of the sampling passed within a reach.
 #' - `mean_efishtime`: Average efish time (in second).
+#' - `release`:	Version of data release by NEON.
 #' - `netSetTime`: Time the net was set.
 #' - `netEndTime`: Time the net was pulled.
 #' - `netDeploymentTime`:	Total time of deployment of the net (hours).
 #' - `netLength`: Length of the net (meter).
 #' - `netDepth`:	Deployment depth of the net (meter).
 #' - `efTime2`:	Operational time of the electrofisher for the second electrofisher (second).
-#' `remarks`: Remarks of record.
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.

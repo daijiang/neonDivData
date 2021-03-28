@@ -10,7 +10,7 @@ library(ecocomDP)
 library(tidyverse)
 
 # user provide input directory
-my_in_dir <- "data-raw"
+my_in_dir <- "data-raw/neon_div_data"
 
 
 # # read dp catalog
@@ -24,7 +24,7 @@ my_in_dir <- "data-raw"
 read_data_package <- function(
   taxon_groups = NULL,
   data_package_ids = NULL,
-  in_dir = "data-raw",
+  in_dir = "neon_div_data",
   return_flat_tables = TRUE){
 
   data_catalog <- readr::read_delim(file = paste0(in_dir, "/dataset_log.txt"),
@@ -34,10 +34,12 @@ read_data_package <- function(
   data_catalog_data_package_ids <- data.frame()
 
   if(!is.null(taxon_groups)) data_catalog_taxon_groups <-
-    dplyr::filter(data_catalog, taxon_group %in% taxon_groups)
+    data_catalog %>%
+    dplyr::filter(taxon_group %in% taxon_groups)
 
   if(!is.null(data_package_ids)) data_catalog_data_package_ids <-
-    dplyr::filter(data_catalog, data_package_id %in% data_package_ids)
+    data_catalog %>%
+    dplyr::filter(data_package_id %in% data_package_ids)
 
   data_catalog_filtered <- dplyr::bind_rows(
     data_catalog_taxon_groups,
@@ -56,14 +58,14 @@ read_data_package <- function(
     function(i){
       dat <- list()
       try({
-        dat <- readRDS(file = paste0(in_dir, "/", data_catalog$data_package_id[i],".RDS"))
+        dat <- readRDS(file = paste0(in_dir,"/",data_catalog$data_package_id[i],".RDS"))
         names(dat) <- paste0(
           data_catalog$taxon_group[i],"_",
           data_catalog$data_package_id[i])
       })
-      if(length(dat) == 0) warning(
+      if(length(dat)==0) warning(
         paste0(data_catalog$data_package_id[i], " not found in ",in_dir))
-      if(length(dat) > 0 ) message(paste0("Successfully loaded ",names(dat)))
+      if(length(dat) >0 ) message(paste0("Successfully loaded ",names(dat)))
       return(dat)
     }, simplify = TRUE)
 
@@ -73,18 +75,19 @@ read_data_package <- function(
     function(i){
       dat <- list()
       try({
-        dat_list <- readRDS(file = paste0(in_dir, "/", data_catalog$data_package_id[i], ".RDS"))
-        dat_flat <- dplyr::mutate(
-          ecocomDP::flatten_ecocomDP(dat_list[[1]]$tables),
-          taxon_group = data_catalog$taxon_group[i]) %>% tibble::as_tibble()
+
+        dat_list <- readRDS(file = paste0(in_dir,"/",data_catalog$data_package_id[i],".RDS"))
+        dat_flat <- tibble::tibble(
+          taxon_group = data_catalog$taxon_group[i],
+          ecocomDP::flatten_ecocomDP(dat_list[[1]]$tables))
         dat <- list(dat_flat)
         names(dat) <- paste0(
-          data_catalog$taxon_group[i],"_",
+          data_catalog$taxon_group[i], "_",
           data_catalog$data_package_id[i])
       })
-      if(length(dat) == 0) warning(
+      if(length(dat)==0) warning(
         paste0(data_catalog$data_package_id[i], " not found in ",in_dir))
-      if(length(dat) > 0 ) message(paste0("Successfully loaded ",names(dat)))
+      if(length(dat) >0 ) message(paste0("Successfully loaded ",names(dat)))
       return(dat)
     }, simplify = TRUE)
 
@@ -117,7 +120,7 @@ map(data_all, names)
 
 map(data_all, function(x) table(x$taxon_rank))
 
-data_loc= lapply(data_all, function(x) select(x, location_id, latitude, longitude, elevation) %>% distinct)
+data_loc = lapply(data_all, function(x) select(x, location_id, latitude, longitude, elevation) %>% distinct)
 # confirm that each location_id has only one lat/long/elev combination
 all(!map_lgl(data_loc, function(x) any(duplicated(x$location_id))))
 
@@ -167,7 +170,7 @@ neon_location = mutate(neon_location,
                        plotID2 = ifelse(grepl("[.]AOS[.]", plotID2), NA, plotID2))
 sum(!is.na(neon_location$plotID))
 sum(neon_location$plotID == neon_location$plotID2, na.rm = T) # confirm existing plotID are the same
-filter(neon_location, !grepl("AOS", location_id), is.na(plotID)) %>% View()
+filter(neon_location, !grepl("AOS", location_id), is.na(plotID))
 neon_location = select(neon_location, -plotID) %>%
   rename(plotID = plotID2)
 neon_location = select(neon_location, -location_name) %>%
@@ -189,19 +192,45 @@ usethis::use_data(neon_location, overwrite = TRUE)
 # decide to keep all location information in the observation data frames
 # neon_location may be useful to just know where sites are from one file
 
+# write test for nativeStatusCode
+# should be in these groups: beetles, herp by catch, bird, mosquito, plant, small mammal
+if (sum(map_lgl(map(data_all, names), function(x) "nativeStatusCode" %in% x )) < 6)
+  message("Some taxa miss nativeStatusCode")
+
+
 # simplify observation data ----
 # also to save space, remove observation_id, etc. that are not essential for
 # biodiversity calculation
 all(map_lgl(data_all, function(x) all(x$location_id == x$location_name)))
+map_lgl(data_all, function(x) all(x$observation_id == x$event_id))
+View(data_all$ALGAE_neon.ecocomdp.20166.001.001.20210322205910)
+View(data_all$SMALL_MAMMALS_neon.ecocomdp.10072.001.001.20210322212412)
+data_all[map_lgl(data_all, function(x) all(x$observation_id == x$event_id))]
+map(data_all, names)
+map(data_all, function(x) any(duplicated(x$observation_id)))
+map(data_all, function(x) any(duplicated(x$event_id)))
+
+# creat a unique_sample_id ?
+data_all = map(data_all, function(x){
+  if(all(x$event_id == x$observation_id)){
+    x$unique_sample_id = x$neon_event_id
+  } else {
+    x$unique_sample_id = x$event_id
+  }
+  x
+})
+
 data_all2 = lapply(data_all, function(x)
-  dplyr::select(x, -any_of(c("observation_id", "event_id", "package_id", "authority_system",
+  dplyr::select(x, -any_of(c("observation_id", "event_id",
+                             "package_id", "authority_system",
                       "identificationReferences", "laboratoryName",
                       "location_name", "aquaticSiteType", "domainID", "publicationDate",
+                      "neon_event_id", "geodeticDatum",
                       # "plotType", "samplerType", "habitatType",
                       # "observedHabitat", "latitude", "longitude", "elevation",
                       "taxon_group"
                       ))) %>% dplyr::distinct() %>%
-    dplyr::relocate(any_of(c("siteID", "plotID", "pointID")), .after = location_id) %>%
+    dplyr::relocate(any_of(c("siteID", "plotID", "pointID", "unique_sample_id")), .after = location_id) %>%
     dplyr::relocate(taxon_name, taxon_rank, .after = taxon_id)
   )
 
@@ -224,9 +253,10 @@ data_zooplankton = data_all2[[grep(pattern = "ZOOPLANKTON", x = names(data_all2)
 # remove variables that are not really important for users
 table(gsub("^[A-Z]{4}|[0-9]", "", data_algae$parentSampleID))
 # neon_event_id is just site and date
-data_algae = select(data_algae, -parentSampleID, -neon_sample_id,  -neon_event_id)
+data_algae = select(data_algae, -parentSampleID, -neon_sample_id)
 
-data_beetle = select(data_beetle, -sampleID) # just plotID + trapID + date
+data_beetle = select(data_beetle, -sampleID, -plotType) # just plotID + trapID + date
+# plotType are all "distributed"
 
 data_bird = select(data_bird, -neon_event_id, -endCloudCoverPercentage) # just plotID + pointID + date
 
@@ -236,8 +266,6 @@ data_fish = mutate(data_fish, pointID = gsub(".*(point.*)$", "\\1", location_id)
 # to be consistent with the manuscript
 
 # data_herp_bycatch seems fine
-
-data_macroinvertebrate = select(data_macroinvertebrate, -neon_event_id) # just siteID + date
 data_macroinvertebrate = mutate(data_macroinvertebrate,
                                 ponarDepth = as.numeric(ponarDepth),
                                 snagLength = as.numeric(snagLength),
@@ -249,7 +277,8 @@ table(data_plant$sample_area_m2)
 table(data_plant$variable_name)
 table(data_plant$unit)
 mean(is.na(data_plant$value))
-data_plant = mutate(data_plant, variable_name = ifelse(is.na(value), "presence absence", variable_name),
+data_plant = mutate(data_plant,
+                    # variable_name = ifelse(is.na(value), "presence absence", variable_name),
                     unit = ifelse(is.na(value), NA, unit),
                     subplot_id = substr(subplotID, 1, 2),
                     subsubplot_id = substr(subplotID, 4, 4),
@@ -257,14 +286,16 @@ data_plant = mutate(data_plant, variable_name = ifelse(is.na(value), "presence a
   relocate(subplot_id, subsubplot_id, .after = subplotID) %>%
   relocate(presence_absence, .after = unit)
 
-data_small_mammal = select(data_small_mammal, -neon_event_id)  # just date + location_id
+data_small_mammal
 
 data_tick = select(data_tick, -neon_sample_id) # just plotID + date
 
 # data_tick_pathogen seems fine
 
-data_zooplankton = select(data_zooplankton, -neon_event_id, -neon_sample_id)
+data_zooplankton = select(data_zooplankton, -neon_sample_id)
 # just location id and date or siteID and date
+
+map(data_all2, function(x) table(x$variable_name))
 
 usethis::use_data(data_algae, overwrite = TRUE)
 usethis::use_data(data_beetle, overwrite = TRUE)
@@ -280,7 +311,7 @@ usethis::use_data(data_tick_pathogen, overwrite = TRUE)
 usethis::use_data(data_zooplankton, overwrite = TRUE)
 
 # data summary ----
-data_summary <- readr::read_delim(file = paste0(in_dir, "/dataset_log.txt"), delim = '\t')
+data_summary <- readr::read_delim(file = paste0(my_in_dir, "/dataset_log.txt"), delim = '\t')
 data_summary$r_object = NA
 data_summary$r_object[data_summary$original_neon_data_product_id == "DP1.20166.001"] = "data_algae"
 data_summary$r_object[data_summary$original_neon_data_product_id == "DP1.10022.001"] = "data_beetle"
@@ -294,6 +325,9 @@ data_summary$r_object[data_summary$original_neon_data_product_id == "DP1.10072.0
 data_summary$r_object[data_summary$original_neon_data_product_id == "DP1.10093.001"] = "data_tick"
 data_summary$r_object[data_summary$original_neon_data_product_id == "DP1.10092.001"] = "data_tick_pathogen"
 data_summary$r_object[data_summary$original_neon_data_product_id == "DP1.20219.001"] = "data_zooplankton"
+
+# data_summary$start_date[data_summary$r_object == "data_bird"] = lubridate::date(min(data_bird$observation_datetime, na.rm = T))
+# data_summary$end_date[data_summary$r_object == "data_bird"] = lubridate::date(max(data_bird$observation_datetime, na.rm = T))
 
 data_summary$variable_names = NA
 data_summary$variable_names[data_summary$r_object == "data_algae"] = paste(unique(data_algae$variable_name), collapse = " OR ")
@@ -326,7 +360,5 @@ data_summary$units = str_replace_all(data_summary$units, "NA", "Unitless")
 
 usethis::use_data(data_summary, overwrite = TRUE)
 
-# remove all RDS files
-file.remove("data-raw/dataset_log.txt")
-system("rm data-raw/neon.ecocomdp*.RDS")
+
 

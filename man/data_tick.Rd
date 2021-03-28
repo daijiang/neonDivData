@@ -10,6 +10,7 @@ A data frame (also a tibble) with the following columns:
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
+\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
 \item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
@@ -18,7 +19,6 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Value of the variable(s) specified by \code{variable_name}.
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{neon_event_id}: NEON event ID.
 \item \code{samplingMethod}: Name or code for the method used to collect or test a sample.
 \item \code{totalSampledArea}: Total area sampled (square Meter).
 \item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
@@ -28,6 +28,9 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
+\item \code{elevation}: Elevation (in meters) above sea level.
+\item \code{nlcdClass}: National Land Cover Database Vegetation Type Name.
+\item \code{plotType}: NEON plot type in which sampling occurred: tower, distributed or gradient.
 }
 }
 \usage{

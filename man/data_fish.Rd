@@ -10,6 +10,7 @@ A data frame (also a tibble) with the following columns:
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
+\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
 \item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
@@ -18,21 +19,21 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Value of the variable(s) specified by \code{variable_name}.
 \item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{reachID}: An identifier for the set of information associated with the reach.
 \item \code{samplerType}: Type of sampler used to collect the sample.
 \item \code{fixedRandomReach}:	An indication of whether the reach is fixed or random.
 \item \code{measuredReachLength}:	The length of the reach as measured by the technicians when the reach was established (meters).
 \item \code{efTime}: Operational time of the electrofisher (second).
 \item \code{passStartTime}: The start time of the pass.
 \item \code{passEndTime}:	The end time of the pass.
-\item \code{passNumber}:	Number of the sampling passed within a reach.
 \item \code{mean_efishtime}: Average efish time (in second).
+\item \code{release}:	Version of data release by NEON.
 \item \code{netSetTime}: Time the net was set.
 \item \code{netEndTime}: Time the net was pulled.
 \item \code{netDeploymentTime}:	Total time of deployment of the net (hours).
 \item \code{netLength}: Length of the net (meter).
 \item \code{netDepth}:	Deployment depth of the net (meter).
 \item \code{efTime2}:	Operational time of the electrofisher for the second electrofisher (second).
-\code{remarks}: Remarks of record.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
