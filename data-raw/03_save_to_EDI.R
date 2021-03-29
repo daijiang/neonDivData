@@ -34,6 +34,9 @@ write.csv(neon_location, file = "neon_location.csv")
 # taxa code and scientific names
 write.csv(neon_taxa, file = "neon_taxa.csv")
 
+# summary information
+write.csv(neon_summary, file = "neon_summary.csv")
+
 # how to deposit csv files to EDI? Or just rds file?
 
 # remove all RDS files

@@ -18,21 +18,29 @@
 #' Additional variables were added and missing samples were retained in herp_bycatch.
 #'
 #' @format A data frame (tibble) with the following columns:
-#' - `namedLocation`: Name of the measurement location in the NEON database.
+#' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
-#' - `trapID`: Identifier for trap.
-#' - `setDate`: Date that trap was set
-#' - `collectDate`: Date of the collection event
-#' - `eventID`: Cleaned up identifier for the set of information associated with the event, which includes information about the place and time of the event
+#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
+#' - `observation_datetime`: Observation date and time.
+#' - `taxon_id`: Accepted species code, based on one or more sources.
+#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
+#'  of the lowest level taxonomic rank that can be determined.
+#' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
+#' - `variable_name`: The variable name(s) represented by the `value` column.
+#' - `value`: Value of the variable(s) specified by `variable_name`.
+#' - `unit`: Unit of the values in the `value` column.
 #' - `trappingDays`: Cleaned up decimal days between trap setting and collecting events
-#' - `taxonID`: Species code, based on one or more sources only provided for vert bycatch herp
-#' - `scientificName`: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined only provided for vert bycatch herp
-#' - `taxonRank`: The lowest level taxonomic rank that can be determined for the individual or specimen only provided for vert bycatch herp
-#' - `individualCount`: Number of individuals of the same type, summed across types for all sampleTypes but vert bycatch herp
+#' - `release`: Version of data release by NEON.
 #' - `nativeStatusCode`: 	The process by which the taxon became established in the location only provided for vert bycatch herp
+#' - `neon_trap_id`: Identifier for trap.
 #' - `remarksSorting`: Technician notes; free text comments accompanying the record from sorting table
 #' - `remarksFielddata`: Technician notes; free text comments accompanying the record from fielddata table
+#' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+#' - `elevation`: Elevation (in meters) above sea level.
+#' - `plotType`: NEON plot type in which sampling occurred: tower, distributed or gradient.
+#' - `nlcdClass`: National Land Cover Database Vegetation Type Name.
 #'
 #' @source <https://data.neonscience.org>
 #'

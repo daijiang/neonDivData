@@ -24,6 +24,7 @@ for taxonomic groups that are hard to identifiy (e.g. macroinvertebrate, beetle)
 \item \code{original_neon_data_product_id}: The NEON data product ID. See \code{neonUtilities:::table_types} for all
 available data types and their data product IDs provided by NEON.
 \item \code{original_neon_data_version}: NEON data release version.
+\item \code{original_neon_data_doi}: Original NEON data doi.
 \item \code{r_object}: The name of R objects for each taxonomic group. By calling the R objects, we can get the processed and standardized NEON organismal data for downstream diversity analysis.
 \item \code{variable_names}: The variable names that represent "abundance" information.
 \item \code{units}: The units of the \code{variable_names}.

@@ -7,21 +7,29 @@
 \format{
 A data frame (tibble) with the following columns:
 \itemize{
-\item \code{namedLocation}: Name of the measurement location in the NEON database.
+\item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{trapID}: Identifier for trap.
-\item \code{setDate}: Date that trap was set
-\item \code{collectDate}: Date of the collection event
-\item \code{eventID}: Cleaned up identifier for the set of information associated with the event, which includes information about the place and time of the event
+\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{observation_datetime}: Observation date and time.
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{variable_name}: The variable name(s) represented by the \code{value} column.
+\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{trappingDays}: Cleaned up decimal days between trap setting and collecting events
-\item \code{taxonID}: Species code, based on one or more sources only provided for vert bycatch herp
-\item \code{scientificName}: Scientific name, associated with the taxonID. This is the name of the lowest level taxonomic rank that can be determined only provided for vert bycatch herp
-\item \code{taxonRank}: The lowest level taxonomic rank that can be determined for the individual or specimen only provided for vert bycatch herp
-\item \code{individualCount}: Number of individuals of the same type, summed across types for all sampleTypes but vert bycatch herp
+\item \code{release}: Version of data release by NEON.
 \item \code{nativeStatusCode}: 	The process by which the taxon became established in the location only provided for vert bycatch herp
+\item \code{neon_trap_id}: Identifier for trap.
 \item \code{remarksSorting}: Technician notes; free text comments accompanying the record from sorting table
 \item \code{remarksFielddata}: Technician notes; free text comments accompanying the record from fielddata table
+\item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
+\item \code{elevation}: Elevation (in meters) above sea level.
+\item \code{plotType}: NEON plot type in which sampling occurred: tower, distributed or gradient.
+\item \code{nlcdClass}: National Land Cover Database Vegetation Type Name.
 }
 }
 \source{

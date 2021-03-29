@@ -20,6 +20,7 @@
 #' - `original_neon_data_product_id`: The NEON data product ID. See `neonUtilities:::table_types` for all
 #' available data types and their data product IDs provided by NEON.
 #' - `original_neon_data_version`: NEON data release version.
+#' - `original_neon_data_doi`: Original NEON data doi.
 #' - `r_object`: The name of R objects for each taxonomic group. By calling the R objects, we can get the processed and standardized NEON organismal data for downstream diversity analysis.
 #' - `variable_names`: The variable names that represent "abundance" information.
 #' - `units`: The units of the `variable_names`.
