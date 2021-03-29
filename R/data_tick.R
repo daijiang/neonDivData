@@ -44,7 +44,6 @@
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.
-#' - `elevation`: Elevation (in meters) above sea level.
 #' - `nlcdClass`: National Land Cover Database Vegetation Type Name.
 #' - `plotType`: NEON plot type in which sampling occurred: tower, distributed or gradient.
 #'

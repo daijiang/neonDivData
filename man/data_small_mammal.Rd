@@ -30,7 +30,6 @@ given location; 'N': Native; 'I': Introduced; 'UNK': Status unknown.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
-\item \code{elevation}: Elevation (in meters) above sea level.
 \item \code{plotType}: NEON plot type in which sampling occurred: tower, distributed or gradient.
 \item \code{nlcdClass}: National Land Cover Database Vegetation Type Name.
 }
