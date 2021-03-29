@@ -351,12 +351,12 @@ data_summary$units[data_summary$r_object == "data_fish"] = paste(unique(data_fis
 data_summary$units[data_summary$r_object == "data_herp_bycatch"] = paste(unique(data_herp_bycatch$unit), collapse = " OR ")
 data_summary$units[data_summary$r_object == "data_macroinvertebrate"] = paste(unique(data_macroinvertebrate$unit), collapse = " OR ")
 data_summary$units[data_summary$r_object == "data_mosquito"] = paste(unique(data_mosquito$unit), collapse = " OR ")
-data_summary$units[data_summary$r_object == "data_plant"] = paste(unique(data_plant$unit), collapse = " OR ")
+data_summary$units[data_summary$r_object == "data_plant"] = paste(na.omit(unique(data_plant$unit)), collapse = " OR ")
 data_summary$units[data_summary$r_object == "data_small_mammal"] = paste(unique(data_small_mammal$unit), collapse = " OR ")
 data_summary$units[data_summary$r_object == "data_tick"] = paste(unique(data_tick$unit), collapse = " OR ")
 data_summary$units[data_summary$r_object == "data_tick_pathogen"] = paste(unique(data_tick_pathogen$unit), collapse = " OR ")
 data_summary$units[data_summary$r_object == "data_zooplankton"] = paste(unique(data_zooplankton$unit), collapse = " OR ")
-data_summary$units = str_replace_all(data_summary$units, "NA", "Unitless")
+# data_summary$units = str_replace_all(data_summary$units, "NA", "Unitless")
 
 usethis::use_data(data_summary, overwrite = TRUE)
 
