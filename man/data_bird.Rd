@@ -11,6 +11,7 @@ A data frame (also a tibble) with the following columns:
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
 \item \code{pointID}: Identifier for a point location.
+\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
 \item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
@@ -29,6 +30,10 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{visualConfirmation}: Whether the individual(s) was (were) seen after the initial detection.
 \item \code{sexOrAge}: Sex of individual if detectable, age of individual if individual can not be sexed.
 \item \code{release}: Version of data release by NEON.
+\item \code{startCloudCoverPercentage}: Observer estimate of percent cloud cover at start of sampling.
+\item \code{endCloudCoverPercentage}: Observer estimate of percent cloud cover at end of sampling.
+\item \code{startRH}: Relative humidity as measured by handheld weather meter at the start of sampling.
+\item \code{endRH}: Relative humidity as measured by handheld weather meter at the end of sampling.
 \item \code{observedHabitat}: Observer assessment of dominant habitat at the sampling point at sampling time.
 \item \code{observedAirTemp}: The air temperature (celsius) measured with a handheld weather meter.
 \item \code{kmPerHourObservedWindSpeed}: The average wind speed measured with a handheld weather meter, in kilometers per hour.
@@ -38,6 +43,8 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
+\item \code{nlcdClass}: National Land Cover Database Vegetation Type Name.
+\item \code{plotType}: NEON plot type in which sampling occurred: tower, distributed or gradient.
 }
 }
 \usage{

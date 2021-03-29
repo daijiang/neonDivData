@@ -12,6 +12,7 @@
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
 #' - `pointID`: Identifier for a point location.
+#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
 #' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
@@ -30,6 +31,10 @@
 #' - `visualConfirmation`: Whether the individual(s) was (were) seen after the initial detection.
 #' - `sexOrAge`: Sex of individual if detectable, age of individual if individual can not be sexed.
 #' - `release`: Version of data release by NEON.
+#' - `startCloudCoverPercentage`: Observer estimate of percent cloud cover at start of sampling.
+#' - `endCloudCoverPercentage`: Observer estimate of percent cloud cover at end of sampling.
+#' - `startRH`: Relative humidity as measured by handheld weather meter at the start of sampling.
+#' - `endRH`: Relative humidity as measured by handheld weather meter at the end of sampling.
 #' - `observedHabitat`: Observer assessment of dominant habitat at the sampling point at sampling time.
 #' - `observedAirTemp`: The air temperature (celsius) measured with a handheld weather meter.
 #' - `kmPerHourObservedWindSpeed`: The average wind speed measured with a handheld weather meter, in kilometers per hour.
@@ -39,6 +44,8 @@
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.
+#' - `nlcdClass`: National Land Cover Database Vegetation Type Name.
+#' - `plotType`: NEON plot type in which sampling occurred: tower, distributed or gradient.
 #'
 #' @author Daijiang Li, Eric Sokol
 #'

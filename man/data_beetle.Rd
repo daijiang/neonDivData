@@ -27,7 +27,7 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 'N': Native; 'I': Introduced; 'UNK': Status unknown.
-\code{remarks}: Remarks of record.
+\item \code{remarks}: Remarks (techinical notes) of record.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.

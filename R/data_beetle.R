@@ -35,7 +35,7 @@
 #' - `nativeStatusCode`: The process by which the taxon became established in the location.
 #' 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 #' 'N': Native; 'I': Introduced; 'UNK': Status unknown.
-#' `remarks`: Remarks of record.
+#' - `remarks`: Remarks (techinical notes) of record.
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.
