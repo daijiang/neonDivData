@@ -26,7 +26,7 @@ output:
   keep_md: yes
 fontsize: 12pt
 linestretch: 1.5
-link-citations: no
+link-citations: yes
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/ecology.csl
 bibliography: ref.bib
 always_allow_html: yes
