@@ -20,7 +20,7 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{release}: Version of data release by NEON.
 \item \code{samplerType}:	Type of sampler used to collect the sample.
-\item \code{towsTrapsVolumn}: Sample volume collected for zooplankton.
+\item \code{towsTrapsVolumn}: Sample volume (liter) collected for zooplankton.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.

@@ -31,9 +31,9 @@
 #' - `samplingProtocolVersion`: The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX.
 #' - `substratumSizeClass`: Size class of the substratum sampled.
 #' - `samplerType`: Type of sampler used to collect the sample.
-#' - `phytoDepth1`: First phytoplankton sample depth at sampling location
-#' - `phytoDepth2`: Second phytoplankton sample depth at sampling location
-#' - `phytoDepth3`: Third phytoplankton sample depth at sampling location
+#' - `phytoDepth1`: First phytoplankton sample depth (meter) at sampling location
+#' - `phytoDepth2`: Second phytoplankton sample depth (meter) at sampling location
+#' - `phytoDepth3`: Third phytoplankton sample depth (meter) at sampling location
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.

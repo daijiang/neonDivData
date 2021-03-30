@@ -27,9 +27,9 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{substratumSizeClass}: Size class of the substratum sampled.
 \item \code{neon_sample_id}: NEON sample ID.
 \item \code{remarks}: Remarks of record.
-\item \code{ponarDepth}: Depth of petite ponar sample.
-\item \code{snagLength}: Length of snag sampled.
-\item \code{snagDiameter}: Diameter of snag sampled.
+\item \code{ponarDepth}: Depth (meter) of petite ponar sample.
+\item \code{snagLength}: Length (centimeter) of snag sampled.
+\item \code{snagDiameter}: Diameter (centimeter) of snag sampled.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.

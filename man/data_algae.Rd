@@ -27,9 +27,9 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX.
 \item \code{substratumSizeClass}: Size class of the substratum sampled.
 \item \code{samplerType}: Type of sampler used to collect the sample.
-\item \code{phytoDepth1}: First phytoplankton sample depth at sampling location
-\item \code{phytoDepth2}: Second phytoplankton sample depth at sampling location
-\item \code{phytoDepth3}: Third phytoplankton sample depth at sampling location
+\item \code{phytoDepth1}: First phytoplankton sample depth (meter) at sampling location
+\item \code{phytoDepth2}: Second phytoplankton sample depth (meter) at sampling location
+\item \code{phytoDepth3}: Third phytoplankton sample depth (meter) at sampling location
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.

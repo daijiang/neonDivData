@@ -9,10 +9,10 @@
 #' - `Domain Name`: Full domain name.
 #' - `domainID`: Unique identifier of the NEON domain.
 #' - `State`: The state name of the site locates in.
-#' - `Latitude`: Latitide of the site.
-#' - `Longitude`: Longitude of the site.
+#' - `Latitude`: Latitide of the site  (in decimal degrees, WGS84).
+#' - `Longitude`: Longitude of the site (in decimal degrees, WGS84).
 #' - `Site Type`: The type of the site (e.g. Core Terrestrial).
-#' - `Site Subtype`: Second level site type.
-#' - `Site Host`: Host of the site.
+#' - `Site Subtype`: Second level site type, for aquatic sites only (e.g. Lake, Wadeable Stream, Non-wadeable Rive).
+#' - `Site Host`: Host organization of the site.
 #'
 "neon_sites"

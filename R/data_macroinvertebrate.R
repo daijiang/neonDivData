@@ -25,9 +25,9 @@
 #' - `substratumSizeClass`: Size class of the substratum sampled.
 #' - `neon_sample_id`: NEON sample ID.
 #' - `remarks`: Remarks of record.
-#' - `ponarDepth`: Depth of petite ponar sample.
-#' - `snagLength`: Length of snag sampled.
-#' - `snagDiameter`: Diameter of snag sampled.
+#' - `ponarDepth`: Depth (meter) of petite ponar sample.
+#' - `snagLength`: Length (centimeter) of snag sampled.
+#' - `snagDiameter`: Diameter (centimeter) of snag sampled.
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.
