@@ -23,7 +23,7 @@
 #' - `unit`: Unit of the values in the `value` column.
 #' - `release`: Version of data release by NEON.
 #' - `samplerType`:	Type of sampler used to collect the sample.
-#' - `towsTrapsVolumn`: Sample volume (liter) collected for zooplankton.
+#' - `towsTrapsVolume`: Sample volume (liter) collected for zooplankton.
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.

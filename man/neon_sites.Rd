@@ -15,7 +15,7 @@ A data frame with the following columns:
 \item \code{Latitude}: Latitide of the site  (in decimal degrees, WGS84).
 \item \code{Longitude}: Longitude of the site (in decimal degrees, WGS84).
 \item \verb{Site Type}: The type of the site (e.g. Core Terrestrial).
-\item \verb{Site Subtype}: Second level site type, for aquatic sites only (e.g. Lake, Wadeable Stream, Non-wadeable Rive).
+\item \verb{Site Subtype}: Second level site type, for aquatic sites only (e.g. Lake, Wadeable Stream, Non-wadeable River).
 \item \verb{Site Host}: Host organization of the site.
 }
 }
