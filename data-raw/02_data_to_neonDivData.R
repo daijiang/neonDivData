@@ -203,8 +203,6 @@ if (sum(map_lgl(map(data_all, names), function(x) "nativeStatusCode" %in% x )) <
 # biodiversity calculation
 all(map_lgl(data_all, function(x) all(x$location_id == x$location_name)))
 map_lgl(data_all, function(x) all(x$observation_id == x$event_id))
-View(data_all$ALGAE_neon.ecocomdp.20166.001.001.20210322205910)
-View(data_all$SMALL_MAMMALS_neon.ecocomdp.10072.001.001.20210322212412)
 data_all[map_lgl(data_all, function(x) all(x$observation_id == x$event_id))]
 map(data_all, names)
 map(data_all, function(x) any(duplicated(x$observation_id)))
