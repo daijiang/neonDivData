@@ -270,6 +270,7 @@ data_macroinvertebrate = mutate(data_macroinvertebrate,
                                 snagDiameter = as.numeric(snagDiameter))
 
 # data_mosquito seems fine
+data_mosquito = filter(data_mosquito, !is.infinite(value)) # remove Inf values
 
 table(data_plant$sample_area_m2)
 table(data_plant$variable_name)
@@ -294,6 +295,20 @@ data_zooplankton = select(data_zooplankton, -neon_sample_id)
 # just location id and date or siteID and date
 
 map(data_all2, function(x) table(x$variable_name))
+
+# remove NAs or Inf in values
+data_algae = filter(data_algae, is.finite(value))
+data_beetle = filter(data_beetle, is.finite(value))
+data_bird = filter(data_bird, is.finite(value))
+data_fish = filter(data_fish, is.finite(value))
+data_herp_bycatch = filter(data_herp_bycatch, is.finite(value))
+data_macroinvertebrate = filter(data_macroinvertebrate, is.finite(value))
+data_mosquito = filter(data_mosquito, is.finite(value))
+data_plant # plant is different, as NA represents presence/absence (instead of coverage)
+data_small_mammal = filter(data_small_mammal, is.finite(value))
+data_tick = filter(data_tick, is.finite(value))
+data_tick_pathogen = filter(data_tick_pathogen, is.finite(value))
+data_zooplankton = filter(data_zooplankton, is.finite(value))
 
 usethis::use_data(data_algae, overwrite = TRUE)
 usethis::use_data(data_beetle, overwrite = TRUE)
