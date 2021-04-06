@@ -190,7 +190,7 @@ pre code {
 
 <h1 class="title toc-ignore">Standardized NEON organismal data for biodiversity research</h1>
 <h4 class="author">Daijiang Li<sup>1,2†‡</sup>, Sydne Record<sup>3†‡</sup>, Eric Sokol<sup>4,5†‡</sup>, Matthew E. Bitters<sup>6</sup>, Melissa Y. Chen<sup>6</sup>, Anny Y. Chung<sup>7</sup>, Matthew R. Helmus<sup>8</sup>, Ruvi Jaimes<sup>9</sup>, Lara Jansen<sup>10</sup>, Marta A. Jarzyna<sup>11,12</sup>, Michael G. Just<sup>13</sup>, Jalene M. LaMontagne<sup>14</sup>, Brett Melbourne<sup>6</sup>, Wynne Moss<sup>6</sup>, Kari Norman<sup>15</sup>, Stephanie Parker<sup>4</sup>, Natalie Robinson<sup>4</sup>, Bijan Seyednasrollah<sup>16</sup>, Colin Smith<sup>17</sup>, Sarah Spaulding<sup>5</sup>, Thilina Surasinghe<sup>18</sup>, Sarah Thomsen<sup>19</sup>, Phoebe Zarnetske<sup>20,21</sup></h4>
-<h4 class="date">31 March, 2021</h4>
+<h4 class="date">06 April, 2021</h4>
 
 </div>
 
@@ -220,6 +220,7 @@ pre code {
 <li><a href="#discussion-or-how-to-maintain-and-update-standardized-neon-organismal-data">Discussion (or how to maintain and update standardized NEON organismal data)</a></li>
 <li><a href="#conclusion">Conclusion</a></li>
 <li><a href="#acknowledgement">Acknowledgement</a></li>
+<li><a href="#open-research-statement">Open Research Statement</a></li>
 <li><a href="#reference">Reference</a></li>
 </ul>
 </div>
@@ -231,8 +232,8 @@ pre code {
 <sup>5</sup> Institute of Arctic and Alpine Research (INSTAAR), University of Colorado Boulder, Boulder, CO, United States<br />
 <sup>6</sup> Department of Ecology and Evolutionary Biology, University of Colorado Boulder, Boulder, CO, United States<br />
 <sup>7</sup> Departments of Plant Biology and Plant Pathology, University of Georgia, Athens, GA, United States<br />
-<sup>8</sup> Integrative Ecology Lab, Center for Biodiversity, Department of Biology, Temple University, Philadelphia, PA, United States
-<sup>9</sup> St. Edward’s University, Austin, Texas
+<sup>8</sup> Integrative Ecology Lab, Center for Biodiversity, Department of Biology, Temple University, Philadelphia, PA, United States<br />
+<sup>9</sup> St. Edward’s University, Austin, Texas<br />
 <sup>10</sup> Department of Environmental Science and Management, Portland State University, Portland, OR, United States<br />
 <sup>11</sup> Department of Evolution, Ecology and Organismal Biology, The Ohio State University, Columbus, OH, United States<br />
 <sup>12</sup> Translational Data Analytics Institute, The Ohio State University, Columbus, OH, United States<br />
@@ -240,13 +241,13 @@ pre code {
 <sup>14</sup> Department of Biological Sciences, DePaul University, Chicago, IL, United States<br />
 <sup>15</sup> Department of Environmental Science, Policy, and Management, University of California Berkeley, Berkeley, CA, United States<br />
 <sup>16</sup> School of Informatics, Computing and Cyber Systems, Northern Arizona University, Flagstaff, AZ, United States<br />
-<sup>17</sup> Environmental Data Initiative, University of Wisconsin-Madison, Madison, WI
+<sup>17</sup> Environmental Data Initiative, University of Wisconsin-Madison, Madison, WI<br />
 <sup>18</sup> Department of Biological Sciences, Bridgewater State University, Bridgewater, MA, United States<br />
 <sup>19</sup> Department of Integrative Biology, Oregon State University, Corvallis, OR, United States<br />
 <sup>20</sup> Department of Integrative Biology, Michigan State University, East Lansing, MI, United States<br />
 <sup>21</sup> Ecology, Evolution, and Behavior Program, Michigan State University, East Lansing, MI, United States<br />
 <sup>†</sup> Equal contributions<br />
-<sup>‡</sup> Corresponding authors</p>
+<sup>‡</sup> Corresponding authors: <a href="mailto:dli30@lsu.edu" class="email">dli30@lsu.edu</a>; <a href="mailto:srecord@brynmawr.edu" class="email">srecord@brynmawr.edu</a>; <a href="mailto:esokol@battelleecology.org" class="email">esokol@battelleecology.org</a></p>
 <p><strong>Abstract</strong>: Understanding patterns and drivers of species distributions and abundances, and thus biodiversity, is a core goal of ecology. Despite advances in recent decades, research into these patterns and processes is currently limited by a lack of standardized, high-quality, empirical data that spans large spatial scales and long time periods. The National Ecological Observatory Network (NEON) fills this gap by providing freely available observational data that are: generated during robust and consistent organismal sampling of several sentinel taxonomic groups within 81 sites distributed across the United States; and will be collected for at least 30 years. The breadth and scope of these data provides a unique resource for advancing biodiversity research. To maximize the potential of this opportunity, however, it is critical that NEON data be maximally accessible and easily integrated into investigators’ workflows and analyses. To facilitate its use for biodiversity research and synthesis, we created a workflow to process and format NEON organismal data into the ecocomDP (ecological community data design pattern) format, and available through the <code>ecocomDP</code> R package; we then provided the standardized data as an R data package (<code>neonDivData</code>). We briefly summarize sampling designs and data wrangling decisions for the major taxonomic groups included in this effort. Our workflows are open-source so the biodiversity community may: add additional taxonomic groups; modify the workflow to produce datasets appropriate for their own analytical needs; and regularly update the data packages as more observations become available. Finally, we provide two simple examples of how the standardized data may be used for biodiversity research. By providing a standardized data package, we hope to enhance the utility of NEON organismal data in advancing biodiversity research.</p>
 <p><strong>Key words</strong>: NEON, Biodiversity, Organismal Data, Data Product, R, Data package, EDI</p>
 <div id="introduction-or-why-standardized-neon-organismal-data" class="section level1">
@@ -257,7 +258,7 @@ pre code {
 <p>The recently established National Ecological Observatory Network (NEON) provides continental-scale observational and instrumentation data for a wide variety of taxonomic groups and measurement streams. Data are collected using standardized methods, across 81 field sites in both terrestrial and freshwater ecosystems, and will be freely available for at least 30 years. These consistently collected, long-term, and spatially robust measurements are directly comparable throughout the Observatory, and provide a unique opportunity for enabling a better understanding of ecosystem change and biodiversity patterns and processes across space and through time <span class="citation">(<a href="#ref-keller2008continental" role="doc-biblioref">Keller et al. 2008</a>)</span>.</p>
 <p>NEON data are designed to be maximally useful to ecologists by aligning with FAIR principles <span class="citation">(findable, accessible, interoperable, and reusable, <a href="#ref-wilkinson2016fair" role="doc-biblioref">Wilkinson et al. 2016</a>)</span>. Despite meeting these requirements, however, there are still challenges to integrating NEON organismal data for reproducible biodiversity research. For example: field names may vary across NEON data products, even for similar measurements; some measurements include sampling unit information, whereas units must be calculated for others; and data are in a raw form that often includes metadata unnecessary for biodiversity analyses. These issues and inconsistencies may be overcome through data cleaning and formatting, but understanding how best to perform this task requires a significant investment in the comprehensive NEON documentation for each data product involved in an analysis. Thoroughly reading large amounts of NEON documentation is time consuming, and the path to a standard data format, as is critical for reproducibility, may vary greatly between NEON organismal data products and users - even for similar analyses. Ultimately, this may result in subtle differences from study to study that hinder meta-analyses using NEON data. A simplified and standardized format for NEON organismal data would facilitate wider usage of these datasets for biodiversity research. Furthermore, if these data were formatted to interface well with datasets from other coordinated research networks, more comprehensive syntheses could be accomplished and to advance macrosystem biology <span class="citation">(<a href="#ref-record2020novel" role="doc-biblioref">Record et al. 2020</a>)</span>.</p>
 <p>One attractive standardized formatting style for NEON organismal data is that of ecocomDP (ecological community data design pattern, O’Brien et al. In review). EcocomDP is the brainchild of members of the LTER network, the Environmental Data Initiative (EDI), and NEON staff, and provides a model by which data from a variety of sources may be easily transformed into consistently formatted, analysis ready community-level organismal data packages. This is done using reproducible code that maintains dataset “levels”: L0 is incoming data, L1 represents an ecocomDP data format and includes tables representing observations, sampling locations, and taxonomic information (at a minimum), and L2 is an output format. Thus far, &gt;70 LTER organismal datasets have been harmonized to the L1 ecocomDP format through the R package <a href="https://github.com/EDIorg/ecocomDP"><code>ecocomDP</code></a> and more datasets are in the queue for processing into the ecocomDP format by EDI (O’Brien et al. In review).</p>
-<p>We standardized NEON organismal data into the ecocomDP format and all R code to process NEON data products can be obtained through the R package <code>ecocomDP</code>. For the major taxonomic groups included in this initial effort, NEON sampling designs and major data wrangling decisions are summarized in the Materials and Methods section. We archived the standardized data in the EDI Data Repository. To facilitate the usage of the standardized datasets, we also developed an R data package, <a href="https://github.com/daijiang/neonDivData"><code>neonDivData</code></a>. We refer to the input data streams provided by NEON as data products, whereas the cleaned and standardized collection of data files provided here as objects within the R data package, <code>neonDivData</code>, across this paper. Standardized datasets will be maintained and updated as new data become available from the NEON portal. We hope this effort will substantially reduce data processing times for NEON data users and greatly facilitate the use of NEON organismal data to advance our understanding of Earth’s biodiversity.</p>
+<p>We standardized NEON organismal data into the ecocomDP format and all R code to process NEON data products can be obtained through the R package <code>ecocomDP</code>. For the major taxonomic groups included in this initial effort, NEON sampling designs and major data wrangling decisions are summarized in the Materials and Methods section. We archived the standardized data in the <a href="https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&amp;identifier=190&amp;revision=2">EDI Data Repository</a>. To facilitate the usage of the standardized datasets, we also developed an R data package, <a href="https://github.com/daijiang/neonDivData"><code>neonDivData</code></a>. We refer to the input data streams provided by NEON as data products, whereas the cleaned and standardized collection of data files provided here as objects within the R data package, <code>neonDivData</code>, across this paper. Standardized datasets will be maintained and updated as new data become available from the NEON portal. We hope this effort will substantially reduce data processing times for NEON data users and greatly facilitate the use of NEON organismal data to advance our understanding of Earth’s biodiversity.</p>
 </div>
 <div id="materials-and-methods-or-how-to-standardize-neon-organismal-data" class="section level1">
 <h1>Materials and Methods (or how to standardize NEON organismal data)</h1>
@@ -479,26 +480,6 @@ unique individuals per 100 trap nights per plot per month
 </tr>
 <tr>
 <td style="text-align:left;width: 7.5em; ">
-Ticks
-</td>
-<td style="text-align:left;width: 6em; ">
-DP1.10093.001
-</td>
-<td style="text-align:left;width: 12em; ">
-<a href="https://doi.org/10.48443/dx40-wr20"> <a href="https://doi.org/10.48443/dx40-wr20" class="uri">https://doi.org/10.48443/dx40-wr20</a> and provisional data </a>
-</td>
-<td style="text-align:left;width: 12em; ">
-neon.ecocomdp.10093.001.001
-</td>
-<td style="text-align:left;width: 7em; width: 9em; ">
-abundance
-</td>
-<td style="text-align:left;width: 7em; width: 9em; ">
-count per square meter
-</td>
-</tr>
-<tr>
-<td style="text-align:left;width: 7.5em; ">
 Tick pathogens***
 </td>
 <td style="text-align:left;width: 6em; ">
@@ -515,6 +496,26 @@ positivity rate
 </td>
 <td style="text-align:left;width: 7em; width: 9em; ">
 positive tests per pathogen per sampling event
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 7.5em; ">
+Ticks
+</td>
+<td style="text-align:left;width: 6em; ">
+DP1.10093.001
+</td>
+<td style="text-align:left;width: 12em; ">
+<a href="https://doi.org/10.48443/dx40-wr20"> <a href="https://doi.org/10.48443/dx40-wr20" class="uri">https://doi.org/10.48443/dx40-wr20</a> and provisional data </a>
+</td>
+<td style="text-align:left;width: 12em; ">
+neon.ecocomdp.10093.001.001
+</td>
+<td style="text-align:left;width: 7em; width: 9em; ">
+abundance
+</td>
+<td style="text-align:left;width: 7em; width: 9em; ">
+count per square meter
 </td>
 </tr>
 <tr>
@@ -641,12 +642,12 @@ Note that NEON provides both ITS and 16S marker gene sequence data for soil, ben
 </div>
 <div id="results-or-how-to-get-and-use-standardized-neon-organismal-data" class="section level1">
 <h1>Results (or how to get and use standardized NEON organismal data)</h1>
-<p>All cleaned and standardized datasets can be obtained from the R package <code>neonDivData</code> and from the EDI data repository (<link here>). Note that <code>neonDivData</code> included both stable and provisional data released by NEON while the data repository in EDI only included stable datasets. If users want to change some of the decisions to wrangle the data differently, they can find the code in the R package <code>ecocomDP</code> and modify them for their own purposes.</p>
+<p>All cleaned and standardized datasets can be obtained from the R package <code>neonDivData</code> and from the EDI data repository (temporary link, which will be finalized upon acceptance: <a href="https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&amp;identifier=190&amp;revision=2" class="uri">https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&amp;identifier=190&amp;revision=2</a>). Note that <code>neonDivData</code> included both stable and provisional data released by NEON while the data repository in EDI only included stable datasets. If users want to change some of the decisions to wrangle the data differently, they can find the code in the R package <code>ecocomDP</code> and modify them for their own purposes.</p>
 <p>The data package <code>neonDivData</code> can be installed from Github. Installation instructions can be found on the Github webpage (<a href="https://github.com/daijiang/neonDivData" class="uri">https://github.com/daijiang/neonDivData</a>). Table <a href="#tab:dataSummary">2</a> shows the brief summary of all data objects. To get data for a specific taxonomic group, we can just call the objects in the <code>R object</code> column in Table <a href="#tab:dataSummary">2</a>. Such data products include cleaned (and standardized if needed) occurrence data for the taxonomic groups covered and are equivalent to the “observation” table of the ecocomDP data format. If environmental information were provided by NEON for some taxonomic groups, they are also included in these data objects. Information such as latitude, longitude, and elevation for all taxonomic groups were saved in the <code>neon_location</code> object of the R package, which is equivalent to the “sampling_location” table of the ecocomDP data format. Information about species scientific names of all taxonomic groups were saved in the <code>neon_taxa</code> object, which is equivalent to the “taxon” table of the ecocomDP data format.</p>
 
 <table class="table table-striped table-condensed table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:dataSummary">Table 2: </span>Summary of data products included in this study (as of 31 March, 2021). Users can call the R objects in the <code>R object</code> column from the R data package <code>neonDivData</code> to get the standardized data for specific taxonomic groups.
+<span id="tab:dataSummary">Table 2: </span>Summary of data products included in this study (as of 06 April, 2021). Users can call the R objects in the <code>R object</code> column from the R data package <code>neonDivData</code> to get the standardized data for specific taxonomic groups.
 </caption>
 <thead>
 <tr>
@@ -853,26 +854,6 @@ data_small_mammal
 </tr>
 <tr>
 <td style="text-align:left;">
-Ticks
-</td>
-<td style="text-align:left;">
-data_tick
-</td>
-<td style="text-align:right;">
-19
-</td>
-<td style="text-align:right;">
-46
-</td>
-<td style="text-align:left;">
-2014-04-02
-</td>
-<td style="text-align:left;">
-2020-10-06
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 Tick pathogens
 </td>
 <td style="text-align:left;">
@@ -889,6 +870,26 @@ data_tick_pathogen
 </td>
 <td style="text-align:left;">
 2018-10-03
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ticks
+</td>
+<td style="text-align:left;">
+data_tick
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:left;">
+2014-04-02
+</td>
+<td style="text-align:left;">
+2020-10-06
 </td>
 </tr>
 <tr>
@@ -956,11 +957,15 @@ Figure 3: Rarefaction of beetle abundance data from collections made at the Oak 
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
-<p>Macrosystems ecology <span class="citation">(sensu <a href="#ref-heffernan2014macrosystems" role="doc-biblioref">Heffernan et al. 2014</a>)</span> is at the start of an exciting new chapter with the decades long awaited buildout of NEON completed and standardized data streams from all sites in the observatory becoming publicly available online. As the research community embarks on discovering new scientific insights from NEON data, it is important that we make our analyses and all derived data as reproducible as possible to ensure that connections across studies are possible. Harmonized data sets will help in this endeavour because they naturally promote the collection of provenance as data are collated into derived products <span class="citation">(O’Brien et al. In review, <a href="#ref-reichman2011challenges" role="doc-biblioref">Reichman et al. 2011</a>)</span>. Harmonized data also make synthesis easier because efforts to clean and format data leading up to analyses do not have to be repeatedly performed by individual researchers (O’ Brien et al. In review). The data standardizing processes and derived data package presented here illustrate a potential path forward in achieving a reproducible framework for data derived from NEON organismal data for ecological analyses. This derived data package also highlights the value of collaboration between the NEON user community and NEON staff for advancing NEON-enabled science.</p>
+<p>Macrosystems ecology <span class="citation">(sensu <a href="#ref-heffernan2014macrosystems" role="doc-biblioref">Heffernan et al. 2014</a>)</span> is at the start of an exciting new chapter with the decades long awaited buildout of NEON completed and standardized data streams from all sites in the observatory becoming publicly available online. As the research community embarks on discovering new scientific insights from NEON data, it is important that we make our analyses and all derived data as reproducible as possible to ensure that connections across studies are possible. Harmonized data sets will help in this endeavor because they naturally promote the collection of provenance as data are collated into derived products <span class="citation">(O’Brien et al. In review, <a href="#ref-reichman2011challenges" role="doc-biblioref">Reichman et al. 2011</a>)</span>. Harmonized data also make synthesis easier because efforts to clean and format data leading up to analyses do not have to be repeatedly performed by individual researchers (O’ Brien et al. In review). The data standardizing processes and derived data package presented here illustrate a potential path forward in achieving a reproducible framework for data derived from NEON organismal data for ecological analyses. This derived data package also highlights the value of collaboration between the NEON user community and NEON staff for advancing NEON-enabled science.</p>
 </div>
 <div id="acknowledgement" class="section level1">
 <h1>Acknowledgement</h1>
 <p>This work is a result of participating in the first NEON Science Summit in 2019 and an internship program through the St. Edward’s Institute for Interdisciplinary Science (i4) funded through a National Science Foundation award under Grant No. 1832282. The authors acknowledge support from the NSF Award #1906144 to attend the 2019 NEON Science Summit. Additionally, the authors acknowledge support from the NSF DEB 1926568 to S.R., NSF DEB 1926567 to P.L.Z., NSF DEB 1926598 to M.A.J, and NSF DEB 1926341 to J.M.L.. Comments from NEON staff (Katie LeVan, Dylan Mpnahan, Sata Paull, Dave Barnett, Sam Simkin), Margaret O’Brien and Tad Dallas greatly improved this work. The National Ecological Observatory Network is a program sponsored by the National Science Foundation and operated under cooperative agreement by Battelle Memorial Institute. This material is based in part upon work supported by the National Science Foundation through the NEON Program.</p>
+</div>
+<div id="open-research-statement" class="section level1">
+<h1>Open Research Statement</h1>
+<p>No data were collected for this study. All original data were collected by NEON and are publicly available at NEON’s data portal. We standardized such data and provided them as a data package, which is available at Github (<a href="https://github.com/daijiang/neonDivData" class="uri">https://github.com/daijiang/neonDivData</a>). Data were also permanently archived at the EDI data repository (<a href="https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&amp;identifier=190&amp;revision=2" class="uri">https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&amp;identifier=190&amp;revision=2</a>).</p>
 </div>
 <div id="reference" class="section level1 unnumbered">
 <h1>Reference</h1>
