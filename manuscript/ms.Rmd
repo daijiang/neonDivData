@@ -26,7 +26,7 @@ output:
   keep_md: yes
 fontsize: 12pt
 linestretch: 1.5
-link-citations: yes
+link-citations: no
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/ecology.csl
 bibliography: ref.bib
 always_allow_html: yes
@@ -88,6 +88,11 @@ library(stringr)
 
 \normalsize
 
+
+# Open Research Statement
+
+No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (https://github.com/daijiang/neonDivData). Data were also permanently archived at the EDI data repository (https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&identifier=190&revision=2).
+
 **Abstract**: Understanding patterns and drivers of species distributions and abundances, and thus biodiversity, is a core goal of ecology. Despite advances in recent decades, research into these patterns and processes is currently limited by a lack of standardized, high-quality, empirical data that spans large spatial scales and long time periods. The National Ecological Observatory Network (NEON) fills this gap by providing freely available observational data that are: generated during robust and consistent organismal sampling of several sentinel taxonomic groups within 81 sites distributed across the United States; and will be collected for at least 30 years. The breadth and scope of these data provides a unique resource for advancing biodiversity research. To maximize the potential of this opportunity, however, it is critical that NEON data be maximally accessible and easily integrated into investigators’ workflows and analyses. To facilitate its use for biodiversity research and synthesis, we created a workflow to process and format NEON organismal data into the ecocomDP (ecological community data design pattern) format, and available through the `ecocomDP` R package; we then provided the standardized data as an R data package (`neonDivData`). We briefly summarize sampling designs and data wrangling decisions for the major taxonomic groups included in this effort. Our workflows are open-source so the biodiversity community may: add additional taxonomic groups; modify the workflow to produce datasets appropriate for their own analytical needs; and regularly update the data packages as more observations become available. Finally, we provide two simple examples of how the standardized data may be used for biodiversity research. By providing a standardized data package, we hope to enhance the utility of NEON organismal data in advancing biodiversity research. 
 
 **Key words**: NEON, Biodiversity, Organismal Data, Data Product, R, Data package, EDI 
@@ -118,7 +123,7 @@ There are many details to consider when starting to use NEON organismal data pro
 include_graphics(here::here("manuscript/figures/fig_1.png"))
 ```
 
-(ref:Table0MappingCap) Mapping NEON data products to ecocomDP formatted data packages with abundances _standardized_ to observation effort. IDs in the `L0 to L1 ecocomDP workflow ID` columns were used in the R package `ecocomDP` to standardize organismal data. Notes: \*Bird counts are reported per taxon per “cluster” observed in each point count in the NEON data product and have not been further standardized to sampling effort because standard methods for modeling bird abundances are beyond the scope of this paper; \*\* plants percent cover value `NA` represents presence/absence data only; incidence rate per number of tests conducted is reported for tick pathogens.
+(ref:Table0MappingCap) Mapping NEON data products to ecocomDP formatted data packages with abundances _standardized_ to observation effort. IDs in the `L0 to L1 ecocomDP workflow ID` columns were used in the R package `ecocomDP` to standardize organismal data. Notes: \*Bird counts are reported per taxon per “cluster” observed in each point count in the NEON data product and have not been further standardized to sampling effort because standard methods for modeling bird abundances are beyond the scope of this paper; \*\* plants percent cover value `NA` represents presence/absence data only; \*\*\* incidence rate per number of tests conducted is reported for tick pathogens.
 
 ```{r dataMapping, echo=FALSE}
 select(data_summary, taxon_group, 
@@ -314,9 +319,9 @@ select(data_summary, `Taxon group` = taxon_group, `R object` = r_object,
               latex_options = c("striped", "scale_down"))
 ```
 
-To demonstrate the use of data packages, we used `data_plant` to quickly visualize the distribution of species richness of plants across all NEON sites (Fig. \@ref(fig:Fig2Map)). To show how easy it is to get site level species richness, we presented the code used to generate the data for Fig. \@ref(fig:Fig2Map) below.
+To demonstrate the use of data packages, we used `data_plant` to quickly visualize the distribution of species richness of plants across all NEON sites (Fig. \@ref(fig:Fig2Map)). To show how easy it is to get site level species richness, we presented the code used to generate the data for Fig. \@ref(fig:Fig2Map) as supporting information.
 
-```{r eval=FALSE, echo=TRUE}
+```{r eval=FALSE, echo=knitr::is_html_output()}
 library(dplyr)
 library(neonDivData)
 # get species richness at each site
@@ -334,7 +339,7 @@ sp_rich_plant = left_join(sp_rich_plant,
                           by = "siteID")
 ```
 
-Figure \@ref(fig:Fig2Map) shows the utility of the data package for exploring macroecological patterns at the NEON site level. One of the most well known and studied macroecological patterns is the latitudinal biodiversity gradient, wherein sites are more speciose at lower latitudes relative to higher latitudes; temperature, biotic interactions, and historical biogeography are potential reasons underlying these patterns  [@fischer1960latitudinal; @hillebrand2004generality]. Herbaceous plants of NEON generally follow this pattern. The latitudinal pattern for NEON small mammals is similar, and is best explained by increased niche space and declining similarity in body size among species in lower latitudes, rather than a direct effect of temperature [@read2018among].  
+Figure \@ref(fig:Fig2Map) shows the utility of the data package for exploring macroecological patterns at the NEON site level. One of the most well known and studied macroecological patterns is the latitudinal biodiversity gradient, wherein sites are more species at lower latitudes relative to higher latitudes; temperature, biotic interactions, and historical biogeography are potential reasons underlying these patterns  [@fischer1960latitudinal; @hillebrand2004generality]. Herbaceous plants of NEON generally follow this pattern. The latitudinal pattern for NEON small mammals is similar, and is best explained by increased niche space and declining similarity in body size among species in lower latitudes, rather than a direct effect of temperature [@read2018among].  
 
 (ref:Fig2MapCap) Plant species richness mapped across NEON terrestrial sites. The inset scatterplot shows latitude on the x-axis and species richness on the y-axis, with red points representing sites in Puerto Rico and Hawaii.
 
@@ -370,8 +375,5 @@ Macrosystems ecology [sensu @heffernan2014macrosystems] is at the start of an ex
 
 This work is a result of participating in the first NEON Science Summit in 2019 and an internship program through the St. Edward's Institute for Interdisciplinary Science (i4) funded through a National Science Foundation award under Grant No. 1832282. The authors acknowledge support from the NSF Award #1906144 to attend the 2019 NEON Science Summit. Additionally, the authors acknowledge support from the NSF DEB 1926568 to S.R., NSF DEB 1926567 to P.L.Z., NSF DEB 1926598 to M.A.J, and NSF DEB 1926341 to J.M.L.. Comments from NEON staff (Katie LeVan, Dylan Mpnahan, Sata Paull, Dave Barnett, Sam Simkin), Margaret O’Brien and Tad Dallas greatly improved this work. The National Ecological Observatory Network is a program sponsored by the National Science Foundation and operated under cooperative agreement by Battelle Memorial Institute. This material is based in part upon work supported by the National Science Foundation through the NEON Program.
 
-# Open Research Statement
-
-No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (https://github.com/daijiang/neonDivData). Data were also permanently archived at the EDI data repository (https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&identifier=190&revision=2).
 
 # Reference

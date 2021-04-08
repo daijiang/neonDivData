@@ -5,9 +5,9 @@
 \documentclass[
   12pt,
 ]{article}
-\usepackage{amsmath,amssymb}
 \usepackage{lmodern}
 \usepackage{setspace}
+\usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
@@ -44,48 +44,7 @@
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{longtable,booktabs,array}
-\usepackage{calc} % for calculating minipage widths
+\usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
 \makeatletter
@@ -179,33 +138,16 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
-\ifluatex
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
-\newlength{\csllabelwidth}
-\setlength{\csllabelwidth}{3em}
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
-  % turn on hanging indent if param 1 is 1
-  \ifodd #1 \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces\fi
-  % set entry spacing
-  \ifnum #2 > 0
-  \setlength{\parskip}{#2\baselineskip}
-  \fi
- }%
- {}
-\usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
-\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\newenvironment{cslreferences}%
+  {\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
+  {\par}
 
 \title{Standardized NEON organismal data for biodiversity research}
 \author{Daijiang Li\textsuperscript{1,2†‡}, Sydne Record\textsuperscript{3†‡}, Eric Sokol\textsuperscript{4,5†‡}, Matthew E. Bitters\textsuperscript{6}, Melissa Y. Chen\textsuperscript{6}, Anny Y. Chung\textsuperscript{7}, Matthew R. Helmus\textsuperscript{8}, Ruvi Jaimes\textsuperscript{9}, Lara Jansen\textsuperscript{10}, Marta A. Jarzyna\textsuperscript{11,12}, Michael G. Just\textsuperscript{13}, Jalene M. LaMontagne\textsuperscript{14}, Brett Melbourne\textsuperscript{6}, Wynne Moss\textsuperscript{6}, Kari Norman\textsuperscript{15}, Stephanie Parker\textsuperscript{4}, Natalie Robinson\textsuperscript{4}, Bijan Seyednasrollah\textsuperscript{16}, Colin Smith\textsuperscript{17}, Sarah Spaulding\textsuperscript{5}, Thilina Surasinghe\textsuperscript{18}, Sarah Thomsen\textsuperscript{19}, Phoebe Zarnetske\textsuperscript{20,21}}
-\date{06 April, 2021}
+\date{08 April, 2021}
 
 \begin{document}
 \maketitle
@@ -242,6 +184,11 @@
 
 \normalsize
 
+\hypertarget{open-research-statement}{%
+\section{Open Research Statement}\label{open-research-statement}}
+
+No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (\url{https://github.com/daijiang/neonDivData}). Data were also permanently archived at the EDI data repository (\url{https://portal-s.edirepository.org/nis/mapbrowse?scope=edi\&identifier=190\&revision=2}).
+
 \textbf{Abstract}: Understanding patterns and drivers of species distributions and abundances, and thus biodiversity, is a core goal of ecology. Despite advances in recent decades, research into these patterns and processes is currently limited by a lack of standardized, high-quality, empirical data that spans large spatial scales and long time periods. The National Ecological Observatory Network (NEON) fills this gap by providing freely available observational data that are: generated during robust and consistent organismal sampling of several sentinel taxonomic groups within 81 sites distributed across the United States; and will be collected for at least 30 years. The breadth and scope of these data provides a unique resource for advancing biodiversity research. To maximize the potential of this opportunity, however, it is critical that NEON data be maximally accessible and easily integrated into investigators' workflows and analyses. To facilitate its use for biodiversity research and synthesis, we created a workflow to process and format NEON organismal data into the ecocomDP (ecological community data design pattern) format, and available through the \texttt{ecocomDP} R package; we then provided the standardized data as an R data package (\texttt{neonDivData}). We briefly summarize sampling designs and data wrangling decisions for the major taxonomic groups included in this effort. Our workflows are open-source so the biodiversity community may: add additional taxonomic groups; modify the workflow to produce datasets appropriate for their own analytical needs; and regularly update the data packages as more observations become available. Finally, we provide two simple examples of how the standardized data may be used for biodiversity research. By providing a standardized data package, we hope to enhance the utility of NEON organismal data in advancing biodiversity research.
 
 \textbf{Key words}: NEON, Biodiversity, Organismal Data, Data Product, R, Data package, EDI
@@ -272,7 +219,7 @@ There are many details to consider when starting to use NEON organismal data pro
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.95\linewidth]{/Users/dli/Github/neonDivData/manuscript/figures/fig_1} 
+{\centering \includegraphics[width=0.95\linewidth]{/Users/dli30/Github/neonDivData/manuscript/figures/fig_1} 
 
 }
 
@@ -283,7 +230,7 @@ There are many details to consider when starting to use NEON organismal data pro
 
 \begin{table}
 
-\caption{\label{tab:dataMapping}Mapping NEON data products to ecocomDP formatted data packages with abundances \emph{standardized} to observation effort. IDs in the \texttt{L0\ to\ L1\ ecocomDP\ workflow\ ID} columns were used in the R package \texttt{ecocomDP} to standardize organismal data. Notes: *Bird counts are reported per taxon per ``cluster'' observed in each point count in the NEON data product and have not been further standardized to sampling effort because standard methods for modeling bird abundances are beyond the scope of this paper; ** plants percent cover value \texttt{NA} represents presence/absence data only; incidence rate per number of tests conducted is reported for tick pathogens.}
+\caption{\label{tab:dataMapping}Mapping NEON data products to ecocomDP formatted data packages with abundances \emph{standardized} to observation effort. IDs in the \texttt{L0\ to\ L1\ ecocomDP\ workflow\ ID} columns were used in the R package \texttt{ecocomDP} to standardize organismal data. Notes: *Bird counts are reported per taxon per ``cluster'' observed in each point count in the NEON data product and have not been further standardized to sampling effort because standard methods for modeling bird abundances are beyond the scope of this paper; ** plants percent cover value \texttt{NA} represents presence/absence data only; *** incidence rate per number of tests conducted is reported for tick pathogens.}
 \centering
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{>{\raggedright\arraybackslash}p{7.5em}>{\raggedright\arraybackslash}p{6em}>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{9em}>{\raggedright\arraybackslash}p{9em}}
@@ -316,7 +263,7 @@ Zooplankton & DP1.20219.001 & \href{https://doi.org/10.48443/qzr1-jr79}{https://
 
 Surveys occur during one or two sampling bouts per season, at large and small sites respectively. Observers go to the specified points early in the morning and track birds observed during each minute of a 6-minute period, following a 2-minute acclimation period, at each point (Thibault 2018). Each point count contains species, sex, and distance to each bird (measured with a laser rangefinder except in the case of flyovers) seen or heard. Information relevant for subsequent modeling of detectability is also collected during the point counts (e.g., weather, detection method). The point count surveys for NEON were modified from the Integrated Monitoring in Bird Conservation Regions (IMBCR) field protocol for spatially-balanced sampling of landbird populations (Pavlacky Jr et al. 2017).
 
-\textbf{Data Wrangling Decisions} The bird point count NEON data product (`DP1.10003.001') consists of a list of two associated data frames: \texttt{brd\_countdata} and \texttt{brd\_perpoint}. The former data frame contains information such as locations, species identities, and their counts. The latter data frame contains additional location information such as latitude and longitude coordinates and environmental conditions during the time of the observations. The separate data frames are linked by `eventID,' which refers to the location, date and time of the observation. To prepare the bird point count data for the L1 ecocomDP model, we first merged both data frames into one and then removed columns that are likely not needed for most community-level biodiversity analyses (e.g., observer names, etc.). The field \texttt{taxon\_id} in the R object \texttt{data\_bird} with the \texttt{neonDivData} data package consists of the standard AOU 4-letter species code, although \texttt{taxon\_rank} refers to eight potential levels of identification (class, family, genus, species, speciesGroup, subfamily, and subspecies). Users can decide which level is appropriate, for example one might choose to exclude all unidentified birds (taxon\_id = UNBI), where no further details are available below the class level (Aves sp.). The NEON sampling protocol has evolved over time, so users are advised to check whether the `samplingProtocolVersion' associated with bird point count data (`DP1.10003.001') fits their data requirements and subset as necessary. Older versions of protocols can be found at the \href{https://data.neonscience.org/documents/-/document_library_display/JEygRkSpUBoq/view/1883155?_110_INSTANCE_JEygRkSpUBoq_topLink=home\&_110_INSTANCE_JEygRkSpUBoq_delta1=20\&_110_INSTANCE_JEygRkSpUBoq_keywords=\&_110_INSTANCE_JEygRkSpUBoq_advancedSearch=false\&_110_INSTANCE_JEygRkSpUBoq_andOperator=true\&p_r_p_564233524_resetCur=false\&_110_INSTANCE_JEygRkSpUBoq_delta2=20\&_110_INSTANCE_JEygRkSpUBoq_cur2=1}{NEON document library}.
+\textbf{Data Wrangling Decisions} The bird point count NEON data product (`DP1.10003.001') consists of a list of two associated data frames: \texttt{brd\_countdata} and \texttt{brd\_perpoint}. The former data frame contains information such as locations, species identities, and their counts. The latter data frame contains additional location information such as latitude and longitude coordinates and environmental conditions during the time of the observations. The separate data frames are linked by `eventID', which refers to the location, date and time of the observation. To prepare the bird point count data for the L1 ecocomDP model, we first merged both data frames into one and then removed columns that are likely not needed for most community-level biodiversity analyses (e.g., observer names, etc.). The field \texttt{taxon\_id} in the R object \texttt{data\_bird} with the \texttt{neonDivData} data package consists of the standard AOU 4-letter species code, although \texttt{taxon\_rank} refers to eight potential levels of identification (class, family, genus, species, speciesGroup, subfamily, and subspecies). Users can decide which level is appropriate, for example one might choose to exclude all unidentified birds (taxon\_id = UNBI), where no further details are available below the class level (Aves sp.). The NEON sampling protocol has evolved over time, so users are advised to check whether the `samplingProtocolVersion' associated with bird point count data (`DP1.10003.001') fits their data requirements and subset as necessary. Older versions of protocols can be found at the \href{https://data.neonscience.org/documents/-/document_library_display/JEygRkSpUBoq/view/1883155?_110_INSTANCE_JEygRkSpUBoq_topLink=home\&_110_INSTANCE_JEygRkSpUBoq_delta1=20\&_110_INSTANCE_JEygRkSpUBoq_keywords=\&_110_INSTANCE_JEygRkSpUBoq_advancedSearch=false\&_110_INSTANCE_JEygRkSpUBoq_andOperator=true\&p_r_p_564233524_resetCur=false\&_110_INSTANCE_JEygRkSpUBoq_delta2=20\&_110_INSTANCE_JEygRkSpUBoq_cur2=1}{NEON document library}.
 
 \hypertarget{ground-beetles-and-herp-bycatch}{%
 \subsubsection{Ground Beetles and Herp Bycatch}\label{ground-beetles-and-herp-bycatch}}
@@ -329,13 +276,13 @@ Invertebrate bycatch is pooled to the plot level and archived. Vertebrate bycatc
 
 Pitfall traps and sampling methods are designed by NEON to reduce vertebrate bycatch (LeVan et al. 2019b). The pitfall cup is medium in size with a low clearance cover installed over the trap entrance to minimize large vertebrate bycatch. When a live vertebrate with the ability to move on its own volition is found in a trap, the animal is released. Live but morbund vertebrates are euthanized and collected along with deceased vertebrates. When ≥15 individuals of a vertebrate species are collected, cumulatively, within a single plot, NEON may initiate localized mitigation measures such as temporarily deactivating traps and removing all traps from the site for the remainder of the season. Thus, while herpetofaunal (herp) bycatch is present in many pitfall samples it is unclear how well these pitfall traps capture herp community structure and diversity - due to these active efforts to reduce vertebrate bycatch. Users of NEON herp bycatch data should be aware of these limitations.
 
-\textbf{Data Wrangling Decisions} The beetle and herp bycatch data product identifier is `DDP1.10022.001.' Carabid samples are recorded and identified in a multi-step workflow wherein a subset of samples are passed on in each successive step. Individuals are first identified by the sorting technician after which a subset is sent on to be pinned. Some especially difficult individuals are not identified by technicians during sorting, instead being labelled ``other carabid.'' The identifications for those individuals are recorded with the pinning data. Any individuals for which identification is still uncertain are then verified by an expert taxonomist. There are a few cases where an especially difficult identification was sent to multiple expert taxonomists and they did not agree on a final taxon, these individuals were excluded from the data set at the recommendation of NEON staff.
+\textbf{Data Wrangling Decisions} The beetle and herp bycatch data product identifier is `DDP1.10022.001'. Carabid samples are recorded and identified in a multi-step workflow wherein a subset of samples are passed on in each successive step. Individuals are first identified by the sorting technician after which a subset is sent on to be pinned. Some especially difficult individuals are not identified by technicians during sorting, instead being labelled ``other carabid''. The identifications for those individuals are recorded with the pinning data. Any individuals for which identification is still uncertain are then verified by an expert taxonomist. There are a few cases where an especially difficult identification was sent to multiple expert taxonomists and they did not agree on a final taxon, these individuals were excluded from the data set at the recommendation of NEON staff.
 
 Preference is given to expert identification whenever available. However, these differences in taxonomic expertise do not seem to cause systematic biases in estimating species richness across sites, but non-expert taxonomists are more likely to misidentify non-native carabid species (Egli et al. 2020). Beetle abundances are recorded for the sorted samples by NEON technicians. To account for individual samples that were later reidentified, the final abundance for a species is the original sorting sample abundance minus the number of individuals that were given a new ID.
 
 Prior to 2018, \texttt{trappingDays} values were not included for many sites. Missing entries were calculated as the range from \texttt{setDate} through \texttt{collectDate} for each trap. We also accounted for a few plots for which \texttt{setDate} was not updated based on a previous collection event in the \texttt{trappingDays} calculations. To facilitate easy manipulation of data within and across bouts, a new \texttt{boutID} field was created to identify all trap collection events at a site in a bout. The original \texttt{EventID} field is intended to identify a bout, but has a number of issues that necessitates creation of a new ID. First, \texttt{EventID} does not correspond to a single collection date but rather all collections in a week. This is appropriate for the small number of instances when collections for a bout happen over multiple consecutive days (\textasciitilde5\% of bouts), but prevents analysis of bout patterns at the temporal scale of a weekday. The data here were updated so all entries for a bout correspond to the date (i.e., \texttt{collectDate}) on which the majority of traps are collected to maintain the weekday-level resolution with as high of fidelity as possible, while allowing for easy aggregation within bouts and \texttt{collectDate}'s. Second, there were a few instances in which plots within a site were set and collected on the same day, but have different \texttt{EventID}'s. These instances were all considered a single bout by our new \texttt{boutID}, which is a unique combination of \texttt{setDate}, \texttt{collectDate}, and \texttt{siteID}.
 
-Herpetofaunal bycatch (amphibian and reptile) in pitfall traps were identified to species or the lowest taxonomic level possible within 24 h of recovery from the field. To process the herp bycatch NEON data we cleaned \texttt{trappingDays} and the other variables and added \texttt{boutID} as described above for beetles. The variable \texttt{sampleType} in the \texttt{bet\_sorting} table provides the type of animal caught in a pitfall trap as one of five types: `carabid,' `vert bycatch herp,' `other carabid,' `invert bycatch' and `vert bycatch mam.' We filtered the beetle data described above to only include the `carabid' and `other carabid' types. For herps, we only kept the \texttt{sampleType} of `vert bycatch herp.' Abundance data of beetles and herps bycatch were standardized to be the number of individuals captured per trap day.
+Herpetofaunal bycatch (amphibian and reptile) in pitfall traps were identified to species or the lowest taxonomic level possible within 24 h of recovery from the field. To process the herp bycatch NEON data we cleaned \texttt{trappingDays} and the other variables and added \texttt{boutID} as described above for beetles. The variable \texttt{sampleType} in the \texttt{bet\_sorting} table provides the type of animal caught in a pitfall trap as one of five types: `carabid', `vert bycatch herp', `other carabid', `invert bycatch' and `vert bycatch mam'. We filtered the beetle data described above to only include the `carabid' and `other carabid' types. For herps, we only kept the \texttt{sampleType} of `vert bycatch herp'. Abundance data of beetles and herps bycatch were standardized to be the number of individuals captured per trap day.
 
 \hypertarget{mosquitos}{%
 \subsubsection{Mosquitos}\label{mosquitos}}
@@ -361,7 +308,7 @@ Small mammals are collected at NEON sites using Sherman traps, identified to spe
 
 Small mammal sampling occurs in bouts, with a bout comprised of three consecutive (or nearly consecutive) nights of trapping at each pathogen grid and one night of trapping at each diversity grid. The timing of sampling occurs within 10 days before or after the new moon. The number of bouts per year is determined by site type: core sites are typically trapped for six bouts per year (except for areas with shorter seasons due to cold weather), while relocatable sites are trapped for four bouts per year. More information can be found in Thibault et al. (2019).
 
-\textbf{Data Wrangling Decisions} In the small mammal NEON data product (\texttt{DP1.10072.001}), records are stratified by NEON site, year, month, and day and represent data from both the diversity and pathogen sampling grids. Capture records were removed if they were not identified to genus or species (e.g., if the species name was denoted as `either/or' or as family name), or if their trap status is not ``5 - capture'' or ``4 - more than 1 capture in one trap.'' Abundance data for each plot and month combination were standardized to be the number of individuals captured per 100 trap nights.
+\textbf{Data Wrangling Decisions} In the small mammal NEON data product (\texttt{DP1.10072.001}), records are stratified by NEON site, year, month, and day and represent data from both the diversity and pathogen sampling grids. Capture records were removed if they were not identified to genus or species (e.g., if the species name was denoted as `either/or' or as family name), or if their trap status is not ``5 - capture'' or ``4 - more than 1 capture in one trap''. Abundance data for each plot and month combination were standardized to be the number of individuals captured per 100 trap nights.
 
 \hypertarget{terrestrial-plants}{%
 \subsubsection{Terrestrial Plants}\label{terrestrial-plants}}
@@ -391,7 +338,7 @@ Prior to 2019, both field surveyors and laboratory taxonomists enumerated each t
 
 The second major issue is that in years where both field counts and lab counts were available, they did not always agree (8\% of records). In cases of disagreement, we generally used lab counts in the final abundance data, because this is the source of all tick count data after 2019 and because life-stage identification was more accurate. However, there were a few exceptions where we used field count data. In some cases, only a subsample of a certain life-stage was counted in the lab, which resulted in higher field counts than lab counts. In this case, we assigned the additional un-identified individuals (e.g., the difference between the field and lab counts) to the order level (IXOSP2). If quality notes from NEON described ticks being lost in transit, we also added the additional lost individuals to the order level. There were some cases (\textless1\%) where the field counts were greater than lab counts by more than 20\% and where the explanation was not obvious; we removed these records.We note that the majority of samples (\textasciitilde85\%) had no discrepancies between the lab or field, therefore this process could be ignored by users whose analyses are not sensitive to exact counts.
 
-The tick pathogen NEON data product (\texttt{DP1.10092.001}) consists of two dataframes: \texttt{tck\_pathogen} hereafter referred to as `pathogen data' and \texttt{tck\_pathogenqa} hereafter referred to as `quality data.' First, we removed any samples that had flagged quality checks from the quality data and removed any samples that did not have a positive DNA quality check from the pathogen data. Although the original online protocol aimed to test 130 ticks per site per year from multiple tick species, the final sampling decision was to extensively sample IXOSCA, AMBAME, and AMBSP species only because IXOPAC and \emph{Dermacentor} nymph frequencies were too rare to generate meaningful pathogen data. \emph{Borrelia burgdorferi} and \emph{Borrelia burgdorferi sensu lato} tests were merged, since the former was an incomplete pathogen name and refers to \emph{B. burgdorferi sensu lato} as opposed to \emph{sensu stricto} (Rudenko et al. 2011). Tick pathogen data are presented as positivity rate calculated as number positive tests per number of tests conducted for a given pathogen on ticks collected during a given sampling event.
+The tick pathogen NEON data product (\texttt{DP1.10092.001}) consists of two dataframes: \texttt{tck\_pathogen} hereafter referred to as `pathogen data' and \texttt{tck\_pathogenqa} hereafter referred to as `quality data'. First, we removed any samples that had flagged quality checks from the quality data and removed any samples that did not have a positive DNA quality check from the pathogen data. Although the original online protocol aimed to test 130 ticks per site per year from multiple tick species, the final sampling decision was to extensively sample IXOSCA, AMBAME, and AMBSP species only because IXOPAC and \emph{Dermacentor} nymph frequencies were too rare to generate meaningful pathogen data. \emph{Borrelia burgdorferi} and \emph{Borrelia burgdorferi sensu lato} tests were merged, since the former was an incomplete pathogen name and refers to \emph{B. burgdorferi sensu lato} as opposed to \emph{sensu stricto} (Rudenko et al. 2011). Tick pathogen data are presented as positivity rate calculated as number positive tests per number of tests conducted for a given pathogen on ticks collected during a given sampling event.
 
 \hypertarget{aquatic-organisms}{%
 \subsection{Aquatic Organisms}\label{aquatic-organisms}}
@@ -442,7 +389,7 @@ The fish NEON data product (\texttt{DP1.20107.001}) consists of \texttt{fsh\_per
 
 \textbf{NEON Sampling Design} Zooplankton samples are collected at seven NEON lake sites across four domains. Zooplankton samples are collected at the buoy sensor set (deepest location in the lake) and at the two nearshore sensor sets using a vertical tow net for locations deeper than 4 m and a Schindler trap for locations shallower than 4 m (Parker and Roehm 2019). This results in three samples collected per sampling day. Samples are preserved with ethanol in the field and shipped from the domain facility to a taxonomy lab for sorting and identification to lowest possible taxon (e.g., genus or species) and counts of each taxon per size are made to the nearest mm.
 
-\textbf{Data Wrangling Decisions} The NEON zooplankton data product (\texttt{DP1.20219.001}) consists of dataframes for taxonomic identification and related field data (Parker and Scott 2020). Zooplankton in NEON samples are identified at contracting labs to the lowest possible taxonomic resolution, usually genus, however some specimens can only be identified to the family (or even class) level, depending on the condition of the specimen. Ten percent of all samples are checked by two taxonomists and are noted in the \texttt{qcTaxonomyStatus} column. The taxonomic naming has been standardized in the \texttt{zoo\_taxonomyProcessed} table, according to NEON's master taxonomy, removing any synonyms. Density was calculated using \texttt{adjCountPerBottle} and \texttt{towsTrapsVolume} to correct count data to ``count per liter.''
+\textbf{Data Wrangling Decisions} The NEON zooplankton data product (\texttt{DP1.20219.001}) consists of dataframes for taxonomic identification and related field data (Parker and Scott 2020). Zooplankton in NEON samples are identified at contracting labs to the lowest possible taxonomic resolution, usually genus, however some specimens can only be identified to the family (or even class) level, depending on the condition of the specimen. Ten percent of all samples are checked by two taxonomists and are noted in the \texttt{qcTaxonomyStatus} column. The taxonomic naming has been standardized in the \texttt{zoo\_taxonomyProcessed} table, according to NEON's master taxonomy, removing any synonyms. Density was calculated using \texttt{adjCountPerBottle} and \texttt{towsTrapsVolume} to correct count data to ``count per liter''.
 
 \hypertarget{results-or-how-to-get-and-use-standardized-neon-organismal-data}{%
 \section{Results (or how to get and use standardized NEON organismal data)}\label{results-or-how-to-get-and-use-standardized-neon-organismal-data}}
@@ -455,7 +402,7 @@ The data package \texttt{neonDivData} can be installed from Github. Installation
 
 \begin{table}
 
-\caption{\label{tab:dataSummary}Summary of data products included in this study (as of 06 April, 2021). Users can call the R objects in the \texttt{R\ object} column from the R data package \texttt{neonDivData} to get the standardized data for specific taxonomic groups.}
+\caption{\label{tab:dataSummary}Summary of data products included in this study (as of 08 April, 2021). Users can call the R objects in the \texttt{R\ object} column from the R data package \texttt{neonDivData} to get the standardized data for specific taxonomic groups.}
 \centering
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{llrrll}
@@ -478,35 +425,15 @@ Zooplankton & data\_zooplankton & 157 & 7 & 2014-07-02 & 2020-07-22\\
 \end{tabular}}
 \end{table}
 
-To demonstrate the use of data packages, we used \texttt{data\_plant} to quickly visualize the distribution of species richness of plants across all NEON sites (Fig. \ref{fig:Fig2Map}). To show how easy it is to get site level species richness, we presented the code used to generate the data for Fig. \ref{fig:Fig2Map} below.
+To demonstrate the use of data packages, we used \texttt{data\_plant} to quickly visualize the distribution of species richness of plants across all NEON sites (Fig. \ref{fig:Fig2Map}). To show how easy it is to get site level species richness, we presented the code used to generate the data for Fig. \ref{fig:Fig2Map} as supporting information.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(dplyr)}
-\FunctionTok{library}\NormalTok{(neonDivData)}
-\CommentTok{\# get species richness at each site}
-\NormalTok{sp\_rich\_plant }\OtherTok{=}\NormalTok{ data\_plant }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(siteID) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{nspp =} \FunctionTok{n\_distinct}\NormalTok{(taxon\_id), }\AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{)}
-\CommentTok{\# get latitude and longitude of all sites}
-\NormalTok{sp\_rich\_plant }\OtherTok{=} \FunctionTok{left\_join}\NormalTok{(sp\_rich\_plant,}
-                          \FunctionTok{filter}\NormalTok{(neon\_location, location\_id }\SpecialCharTok{\%in\%}\NormalTok{ data\_plant}\SpecialCharTok{$}\NormalTok{location\_id) }\SpecialCharTok{\%\textgreater{}\%}
-                            \CommentTok{\# each site has multiple plots with slightly different lat/long}
-                            \FunctionTok{group\_by}\NormalTok{(siteID) }\SpecialCharTok{\%\textgreater{}\%}
-                            \FunctionTok{summarise}\NormalTok{(}\AttributeTok{latitude =} \FunctionTok{mean}\NormalTok{(latitude),}
-                                      \AttributeTok{longitude =} \FunctionTok{mean}\NormalTok{(longitude),}
-                                      \AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{),}
-                          \AttributeTok{by =} \StringTok{"siteID"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-Figure \ref{fig:Fig2Map} shows the utility of the data package for exploring macroecological patterns at the NEON site level. One of the most well known and studied macroecological patterns is the latitudinal biodiversity gradient, wherein sites are more speciose at lower latitudes relative to higher latitudes; temperature, biotic interactions, and historical biogeography are potential reasons underlying these patterns (Fischer 1960, Hillebrand 2004). Herbaceous plants of NEON generally follow this pattern. The latitudinal pattern for NEON small mammals is similar, and is best explained by increased niche space and declining similarity in body size among species in lower latitudes, rather than a direct effect of temperature (Read et al. 2018).
+Figure \ref{fig:Fig2Map} shows the utility of the data package for exploring macroecological patterns at the NEON site level. One of the most well known and studied macroecological patterns is the latitudinal biodiversity gradient, wherein sites are more species at lower latitudes relative to higher latitudes; temperature, biotic interactions, and historical biogeography are potential reasons underlying these patterns (Fischer 1960, Hillebrand 2004). Herbaceous plants of NEON generally follow this pattern. The latitudinal pattern for NEON small mammals is similar, and is best explained by increased niche space and declining similarity in body size among species in lower latitudes, rather than a direct effect of temperature (Read et al. 2018).
 
 
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.95\linewidth]{/Users/dli/Github/neonDivData/manuscript/figures/p_plant} 
+{\centering \includegraphics[width=0.95\linewidth]{/Users/dli30/Github/neonDivData/manuscript/figures/p_plant} 
 
 }
 
@@ -519,7 +446,7 @@ In addition to allowing for quick exploration of macroecological patterns of ric
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.95\linewidth]{/Users/dli/Github/neonDivData/manuscript/figures/beetle_rarefaction} 
+{\centering \includegraphics[width=0.95\linewidth]{/Users/dli30/Github/neonDivData/manuscript/figures/beetle_rarefaction} 
 
 }
 
@@ -549,17 +476,12 @@ Macrosystems ecology (sensu Heffernan et al. 2014) is at the start of an excitin
 
 This work is a result of participating in the first NEON Science Summit in 2019 and an internship program through the St.~Edward's Institute for Interdisciplinary Science (i4) funded through a National Science Foundation award under Grant No.~1832282. The authors acknowledge support from the NSF Award \#1906144 to attend the 2019 NEON Science Summit. Additionally, the authors acknowledge support from the NSF DEB 1926568 to S.R., NSF DEB 1926567 to P.L.Z., NSF DEB 1926598 to M.A.J, and NSF DEB 1926341 to J.M.L.. Comments from NEON staff (Katie LeVan, Dylan Mpnahan, Sata Paull, Dave Barnett, Sam Simkin), Margaret O'Brien and Tad Dallas greatly improved this work. The National Ecological Observatory Network is a program sponsored by the National Science Foundation and operated under cooperative agreement by Battelle Memorial Institute. This material is based in part upon work supported by the National Science Foundation through the NEON Program.
 
-\hypertarget{open-research-statement}{%
-\section{Open Research Statement}\label{open-research-statement}}
-
-No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (\url{https://github.com/daijiang/neonDivData}). Data were also permanently archived at the EDI data repository (\url{https://portal-s.edirepository.org/nis/mapbrowse?scope=edi\&identifier=190\&revision=2}).
-
 \hypertarget{reference}{%
 \section*{Reference}\label{reference}}
 \addcontentsline{toc}{section}{Reference}
 
 \hypertarget{refs}{}
-\begin{CSLReferences}{1}{0}
+\begin{cslreferences}
 \leavevmode\hypertarget{ref-baker1997environmental}{}%
 Baker, J. R., D. V. Peck, and D. W. Sutton. 1997. Environmental monitoring and assessment program surface waters: Field operations manual for lakes. US Environmental Protection Agency, Washington.
 
@@ -576,7 +498,7 @@ Barnett, D. T., P. B. Adler, B. R. Chemel, P. A. Duffy, B. J. Enquist, J. B. Gra
 Bechtold, W. A., and P. L. Patterson. 2005. The enhanced forest inventory and analysis program--national sampling design and estimation procedures. USDA Forest Service, Southern Research Station.
 
 \leavevmode\hypertarget{ref-beck2014spatial}{}%
-Beck, J., M. Böller, A. Erhardt, and W. Schwanghart. 2014. Spatial bias in the GBIF database and its effect on modeling species' geographic distributions. Ecological Informatics 19:10--15.
+Beck, J., M. Böller, A. Erhardt, and W. Schwanghart. 2014. Spatial bias in the gbif database and its effect on modeling species' geographic distributions. Ecological Informatics 19:10--15.
 
 \leavevmode\hypertarget{ref-blowes2019geography}{}%
 Blowes, S. A., S. R. Supp, L. H. Antão, A. Bates, H. Bruelheide, J. M. Chase, F. Moyes, A. Magurran, B. McGill, I. H. Myers-Smith, and others. 2019. The geography of biodiversity change in marine and terrestrial assemblages. Science 366:339--345.
@@ -591,7 +513,7 @@ Cawley, K. M., S. Parker, R. Utz, K. Goodman, C. Scott, M. Fitzgerald, J. Vance,
 Chao, A., N. J. Gotelli, T. Hsieh, E. L. Sander, K. Ma, R. K. Colwell, and A. M. Ellison. 2014. Rarefaction and extrapolation with hill numbers: A framework for sampling and estimation in species diversity studies. Ecological monographs 84:45--67.
 
 \leavevmode\hypertarget{ref-Chesney2021}{}%
-Chesney, T., S. Parker, and C. Scott. 2021. NEON user guide to aquatic macroinvertebrate collection (DP1.20120.001). Revision b. NEON (National Ecological Observatory Network).
+Chesney, T., S. Parker, and C. Scott. 2021. NEON user guide to aquatic macroinvertebrate collection (dp1.20120.001). Revision b. NEON (National Ecological Observatory Network).
 
 \leavevmode\hypertarget{ref-curtis1959vegetation}{}%
 Curtis, J. T. 1959. The vegetation of wisconsin: An ordination of plant communities. University of Wisconsin Pres.
@@ -608,11 +530,11 @@ Farrell, K. J., and C. C. Carey. 2018. Power, pitfalls, and potential for integr
 \leavevmode\hypertarget{ref-fischer1960latitudinal}{}%
 Fischer, A. G. 1960. Latitudinal variations in organic diversity. Evolution 14:64--81.
 
-\leavevmode\hypertarget{ref-g2019remote}{}%
-G Pricope, N., K. L Mapes, and K. D Woodward. 2019. Remote sensing of human--environment interactions in global change research: A review of advances, challenges and future directions. Remote Sensing 11:2783.
-
 \leavevmode\hypertarget{ref-geldmann2016determines}{}%
 Geldmann, J., J. Heilmann-Clausen, T. E. Holm, I. Levinsky, B. Markussen, K. Olsen, C. Rahbek, and A. P. Tøttrup. 2016. What determines spatial bias in citizen science? Exploring four recording schemes with different proficiency requirements. Diversity and Distributions 22:1139--1149.
+
+\leavevmode\hypertarget{ref-g2019remote}{}%
+G Pricope, N., K. L Mapes, and K. D Woodward. 2019. Remote sensing of human--environment interactions in global change research: A review of advances, challenges and future directions. Remote Sensing 11:2783.
 
 \leavevmode\hypertarget{ref-gurevitch1999statistical}{}%
 Gurevitch, J., and L. V. Hedges. 1999. Statistical issues in ecological meta-analyses. Ecology 80:1142--1149.
@@ -633,10 +555,10 @@ Hillebrand, H. 2004. On the generality of the latitudinal diversity gradient. Th
 Hoekman, D., K. E. LeVan, C. Gibson, G. E. Ball, R. A. Browne, R. L. Davidson, T. L. Erwin, C. B. Knisley, J. R. LaBonte, J. Lundgren, and others. 2017. Design for ground beetle abundance and diversity sampling within the national ecological observatory network. Ecosphere 8:e01744.
 
 \leavevmode\hypertarget{ref-hsieh2016inext}{}%
-Hsieh, T., K. Ma, and A. Chao. 2016. iNEXT: An r package for rarefaction and extrapolation of species diversity (h ill numbers). Methods in Ecology and Evolution 7:1451--1456.
+Hsieh, T., K. Ma, and A. Chao. 2016. INEXT: An r package for rarefaction and extrapolation of species diversity (h ill numbers). Methods in Ecology and Evolution 7:1451--1456.
 
 \leavevmode\hypertarget{ref-hubbell2001unified}{}%
-Hubbell, S. P. 2001. The unified neutral theory of biodiversity and biogeography (MPB-32). Princeton University Press.
+Hubbell, S. P. 2001. The unified neutral theory of biodiversity and biogeography (mpb-32). Princeton University Press.
 
 \leavevmode\hypertarget{ref-hutchinson1959homage}{}%
 Hutchinson, G. E. 1959. Homage to santa rosalia or why are there so many kinds of animals? The American Naturalist 93:145--159.
@@ -660,10 +582,10 @@ Keller, M., D. S. Schimel, W. W. Hargrove, and F. M. Hoffman. 2008. A continenta
 Koricheva, J., and J. Gurevitch. 2014. Uses and misuses of meta-analysis in plant ecology. Journal of Ecology 102:828--844.
 
 \leavevmode\hypertarget{ref-LeVan2020}{}%
-LeVan, K. 2020a. NEON user guide to ground beetles sampled from pitfall traps (DP1.10022.001).version c. NEON (National Ecological Observatory Network).
+LeVan, K. 2020a. NEON user guide to ground beetles sampled from pitfall traps (dp1.10022.001).version c. NEON (National Ecological Observatory Network).
 
 \leavevmode\hypertarget{ref-LeVan2020b}{}%
-LeVan, K. 2020b. NEON user guide to mosquitoes sampled from CO2 traps (DP1.10043.001) and mosquito-borne pathogen satatus (DP1.10041.001).version c. NEON (National Ecological Observatory Network).
+LeVan, K. 2020b. NEON user guide to mosquitoes sampled from co2 traps (dp1.10043.001) and mosquito-borne pathogen satatus (dp1.10041.001).version c. NEON (National Ecological Observatory Network).
 
 \leavevmode\hypertarget{ref-LeVan2019b}{}%
 LeVan, K., S. Paull, K. Tsao, D. Hoekman, and Y. Springer. 2019a. TOS protocol and procedure: MOS - mosquito sampling. NEON.DOC.014049vL. NEON (National Ecological Observatory Network).
@@ -690,7 +612,7 @@ Martin, L. J., B. Blossey, and E. Ellis. 2012. Mapping where ecologists work: Bi
 Midgley, G. F., and W. Thuiller. 2005. Global environmental change and the uncertain fate of biodiversity. The New Phytologist 167:638--641.
 
 \leavevmode\hypertarget{ref-Monahan2020}{}%
-Monahan, D., B. Jensen, S. Parker, and C. Scott. 2020. NEON user guide to fish electrofishing, gill netting, and fyke netting counts (DP1.20107.001). Revision b. NEON (National Ecological Observatory Network).
+Monahan, D., B. Jensen, S. Parker, and C. Scott. 2020. NEON user guide to fish electrofishing, gill netting, and fyke netting counts (dp1.20107.001). Revision b. NEON (National Ecological Observatory Network).
 
 \leavevmode\hypertarget{ref-moulton2002revised}{}%
 Moulton II, S. R., J. G. Kennen, R. M. Goldstein, and J. A. Hambrook. 2002. Revised protocols for sampling algal, invertebrate, and fish communities as part of the national water-quality assessment program. Geological Survey (US).
@@ -711,10 +633,10 @@ Parker, S. 2020. AOS protocol and procedure: ALG - periphyton and phytoplankton 
 Parker, S., and C. Roehm. 2019. AOS protocol and procedure: ZOO - zooplankton sampling in lakes. NEON.DOC.001194. NEON (National Ecological Observatory Network).
 
 \leavevmode\hypertarget{ref-ParkerScott2020}{}%
-Parker, S., and C. Scott. 2020. NEON user guide to aquatic zooplankton collection (DP1.20219.001). Revision b. NEON (National Ecological Observatory Network).
+Parker, S., and C. Scott. 2020. NEON user guide to aquatic zooplankton collection (dp1.20219.001). Revision b. NEON (National Ecological Observatory Network).
 
 \leavevmode\hypertarget{ref-ParkerVance2020}{}%
-Parker, S., and T. Vance. 2020. NEON user guide to periphyton and phytoplankton collection (DP1.20166.001). Revision c. NEON (National Ecological Observatory Network).
+Parker, S., and T. Vance. 2020. NEON user guide to periphyton and phytoplankton collection (dp1.20166.001). Revision c. NEON (National Ecological Observatory Network).
 
 \leavevmode\hypertarget{ref-pavlacky2017statistically}{}%
 Pavlacky Jr, D. C., P. M. Lukacs, J. A. Blakesley, R. C. Skorkowsky, D. S. Klute, B. A. Hahn, V. J. Dreitz, T. L. George, and D. J. Hanni. 2017. A statistically rigorous sampling design to integrate avian monitoring and management within bird conservation regions. PloS one 12:e0185924.
@@ -723,7 +645,7 @@ Pavlacky Jr, D. C., P. M. Lukacs, J. A. Blakesley, R. C. Skorkowsky, D. S. Klute
 Peck, D. V., Herlihy, A. T., Hill, B. H., Hughes, R. M., Kaufmann, P. R., Klemm, D. J., Lazorchak, J. M., McCormick, F. H., Peterson, S. A., Ringold, P. L., Magee, T., and M. R. and Cappaert. 2006. Environmental monitoring and assessment program --- surface waters: Western pilot study field operations manual for wadeable streams. US Environmental Protection Agency, Washington.
 
 \leavevmode\hypertarget{ref-pritt2017proposal}{}%
-Pritt, B. S., M. E. Allerdice, L. M. Sloan, C. D. Paddock, U. G. Munderloh, Y. Rikihisa, T. Tajima, S. M. Paskewitz, D. F. Neitzel, D. K. H. Johnson, and others. 2017. Proposal to reclassify ehrlichia muris as ehrlichia muris subsp. Muris subsp. Nov. And description of ehrlichia muris subsp. Eauclairensis subsp. Nov., A newly recognized tick-borne pathogen of humans. International journal of systematic and evolutionary microbiology 67:2121.
+Pritt, B. S., M. E. Allerdice, L. M. Sloan, C. D. Paddock, U. G. Munderloh, Y. Rikihisa, T. Tajima, S. M. Paskewitz, D. F. Neitzel, D. K. H. Johnson, and others. 2017. Proposal to reclassify ehrlichia muris as ehrlichia muris subsp. Muris subsp. Nov. And description of ehrlichia muris subsp. Eauclairensis subsp. Nov., a newly recognized tick-borne pathogen of humans. International journal of systematic and evolutionary microbiology 67:2121.
 
 \leavevmode\hypertarget{ref-rainio2003ground}{}%
 Rainio, J., and J. Niemelä. 2003. Ground beetles (coleoptera: Carabidae) as bioindicators. Biodiversity \& Conservation 12:487--506.
@@ -762,11 +684,10 @@ Vellend, M., L. Baeten, I. H. Myers-Smith, S. C. Elmendorf, R. Beauséjour, C. D
 Welti, E., A. Joern, A. M. Ellison, D. Lightfoot, S. Record, N. Rodenhouse, E. Stanley, and M. Kaspari. 2021. Meta-analyses of insect temporal trends must account for the complex sampling histories inherent to many long-term monitoring efforts. Nature Ecology and Evolution.
 
 \leavevmode\hypertarget{ref-wilkinson2016fair}{}%
-Wilkinson, M. D., M. Dumontier, Ij. J. Aalbersberg, G. Appleton, M. Axton, A. Baak, N. Blomberg, J.-W. Boiten, L. B. da Silva Santos, P. E. Bourne, and others. 2016. The FAIR guiding principles for scientific data management and stewardship. Scientific data 3:1--9.
+Wilkinson, M. D., M. Dumontier, I. J. Aalbersberg, G. Appleton, M. Axton, A. Baak, N. Blomberg, J.-W. Boiten, L. B. da Silva Santos, P. E. Bourne, and others. 2016. The fair guiding principles for scientific data management and stewardship. Scientific data 3:1--9.
 
 \leavevmode\hypertarget{ref-worm2018theory}{}%
-Worm, B., and D. P. Tittensor. 2018. A theory of global biodiversity (MPB-60). Princeton University Press.
-
-\end{CSLReferences}
+Worm, B., and D. P. Tittensor. 2018. A theory of global biodiversity (mpb-60). Princeton University Press.
+\end{cslreferences}
 
 \end{document}
