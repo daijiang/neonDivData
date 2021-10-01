@@ -8,7 +8,7 @@
 
 The goal of neonDivData is to provide cleaned NEON organismal data to
 facilitate biodiversity research. The authors of this R data package
-have all spend lots of effort to clean NEON data for our own research;
+have all spent lots of effort to clean NEON data for our own research;
 it makes the most sense to document such processes and provide the clean
 data product so that the large community can use them readily. This will
 save us time to dig into the extensive documenations of NEON data and to
