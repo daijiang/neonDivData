@@ -10,8 +10,8 @@ library(ecocomDP)
 library(tidyverse)
 
 
-my_out_dir <- "data-raw/neon_div_data"
 my_raw_dir <- "data-raw/NEON_raw_data"
+my_out_dir <- "data-raw/neon_div_data"
 
 # create out dir if it doesn't exist
 if(!my_out_dir %in% list.files()) dir.create(my_out_dir)
@@ -44,7 +44,7 @@ for(i in 1:nrow(neon_ecocomdp_data_list)){
       token = Sys.getenv("NEON_TOKEN"),
       check.size = FALSE)
 
-    data_flat_i <- data_list_i[[1]]$tables %>% ecocomDP::flatten_ecocomDP()
+    data_flat_i <- data_list_i[[1]]$tables %>% ecocomDP::flatten_data()
 
   })
 
