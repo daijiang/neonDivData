@@ -22,6 +22,7 @@
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
 #' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
+#' - `trapID`: Identifier for trap.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
 #' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
@@ -33,7 +34,6 @@
 #' - `trappingDays`: Cleaned up decimal days between trap setting and collecting events
 #' - `release`: Version of data release by NEON.
 #' - `nativeStatusCode`: 	The process by which the taxon became established in the location only provided for vert bycatch herp
-#' - `neon_trap_id`: Identifier for trap.
 #' - `remarksSorting`: Technician notes; free text comments accompanying the record from sorting table
 #' - `remarksFielddata`: Technician notes; free text comments accompanying the record from fielddata table
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.

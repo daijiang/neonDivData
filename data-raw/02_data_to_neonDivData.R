@@ -33,24 +33,21 @@ read_data_package <- function(
   data_catalog_taxon_groups <- data.frame()
   data_catalog_data_package_ids <- data.frame()
 
-  if(!is.null(taxon_groups)) data_catalog_taxon_groups <-
-    data_catalog %>%
-    dplyr::filter(taxon_group %in% taxon_groups)
+  if(!is.null(taxon_groups)) 
+    data_catalog_taxon_groups <- dplyr::filter(data_catalog, taxon_group %in% taxon_groups)
 
-  if(!is.null(data_package_ids)) data_catalog_data_package_ids <-
-    data_catalog %>%
-    dplyr::filter(data_package_id %in% data_package_ids)
+  if(!is.null(data_package_ids)) 
+    data_catalog_data_package_ids <- dplyr::filter(data_catalog, data_package_id %in% data_package_ids)
 
-  data_catalog_filtered <- dplyr::bind_rows(
-    data_catalog_taxon_groups,
-    data_catalog_data_package_ids) %>%
+  data_catalog_filtered <- dplyr::bind_rows(data_catalog_taxon_groups,
+                                            data_catalog_data_package_ids) %>%
     dplyr::distinct()
 
   if(nrow(data_catalog_filtered) > 0) data_catalog <- data_catalog_filtered
 
 
   # clean in_dir
-  in_dir <- gsub("\\/$","",in_dir)
+  in_dir <- gsub("\\/$", "", in_dir)
 
   # if returning a list, rename list elements with taxon groups and datapackage ids
   if(!return_flat_tables) data_out <- sapply(
@@ -58,9 +55,9 @@ read_data_package <- function(
     function(i){
       dat <- list()
       try({
-        dat <- readRDS(file = paste0(in_dir,"/",data_catalog$data_package_id[i],".RDS"))
+        dat <- readRDS(file = paste0(in_dir, "/", data_catalog$data_package_id[i],".RDS"))
         names(dat) <- paste0(
-          data_catalog$taxon_group[i],"_",
+          data_catalog$taxon_group[i], "_",
           data_catalog$data_package_id[i])
       })
       if(length(dat)==0) warning(
@@ -75,15 +72,11 @@ read_data_package <- function(
     function(i){
       dat <- list()
       try({
-
-        dat_list <- readRDS(file = paste0(in_dir,"/",data_catalog$data_package_id[i],".RDS"))
-        dat_flat <- tibble::tibble(
-          taxon_group = data_catalog$taxon_group[i],
-          ecocomDP::flatten_ecocomDP(dat_list[[1]]$tables))
+        dat_list <- readRDS(file = paste0(in_dir, "/", data_catalog$data_package_id[i], ".RDS"))
+        dat_flat <- tibble::tibble(taxon_group = data_catalog$taxon_group[i],
+                                   ecocomDP::flatten_data(dat_list$tables))
         dat <- list(dat_flat)
-        names(dat) <- paste0(
-          data_catalog$taxon_group[i], "_",
-          data_catalog$data_package_id[i])
+        names(dat) <- paste0(data_catalog$taxon_group[i], "_", data_catalog$data_package_id[i])
       })
       if(length(dat)==0) warning(
         paste0(data_catalog$data_package_id[i], " not found in ",in_dir))
@@ -97,7 +90,7 @@ read_data_package <- function(
 
 # # examples using filtering -- i.e., not reading in all data
 # data <- read_data_package(
-#   taxon_groups = "ALGAE",
+#   taxon_groups = "ALGAE", in_dir = my_in_dir,
 #   return_flat_tables = TRUE)
 #
 # data <- read_data_package(
@@ -120,9 +113,27 @@ map(data_all, names)
 
 map(data_all, function(x) table(x$taxon_rank))
 
-data_loc = lapply(data_all, function(x) select(x, location_id, latitude, longitude, elevation) %>% distinct)
+data_loc = lapply(data_all, function(x) {
+  select(x, location_id, latitude, longitude, elevation) %>% 
+    distinct()
+})
 # confirm that each location_id has only one lat/long/elev combination
 all(!map_lgl(data_loc, function(x) any(duplicated(x$location_id))))
+map_lgl(data_loc, function(x) any(duplicated(x$location_id)))
+# remove any duplications by taking the means (and remove NAs)
+data_loc = lapply(data_loc, function(x) {
+  if(any(duplicated(x$location_id))){
+    out = group_by(x, location_id) %>% 
+      summarise_all(.funs = mean, na.rm = TRUE) %>% 
+      ungroup()
+  } else {
+    out = x
+  }
+  out
+})
+data_loc_df = bind_rows(data_loc) %>% distinct()
+n_distinct(data_loc_df$location_id)
+
 
 # taxa info ----
 # to save space, extract taxon names and save separately to avoid duplications
@@ -142,19 +153,26 @@ loc_var = c("location_id", "location_name", # "domainID",
              "latitude", "longitude", "elevation")
 neon_location = lapply(data_all, function(x) dplyr::distinct(dplyr::select(x, any_of(loc_var))))
 # tick pathogen's loc are the same as ticks
-neon_location = neon_location[-grep("TICK_PATHOGENS_neon.ecocomdp", names(neon_location))]
+# neon_location = neon_location[-grep("TICK_PATHOGENS_neon.ecocomdp", names(neon_location))]
 neon_location = bind_rows(neon_location) %>% distinct()
 all(neon_location$location_id == neon_location$location_name)
+n_distinct(neon_location$location_id)
 neon_location[which(duplicated(neon_location$location_id)),]
+# remove any duplications by taking the means (and remove NAs)
+neon_location = dplyr::select(neon_location, location_id, location_name, siteID, plotID) %>% distinct() %>% 
+  left_join(group_by(neon_location, location_id) %>% 
+              summarise_at(.vars = c("latitude", "longitude", "elevation"), .funs = mean, na.rm = TRUE) %>% 
+              ungroup(), by = "location_id")
 
 des_file = tempfile(fileext = ".rda")
+# previous version of neon_location
 download.file("https://raw.githubusercontent.com/daijiang/neonDivData/long_format/data/neon_locations.rda", des_file)
 load(des_file)
 unlink(des_file)
 names(neon_locations)
-setdiff(neon_location$location_id, neon_locations$namedLocation)
-setdiff(neon_locations$namedLocation, neon_location$location_id)
-# 16 not here, fine, not going to merge them
+setdiff(neon_location$location_id, neon_locations$namedLocation) # new locations
+setdiff(neon_locations$namedLocation, neon_location$location_id) # locations from old version but not here
+# 13 not here, fine, not going to merge them
 filter(neon_locations, namedLocation %in% setdiff(neon_locations$namedLocation, neon_location$location_id))
 land_type = filter(neon_locations, namedLocation %in% intersect(neon_location$location_id, neon_locations$namedLocation)) %>%
   select(location_id = namedLocation, nlcdClass, aquaticSiteType) %>%
@@ -164,16 +182,15 @@ land_type = filter(neon_locations, namedLocation %in% intersect(neon_location$lo
 land_type[which(duplicated(land_type$location_id)),]
 neon_location = left_join(neon_location, land_type, by = "location_id")
 any(duplicated(neon_location$location_id))
-# solve plotID issue
+# solve potential plotID issue
 neon_location = mutate(neon_location,
                        plotID2 = gsub("^([A-Z]{4}_[0-9]{3}).*$", "\\1", location_id),
                        plotID2 = ifelse(grepl("[.]AOS[.]", plotID2), NA, plotID2))
 sum(!is.na(neon_location$plotID))
 sum(neon_location$plotID == neon_location$plotID2, na.rm = T) # confirm existing plotID are the same
-filter(neon_location, !grepl("AOS", location_id), is.na(plotID))
-neon_location = select(neon_location, -plotID) %>%
-  rename(plotID = plotID2)
-neon_location = select(neon_location, -location_name) %>%
+filter(neon_location, !grepl("AOS", location_id), is.na(plotID)) # does not have plotID
+neon_location = select(neon_location, -plotID, -location_name) %>%
+  rename(plotID = plotID2) %>%
   relocate(plotID, .after = siteID)
 
 # some locations do not have lat/long
@@ -181,11 +198,17 @@ problem_loc = filter(neon_location, is.na(latitude) & is.na(longitude))
 setdiff(problem_loc$location_id, neon_locations$namedLocation)
 
 neon_location = filter(neon_location, !location_id %in% problem_loc$location_id) %>%
-  bind_rows(
+  bind_rows( # use the information from old versions
     filter(neon_locations, namedLocation %in% problem_loc$location_id) %>%
       select(location_id = namedLocation, siteID, plotID, latitude = decimalLatitude,
              longitude = decimalLongitude, elevation, nlcdClass, aquaticSiteType)) %>%
   arrange(siteID, plotID, location_id)
+
+neon_location$location_id[which(duplicated(neon_location$location_id))]
+filter(neon_location, location_id %in% neon_location$location_id[which(duplicated(neon_location$location_id))])
+
+neon_location[-which(neon_location$location_id == "SOAP_026.basePlot.brd" & is.na(neon_location$latitude)),] %>% 
+  distinct()
 
 usethis::use_data(neon_location, overwrite = TRUE)
 
@@ -218,19 +241,32 @@ data_all = map(data_all, function(x){
   x
 })
 
+map(data_all, names)
+
 data_all2 = lapply(data_all, function(x)
   dplyr::select(x, -any_of(c("observation_id", "event_id",
                              "package_id", "authority_system",
                       "identificationReferences", "laboratoryName",
                       "location_name", "aquaticSiteType", "domainID", "publicationDate",
-                      "neon_event_id", "geodeticDatum",
+                      "neon_event_id", "geodeticDatum", 
+                      "unit_trappingDays", "unit_totalWeight", "unit_subsampleWeight", "unit_trapHours",
+                      "unit_totalSampledArea",
                       # "plotType", "samplerType", "habitatType",
                       # "observedHabitat", "latitude", "longitude", "elevation",
+                      "original_package_id", "length_of_survey_years", "number_of_years_sampled", "sampleID", 
+                      "std_dev_interval_betw_years", "max_num_taxa", "parentSampleID", "neon_sample_id",
                       "taxon_group"
                       ))) %>% dplyr::distinct() %>%
     dplyr::relocate(any_of(c("siteID", "plotID", "pointID", "unique_sample_id")), .after = location_id) %>%
-    dplyr::relocate(taxon_name, taxon_rank, .after = taxon_id)
+    dplyr::relocate(taxon_name, taxon_rank, .after = taxon_id) %>% 
+    rename(observation_datetime = datetime) %>% 
+    dplyr::select(any_of(c("location_id", "siteID", "plotID", "pointID", "unique_sample_id", "subplotID",
+                           "subsampleID", "trapID")),
+                  observation_datetime, 
+                  any_of(c("taxon_id", "taxon_name", "taxon_rank")), 
+                  variable_name, value, unit, everything())
   )
+
 
 map(data_all2, names)
 map(data_all2, dim)
@@ -287,7 +323,7 @@ data_plant = mutate(data_plant,
 
 data_small_mammal
 
-data_tick = select(data_tick, -neon_sample_id) # just plotID + date
+# data_tick = select(data_tick, -neon_sample_id) # just plotID + date
 
 # data_tick_pathogen seems fine
 

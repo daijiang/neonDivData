@@ -7,7 +7,6 @@
 #'
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
-#' - `plotID`: Plot identifier (NEON site code_XXX).
 #' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
@@ -17,13 +16,14 @@
 #' - `variable_name`: The variable name(s) represented by the `value` column.
 #' - `value`: Value of the variable(s) specified by `variable_name`.
 #' - `unit`: Unit of the values in the `value` column.
+#' - `estimatedTotalCount`: Estimated total count.
+#' - `individualCount`: Individual count.
 #' - `subsamplePercent`: Percent of the total sample contained in the subsample.
 #' - `release`: Version of data release by NEON.
 #' - `benthicArea`: Area sampled (square meter).
 #' - `habitatType`: Habitat type sampled.
 #' - `samplerType`: Type of sampler used to collect the sample.
 #' - `substratumSizeClass`: Size class of the substratum sampled.
-#' - `neon_sample_id`: NEON sample ID.
 #' - `remarks`: Remarks of record.
 #' - `ponarDepth`: Depth (meter) of petite ponar sample.
 #' - `snagLength`: Length (centimeter) of snag sampled.

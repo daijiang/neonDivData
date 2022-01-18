@@ -9,6 +9,8 @@
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
+#' - `sampleID`: Identifier for sample.
+#' - `subsampleID`: Unique identifier associated with each subsample per sampleID.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
 #' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
@@ -17,18 +19,16 @@
 #' - `variable_name`: The variable name(s) represented by the `value` column.
 #' - `value`: Value of the variable(s) specified by `variable_name`.
 #' - `unit`: Unit of the values in the `value` column.
-#' - `sortDate`: Date sample was sorted.
-#' - `sampleID`: Identifier for sample.
-#' - `subsampleID`: Unique identifier associated with each subsample per sampleID.
-#' - `totalWeight`: Weight of entire sample in gram.
-#' - `subsampleWeight`:	Weight of subsample in gram.
-#' - `release`: Version of data release by NEON.
-#' - `trapHours`: Number of hours between trap setting and collecting events.
-#' - `samplingProtocolVersion`: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 #' - `nativeStatusCode`: The process by which the taxon became established in the location.
 #' 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 #' 'N': Native; 'I': Introduced; 'UNK': Status unknown.
+#' - `release`: Version of data release by NEON.
+#' - `samplingProtocolVersion`: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 #' - `sex`: M for male, F for female, U for unknown.
+#' - `sortDate`: Date sample was sorted.
+#' - `subsampleWeight`:	Weight of subsample in gram.
+#' - `totalWeight`: Weight of entire sample in gram.
+#' - `trapHours`: Number of hours between trap setting and collecting events.
 #' - `weightBelowDetection`: Notes regarding the weight relative to scale detection limit.
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.

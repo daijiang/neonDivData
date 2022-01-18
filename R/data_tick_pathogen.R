@@ -27,9 +27,10 @@
 #' - `value`: Value of the variable(s) specified by `variable_name`.
 #' - `unit`: Unit of the values in the `value` column.
 #' - `lifeStage`: Life stage of the host (all Nymph).
-#' - `batchID`: Identifier for batch or analytical run.
 #' - `testProtocolVersion`: The protocol version used to test the sample.
 #' - `release`: Version of data release by NEON.
+#' - `n_tests`: Number of tests conducted.
+#' - `n_positive_test`: Number of tests that were positive.
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.

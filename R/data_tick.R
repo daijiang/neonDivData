@@ -35,12 +35,12 @@
 #' - `variable_name`: The variable name(s) represented by the `value` column.
 #' - `value`: Value of the variable(s) specified by `variable_name`.
 #' - `unit`: Unit of the values in the `value` column.
-#' - `samplingMethod`: Name or code for the method used to collect or test a sample.
-#' - `totalSampledArea`: Total area sampled (square Meter).
-#' - `targetTaxaPresent`: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
-#' - `release`: Version of data release by NEON.
 #' - `LifeStage`: Life stage of the sample ('Adult', 'Larva', or 'Nymph').
+#' - `release`: Version of data release by NEON.
 #' - `remarks_field`: Technician notes; free text comments accompanying the record.
+#' - `samplingMethod`: Name or code for the method used to collect or test a sample.
+#' - `targetTaxaPresent`: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
+#' - `totalSampledArea`: Total area sampled (square Meter).
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.

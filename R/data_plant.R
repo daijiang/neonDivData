@@ -21,18 +21,18 @@
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).
 #' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
+#' - `subplotID`: This is the NEON provided subplot ID in the format of `subplot_id`, then `subsubplot_id` and 1 or 10 (m^2); if the sampling unit is 100 m^2, the values are 31, 32, 40, and 41.
+#' - `subplot_id`: Subplot ID; each plot normally has four 100 m^2 subplots (31, 32, 40, 41).
+#' - `subsubplot_id`: Subsubplot ID (1, 2, 3, 4) for sampling units at 1 m^2 or 10 m^2.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
 #' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
 #' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen. Values are 'genus', 'species', 'speciesGroup', 'subSpecies', or 'variety.' Species accounts for the majority of the entries. _Higher ranks have already been filtered out_ because we think they are too vague for biodiversity research.
 #' - `variable_name`: The variable name(s) represented by the `value` column.
-#' - `value`: Value of the variable(s) specified by `variable_name`. If the individual was observed out of 1 square meter subplots, the value will be `NA`.
+#' - `value`: Value of the variable(s) specified by `variable_name`. If the individual was observed out of 1 square meter subplots, the value will be `NA` (i.e., _presence only_).
 #' - `unit`: Unit of the values in the `value` column.
 #' - `presence_absence`: All 1s since every record represent a species.
-#' - `subplotID`: This is the NEON provided subplot ID in the format of `subplot_id`, then `subsubplot_id` and 1 or 10 (m^2); if the sampling unit is 100 m^2, the values are 31, 32, 40, and 41.
-#' - `subplot_id`: Subplot ID; each plot normally has four 100 m^2 subplots (31, 32, 40, 41).
-#' - `subsubplot_id`: Subsubplot ID (1, 2, 3, 4) for sampling units at 1 m^2 or 10 m^2.
 #' - `boutNumber`: Number of sampling bout, most sites sample only 1 bout.
 #' - `nativeStatusCode`: Whether the species is a native or non-native species. 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location; 'N': Native; 'N?': Probably Native; 'I': Introduced; 'I?': Probably Introduced; 'NI': Native and Introduced, some infrataxa are native and others are introduced; 'NI?': Probably Native and Introduced, some infrataxa are native and others are introduced; 'UNK': Status unknown.
 #' - `heightPlantOver300cm`: Indicator of whether individuals of the species in the sample are taller than 300 cm.

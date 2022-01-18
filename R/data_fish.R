@@ -10,8 +10,7 @@
 #'
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
-#' - `plotID`: Plot identifier (NEON site code_XXX).
-#' - `pointID`: Sampling point identifier.
+#' - `pointID`: NEON sampling point identifier.
 #' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
