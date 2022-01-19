@@ -2,6 +2,21 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10043.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10043.001>.
 #'
+#' Here, we:
+#' 1. Removed trapping records that had no `collectDate`, `eventID`, `namedLocation`, and/or `sampleID`
+#' 2. Removed sorting records that had no `collectDate`, `sampleID`, `namedLocation`, and/or `subsampleID`
+#' 3. Removed archive records that had no `startCollectDate`, `archiveID`, and/or `namedLocation`
+#' 4. Removed expert taxonomy records that had no `collectDate`, `subsampleID`, and/or `namedLocation`
+#' 5. Verified there were no duplicated trapping, sorting, or archive records
+#' 6. Verified there were no trapping `sampleID` values missing from the sorting table
+#' 7. Verified there were no sorting `subsampleID` values missing from the expert taxonomist table
+#' 8. Converted blanks to NA throughout the datasets
+#' 9. Convert 0 to NA for unidentified samples - where `individualCount` in the expert taxonomist table == 0 and there was no listed `taxonID`
+#' 10. Left-joined the trapping table to the sorting table and verified barcode consistency between tables
+#' 11. Left-joined the expert taxonomy table to the trapping/sorting table and verified barcode and lab name consistency between tables
+#' 12. Renamed columns and added estimated total individuals as: number individuals iD'ed * (total subsample weight/ subsample weight)
+#' 13. Left-joined archive table and verified barcode consistency between tables
+#'
 #' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #'
 #' @format A data frame (also a tibble) with the following columns:
