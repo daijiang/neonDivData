@@ -11,6 +11,7 @@ A data frame (tibble) with the following columns:
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
 \item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{trapID}: Identifier for trap.
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
 \item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
@@ -22,7 +23,6 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{trappingDays}: Cleaned up decimal days between trap setting and collecting events
 \item \code{release}: Version of data release by NEON.
 \item \code{nativeStatusCode}: 	The process by which the taxon became established in the location only provided for vert bycatch herp
-\item \code{neon_trap_id}: Identifier for trap.
 \item \code{remarksSorting}: Technician notes; free text comments accompanying the record from sorting table
 \item \code{remarksFielddata}: Technician notes; free text comments accompanying the record from fielddata table
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.

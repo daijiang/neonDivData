@@ -20,9 +20,10 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{value}: Value of the variable(s) specified by \code{variable_name}.
 \item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{lifeStage}: Life stage of the host (all Nymph).
-\item \code{batchID}: Identifier for batch or analytical run.
 \item \code{testProtocolVersion}: The protocol version used to test the sample.
 \item \code{release}: Version of data release by NEON.
+\item \code{n_tests}: Number of tests conducted.
+\item \code{n_positive_test}: Number of tests that were positive.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.

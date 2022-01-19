@@ -9,7 +9,6 @@ A data frame (also a tibble) with the following columns:
 \itemize{
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
-\item \code{plotID}: Plot identifier (NEON site code_XXX).
 \item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
@@ -19,13 +18,14 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Value of the variable(s) specified by \code{variable_name}.
 \item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{estimatedTotalCount}: Estimated total count.
+\item \code{individualCount}: Individual count.
 \item \code{subsamplePercent}: Percent of the total sample contained in the subsample.
 \item \code{release}: Version of data release by NEON.
 \item \code{benthicArea}: Area sampled (square meter).
 \item \code{habitatType}: Habitat type sampled.
 \item \code{samplerType}: Type of sampler used to collect the sample.
 \item \code{substratumSizeClass}: Size class of the substratum sampled.
-\item \code{neon_sample_id}: NEON sample ID.
 \item \code{remarks}: Remarks of record.
 \item \code{ponarDepth}: Depth (meter) of petite ponar sample.
 \item \code{snagLength}: Length (centimeter) of snag sampled.

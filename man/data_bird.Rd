@@ -38,7 +38,7 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{observedAirTemp}: The air temperature (celsius) measured with a handheld weather meter.
 \item \code{kmPerHourObservedWindSpeed}: The average wind speed measured with a handheld weather meter, in kilometers per hour.
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
-\code{remarks}: Remarks of record.
+\item \code{remarks}: Remarks of record.
 \item \code{clusterCode}: Alphabetic code (A-Z) linked to clusters (groups of individuals of the same species) spanning multiple records. It is only used to link clusters that take up multiple lines on the data sheet.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.

@@ -286,13 +286,13 @@ data_zooplankton = data_all2[[grep(pattern = "ZOOPLANKTON", x = names(data_all2)
 
 # remove variables that are not really important for users
 table(gsub("^[A-Z]{4}|[0-9]", "", data_algae$parentSampleID))
-# neon_event_id is just site and date
-data_algae = select(data_algae, -parentSampleID, -neon_sample_id)
+# # neon_event_id is just site and date
+# data_algae = select(data_algae, -parentSampleID, -neon_sample_id)
 
-data_beetle = select(data_beetle, -sampleID, -plotType) # just plotID + trapID + date
+data_beetle = select(data_beetle, -plotType) # just plotID + trapID + date
 # plotType are all "distributed"
 
-data_bird = select(data_bird, -neon_event_id, -endCloudCoverPercentage) # just plotID + pointID + date
+# data_bird = select(data_bird, -endCloudCoverPercentage)
 
 data_fish = mutate(data_fish, pointID = gsub(".*(point.*)$", "\\1", location_id)) %>%
   relocate(pointID, .after = siteID) %>%
@@ -327,8 +327,8 @@ data_small_mammal
 
 # data_tick_pathogen seems fine
 
-data_zooplankton = select(data_zooplankton, -neon_sample_id)
-# just location id and date or siteID and date
+# data_zooplankton = select(data_zooplankton, -neon_sample_id)
+# # just location id and date or siteID and date
 
 map(data_all2, function(x) table(x$variable_name))
 

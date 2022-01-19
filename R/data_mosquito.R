@@ -11,7 +11,7 @@
 #' 6. Verified there were no trapping `sampleID` values missing from the sorting table
 #' 7. Verified there were no sorting `subsampleID` values missing from the expert taxonomist table
 #' 8. Converted blanks to NA throughout the datasets
-#' 9. Convert 0 to NA for unidentified samples - where `individualCount` in the expert taxonomist table == 0 and there was no listed `taxonID`
+#' 9. Convert 0 to NA for unidentified samples - where `individualCount` in the expert taxonomist table was 0 and there was no listed `taxonID`
 #' 10. Left-joined the trapping table to the sorting table and verified barcode consistency between tables
 #' 11. Left-joined the expert taxonomy table to the trapping/sorting table and verified barcode and lab name consistency between tables
 #' 12. Renamed columns and added estimated total individuals as: number individuals iD'ed * (total subsample weight/ subsample weight)
