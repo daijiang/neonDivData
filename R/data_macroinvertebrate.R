@@ -2,6 +2,14 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.20120.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.20120.001>.
 #'
+#' Here, we:
+#' 1. Removed field samples that had logistical issues (`samplingImpractical`!="OK")
+#' 2. Removed duplicate records in the field data table
+#' 3. Used count data that were already corrected for subsampling at the external taxonomy lab (`estimatedTotalCount`)
+#' 4. Summed `estimatedTotalCount` by `scientificName` per `sampleID` in inv_taxonomyProcessed to collapse `sizeClass` and `lifeStage`
+#' 5. Calculated density by dividing `estimatedTotalCount` from the inv_taxonomyProcessed table by `benthicArea` from the `inv_fieldData` table to standardize density by area sampled
+#' 
+#' 
 #' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #' @format A data frame (also a tibble) with the following columns:
 #'
