@@ -122,18 +122,18 @@
 <li><p><code>siteID</code>: NEON site code.</p></li>
 <li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
 <li><p><code>unique_sample_id</code>: Identity of unique samples, usually it has location and date information.</p></li>
+<li><p><code>subplotID</code>: This is the NEON provided subplot ID in the format of <code>subplot_id</code>, then <code>subsubplot_id</code> and 1 or 10 (m^2); if the sampling unit is 100 m^2, the values are 31, 32, 40, and 41.</p></li>
+<li><p><code>subplot_id</code>: Subplot ID; each plot normally has four 100 m^2 subplots (31, 32, 40, 41).</p></li>
+<li><p><code>subsubplot_id</code>: Subsubplot ID (1, 2, 3, 4) for sampling units at 1 m^2 or 10 m^2.</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
 <li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
 <li><p><code>taxon_name</code>:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen. Values are 'genus', 'species', 'speciesGroup', 'subSpecies', or 'variety.' Species accounts for the majority of the entries. <em>Higher ranks have already been filtered out</em> because we think they are too vague for biodiversity research.</p></li>
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
-<li><p><code>value</code>: Value of the variable(s) specified by <code>variable_name</code>. If the individual was observed out of 1 square meter subplots, the value will be <code>NA</code>.</p></li>
+<li><p><code>value</code>: Value of the variable(s) specified by <code>variable_name</code>. If the individual was observed out of 1 square meter subplots, the value will be <code>NA</code> (i.e., <em>presence only</em>).</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
 <li><p><code>presence_absence</code>: All 1s since every record represent a species.</p></li>
-<li><p><code>subplotID</code>: This is the NEON provided subplot ID in the format of <code>subplot_id</code>, then <code>subsubplot_id</code> and 1 or 10 (m^2); if the sampling unit is 100 m^2, the values are 31, 32, 40, and 41.</p></li>
-<li><p><code>subplot_id</code>: Subplot ID; each plot normally has four 100 m^2 subplots (31, 32, 40, 41).</p></li>
-<li><p><code>subsubplot_id</code>: Subsubplot ID (1, 2, 3, 4) for sampling units at 1 m^2 or 10 m^2.</p></li>
 <li><p><code>boutNumber</code>: Number of sampling bout, most sites sample only 1 bout.</p></li>
 <li><p><code>nativeStatusCode</code>: Whether the species is a native or non-native species. 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location; 'N': Native; 'N?': Probably Native; 'I': Introduced; 'I?': Probably Introduced; 'NI': Native and Introduced, some infrataxa are native and others are introduced; 'NI?': Probably Native and Introduced, some infrataxa are native and others are introduced; 'UNK': Status unknown.</p></li>
 <li><p><code>heightPlantOver300cm</code>: Indicator of whether individuals of the species in the sample are taller than 300 cm.</p></li>
@@ -186,7 +186,7 @@ Here, we:</p><ol>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daijiang Li, Eric Sokol, Melissa Chen, Matthew Helmus, Lara Jansen, Marta Jarzyna, Michael Just, Kari Norman, Stephanie Parker, Natalie Robinson, Thilina Surasinghe, Matthew Bitters, Wynne Moss.</p>
+  <p>Developed by Daijiang Li, Sydne Record, Eric Sokol, Matthew Bitters, Melissa Chen, Anny Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta Jarzyna, Michael Just, Jalene LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske.</p>
 </div>
 
 <div class="pkgdown">

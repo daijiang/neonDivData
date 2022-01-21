@@ -121,6 +121,8 @@
 <li><p><code>location_id</code>: Location id.</p></li>
 <li><p><code>siteID</code>: NEON site code.</p></li>
 <li><p><code>unique_sample_id</code>: Identity of unique samples, usually it has location and date information.</p></li>
+<li><p><code>sampleID</code>: Identifier for sample.</p></li>
+<li><p><code>subsampleID</code>: Unique identifier associated with each subsample per sampleID.</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
 <li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
 <li><p><code>taxon_name</code>:	Scientific name, associated with the taxonID. This is the name
@@ -129,18 +131,16 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
 <li><p><code>value</code>: Value of the variable(s) specified by <code>variable_name</code>.</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
-<li><p><code>sortDate</code>: Date sample was sorted.</p></li>
-<li><p><code>sampleID</code>: Identifier for sample.</p></li>
-<li><p><code>subsampleID</code>: Unique identifier associated with each subsample per sampleID.</p></li>
-<li><p><code>totalWeight</code>: Weight of entire sample in gram.</p></li>
-<li><p><code>subsampleWeight</code>:	Weight of subsample in gram.</p></li>
-<li><p><code>release</code>: Version of data release by NEON.</p></li>
-<li><p><code>trapHours</code>: Number of hours between trap setting and collecting events.</p></li>
-<li><p><code>samplingProtocolVersion</code>: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.</p></li>
 <li><p><code>nativeStatusCode</code>: The process by which the taxon became established in the location.
 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 'N': Native; 'I': Introduced; 'UNK': Status unknown.</p></li>
+<li><p><code>release</code>: Version of data release by NEON.</p></li>
+<li><p><code>samplingProtocolVersion</code>: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.</p></li>
 <li><p><code>sex</code>: M for male, F for female, U for unknown.</p></li>
+<li><p><code>sortDate</code>: Date sample was sorted.</p></li>
+<li><p><code>subsampleWeight</code>:	Weight of subsample in gram.</p></li>
+<li><p><code>totalWeight</code>: Weight of entire sample in gram.</p></li>
+<li><p><code>trapHours</code>: Number of hours between trap setting and collecting events.</p></li>
 <li><p><code>weightBelowDetection</code>: Notes regarding the weight relative to scale detection limit.</p></li>
 <li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
@@ -148,6 +148,24 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>nlcdClass</code>: National Land Cover Database Vegetation Type Name.</p></li>
 <li><p><code>plotType</code>: NEON plot type in which sampling occurred: tower, distributed or gradient.</p></li>
 </ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Here, we:</p><ol>
+<li><p>Removed trapping records that had no <code>collectDate</code>, <code>eventID</code>, <code>namedLocation</code>, and/or <code>sampleID</code></p></li>
+<li><p>Removed sorting records that had no <code>collectDate</code>, <code>sampleID</code>, <code>namedLocation</code>, and/or <code>subsampleID</code></p></li>
+<li><p>Removed archive records that had no <code>startCollectDate</code>, <code>archiveID</code>, and/or <code>namedLocation</code></p></li>
+<li><p>Removed expert taxonomy records that had no <code>collectDate</code>, <code>subsampleID</code>, and/or <code>namedLocation</code></p></li>
+<li><p>Verified there were no duplicated trapping, sorting, or archive records</p></li>
+<li><p>Verified there were no trapping <code>sampleID</code> values missing from the sorting table</p></li>
+<li><p>Verified there were no sorting <code>subsampleID</code> values missing from the expert taxonomist table</p></li>
+<li><p>Converted blanks to NA throughout the datasets</p></li>
+<li><p>Convert 0 to NA for unidentified samples - where <code>individualCount</code> in the expert taxonomist table was 0 and there was no listed <code>taxonID</code></p></li>
+<li><p>Left-joined the trapping table to the sorting table and verified barcode consistency between tables</p></li>
+<li><p>Left-joined the expert taxonomy table to the trapping/sorting table and verified barcode and lab name consistency between tables</p></li>
+<li><p>Renamed columns and added estimated total individuals as: number individuals iD'ed * (total subsample weight/ subsample weight)</p></li>
+<li><p>Left-joined archive table and verified barcode consistency between tables</p></li>
+</ol>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -167,7 +185,7 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daijiang Li, Eric Sokol, Melissa Chen, Matthew Helmus, Lara Jansen, Marta Jarzyna, Michael Just, Kari Norman, Stephanie Parker, Natalie Robinson, Thilina Surasinghe, Matthew Bitters, Wynne Moss.</p>
+  <p>Developed by Daijiang Li, Sydne Record, Eric Sokol, Matthew Bitters, Melissa Chen, Anny Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta Jarzyna, Michael Just, Jalene LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske.</p>
 </div>
 
 <div class="pkgdown">

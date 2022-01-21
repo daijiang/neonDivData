@@ -44,6 +44,24 @@ data_mosquito
 \description{
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10043.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10043.001}.
 }
+\details{
+Here, we:
+\enumerate{
+\item Removed trapping records that had no \code{collectDate}, \code{eventID}, \code{namedLocation}, and/or \code{sampleID}
+\item Removed sorting records that had no \code{collectDate}, \code{sampleID}, \code{namedLocation}, and/or \code{subsampleID}
+\item Removed archive records that had no \code{startCollectDate}, \code{archiveID}, and/or \code{namedLocation}
+\item Removed expert taxonomy records that had no \code{collectDate}, \code{subsampleID}, and/or \code{namedLocation}
+\item Verified there were no duplicated trapping, sorting, or archive records
+\item Verified there were no trapping \code{sampleID} values missing from the sorting table
+\item Verified there were no sorting \code{subsampleID} values missing from the expert taxonomist table
+\item Converted blanks to NA throughout the datasets
+\item Convert 0 to NA for unidentified samples - where \code{individualCount} in the expert taxonomist table was 0 and there was no listed \code{taxonID}
+\item Left-joined the trapping table to the sorting table and verified barcode consistency between tables
+\item Left-joined the expert taxonomy table to the trapping/sorting table and verified barcode and lab name consistency between tables
+\item Renamed columns and added estimated total individuals as: number individuals iD'ed * (total subsample weight/ subsample weight)
+\item Left-joined archive table and verified barcode consistency between tables
+}
+}
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
