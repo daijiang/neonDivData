@@ -16,18 +16,18 @@ ms.html: ms.Rmd
 	open $@
 
 diff.pdf: diff.tex 
-	pdflatex -interaction nonstopmode diff
+	xelatex -interaction nonstopmode diff
 	bibtex diff
-	pdflatex -interaction nonstopmode diff
-	pdflatex -interaction nonstopmode diff
-	pdflatex -interaction nonstopmode diff
+	xelatex -interaction nonstopmode diff
+	xelatex -interaction nonstopmode diff
+	xelatex -interaction nonstopmode diff
 	open diff.pdf
 
 # diff.tex: geb_1st_submit.tex cooc.tex
 # 	latexdiff geb_1st_submit.tex cooc.tex > diff.tex
 
-diff.tex: ms_revision.tex ms.tex
-	latexdiff ms_revision.tex ms.tex > diff.tex
+diff.tex: ms.tex ms_submitted.tex
+	latexdiff ms.tex ms_submitted.tex > diff.tex
 
 clean:
 	rm -f *.aux *.log *.out *.blg *.bbl
