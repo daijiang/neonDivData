@@ -10,6 +10,8 @@ A data frame (also a tibble) with the following columns:
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{sampleID}: Identifier for sample.
+\item \code{subsampleID}: Unique identifier associated with each subsample per sampleID.
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
 \item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
@@ -18,18 +20,16 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Value of the variable(s) specified by \code{variable_name}.
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{sortDate}: Date sample was sorted.
-\item \code{sampleID}: Identifier for sample.
-\item \code{subsampleID}: Unique identifier associated with each subsample per sampleID.
-\item \code{totalWeight}: Weight of entire sample in gram.
-\item \code{subsampleWeight}:	Weight of subsample in gram.
-\item \code{release}: Version of data release by NEON.
-\item \code{trapHours}: Number of hours between trap setting and collecting events.
-\item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 'N': Native; 'I': Introduced; 'UNK': Status unknown.
+\item \code{release}: Version of data release by NEON.
+\item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 \item \code{sex}: M for male, F for female, U for unknown.
+\item \code{sortDate}: Date sample was sorted.
+\item \code{subsampleWeight}:	Weight of subsample in gram.
+\item \code{totalWeight}: Weight of entire sample in gram.
+\item \code{trapHours}: Number of hours between trap setting and collecting events.
 \item \code{weightBelowDetection}: Notes regarding the weight relative to scale detection limit.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
@@ -43,6 +43,24 @@ data_mosquito
 }
 \description{
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10043.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10043.001}.
+}
+\details{
+Here, we:
+\enumerate{
+\item Removed trapping records that had no \code{collectDate}, \code{eventID}, \code{namedLocation}, and/or \code{sampleID}
+\item Removed sorting records that had no \code{collectDate}, \code{sampleID}, \code{namedLocation}, and/or \code{subsampleID}
+\item Removed archive records that had no \code{startCollectDate}, \code{archiveID}, and/or \code{namedLocation}
+\item Removed expert taxonomy records that had no \code{collectDate}, \code{subsampleID}, and/or \code{namedLocation}
+\item Verified there were no duplicated trapping, sorting, or archive records
+\item Verified there were no trapping \code{sampleID} values missing from the sorting table
+\item Verified there were no sorting \code{subsampleID} values missing from the expert taxonomist table
+\item Converted blanks to NA throughout the datasets
+\item Convert 0 to NA for unidentified samples - where \code{individualCount} in the expert taxonomist table was 0 and there was no listed \code{taxonID}
+\item Left-joined the trapping table to the sorting table and verified barcode consistency between tables
+\item Left-joined the expert taxonomy table to the trapping/sorting table and verified barcode and lab name consistency between tables
+\item Renamed columns and added estimated total individuals as: number individuals iD'ed * (total subsample weight/ subsample weight)
+\item Left-joined archive table and verified barcode consistency between tables
+}
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).

@@ -41,8 +41,7 @@
 
 <meta property="og:title" content="Fish survey data collected by NEON — data_fish" />
 <meta property="og:description" content="This dataset was derived from NEON data portal with data product ID 'DP1.20107.001'. Details about this data product can be found at https://data.neonscience.org/data-products/DP1.20107.001.
-Sampling methods and the design are detailed here: https://www.neonscience.org/data-collection/fish and https://www.neonscience.org/observatory/observatory-blog/one-fish-two-fish-learn-how-neon-samples-fish
-We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fsh_perFish), including the complete taxon table for fish, for both stream and lake sites surveyed via the NEON API. We joined the ‘fsh_perPass’, ‘fsh_fieldData’, and ‘fsh_bulkCount’ datasets to produce a table with bulk-processed data that merged ‘fsh_perPass’, ‘fsh_fieldData’, and ‘fsh_perFish’ to concatenate individual-level data. Finally both individual-level and bulk-processed datasets were appended into a single table. If ‘fsh_bulkCount’ dataset does not have a ‘taxonRank’ column, we added that information based on data stored in ‘scientificName’ column particularly to separate species level identifications. For each finer-resolution taxon in the individual-level dataset, we considered the relative abundance as one since each row represented a single individual fish. Whenever possible, we substituted missing data by cross-referencing other data columns, omitted completely redundant data columns, and retained records with species-level taxonomic resolution. For the appended dataset, we also calculated the relative abundance for each species per sampling reach or segment at a given site. To calculate species-specific catch per unit effort ('catch_per_effort'), we normalized the relative abundance by either average electrofishing time (i.e., ‘efTime’, ‘efTime2’) or trap deployment time (i.e., the difference between ‘netEndTime’ and ‘netSetTime’). In this case, we assumed that size of the traps used, water depths, number of netters used, and the reach lengths (a significant proportion of bouts had reach lengths missing) to be comparable across different sampling reaches and segments." />
+Sampling methods and the design are detailed here: https://www.neonscience.org/data-collection/fish and https://www.neonscience.org/observatory/observatory-blog/one-fish-two-fish-learn-how-neon-samples-fish" />
 
 
 
@@ -112,8 +111,7 @@ We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fs
 
     <div class="ref-description">
     <p>This dataset was derived from <a href='https://data.neonscience.org'>NEON data portal</a> with data product ID 'DP1.20107.001'. Details about this data product can be found at <a href='https://data.neonscience.org/data-products/DP1.20107.001'>https://data.neonscience.org/data-products/DP1.20107.001</a>.
-Sampling methods and the design are detailed here: https://www.neonscience.org/data-collection/fish and https://www.neonscience.org/observatory/observatory-blog/one-fish-two-fish-learn-how-neon-samples-fish
-We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fsh_perFish), including the complete taxon table for fish, for both stream and lake sites surveyed via the NEON API. We joined the ‘fsh_perPass’, ‘fsh_fieldData’, and ‘fsh_bulkCount’ datasets to produce a table with bulk-processed data that merged ‘fsh_perPass’, ‘fsh_fieldData’, and ‘fsh_perFish’ to concatenate individual-level data. Finally both individual-level and bulk-processed datasets were appended into a single table. If ‘fsh_bulkCount’ dataset does not have a ‘taxonRank’ column, we added that information based on data stored in ‘scientificName’ column particularly to separate species level identifications. For each finer-resolution taxon in the individual-level dataset, we considered the relative abundance as one since each row represented a single individual fish. Whenever possible, we substituted missing data by cross-referencing other data columns, omitted completely redundant data columns, and retained records with species-level taxonomic resolution. For the appended dataset, we also calculated the relative abundance for each species per sampling reach or segment at a given site. To calculate species-specific catch per unit effort ('catch_per_effort'), we normalized the relative abundance by either average electrofishing time (i.e., ‘efTime’, ‘efTime2’) or trap deployment time (i.e., the difference between ‘netEndTime’ and ‘netSetTime’). In this case, we assumed that size of the traps used, water depths, number of netters used, and the reach lengths (a significant proportion of bouts had reach lengths missing) to be comparable across different sampling reaches and segments.</p>
+Sampling methods and the design are detailed here: https://www.neonscience.org/data-collection/fish and https://www.neonscience.org/observatory/observatory-blog/one-fish-two-fish-learn-how-neon-samples-fish</p>
     </div>
 
     <pre class="usage"><span class='va'>data_fish</span></pre>
@@ -124,8 +122,7 @@ We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fs
     <p>A data frame (also a tibble) with the following columns:</p><ul>
 <li><p><code>location_id</code>: Location id.</p></li>
 <li><p><code>siteID</code>: NEON site code.</p></li>
-<li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
-<li><p><code>pointID</code>: Sampling point identifier.</p></li>
+<li><p><code>pointID</code>: NEON sampling point identifier.</p></li>
 <li><p><code>unique_sample_id</code>: Identity of unique samples, usually it has location and date information.</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
 <li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
@@ -159,6 +156,17 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 
     <p><a href='https://data.neonscience.org'>https://data.neonscience.org</a>; https://data.neonscience.org/data-products/DP1.20107.001#collectionAndProcessing
 #' @referencesJensen, Jensen, B., S. Parker, and C. Scott. 2017. Neon user guide to fish electrofishing, gill netting, and fyke netting counts (NEON.DP1.20107). NEON, National Ecological Observatory Network, Boulder, CO, USA.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<ul>
+<li><p>We downloaded all fish data (i.e., fsh_perPass, fsh_fieldData, fsh_bulkCount, fsh_perFish), including the complete taxon table for fish, for both stream and lake sites surveyed via the NEON API.</p></li>
+<li><p>We joined the ‘fsh_perPass’, ‘fsh_fieldData’, and ‘fsh_bulkCount’ datasets to produce a table with bulk-processed data that merged ‘fsh_perPass’, ‘fsh_fieldData’, and ‘fsh_perFish’ to concatenate individual-level data.</p></li>
+<li><p>Finally both individual-level and bulk-processed datasets were appended into a single table. If ‘fsh_bulkCount’ dataset does not have a ‘taxonRank’ column, we added that information based on data stored in ‘scientificName’ column particularly to separate species level identifications. For each finer-resolution taxon in the individual-level dataset, we considered the relative abundance as one since each row represented a single individual fish.</p></li>
+<li><p>Whenever possible, we substituted missing data by cross-referencing other data columns, omitted completely redundant data columns, and retained records with species-level taxonomic resolution. For the appended dataset, we also calculated the relative abundance for each species per sampling reach or segment at a given site.</p></li>
+<li><p>To calculate species-specific catch per unit effort ('catch_per_effort'), we normalized the relative abundance by either average electrofishing time (i.e., ‘efTime’, ‘efTime2’) or trap deployment time (i.e., the difference between ‘netEndTime’ and ‘netSetTime’). In this case, we assumed that size of the traps used, water depths, number of netters used, and the reach lengths (a significant proportion of bouts had reach lengths missing) to be comparable across different sampling reaches and segments.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href='neon_location.html'>neon_location</a>).</p>
@@ -177,7 +185,7 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Daijiang Li, Eric Sokol, Melissa Chen, Matthew Helmus, Lara Jansen, Marta Jarzyna, Michael Just, Kari Norman, Stephanie Parker, Natalie Robinson, Thilina Surasinghe, Matthew Bitters, Wynne Moss.</p>
+  <p>Developed by Daijiang Li, Sydne Record, Eric Sokol, Matthew Bitters, Melissa Chen, Anny Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta Jarzyna, Michael Just, Jalene LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske.</p>
 </div>
 
 <div class="pkgdown">

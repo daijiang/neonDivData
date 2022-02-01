@@ -19,12 +19,12 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Value of the variable(s) specified by \code{variable_name}.
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{samplingMethod}: Name or code for the method used to collect or test a sample.
-\item \code{totalSampledArea}: Total area sampled (square Meter).
-\item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
-\item \code{release}: Version of data release by NEON.
 \item \code{LifeStage}: Life stage of the sample ('Adult', 'Larva', or 'Nymph').
+\item \code{release}: Version of data release by NEON.
 \item \code{remarks_field}: Technician notes; free text comments accompanying the record.
+\item \code{samplingMethod}: Name or code for the method used to collect or test a sample.
+\item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
+\item \code{totalSampledArea}: Total area sampled (square Meter).
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.

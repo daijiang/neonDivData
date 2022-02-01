@@ -1,0 +1,42 @@
+citHeader("To cite neonDivData in publications, use the following citation AND the citations provided in the NEON data portal for each data product (see `neonDivData::data_summary` or data documentations for links to NEON pages of each taxon):")
+
+citEntry(
+  entry    = "Article",
+  title    = "Standardized NEON organismal data for biodiversity research",
+  author   = personList(
+    as.person("Daijiang Li"),
+    as.person("Sydne Record"),
+    as.person("Eric Sokol"),
+    as.person("Matthew E. Bitters"),
+    as.person("Melissa Y. Chen"),
+    as.person("Anny Y. Chung"),
+    as.person("Matthew R. Helmus"),
+    as.person("Ruvi Jaimes"),
+    as.person("Lara Jansen"),
+    as.person("Marta A. Jarzyna"),
+    as.person("Michael G. Just"),
+    as.person("Jalene M. LaMontagne"),
+    as.person("Brett Melbourne"),
+    as.person("Wynne Moss"),
+    as.person("Kari Norman"),
+    as.person("Stephanie Parker"),
+    as.person("Natalie Robinson"),
+    as.person("Bijan Seyednasrollah"),
+    as.person("Colin Smith"),
+    as.person("Sarah Spaulding"),
+    as.person("Thilina Surasinghe"),
+    as.person("Sarah Thomsen"),
+    as.person("Phoebe Zarnetske")
+  ),
+  journal  = "Ecosphere",
+  year     = "2022",
+  volume   = "",
+  number   = "",
+  pages    = "",
+  url      = "",
+  textVersion = paste(
+    "Daijiang Li, Sydne Record, Eric Sokol, Matthew E. Bitters, Melissa Y. Chen, Anny Y. Chung, Matthew R. Helmus, Ruvi Jaimes, Lara Jansen, Marta A. Jarzyna, Michael G. Just, Jalene M. LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske.",
+    "Standardized NEON organismal data for biodiversity research.", 
+    "Ecosphere, ..."
+  )
+)

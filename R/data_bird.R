@@ -2,7 +2,7 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10003.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10003.001>.
 #'
-#' The bird data provided by NEON is already well organized. We only removed some columns that likely won't be used in biodiversity studies.
+#' The bird data provided by NEON is already well organized. We only removed some columns that likely won't be used in biodiversity studies. These columns include: 'identifiedBy', 'measuredBy', 'laboratoryName', 'samplingImpractical', 'samplingImpracticalRemarks', 'publicationDate', 'technicianID', 'observerInstitutionName', 'evaluationMethod', and 'evaluationScore'. If any of these information is important for the specific question asked by users, they should modify our code accordingly or download the raw data from NEON data portal directly. We also removed records without 'taxon_id'.
 #'
 #' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]). The sampling protocol has evolved over time, so users are advised to check whether the `samplingProtocolVersion` fits their data requirements and subset as necessary.
 #'
