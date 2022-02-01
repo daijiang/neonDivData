@@ -27,7 +27,7 @@ diff.pdf: diff.tex
 # 	latexdiff geb_1st_submit.tex cooc.tex > diff.tex
 
 diff.tex: ms.tex ms_submitted.tex
-	latexdiff ms.tex ms_submitted.tex > diff.tex
+	latexdiff ms_submitted.tex ms.tex > diff.tex
 
 clean:
 	rm -f *.aux *.log *.out *.blg *.bbl
