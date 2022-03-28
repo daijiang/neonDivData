@@ -23,6 +23,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -35,18 +37,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -64,18 +60,34 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="neondivdata" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#neondivdata" class="anchor"></a>neonDivData</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="neondivdata">neonDivData<a class="anchor" aria-label="anchor" href="#neondivdata"></a>
+</h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The goal of neonDivData is to provide cleaned NEON organismal data to facilitate biodiversity research. The authors of this R data package have all spent lots of effort to clean NEON data for our own research; it makes the most sense to document such processes and provide the clean data product so that the large community can use them readily. This will save us time to dig into the extensive documenations of NEON data and to clean up the data individually.</p>
-<p>Data products for all taxonomic groups are long data frames with names in the format of <code>data_xxx</code> (e.g. <code>data_plant</code>, <code>data_fish</code>). Location inforamtions are in <code>neon_location</code>; taxonomic informations are in <code>neon_taxa</code>.</p>
-<p>Despite the aim of this R data package is to facilitate biodiversity research, we keep <code>NA</code>s in data products so that information about sampling effort is saved. For some taxonomic groups, we removed observations with above genus level species identification. All codes to clean up the NEON data are available within our <a href="https://github.com/daijiang/neonDivData/tree/master/data-raw">Github repo</a>. Users can use them to customize their own data product if needed.</p>
+<p>The goal of neonDivData is to provide cleaned NEON organismal data to
+facilitate biodiversity research. The authors of this R data package
+have all spent lots of effort to clean NEON data for our own research;
+it makes the most sense to document such processes and provide the clean
+data product so that the large community can use them readily. This will
+save us time to dig into the extensive documenations of NEON data and to
+clean up the data individually.</p>
+<p>Data products for all taxonomic groups are long data frames with
+names in the format of <code>data_xxx</code>
+(e.g. <code>data_plant</code>, <code>data_fish</code>). Location
+inforamtions are in <code>neon_location</code>; taxonomic informations
+are in <code>neon_taxa</code>.</p>
+<p>Despite the aim of this R data package is to facilitate biodiversity
+research, we keep <code>NA</code>s in data products so that information
+about sampling effort is saved. For some taxonomic groups, we removed
+observations with above genus level species identification. All codes to
+clean up the NEON data are available within our <a href="https://github.com/daijiang/neonDivData/tree/master/data-raw" class="external-link">Github
+repo</a>. Users can use them to customize their own data product if
+needed.</p>
 <p>Available taxonomic groups and their brief summaries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># sites too long, don't print</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">[</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">)</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sites"</span>, <span class="st">"data_package_id"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">[</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sites"</span>, <span class="st">"data_package_id"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="5%">
@@ -112,7 +124,8 @@
 <td align="right">33</td>
 <td align="left">2014-07-02</td>
 <td align="left">2019-07-15</td>
-<td align="left">ALGAE from the NEON data product: Periphyton, seston, and phytoplankton collection</td>
+<td align="left">ALGAE from the NEON data product: Periphyton, seston,
+and phytoplankton collection</td>
 <td align="left">neon.ecocomdp.20166.001.001</td>
 <td align="left">DP1.20166.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -126,13 +139,15 @@
 <td align="right">46</td>
 <td align="left">2013-06-19</td>
 <td align="left">2020-11-20</td>
-<td align="left">SMALL_MAMMALS from the NEON data product: Small mammal box trapping</td>
+<td align="left">SMALL_MAMMALS from the NEON data product: Small mammal
+box trapping</td>
 <td align="left">neon.ecocomdp.10072.001.001</td>
 <td align="left">DP1.10072.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
 <td align="left">data_small_mammal</td>
 <td align="left">count</td>
-<td align="left">unique individuals per 100 trap nights per plot per month</td>
+<td align="left">unique individuals per 100 trap nights per plot per
+month</td>
 </tr>
 <tr class="odd">
 <td align="left">PLANTS</td>
@@ -140,7 +155,8 @@
 <td align="right">47</td>
 <td align="left">2013-06-24</td>
 <td align="left">2020-10-07</td>
-<td align="left">PLANTS from the NEON data product: Plant presence and percent cover</td>
+<td align="left">PLANTS from the NEON data product: Plant presence and
+percent cover</td>
 <td align="left">neon.ecocomdp.10058.001.001</td>
 <td align="left">DP1.10058.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -154,7 +170,8 @@
 <td align="right">47</td>
 <td align="left">2013-07-03</td>
 <td align="left">2020-10-13</td>
-<td align="left">BEETLES from the NEON data product: Ground beetles sampled from pitfall traps</td>
+<td align="left">BEETLES from the NEON data product: Ground beetles
+sampled from pitfall traps</td>
 <td align="left">neon.ecocomdp.10022.001.001</td>
 <td align="left">DP1.10022.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -168,7 +185,8 @@
 <td align="right">41</td>
 <td align="left">2014-04-02</td>
 <td align="left">2020-09-29</td>
-<td align="left">HERPTILES (bycatch) from the NEON data product: Ground beetles sampled from pitfall traps</td>
+<td align="left">HERPTILES (bycatch) from the NEON data product: Ground
+beetles sampled from pitfall traps</td>
 <td align="left">neon.ecocomdp.10022.001.002</td>
 <td align="left">DP1.10022.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -182,7 +200,8 @@
 <td align="right">34</td>
 <td align="left">2014-07-01</td>
 <td align="left">2020-07-29</td>
-<td align="left">MACROINVERTEBRATES from the NEON data product: Macroinvertebrate collection</td>
+<td align="left">MACROINVERTEBRATES from the NEON data product:
+Macroinvertebrate collection</td>
 <td align="left">neon.ecocomdp.20120.001.001</td>
 <td align="left">DP1.20120.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -196,7 +215,8 @@
 <td align="right">47</td>
 <td align="left">2014-04-09</td>
 <td align="left">2020-06-16</td>
-<td align="left">MOSQUITOES from the NEON data product: Mosquitoes sampled from CO2 traps</td>
+<td align="left">MOSQUITOES from the NEON data product: Mosquitoes
+sampled from CO2 traps</td>
 <td align="left">neon.ecocomdp.10043.001.001</td>
 <td align="left">DP1.10043.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -210,7 +230,8 @@
 <td align="right">47</td>
 <td align="left">2015-05-13</td>
 <td align="left">2020-07-20</td>
-<td align="left">BIRDS from the NEON data product: Breeding landbird point counts</td>
+<td align="left">BIRDS from the NEON data product: Breeding landbird
+point counts</td>
 <td align="left">neon.ecocomdp.10003.001.001</td>
 <td align="left">DP1.10003.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -224,7 +245,8 @@
 <td align="right">41</td>
 <td align="left">2014-04-17</td>
 <td align="left">2019-03-18</td>
-<td align="left">TICKS from the NEON data product: Ticks sampled using drag cloths</td>
+<td align="left">TICKS from the NEON data product: Ticks sampled using
+drag cloths</td>
 <td align="left">neon.ecocomdp.10093.001.001</td>
 <td align="left">DP1.10093.001</td>
 <td align="left">RELEASE-2021</td>
@@ -238,7 +260,8 @@
 <td align="right">7</td>
 <td align="left">2014-07-02</td>
 <td align="left">2020-07-22</td>
-<td align="left">ZOOPLANKTON from the NEON data product: Zooplankton collection</td>
+<td align="left">ZOOPLANKTON from the NEON data product: Zooplankton
+collection</td>
 <td align="left">neon.ecocomdp.20219.001.001</td>
 <td align="left">DP1.20219.001</td>
 <td align="left">RELEASE-2021|PROVISIONAL</td>
@@ -252,7 +275,8 @@
 <td align="right">15</td>
 <td align="left">2014-04-17</td>
 <td align="left">2018-10-03</td>
-<td align="left">TICK_PATHOGENS from the NEON data product: Tick-borne pathogen status</td>
+<td align="left">TICK_PATHOGENS from the NEON data product: Tick-borne
+pathogen status</td>
 <td align="left">neon.ecocomdp.10092.001.001</td>
 <td align="left">DP1.10092.001</td>
 <td align="left">RELEASE-2021</td>
@@ -266,7 +290,8 @@
 <td align="right">28</td>
 <td align="left">2016-03-29</td>
 <td align="left">2020-12-03</td>
-<td align="left">FISH from the NEON data product: Fish electrofishing, gill netting, and fyke netting counts</td>
+<td align="left">FISH from the NEON data product: Fish electrofishing,
+gill netting, and fyke netting counts</td>
 <td align="left">neon.ecocomdp.20107.001.001</td>
 <td align="left">DP1.20107.001</td>
 <td align="left">NA</td>
@@ -276,17 +301,17 @@
 </tr>
 </tbody>
 </table>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the development version of neonDivData from <a href="https://github.com/daijiang/neonDivData">Github</a> with:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of neonDivData from <a href="https://github.com/daijiang/neonDivData" class="external-link">Github</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"daijiang/neonDivData"</span><span class="op">)</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"daijiang/neonDivData"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="available-data-products" class="section level2">
-<h2 class="hasAnchor">
-<a href="#available-data-products" class="anchor"></a>Available data products</h2>
+<div class="section level2">
+<h2 id="available-data-products">Available data products<a class="anchor" aria-label="anchor" href="#available-data-products"></a>
+</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/neon_sites.html">neon_sites</a></span>
 <span class="co">#&gt; # A tibble: 81 x 10</span>
@@ -552,43 +577,49 @@
 <span class="co">#&gt; #   elevation &lt;dbl&gt;</span></code></pre></div>
 </div>
 </div>
-<div id="contributing" class="section level1">
-<h1 class="hasAnchor">
-<a href="#contributing" class="anchor"></a>Contributing</h1>
-<p>Contributions are welcome. You can provide comments and feedback or ask questions by filing an issue on Github <a href="https://github.com/daijiang/neonDivData/issues">here</a> or making pull requests.</p>
+<div class="section level1">
+<h1 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h1>
+<p>Contributions are welcome. You can provide comments and feedback or
+ask questions by filing an issue on Github <a href="https://github.com/daijiang/neonDivData/issues" class="external-link">here</a> or making
+pull requests.</p>
 </div>
-<div id="code-of-conduct" class="section level1">
-<h1 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of conduct</h1>
-<p>Please note that the ‘neonDivData’ project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<div class="section level1">
+<h1 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h1>
+<p>Please note that the ‘neonDivData’ project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By
+contributing to this project, you agree to abide by its terms.</p>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small>CC0</small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing neonDivData</a></li>
+<li><a href="authors.html#citation">Citing neonDivData</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Daijiang Li <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0925-3421" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Daijiang Li <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0925-3421" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Sydne Record <br><small class="roles"> Author </small>  </li>
 <li>Eric Sokol <br><small class="roles"> Author </small>  </li>
 <li>Matthew Bitters <br><small class="roles"> Author </small>  </li>
@@ -614,16 +645,26 @@
 </ul>
 </div>
 
+
+
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Daijiang Li, Sydne Record, Eric Sokol, Matthew Bitters, Melissa Chen, Anny Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta Jarzyna, Michael Just, Jalene LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske.</p>
+  <p></p>
+<p>Developed by Daijiang Li, Sydne Record, Eric Sokol, Matthew Bitters,
+Melissa Chen, Anny Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen,
+Marta Jarzyna, Michael Just, Jalene LaMontagne, Brett Melbourne, Wynne
+Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan
+Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah
+Thomsen, Phoebe Zarnetske.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>
@@ -631,6 +672,8 @@
 
   
 
+
+  
 
   </body>
 </html>

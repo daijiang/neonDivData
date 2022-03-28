@@ -41,6 +41,16 @@ data_macroinvertebrate
 \description{
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.20120.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.20120.001}.
 }
+\details{
+Here, we:
+\enumerate{
+\item Removed field samples that had logistical issues (\code{samplingImpractical}!="OK")
+\item Removed duplicate records in the field data table
+\item Used count data that were already corrected for subsampling at the external taxonomy lab (\code{estimatedTotalCount})
+\item Summed \code{estimatedTotalCount} by \code{scientificName} per \code{sampleID} in inv_taxonomyProcessed to collapse \code{sizeClass} and \code{lifeStage}
+\item Calculated density by dividing \code{estimatedTotalCount} from the inv_taxonomyProcessed table by \code{benthicArea} from the \code{inv_fieldData} table to standardize density by area sampled
+}
+}
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }

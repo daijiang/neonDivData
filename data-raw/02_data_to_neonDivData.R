@@ -103,6 +103,7 @@ read_data_package <- function(
 
 # read in all data in data_catalog, make a list of flat tables
 data_all <- read_data_package(in_dir = my_in_dir)
+names(data_all)
 
 # d_fish = read_data_package(taxon_groups = "FISH", return_flat_tables = T)
 # data_all$FISH_neon.ecocomdp.20107.001.001.20210306180225.RDS <- d_fish$FISH_neon.ecocomdp.20107.001.001.20210306180225
@@ -209,6 +210,8 @@ filter(neon_location, location_id %in% neon_location$location_id[which(duplicate
 
 neon_location[-which(neon_location$location_id == "SOAP_026.basePlot.brd" & is.na(neon_location$latitude)),] %>% 
   distinct()
+
+neon_location = distinct(neon_location)
 
 usethis::use_data(neon_location, overwrite = TRUE)
 
