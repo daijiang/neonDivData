@@ -15,6 +15,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Journal: Ecosphere
+
+# Article title: Standardized NEON organismal data for biodiversity research
+
 The purposes of this appendix include:
 
 - Print the header of each data product provided by this project
