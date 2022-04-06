@@ -104,6 +104,8 @@ read_data_package <- function(
 # read in all data in data_catalog, make a list of flat tables
 data_all <- read_data_package(in_dir = my_in_dir)
 names(data_all)
+# Bird data has columns as lists
+data_all <- map(data_all, function(x) unnest(x))
 
 # d_fish = read_data_package(taxon_groups = "FISH", return_flat_tables = T)
 # data_all$FISH_neon.ecocomdp.20107.001.001.20210306180225.RDS <- d_fish$FISH_neon.ecocomdp.20107.001.001.20210306180225

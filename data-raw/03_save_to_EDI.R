@@ -14,28 +14,28 @@ library(dplyr)
 table(data_algae$release)
 
 # save all flatterned data frames to csv
-write.csv(filter(data_algae, release != "PROVISIONAL"), file = "data_algae.csv")
-write.csv(filter(data_beetle, release != "PROVISIONAL"), file = "data_beetle.csv")
-write.csv(filter(data_bird, release != "PROVISIONAL"), file = "data_bird.csv")
-write.csv(filter(data_fish, release != "PROVISIONAL"), file = "data_fish.csv")
-write.csv(filter(data_herp_bycatch, release != "PROVISIONAL"), file = "data_herp_bycatch.csv")
-write.csv(filter(data_macroinvertebrate, release != "PROVISIONAL"), file = "data_macroinvertebrate.csv")
-write.csv(filter(data_mosquito, release != "PROVISIONAL"), file = "data_mosquito.csv")
-write.csv(filter(data_plant, release != "PROVISIONAL"), file = "data_plant.csv")
-write.csv(filter(data_small_mammal, release != "PROVISIONAL"), file = "data_small_mammal.csv")
-write.csv(filter(data_tick, release != "PROVISIONAL"), file = "data_tick.csv")
-write.csv(filter(data_tick_pathogen, release != "PROVISIONAL"), file = "data_tick_pathogen.csv")
-write.csv(filter(data_zooplankton, release != "PROVISIONAL"), file = "data_zooplankton.csv")
+write.csv(filter(data_algae, release != "PROVISIONAL"), file = "data-raw/edi/data_algae.csv")
+write.csv(filter(data_beetle, release != "PROVISIONAL"), file = "data-raw/edi/data_beetle.csv")
+write.csv(filter(data_bird, release != "PROVISIONAL"), file = "data-raw/edi/data_bird.csv")
+write.csv(filter(data_fish, release != "PROVISIONAL"), file = "data-raw/edi/data_fish.csv")
+write.csv(filter(data_herp_bycatch, release != "PROVISIONAL"), file = "data-raw/edi/data_herp_bycatch.csv")
+write.csv(filter(data_macroinvertebrate, release != "PROVISIONAL"), file = "data-raw/edi/data_macroinvertebrate.csv")
+write.csv(filter(data_mosquito, release != "PROVISIONAL"), file = "data-raw/edi/data_mosquito.csv")
+write.csv(filter(data_plant, release != "PROVISIONAL"), file = "data-raw/edi/data_plant.csv")
+write.csv(filter(data_small_mammal, release != "PROVISIONAL"), file = "data-raw/edi/data_small_mammal.csv")
+write.csv(filter(data_tick, release != "PROVISIONAL"), file = "data-raw/edi/data_tick.csv")
+write.csv(filter(data_tick_pathogen, release != "PROVISIONAL"), file = "data-raw/edi/data_tick_pathogen.csv")
+write.csv(filter(data_zooplankton, release != "PROVISIONAL"), file = "data-raw/edi/data_zooplankton.csv")
 
 # location info are already in the above data objects,
 # but I did extract all of them and put them in one file
-write.csv(neon_location, file = "neon_location.csv")
+write.csv(neon_location, file = "data-raw/edi/neon_location.csv")
 
 # taxa code and scientific names
-write.csv(neon_taxa, file = "neon_taxa.csv")
+write.csv(neon_taxa, file = "data-raw/edi/neon_taxa.csv")
 
 # summary information
-write.csv(neon_summary, file = "neon_summary.csv")
+write.csv(data_summary, file = "data-raw/edi/data_summary.csv")
 
 # how to deposit csv files to EDI? Or just rds file?
 
