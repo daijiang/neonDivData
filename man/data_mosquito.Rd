@@ -24,6 +24,7 @@ of the lowest level taxonomic rank that can be determined.
 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 'N': Native; 'I': Introduced; 'UNK': Status unknown.
 \item \code{release}: Version of data release by NEON.
+\item \code{remarks_sorting}: Technician notes; free text comments accompanying the record.
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 \item \code{sex}: M for male, F for female, U for unknown.
 \item \code{sortDate}: Date sample was sorted.

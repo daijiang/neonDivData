@@ -38,6 +38,7 @@
 #' 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
 #' 'N': Native; 'I': Introduced; 'UNK': Status unknown.
 #' - `release`: Version of data release by NEON.
+#' - `remarks_sorting`: Technician notes; free text comments accompanying the record.
 #' - `samplingProtocolVersion`: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
 #' - `sex`: M for male, F for female, U for unknown.
 #' - `sortDate`: Date sample was sorted.
