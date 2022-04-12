@@ -4,14 +4,10 @@ author:
   - "Daijiang Li^1,2†‡^, Sydne Record^3†‡^, Eric Sokol^4,5†‡^, Matthew E. Bitters^6^, Melissa Y. Chen^6^, Y. Anny Chung^7^, Matthew R. Helmus^8^, Ruvi Jaimes^9^, Lara Jansen^10^, Marta A. Jarzyna^11,12^, Michael G. Just^13^, Jalene M. LaMontagne^14^, Brett Melbourne^6^, Wynne Moss^6^, Kari Norman^15^, Stephanie Parker^4^, Natalie Robinson^4^, Bijan Seyednasrollah^16^, Colin Smith^17^, Sarah Spaulding^5^, Thilina Surasinghe^18^, Sarah Thomsen^19^, Phoebe Zarnetske^20,21^"
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
- bookdown::pdf_document2:
-  includes:
-   before_body: doc_prefix.tex
-   in_header: preamble.tex
-  keep_tex: yes
-  latex_engine: xelatex
-  number_sections: no
+ bookdown::word_document2:
   toc: no
+  number_sections: no
+  keep_md: yes
  bookdown::tufte_html2:
   number_sections: no
   toc: no
@@ -20,10 +16,14 @@ output:
   theme: readable
   toc: yes
   keep_md: yes
- bookdown::word_document2:
-  toc: no
+ bookdown::pdf_document2:
+  includes:
+   before_body: doc_prefix.tex
+   in_header: preamble.tex
+  keep_tex: yes
+  latex_engine: xelatex
   number_sections: no
-  keep_md: yes
+  toc: no
 fontsize: 12pt
 linestretch: 1.5
 link-citations: no
@@ -91,7 +91,7 @@ library(stringr)
 
 # Open Research Statement
 
-No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (https://github.com/daijiang/neonDivData) and archived at Zenodo (https://doi.org/10.5281/zenodo.6419751). Data were also permanently archived at the EDI data repository (https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&identifier=190&revision=2).
+No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (https://github.com/daijiang/neonDivData) and archived at Zenodo (https://doi.org/10.5281/zenodo.6419751). Data were also permanently archived at the EDI data repository [@li2021standardizedData] (https://doi.org/10.6073/pasta/c28dd4f6e7989003505ea02e9a92afbf).
 
 **Abstract**: Understanding patterns and drivers of species distributions and abundances, and thus biodiversity, is a core goal of ecology. Despite advances in recent decades, research into these patterns and processes is currently limited by a lack of standardized, high-quality, empirical data that spans large spatial scales and long time periods. The National Ecological Observatory Network (NEON) fills this gap by providing freely available observational data that are: generated during robust and consistent organismal sampling of several sentinel taxonomic groups within 81 sites distributed across the United States; and will be collected for at least 30 years. The breadth and scope of these data provides a unique resource for advancing biodiversity research. To maximize the potential of this opportunity, however, it is critical that NEON data be maximally accessible and easily integrated into investigators’ workflows and analyses. To facilitate its use for biodiversity research and synthesis, we created a workflow to process and format NEON organismal data into the ecocomDP (ecological community data design pattern) format, and available through the `ecocomDP` R package; we then provided the standardized data as an R data package (`neonDivData`). We briefly summarize sampling designs and data wrangling decisions for the major taxonomic groups included in this effort. Our workflows are open-source so the biodiversity community may: add additional taxonomic groups; modify the workflow to produce datasets appropriate for their own analytical needs; and regularly update the data packages as more observations become available. Finally, we provide two simple examples of how the standardized data may be used for biodiversity research. By providing a standardized data package, we hope to enhance the utility of NEON organismal data in advancing biodiversity research and encourage the use of the harmonized ecocomDP data design pattern for community ecology data from other ecological observatory networks. 
 
