@@ -5,11 +5,11 @@
 \documentclass[
   12pt,
 ]{article}
+\usepackage{amsmath,amssymb}
 \usepackage{lmodern}
 \usepackage{setspace}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+\usepackage{iftex}
+\ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
@@ -39,12 +39,13 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={Standardized NEON organismal data for biodiversity research},
-  pdfauthor={Daijiang Li1,2†‡, Sydne Record3†‡, Eric Sokol4,5†‡, Matthew E. Bitters6, Melissa Y. Chen6, Anny Y. Chung7, Matthew R. Helmus8, Ruvi Jaimes9, Lara Jansen10, Marta A. Jarzyna11,12, Michael G. Just13, Jalene M. LaMontagne14, Brett Melbourne6, Wynne Moss6, Kari Norman15, Stephanie Parker4, Natalie Robinson4, Bijan Seyednasrollah16, Colin Smith17, Sarah Spaulding5, Thilina Surasinghe18, Sarah Thomsen19, Phoebe Zarnetske20,21},
+  pdfauthor={Daijiang Li1,2†‡, Sydne Record3†‡, Eric Sokol4,5†‡, Matthew E. Bitters6, Melissa Y. Chen6, Y. Anny Chung7, Matthew R. Helmus8, Ruvi Jaimes9, Lara Jansen10, Marta A. Jarzyna11,12, Michael G. Just13, Jalene M. LaMontagne14, Brett Melbourne6, Wynne Moss6, Kari Norman15, Stephanie Parker4, Natalie Robinson4, Bijan Seyednasrollah16, Colin Smith17, Sarah Spaulding5, Thilina Surasinghe18, Sarah Thomsen19, Phoebe Zarnetske20,21},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
-\usepackage{longtable,booktabs}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
 \makeatletter
@@ -70,6 +71,29 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \usepackage{geometry}
 \geometry{verbose,letterpaper,margin=2.45cm}
 
@@ -138,16 +162,13 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newenvironment{cslreferences}%
-  {\setlength{\parindent}{0pt}%
-  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
-  {\par}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 
 \title{Standardized NEON organismal data for biodiversity research}
-\author{Daijiang Li\textsuperscript{1,2†‡}, Sydne Record\textsuperscript{3†‡}, Eric Sokol\textsuperscript{4,5†‡}, Matthew E. Bitters\textsuperscript{6}, Melissa Y. Chen\textsuperscript{6}, Anny Y. Chung\textsuperscript{7}, Matthew R. Helmus\textsuperscript{8}, Ruvi Jaimes\textsuperscript{9}, Lara Jansen\textsuperscript{10}, Marta A. Jarzyna\textsuperscript{11,12}, Michael G. Just\textsuperscript{13}, Jalene M. LaMontagne\textsuperscript{14}, Brett Melbourne\textsuperscript{6}, Wynne Moss\textsuperscript{6}, Kari Norman\textsuperscript{15}, Stephanie Parker\textsuperscript{4}, Natalie Robinson\textsuperscript{4}, Bijan Seyednasrollah\textsuperscript{16}, Colin Smith\textsuperscript{17}, Sarah Spaulding\textsuperscript{5}, Thilina Surasinghe\textsuperscript{18}, Sarah Thomsen\textsuperscript{19}, Phoebe Zarnetske\textsuperscript{20,21}}
-\date{01 February, 2022}
+\author{Daijiang Li\textsuperscript{1,2†‡}, Sydne Record\textsuperscript{3†‡}, Eric Sokol\textsuperscript{4,5†‡}, Matthew E. Bitters\textsuperscript{6}, Melissa Y. Chen\textsuperscript{6}, Y. Anny Chung\textsuperscript{7}, Matthew R. Helmus\textsuperscript{8}, Ruvi Jaimes\textsuperscript{9}, Lara Jansen\textsuperscript{10}, Marta A. Jarzyna\textsuperscript{11,12}, Michael G. Just\textsuperscript{13}, Jalene M. LaMontagne\textsuperscript{14}, Brett Melbourne\textsuperscript{6}, Wynne Moss\textsuperscript{6}, Kari Norman\textsuperscript{15}, Stephanie Parker\textsuperscript{4}, Natalie Robinson\textsuperscript{4}, Bijan Seyednasrollah\textsuperscript{16}, Colin Smith\textsuperscript{17}, Sarah Spaulding\textsuperscript{5}, Thilina Surasinghe\textsuperscript{18}, Sarah Thomsen\textsuperscript{19}, Phoebe Zarnetske\textsuperscript{20,21}}
+\date{13 April, 2022}
 
 \begin{document}
 \maketitle
@@ -187,7 +208,7 @@
 \hypertarget{open-research-statement}{%
 \section{Open Research Statement}\label{open-research-statement}}
 
-No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (\url{https://github.com/daijiang/neonDivData}). Data were also permanently archived at the EDI data repository (\url{https://portal-s.edirepository.org/nis/mapbrowse?scope=edi\&identifier=190\&revision=2}).
+No data were collected for this study. All original data were collected by NEON and are publicly available at NEON's data portal. We standardized such data and provided them as a data package, which is available at Github (\url{https://github.com/daijiang/neonDivData}) and archived at Zenodo (\url{https://doi.org/10.5281/zenodo.6419751}). Data were also permanently archived at the EDI data repository (Li et al. 2022) (\url{https://doi.org/10.6073/pasta/c28dd4f6e7989003505ea02e9a92afbf}).
 
 \textbf{Abstract}: Understanding patterns and drivers of species distributions and abundances, and thus biodiversity, is a core goal of ecology. Despite advances in recent decades, research into these patterns and processes is currently limited by a lack of standardized, high-quality, empirical data that spans large spatial scales and long time periods. The National Ecological Observatory Network (NEON) fills this gap by providing freely available observational data that are: generated during robust and consistent organismal sampling of several sentinel taxonomic groups within 81 sites distributed across the United States; and will be collected for at least 30 years. The breadth and scope of these data provides a unique resource for advancing biodiversity research. To maximize the potential of this opportunity, however, it is critical that NEON data be maximally accessible and easily integrated into investigators' workflows and analyses. To facilitate its use for biodiversity research and synthesis, we created a workflow to process and format NEON organismal data into the ecocomDP (ecological community data design pattern) format, and available through the \texttt{ecocomDP} R package; we then provided the standardized data as an R data package (\texttt{neonDivData}). We briefly summarize sampling designs and data wrangling decisions for the major taxonomic groups included in this effort. Our workflows are open-source so the biodiversity community may: add additional taxonomic groups; modify the workflow to produce datasets appropriate for their own analytical needs; and regularly update the data packages as more observations become available. Finally, we provide two simple examples of how the standardized data may be used for biodiversity research. By providing a standardized data package, we hope to enhance the utility of NEON organismal data in advancing biodiversity research and encourage the use of the harmonized ecocomDP data design pattern for community ecology data from other ecological observatory networks.
 
@@ -236,30 +257,31 @@ Finally, it should be noted that NEON data collection efforts will continue well
 
 
 
-\begin{table}
+\textbackslash begin\{table\}
 
-\caption{\label{tab:dataMapping}Mapping NEON data products to ecocomDP formatted data packages with abundances \emph{standardized} to observation effort. IDs in the \texttt{L0\ to\ L1\ ecocomDP\ workflow\ ID} columns were used in the R package \texttt{ecocomDP} to standardize organismal data. Notes: *Bird counts are reported per taxon per ``cluster'' observed in each point count in the NEON data product and have not been further standardized to sampling effort because standard methods for modeling bird abundances are beyond the scope of this paper; ** plants percent cover value \texttt{NA} represents presence/absence data only; *** incidence rate per number of tests conducted is reported for tick pathogens.}
+\caption{\label{tab:dataMapping}Mapping NEON data products to ecocomDP formatted data packages with abundances \emph{standardized} to observation effort. IDs in the \texttt{L0\ to\ L1\ ecocomDP\ workflow\ ID} columns were used in the R package \texttt{ecocomDP} to standardize organismal data.}
 \centering
+
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{>{\raggedright\arraybackslash}p{7.5em}>{\raggedright\arraybackslash}p{6em}>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{12em}>{\raggedright\arraybackslash}p{9em}>{\raggedright\arraybackslash}p{9em}}
 \toprule
 Taxon group & L0 dataset (NEON data product ID) & Version of NEON data used in this study & L0 to L1 ecocomDP workflow ID & Primary variable reported in ecocomDP observation table & Units\\
 \midrule
-\cellcolor{gray!6}{Algae} & \cellcolor{gray!6}{DP1.20166.001} & \href{https://doi.org/10.48443/3cvp-hw55}{\cellcolor{gray!6}{https://doi.org/10.48443/3cvp-hw55 and provisional data}} & \cellcolor{gray!6}{neon.ecocomdp.20166.001.001} & \cellcolor{gray!6}{cell density OR cells OR valves} & \cellcolor{gray!6}{cells/cm2 OR cells/mL}\\
-Beetles & DP1.10022.001 & \href{https://doi.org/10.48443/tx5f-dy17}{https://doi.org/10.48443/tx5f-dy17 and provisional data} & neon.ecocomdp.10022.001.001 & abundance & count per trap day\\
-\cellcolor{gray!6}{Birds*} & \cellcolor{gray!6}{DP1.10003.001} & \href{https://doi.org/10.48443/s730-dy13}{\cellcolor{gray!6}{https://doi.org/10.48443/s730-dy13 and provisional data}} & \cellcolor{gray!6}{neon.ecocomdp.10003.001.001} & \cellcolor{gray!6}{cluster size} & \cellcolor{gray!6}{count of individuals}\\
-Fish & DP1.20107.001 & \href{https://doi.org/10.48443/17cz-g567}{https://doi.org/10.48443/17cz-g567 and provisional data} & neon.ecocomdp.20107.001.001 & abundance & catch per unit effort\\
-\cellcolor{gray!6}{Herptiles} & \cellcolor{gray!6}{DP1.10022.001} & \href{https://doi.org/10.48443/tx5f-dy17}{\cellcolor{gray!6}{https://doi.org/10.48443/tx5f-dy17 and provisional data}} & \cellcolor{gray!6}{neon.ecocomdp.10022.001.002} & \cellcolor{gray!6}{abundance} & \cellcolor{gray!6}{count per trap day}\\
-Macroinvertebrates & DP1.20120.001 & \href{https://doi.org/10.48443/855x-0n27}{https://doi.org/10.48443/855x-0n27 and provisional data} & neon.ecocomdp.20120.001.001 & density & count per square meter\\
-\cellcolor{gray!6}{Mosquitoes} & \cellcolor{gray!6}{DP1.10043.001} & \href{https://doi.org/10.48443/9smm-v091}{\cellcolor{gray!6}{https://doi.org/10.48443/9smm-v091 and provisional data}} & \cellcolor{gray!6}{neon.ecocomdp.10043.001.001} & \cellcolor{gray!6}{abundance} & \cellcolor{gray!6}{count per trap hour}\\
-Plants** & DP1.10058.001 & \href{https://doi.org/10.48443/abge-r811}{https://doi.org/10.48443/abge-r811 and provisional data} & neon.ecocomdp.10058.001.001 & percent cover & percent of plot area covered by taxon\\
-\cellcolor{gray!6}{Small mammals} & \cellcolor{gray!6}{DP1.10072.001} & \href{https://doi.org/10.48443/j1g9-2j27}{\cellcolor{gray!6}{https://doi.org/10.48443/j1g9-2j27 and provisional data}} & \cellcolor{gray!6}{neon.ecocomdp.10072.001.001} & \cellcolor{gray!6}{count} & \cellcolor{gray!6}{unique individuals per 100 trap nights per plot per month}\\
-Tick pathogens*** & DP1.10092.001 & \href{https://doi.org/10.48443/5fab-xv19}{https://doi.org/10.48443/5fab-xv19 and provisional data} & neon.ecocomdp.10092.001.001 & positivity rate & positive tests per pathogen per sampling event\\
-\cellcolor{gray!6}{Ticks} & \cellcolor{gray!6}{DP1.10093.001} & \href{https://doi.org/10.48443/dx40-wr20}{\cellcolor{gray!6}{https://doi.org/10.48443/dx40-wr20 and provisional data}} & \cellcolor{gray!6}{neon.ecocomdp.10093.001.001} & \cellcolor{gray!6}{abundance} & \cellcolor{gray!6}{count per square meter}\\
-Zooplankton & DP1.20219.001 & \href{https://doi.org/10.48443/qzr1-jr79}{https://doi.org/10.48443/qzr1-jr79 and provisional data} & neon.ecocomdp.20219.001.001 & density & count per liter\\
+\cellcolor{gray!6}{Algae} & \cellcolor{gray!6}{DP1.20166.001} & \href{https://doi.org/10.48443/3cvp-hw55|https://doi.org/10.48443/g2k4-d258}{\cellcolor{gray!6}{https://doi.org/10.48443/3cvp-hw55|https://doi.org/10.48443/g2k4-d258 and provisional data}} & \cellcolor{gray!6}{neon.ecocomdp.20166.001.001} & \cellcolor{gray!6}{cell density} & \cellcolor{gray!6}{cells per cm2 OR cells per mL}|https://doi.org/10.48443/g2k4-d258}{\cellcolor{gray!6}{https://doi.org/10.48443/3cvp-hw55|https://doi.org/10.48443/g2k4-d258 and provisional data}} \& \cellcolor{gray!6}{neon.ecocomdp.20166.001.001} \& \cellcolor{gray!6}{cell density} \& \cellcolor{gray!6}{cells per cm2 OR cells per mL}\textbar{}\url{https://doi.org/10.48443/g2k4-d258}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/3cvp-hw55|https://doi.org/10.48443/g2k4-d258 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.20166.001.001} \& \cellcolor{gray!6}{cell density} \& \cellcolor{gray!6}{cells per cm2 OR cells per mL}\textbar{}\url{https://doi.org/10.48443/g2k4-d258}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/3cvp-hw55|https://doi.org/10.48443/g2k4-d258 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.20166.001.001} \& \cellcolor{gray!6}{cell density} \& \cellcolor{gray!6}{cells per cm2 OR cells per mL}\textbackslash{}
+Beetles \& DP1.10022.001 \& \href{https://doi.org/10.48443/tx5f-dy17|https://doi.org/10.48443/xgea-hw23}{https://doi.org/10.48443/tx5f-dy17|https://doi.org/10.48443/xgea-hw23 and provisional data} \& neon.ecocomdp.10022.001.001 \& abundance \& count per trap day\textbar{}\url{https://doi.org/10.48443/xgea-hw23}\}\{\url{https://doi.org/10.48443/tx5f-dy17\%7Chttps://doi.org/10.48443/xgea-hw23} and provisional data\} \& neon.ecocomdp.10022.001.001 \& abundance \& count per trap day\textbar{}\url{https://doi.org/10.48443/xgea-hw23}\}\{\url{https://doi.org/10.48443/tx5f-dy17\%7Chttps://doi.org/10.48443/xgea-hw23} and provisional data\} \& neon.ecocomdp.10022.001.001 \& abundance \& count per trap day\textbar{}\url{https://doi.org/10.48443/xgea-hw23}\}\{\url{https://doi.org/10.48443/tx5f-dy17\%7Chttps://doi.org/10.48443/xgea-hw23} and provisional data\} \& neon.ecocomdp.10022.001.001 \& abundance \& count per trap day\textbackslash{}
+\cellcolor{gray!6}{Birds*} \& \cellcolor{gray!6}{DP1.10003.001} \& \href{https://doi.org/10.48443/s730-dy13|https://doi.org/10.48443/88sy-ah40}{\cellcolor{gray!6}{https://doi.org/10.48443/s730-dy13|https://doi.org/10.48443/88sy-ah40 and provisional data}} \& \cellcolor{gray!6}{neon.ecocomdp.10003.001.001} \& \cellcolor{gray!6}{cluster size} \& \cellcolor{gray!6}{count of individuals}\textbar{}\url{https://doi.org/10.48443/88sy-ah40}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/s730-dy13|https://doi.org/10.48443/88sy-ah40 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10003.001.001} \& \cellcolor{gray!6}{cluster size} \& \cellcolor{gray!6}{count of individuals}\textbar{}\url{https://doi.org/10.48443/88sy-ah40}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/s730-dy13|https://doi.org/10.48443/88sy-ah40 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10003.001.001} \& \cellcolor{gray!6}{cluster size} \& \cellcolor{gray!6}{count of individuals}\textbar{}\url{https://doi.org/10.48443/88sy-ah40}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/s730-dy13|https://doi.org/10.48443/88sy-ah40 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10003.001.001} \& \cellcolor{gray!6}{cluster size} \& \cellcolor{gray!6}{count of individuals}\textbackslash{}
+Fish \& DP1.20107.001 \& \href{https://doi.org/10.48443/17cz-g567|https://doi.org/10.48443/7p84-6j62}{https://doi.org/10.48443/17cz-g567|https://doi.org/10.48443/7p84-6j62 and provisional data} \& neon.ecocomdp.20107.001.001 \& abundance \& catch per unit effort\textbar{}\url{https://doi.org/10.48443/7p84-6j62}\}\{\url{https://doi.org/10.48443/17cz-g567\%7Chttps://doi.org/10.48443/7p84-6j62} and provisional data\} \& neon.ecocomdp.20107.001.001 \& abundance \& catch per unit effort\textbar{}\url{https://doi.org/10.48443/7p84-6j62}\}\{\url{https://doi.org/10.48443/17cz-g567\%7Chttps://doi.org/10.48443/7p84-6j62} and provisional data\} \& neon.ecocomdp.20107.001.001 \& abundance \& catch per unit effort\textbar{}\url{https://doi.org/10.48443/7p84-6j62}\}\{\url{https://doi.org/10.48443/17cz-g567\%7Chttps://doi.org/10.48443/7p84-6j62} and provisional data\} \& neon.ecocomdp.20107.001.001 \& abundance \& catch per unit effort\textbackslash{}
+\cellcolor{gray!6}{Herptiles} \& \cellcolor{gray!6}{DP1.10022.001} \& \href{https://doi.org/10.48443/tx5f-dy17|https://doi.org/10.48443/xgea-hw23}{\cellcolor{gray!6}{https://doi.org/10.48443/tx5f-dy17|https://doi.org/10.48443/xgea-hw23 and provisional data}} \& \cellcolor{gray!6}{neon.ecocomdp.10022.001.002} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap day}\textbar{}\url{https://doi.org/10.48443/xgea-hw23}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/tx5f-dy17|https://doi.org/10.48443/xgea-hw23 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10022.001.002} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap day}\textbar{}\url{https://doi.org/10.48443/xgea-hw23}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/tx5f-dy17|https://doi.org/10.48443/xgea-hw23 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10022.001.002} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap day}\textbar{}\url{https://doi.org/10.48443/xgea-hw23}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/tx5f-dy17|https://doi.org/10.48443/xgea-hw23 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10022.001.002} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap day}\textbackslash{}
+Macroinvertebrates \& DP1.20120.001 \& \href{https://doi.org/10.48443/855x-0n27|https://doi.org/10.48443/gn8x-k322}{https://doi.org/10.48443/855x-0n27|https://doi.org/10.48443/gn8x-k322 and provisional data} \& neon.ecocomdp.20120.001.001 \& density \& count per square meter\textbar{}\url{https://doi.org/10.48443/gn8x-k322}\}\{\url{https://doi.org/10.48443/855x-0n27\%7Chttps://doi.org/10.48443/gn8x-k322} and provisional data\} \& neon.ecocomdp.20120.001.001 \& density \& count per square meter\textbar{}\url{https://doi.org/10.48443/gn8x-k322}\}\{\url{https://doi.org/10.48443/855x-0n27\%7Chttps://doi.org/10.48443/gn8x-k322} and provisional data\} \& neon.ecocomdp.20120.001.001 \& density \& count per square meter\textbar{}\url{https://doi.org/10.48443/gn8x-k322}\}\{\url{https://doi.org/10.48443/855x-0n27\%7Chttps://doi.org/10.48443/gn8x-k322} and provisional data\} \& neon.ecocomdp.20120.001.001 \& density \& count per square meter\textbackslash{}
+\cellcolor{gray!6}{Mosquitoes} \& \cellcolor{gray!6}{DP1.10043.001} \& \href{https://doi.org/10.48443/9smm-v091|https://doi.org/10.48443/c7h7-q918}{\cellcolor{gray!6}{https://doi.org/10.48443/9smm-v091|https://doi.org/10.48443/c7h7-q918 and provisional data}} \& \cellcolor{gray!6}{neon.ecocomdp.10043.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap hour}\textbar{}\url{https://doi.org/10.48443/c7h7-q918}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/9smm-v091|https://doi.org/10.48443/c7h7-q918 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10043.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap hour}\textbar{}\url{https://doi.org/10.48443/c7h7-q918}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/9smm-v091|https://doi.org/10.48443/c7h7-q918 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10043.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap hour}\textbar{}\url{https://doi.org/10.48443/c7h7-q918}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/9smm-v091|https://doi.org/10.48443/c7h7-q918 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10043.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per trap hour}\textbackslash{}
+Plants** \& DP1.10058.001 \& \href{https://doi.org/10.48443/abge-r811|https://doi.org/10.48443/pr5e-1q60}{https://doi.org/10.48443/abge-r811|https://doi.org/10.48443/pr5e-1q60 and provisional data} \& neon.ecocomdp.10058.001.001 \& percent cover \& percent of plot area covered by taxon\textbar{}\url{https://doi.org/10.48443/pr5e-1q60}\}\{\url{https://doi.org/10.48443/abge-r811\%7Chttps://doi.org/10.48443/pr5e-1q60} and provisional data\} \& neon.ecocomdp.10058.001.001 \& percent cover \& percent of plot area covered by taxon\textbar{}\url{https://doi.org/10.48443/pr5e-1q60}\}\{\url{https://doi.org/10.48443/abge-r811\%7Chttps://doi.org/10.48443/pr5e-1q60} and provisional data\} \& neon.ecocomdp.10058.001.001 \& percent cover \& percent of plot area covered by taxon\textbar{}\url{https://doi.org/10.48443/pr5e-1q60}\}\{\url{https://doi.org/10.48443/abge-r811\%7Chttps://doi.org/10.48443/pr5e-1q60} and provisional data\} \& neon.ecocomdp.10058.001.001 \& percent cover \& percent of plot area covered by taxon\textbackslash{}
+\cellcolor{gray!6}{Small mammals} \& \cellcolor{gray!6}{DP1.10072.001} \& \href{https://doi.org/10.48443/j1g9-2j27|https://doi.org/10.48443/h3dk-3a71}{\cellcolor{gray!6}{https://doi.org/10.48443/j1g9-2j27|https://doi.org/10.48443/h3dk-3a71 and provisional data}} \& \cellcolor{gray!6}{neon.ecocomdp.10072.001.001} \& \cellcolor{gray!6}{count} \& \cellcolor{gray!6}{unique individuals per 100 trap nights per plot per month}\textbar{}\url{https://doi.org/10.48443/h3dk-3a71}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/j1g9-2j27|https://doi.org/10.48443/h3dk-3a71 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10072.001.001} \& \cellcolor{gray!6}{count} \& \cellcolor{gray!6}{unique individuals per 100 trap nights per plot per month}\textbar{}\url{https://doi.org/10.48443/h3dk-3a71}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/j1g9-2j27|https://doi.org/10.48443/h3dk-3a71 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10072.001.001} \& \cellcolor{gray!6}{count} \& \cellcolor{gray!6}{unique individuals per 100 trap nights per plot per month}\textbar{}\url{https://doi.org/10.48443/h3dk-3a71}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/j1g9-2j27|https://doi.org/10.48443/h3dk-3a71 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10072.001.001} \& \cellcolor{gray!6}{count} \& \cellcolor{gray!6}{unique individuals per 100 trap nights per plot per month}\textbackslash{}
+Tick pathogens*** \& DP1.10092.001 \& \href{https://doi.org/10.48443/5fab-xv19|https://doi.org/10.48443/nygx-dm71}{https://doi.org/10.48443/5fab-xv19|https://doi.org/10.48443/nygx-dm71 and provisional data} \& neon.ecocomdp.10092.001.001 \& positivity rate \& positive tests per pathogen per sampling event\textbar{}\url{https://doi.org/10.48443/nygx-dm71}\}\{\url{https://doi.org/10.48443/5fab-xv19\%7Chttps://doi.org/10.48443/nygx-dm71} and provisional data\} \& neon.ecocomdp.10092.001.001 \& positivity rate \& positive tests per pathogen per sampling event\textbar{}\url{https://doi.org/10.48443/nygx-dm71}\}\{\url{https://doi.org/10.48443/5fab-xv19\%7Chttps://doi.org/10.48443/nygx-dm71} and provisional data\} \& neon.ecocomdp.10092.001.001 \& positivity rate \& positive tests per pathogen per sampling event\textbar{}\url{https://doi.org/10.48443/nygx-dm71}\}\{\url{https://doi.org/10.48443/5fab-xv19\%7Chttps://doi.org/10.48443/nygx-dm71} and provisional data\} \& neon.ecocomdp.10092.001.001 \& positivity rate \& positive tests per pathogen per sampling event\textbackslash{}
+\cellcolor{gray!6}{Ticks} \& \cellcolor{gray!6}{DP1.10093.001} \& \href{https://doi.org/10.48443/dx40-wr20|https://doi.org/10.48443/7jh5-8s51}{\cellcolor{gray!6}{https://doi.org/10.48443/dx40-wr20|https://doi.org/10.48443/7jh5-8s51 and provisional data}} \& \cellcolor{gray!6}{neon.ecocomdp.10093.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per square meter}\textbar{}\url{https://doi.org/10.48443/7jh5-8s51}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/dx40-wr20|https://doi.org/10.48443/7jh5-8s51 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10093.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per square meter}\textbar{}\url{https://doi.org/10.48443/7jh5-8s51}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/dx40-wr20|https://doi.org/10.48443/7jh5-8s51 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10093.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per square meter}\textbar{}\url{https://doi.org/10.48443/7jh5-8s51}\}\{\cellcolor{gray!6}{https://doi.org/10.48443/dx40-wr20|https://doi.org/10.48443/7jh5-8s51 and provisional data}\} \& \cellcolor{gray!6}{neon.ecocomdp.10093.001.001} \& \cellcolor{gray!6}{abundance} \& \cellcolor{gray!6}{count per square meter}\textbackslash{}
+Zooplankton \& DP1.20219.001 \& \href{https://doi.org/10.48443/qzr1-jr79|https://doi.org/10.48443/150d-yf27}{https://doi.org/10.48443/qzr1-jr79|https://doi.org/10.48443/150d-yf27 and provisional data} \& neon.ecocomdp.20219.001.001 \& density \& count per liter\textbar{}\url{https://doi.org/10.48443/150d-yf27}\}\{\url{https://doi.org/10.48443/qzr1-jr79\%7Chttps://doi.org/10.48443/150d-yf27} and provisional data\} \& neon.ecocomdp.20219.001.001 \& density \& count per liter\textbar{}\url{https://doi.org/10.48443/150d-yf27}\}\{\url{https://doi.org/10.48443/qzr1-jr79\%7Chttps://doi.org/10.48443/150d-yf27} and provisional data\} \& neon.ecocomdp.20219.001.001 \& density \& count per liter\textbar{}\url{https://doi.org/10.48443/150d-yf27}\}\{\url{https://doi.org/10.48443/qzr1-jr79\%7Chttps://doi.org/10.48443/150d-yf27} and provisional data\} \& neon.ecocomdp.20219.001.001 \& density \& count per liter\textbackslash{}
 \bottomrule
-\end{tabular}}
-\end{table}
+\textbackslash end\{tabular\}\}
+\textbackslash end\{table\}
 
 \hypertarget{terrestrial-organisms}{%
 \subsection{Terrestrial Organisms}\label{terrestrial-organisms}}
@@ -410,25 +432,25 @@ The data package \texttt{neonDivData} can be installed from Github. Installation
 
 \begin{table}
 
-\caption{\label{tab:dataSummary}Summary of data products included in this study (as of 01 February, 2022). Users can call the R objects in the \texttt{R\ object} column from the R data package \texttt{neonDivData} to get the standardized data for specific taxonomic groups.}
+\caption{\label{tab:dataSummary}Summary of data products included in this study (as of 13 April, 2022). Users can call the R objects in the \texttt{R\ object} column from the R data package \texttt{neonDivData} to get the standardized data for specific taxonomic groups.}
 \centering
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{llrrll}
 \toprule
 Taxon group & R object & N species & N sites & Start date & End date\\
 \midrule
-\cellcolor{gray!6}{Algae} & \cellcolor{gray!6}{data\_algae} & \cellcolor{gray!6}{1946} & \cellcolor{gray!6}{33} & \cellcolor{gray!6}{2014-07-02} & \cellcolor{gray!6}{2019-07-15}\\
-Beetles & data\_herp\_bycatch & 756 & 47 & 2013-07-03 & 2020-10-13\\
-\cellcolor{gray!6}{Birds} & \cellcolor{gray!6}{data\_bird} & \cellcolor{gray!6}{541} & \cellcolor{gray!6}{47} & \cellcolor{gray!6}{2015-05-13} & \cellcolor{gray!6}{2020-07-20}\\
-Fish & data\_fish & 147 & 28 & 2016-03-29 & 2020-12-03\\
-\cellcolor{gray!6}{Herptiles} & \cellcolor{gray!6}{data\_herp\_bycatch} & \cellcolor{gray!6}{128} & \cellcolor{gray!6}{41} & \cellcolor{gray!6}{2014-04-02} & \cellcolor{gray!6}{2020-09-29}\\
-Macroinvertebrates & data\_macroinvertebrate & 1330 & 34 & 2014-07-01 & 2020-08-12\\
-\cellcolor{gray!6}{Mosquitoes} & \cellcolor{gray!6}{data\_mosquito} & \cellcolor{gray!6}{128} & \cellcolor{gray!6}{47} & \cellcolor{gray!6}{2014-04-09} & \cellcolor{gray!6}{2020-06-16}\\
-Plants & data\_plant & 6197 & 47 & 2013-06-24 & 2020-10-23\\
-\cellcolor{gray!6}{Small mammals} & \cellcolor{gray!6}{data\_small\_mammal} & \cellcolor{gray!6}{145} & \cellcolor{gray!6}{46} & \cellcolor{gray!6}{2013-06-19} & \cellcolor{gray!6}{2020-11-20}\\
-Tick pathogens & data\_tick\_pathogen & 12 & 15 & 2014-04-17 & 2018-10-03\\
-\cellcolor{gray!6}{Ticks} & \cellcolor{gray!6}{data\_tick} & \cellcolor{gray!6}{19} & \cellcolor{gray!6}{46} & \cellcolor{gray!6}{2014-04-02} & \cellcolor{gray!6}{2020-10-06}\\
-Zooplankton & data\_zooplankton & 157 & 7 & 2014-07-02 & 2020-07-22\\
+\cellcolor{gray!6}{Algae} & \cellcolor{gray!6}{data\_algae} & \cellcolor{gray!6}{2279} & \cellcolor{gray!6}{34} & \cellcolor{gray!6}{2014-07-02} & \cellcolor{gray!6}{2020-07-28}\\
+Beetles & data\_herp\_bycatch & 768 & 47 & 2013-07-03 & 2021-10-05\\
+\cellcolor{gray!6}{Birds} & \cellcolor{gray!6}{data\_bird} & \cellcolor{gray!6}{577} & \cellcolor{gray!6}{47} & \cellcolor{gray!6}{2013-06-05} & \cellcolor{gray!6}{2021-07-16}\\
+Fish & data\_fish & 158 & 28 & 2016-03-29 & 2021-12-14\\
+\cellcolor{gray!6}{Herptiles} & \cellcolor{gray!6}{data\_herp\_bycatch} & \cellcolor{gray!6}{136} & \cellcolor{gray!6}{41} & \cellcolor{gray!6}{2014-04-02} & \cellcolor{gray!6}{2021-10-06}\\
+Macroinvertebrates & data\_macroinvertebrate & 1373 & 34 & 2014-07-01 & 2021-07-28\\
+\cellcolor{gray!6}{Mosquitoes} & \cellcolor{gray!6}{data\_mosquito} & \cellcolor{gray!6}{131} & \cellcolor{gray!6}{47} & \cellcolor{gray!6}{2014-04-09} & \cellcolor{gray!6}{2021-06-11}\\
+Plants & data\_plant & 6544 & 47 & 2013-06-24 & 2021-10-13\\
+\cellcolor{gray!6}{Small mammals} & \cellcolor{gray!6}{data\_small\_mammal} & \cellcolor{gray!6}{149} & \cellcolor{gray!6}{46} & \cellcolor{gray!6}{2013-06-19} & \cellcolor{gray!6}{2021-11-18}\\
+Tick pathogens & data\_tick\_pathogen & 12 & 16 & 2014-04-17 & 2020-10-01\\
+\cellcolor{gray!6}{Ticks} & \cellcolor{gray!6}{data\_tick} & \cellcolor{gray!6}{19} & \cellcolor{gray!6}{46} & \cellcolor{gray!6}{2014-04-02} & \cellcolor{gray!6}{2021-11-18}\\
+Zooplankton & data\_zooplankton & 166 & 7 & 2014-07-02 & 2021-07-21\\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -487,225 +509,229 @@ This work is a result of participating in the first NEON Science Summit in 2019 
 \addcontentsline{toc}{section}{Reference}
 
 \hypertarget{refs}{}
-\begin{cslreferences}
-\leavevmode\hypertarget{ref-baker1997environmental}{}%
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-baker1997environmental}{}}%
 Baker, J. R., D. V. Peck, and D. W. Sutton. 1997. Environmental monitoring and assessment program surface waters: Field operations manual for lakes. US Environmental Protection Agency, Washington.
 
-\leavevmode\hypertarget{ref-balch2019neon}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-balch2019neon}{}}%
 Balch, J. K., R. Nagy, and B. S. Halpern. 2019. NEON is seeding the next revolution in ecology. Frontiers in Ecology and the Environment 18.
 
-\leavevmode\hypertarget{ref-Barnett2019}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Barnett2019}{}}%
 Barnett, D. 2019. TOS protocol and procedure: DIV - plant diversity sampling. NEON.DOC.014042vK. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-barnett2019plant}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-barnett2019plant}{}}%
 Barnett, D. T., P. B. Adler, B. R. Chemel, P. A. Duffy, B. J. Enquist, J. B. Grace, S. Harrison, R. K. Peet, D. S. Schimel, T. J. Stohlgren, and others. 2019. The plant diversity sampling design for the national ecological observatory network. Ecosphere 10:e02603.
 
-\leavevmode\hypertarget{ref-bechtold2005enhanced}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-bechtold2005enhanced}{}}%
 Bechtold, W. A., and P. L. Patterson. 2005. The enhanced forest inventory and analysis program--national sampling design and estimation procedures. USDA Forest Service, Southern Research Station.
 
-\leavevmode\hypertarget{ref-beck2014spatial}{}%
-Beck, J., M. Böller, A. Erhardt, and W. Schwanghart. 2014. Spatial bias in the gbif database and its effect on modeling species' geographic distributions. Ecological Informatics 19:10--15.
+\leavevmode\vadjust pre{\hypertarget{ref-beck2014spatial}{}}%
+Beck, J., M. Böller, A. Erhardt, and W. Schwanghart. 2014. Spatial bias in the GBIF database and its effect on modeling species' geographic distributions. Ecological Informatics 19:10--15.
 
-\leavevmode\hypertarget{ref-blowes2019geography}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-blowes2019geography}{}}%
 Blowes, S. A., S. R. Supp, L. H. Antão, A. Bates, H. Bruelheide, J. M. Chase, F. Moyes, A. Magurran, B. McGill, I. H. Myers-Smith, and others. 2019. The geography of biodiversity change in marine and terrestrial assemblages. Science 366:339--345.
 
-\leavevmode\hypertarget{ref-brown2004toward}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-brown2004toward}{}}%
 Brown, J. H., J. F. Gillooly, A. P. Allen, V. M. Savage, and G. B. West. 2004. Toward a metabolic theory of ecology. Ecology 85:1771--1789.
 
-\leavevmode\hypertarget{ref-Cawley2016}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Cawley2016}{}}%
 Cawley, K. M., S. Parker, R. Utz, K. Goodman, C. Scott, M. Fitzgerald, J. Vance, B. Jensen, C. Bohall, and T. Baldwin. 2016. NEON aquatic sampling strategy. NEON.DOC.001152vA. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-chao2014rarefaction}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-chao2014rarefaction}{}}%
 Chao, A., N. J. Gotelli, T. Hsieh, E. L. Sander, K. Ma, R. K. Colwell, and A. M. Ellison. 2014. Rarefaction and extrapolation with hill numbers: A framework for sampling and estimation in species diversity studies. Ecological monographs 84:45--67.
 
-\leavevmode\hypertarget{ref-Chesney2021}{}%
-Chesney, T., S. Parker, and C. Scott. 2021. NEON user guide to aquatic macroinvertebrate collection (dp1.20120.001). Revision b. NEON (National Ecological Observatory Network).
+\leavevmode\vadjust pre{\hypertarget{ref-Chesney2021}{}}%
+Chesney, T., S. Parker, and C. Scott. 2021. NEON user guide to aquatic macroinvertebrate collection (DP1.20120.001). Revision b. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-curtis1959vegetation}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-curtis1959vegetation}{}}%
 Curtis, J. T. 1959. The vegetation of wisconsin: An ordination of plant communities. University of Wisconsin Pres.
 
-\leavevmode\hypertarget{ref-egli2020taxonomic}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-egli2020taxonomic}{}}%
 Egli, L., K. E. LeVan, and T. T. Work. 2020. Taxonomic error rates affect interpretations of a national-scale ground beetle monitoring program at national ecological observatory network. Ecosphere 11:e03035.
 
-\leavevmode\hypertarget{ref-farley2018situating}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-farley2018situating}{}}%
 Farley, S. S., A. Dawson, S. J. Goring, and J. W. Williams. 2018. Situating ecology as a big-data science: Current advances, challenges, and solutions. BioScience 68:563--576.
 
-\leavevmode\hypertarget{ref-farrell2018power}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-farrell2018power}{}}%
 Farrell, K. J., and C. C. Carey. 2018. Power, pitfalls, and potential for integrating computational literacy into undergraduate ecology courses. Ecology and evolution 8:7744--7751.
 
-\leavevmode\hypertarget{ref-fischer1960latitudinal}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-fischer1960latitudinal}{}}%
 Fischer, A. G. 1960. Latitudinal variations in organic diversity. Evolution 14:64--81.
 
-\leavevmode\hypertarget{ref-geldmann2016determines}{}%
-Geldmann, J., J. Heilmann-Clausen, T. E. Holm, I. Levinsky, B. Markussen, K. Olsen, C. Rahbek, and A. P. Tøttrup. 2016. What determines spatial bias in citizen science? Exploring four recording schemes with different proficiency requirements. Diversity and Distributions 22:1139--1149.
-
-\leavevmode\hypertarget{ref-g2019remote}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-g2019remote}{}}%
 G Pricope, N., K. L Mapes, and K. D Woodward. 2019. Remote sensing of human--environment interactions in global change research: A review of advances, challenges and future directions. Remote Sensing 11:2783.
 
-\leavevmode\hypertarget{ref-gurevitch1999statistical}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-geldmann2016determines}{}}%
+Geldmann, J., J. Heilmann-Clausen, T. E. Holm, I. Levinsky, B. Markussen, K. Olsen, C. Rahbek, and A. P. Tøttrup. 2016. What determines spatial bias in citizen science? Exploring four recording schemes with different proficiency requirements. Diversity and Distributions 22:1139--1149.
+
+\leavevmode\vadjust pre{\hypertarget{ref-gurevitch1999statistical}{}}%
 Gurevitch, J., and L. V. Hedges. 1999. Statistical issues in ecological meta-analyses. Ecology 80:1142--1149.
 
-\leavevmode\hypertarget{ref-hampton2013big}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-hampton2013big}{}}%
 Hampton, S. E., C. A. Strasser, J. J. Tewksbury, W. K. Gram, A. E. Budden, A. L. Batcheller, C. S. Duke, and J. H. Porter. 2013. Big data and the future of ecology. Frontiers in Ecology and the Environment 11:156--162.
 
-\leavevmode\hypertarget{ref-harte2011maximum}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-harte2011maximum}{}}%
 Harte, J. 2011. Maximum entropy and ecology: A theory of abundance, distribution, and energetics. OUP Oxford.
 
-\leavevmode\hypertarget{ref-heffernan2014macrosystems}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-heffernan2014macrosystems}{}}%
 Heffernan, J. B., P. A. Soranno, M. J. Angilletta Jr, L. B. Buckley, D. S. Gruner, T. H. Keitt, J. R. Kellner, J. S. Kominoski, A. V. Rocha, J. Xiao, and others. 2014. Macrosystems ecology: Understanding ecological patterns and processes at continental scales. Frontiers in Ecology and the Environment 12:5--14.
 
-\leavevmode\hypertarget{ref-hillebrand2004generality}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-hillebrand2004generality}{}}%
 Hillebrand, H. 2004. On the generality of the latitudinal diversity gradient. The American Naturalist 163:192--211.
 
-\leavevmode\hypertarget{ref-hoekman2017design}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-hoekman2017design}{}}%
 Hoekman, D., K. E. LeVan, C. Gibson, G. E. Ball, R. A. Browne, R. L. Davidson, T. L. Erwin, C. B. Knisley, J. R. LaBonte, J. Lundgren, and others. 2017. Design for ground beetle abundance and diversity sampling within the national ecological observatory network. Ecosphere 8:e01744.
 
-\leavevmode\hypertarget{ref-hsieh2016inext}{}%
-Hsieh, T., K. Ma, and A. Chao. 2016. INEXT: An r package for rarefaction and extrapolation of species diversity (h ill numbers). Methods in Ecology and Evolution 7:1451--1456.
+\leavevmode\vadjust pre{\hypertarget{ref-hsieh2016inext}{}}%
+Hsieh, T., K. Ma, and A. Chao. 2016. iNEXT: An r package for rarefaction and extrapolation of species diversity (h ill numbers). Methods in Ecology and Evolution 7:1451--1456.
 
-\leavevmode\hypertarget{ref-hubbell2001unified}{}%
-Hubbell, S. P. 2001. The unified neutral theory of biodiversity and biogeography (mpb-32). Princeton University Press.
+\leavevmode\vadjust pre{\hypertarget{ref-hubbell2001unified}{}}%
+Hubbell, S. P. 2001. The unified neutral theory of biodiversity and biogeography (MPB-32). Princeton University Press.
 
-\leavevmode\hypertarget{ref-hutchinson1959homage}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-hutchinson1959homage}{}}%
 Hutchinson, G. E. 1959. Homage to santa rosalia or why are there so many kinds of animals? The American Naturalist 93:145--159.
 
-\leavevmode\hypertarget{ref-Jensen2019a}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Jensen2019a}{}}%
 Jensen, B., S. Parker, and J. R. Fischer. 2019a. AOS protocol and procedure: Fish sampling in wadeable streams. NEON.DOC.001295vF. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-Jensen2019b}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Jensen2019b}{}}%
 Jensen, B., S. Parker, and J. R. Fischer. 2019b. AOS protocol and procedure: Fish sampling in lakes. NEON.DOC.001296vF. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-jones2021synergies}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-jones2021synergies}{}}%
 Jones, J., P. Groffman, J. Blair, F. Davis, H. Dugan, E. Euskirchen, S. Frey, T. Harms, E. Hinckley, M. Kosmala, and others. 2021. Synergies among environmental science research and monitoringnetworks: A research agenda. Earth's Future:e2020EF001631.
 
-\leavevmode\hypertarget{ref-jost2006entropy}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-jost2006entropy}{}}%
 Jost, L. 2006. Entropy and diversity. Oikos 113:363--375.
 
-\leavevmode\hypertarget{ref-keller2008continental}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-keller2008continental}{}}%
 Keller, M., D. S. Schimel, W. W. Hargrove, and F. M. Hoffman. 2008. A continental strategy for the national ecological observatory network. The Ecological Society of America: 282-284.
 
-\leavevmode\hypertarget{ref-koricheva2014uses}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-koricheva2014uses}{}}%
 Koricheva, J., and J. Gurevitch. 2014. Uses and misuses of meta-analysis in plant ecology. Journal of Ecology 102:828--844.
 
-\leavevmode\hypertarget{ref-LeVan2020}{}%
-LeVan, K. 2020a. NEON user guide to ground beetles sampled from pitfall traps (dp1.10022.001).version c. NEON (National Ecological Observatory Network).
+\leavevmode\vadjust pre{\hypertarget{ref-LeVan2020}{}}%
+LeVan, K. 2020a. NEON user guide to ground beetles sampled from pitfall traps (DP1.10022.001).version c. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-LeVan2020b}{}%
-LeVan, K. 2020b. NEON user guide to mosquitoes sampled from co2 traps (dp1.10043.001) and mosquito-borne pathogen satatus (dp1.10041.001).version c. NEON (National Ecological Observatory Network).
+\leavevmode\vadjust pre{\hypertarget{ref-LeVan2020b}{}}%
+LeVan, K. 2020b. NEON user guide to mosquitoes sampled from CO2 traps (DP1.10043.001) and mosquito-borne pathogen satatus (DP1.10041.001).version c. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-LeVan2019b}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-LeVan2019b}{}}%
 LeVan, K., S. Paull, K. Tsao, D. Hoekman, and Y. Springer. 2019a. TOS protocol and procedure: MOS - mosquito sampling. NEON.DOC.014049vL. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-LeVan2019}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-LeVan2019}{}}%
 LeVan, K., N. Robinson, D. Hoekman, and K. Blevins. 2019b. TOS protocol and procedure: Ground beetle sampling. NEON.DOC.014041vJ. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-LeVan2019c}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-LeVan2019c}{}}%
 LeVan, K., K. Thibault, K. Tsao, and Y. Springer. 2019c. TOS protocol and procedure: Tick and tick-borne pathogen sampling. NEON.DOC.014045vK. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-li2020changes}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-li2020changes}{}}%
 Li, D., J. D. Olden, J. L. Lockwood, S. Record, M. L. McKinney, and B. Baiser. 2020. Changes in taxonomic and phylogenetic diversity in the anthropocene. Proceedings of the Royal Society B 287:20200777.
 
-\leavevmode\hypertarget{ref-linnaeus1758systema}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-li2021standardizedData}{}}%
+Li, D., S. Record, E. Sokol, M. E. Bitters, M. Y. Chen, A. Y. Chung, M. R. Helmus, R. Jaimes, L. Jansen, M. A. Jarzyna, and others. 2022. \href{https://doi.org/10.6073/pasta/c28dd4f6e7989003505ea02e9a92afbf}{Standardized NEON organismal data (neonDivData) ver 1}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-linnaeus1758systema}{}}%
 Linnaeus, C. 1758. Systema naturae. Stockholm Laurentii Salvii.
 
-\leavevmode\hypertarget{ref-macarthur1967theory}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-macarthur1967theory}{}}%
 MacArthur, R. H., and E. O. Wilson. 1967. The theory of island biogeography. Princeton university press.
 
-\leavevmode\hypertarget{ref-martin2012mapping}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-martin2012mapping}{}}%
 Martin, L. J., B. Blossey, and E. Ellis. 2012. Mapping where ecologists work: Biases in the global distribution of terrestrial ecological observations. Frontiers in Ecology and the Environment 10:195--201.
 
-\leavevmode\hypertarget{ref-midgley2005global}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-midgley2005global}{}}%
 Midgley, G. F., and W. Thuiller. 2005. Global environmental change and the uncertain fate of biodiversity. The New Phytologist 167:638--641.
 
-\leavevmode\hypertarget{ref-Monahan2020}{}%
-Monahan, D., B. Jensen, S. Parker, and C. Scott. 2020. NEON user guide to fish electrofishing, gill netting, and fyke netting counts (dp1.20107.001). Revision b. NEON (National Ecological Observatory Network).
+\leavevmode\vadjust pre{\hypertarget{ref-Monahan2020}{}}%
+Monahan, D., B. Jensen, S. Parker, and C. Scott. 2020. NEON user guide to fish electrofishing, gill netting, and fyke netting counts (DP1.20107.001). Revision b. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-moulton2002revised}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-moulton2002revised}{}}%
 Moulton II, S. R., J. G. Kennen, R. M. Goldstein, and J. A. Hambrook. 2002. Revised protocols for sampling algal, invertebrate, and fish communities as part of the national water-quality assessment program. Geological Survey (US).
 
-\leavevmode\hypertarget{ref-nakagawa2012methodological}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-nakagawa2012methodological}{}}%
 Nakagawa, S., and E. S. Santos. 2012. Methodological issues and advances in biological meta-analysis. Evolutionary Ecology 26:1253--1274.
 
-\leavevmode\hypertarget{ref-o2021ecocomdp}{}%
-O'Brien, M., C. A. Smith, E. R. Sokol, C. Gries, N. Lany, S. Record, and M. C. Castorani. 2021. EcocomDP: A flexible data design pattern for ecological community survey data. Ecological Informatics 64:101374.
+\leavevmode\vadjust pre{\hypertarget{ref-o2021ecocomdp}{}}%
+O'Brien, M., C. A. Smith, E. R. Sokol, C. Gries, N. Lany, S. Record, and M. C. Castorani. 2021. ecocomDP: A flexible data design pattern for ecological community survey data. Ecological Informatics 64:101374.
 
-\leavevmode\hypertarget{ref-de2018warning}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-de2018warning}{}}%
 Oliveira Roque, F. de, J. F. Menezes, T. Northfield, J. M. Ochoa-Quintero, M. J. Campbell, and W. F. Laurance. 2018. Warning signals of biodiversity collapse across gradients of tropical forest loss. Scientific reports 8:1--7.
 
-\leavevmode\hypertarget{ref-palumbo2017building}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-palumbo2017building}{}}%
 Palumbo, I., R. A. Rose, R. M. Headley, J. Nackoney, A. Vodacek, and M. Wegmann. 2017. Building capacity in remote sensing for conservation: Present and future challenges. Remote Sensing in Ecology and Conservation 3:21--29.
 
-\leavevmode\hypertarget{ref-Parker2019}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Parker2019}{}}%
 Parker, S. 2019. AOS protocol and procedure: INV - aquatic macroinvertebrate sampling. NEON.DOC.003046vE. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-Parker2020}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-Parker2020}{}}%
 Parker, S. 2020. AOS protocol and procedure: ALG - periphyton and phytoplankton sampling. NEON.DOC.003045vE. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-ParkerRoehm2019}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-ParkerRoehm2019}{}}%
 Parker, S., and C. Roehm. 2019. AOS protocol and procedure: ZOO - zooplankton sampling in lakes. NEON.DOC.001194. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-ParkerScott2020}{}%
-Parker, S., and C. Scott. 2020. NEON user guide to aquatic zooplankton collection (dp1.20219.001). Revision b. NEON (National Ecological Observatory Network).
+\leavevmode\vadjust pre{\hypertarget{ref-ParkerScott2020}{}}%
+Parker, S., and C. Scott. 2020. NEON user guide to aquatic zooplankton collection (DP1.20219.001). Revision b. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-ParkerVance2020}{}%
-Parker, S., and T. Vance. 2020. NEON user guide to periphyton and phytoplankton collection (dp1.20166.001). Revision c. NEON (National Ecological Observatory Network).
+\leavevmode\vadjust pre{\hypertarget{ref-ParkerVance2020}{}}%
+Parker, S., and T. Vance. 2020. NEON user guide to periphyton and phytoplankton collection (DP1.20166.001). Revision c. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-pavlacky2017statistically}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-pavlacky2017statistically}{}}%
 Pavlacky Jr, D. C., P. M. Lukacs, J. A. Blakesley, R. C. Skorkowsky, D. S. Klute, B. A. Hahn, V. J. Dreitz, T. L. George, and D. J. Hanni. 2017. A statistically rigorous sampling design to integrate avian monitoring and management within bird conservation regions. PloS one 12:e0185924.
 
-\leavevmode\hypertarget{ref-peck2006environmental}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-peck2006environmental}{}}%
 Peck, D. V., Herlihy, A. T., Hill, B. H., Hughes, R. M., Kaufmann, P. R., Klemm, D. J., Lazorchak, J. M., McCormick, F. H., Peterson, S. A., Ringold, P. L., Magee, T., and M. R. and Cappaert. 2006. Environmental monitoring and assessment program --- surface waters: Western pilot study field operations manual for wadeable streams. US Environmental Protection Agency, Washington.
 
-\leavevmode\hypertarget{ref-pritt2017proposal}{}%
-Pritt, B. S., M. E. Allerdice, L. M. Sloan, C. D. Paddock, U. G. Munderloh, Y. Rikihisa, T. Tajima, S. M. Paskewitz, D. F. Neitzel, D. K. H. Johnson, and others. 2017. Proposal to reclassify ehrlichia muris as ehrlichia muris subsp. Muris subsp. Nov. And description of ehrlichia muris subsp. Eauclairensis subsp. Nov., a newly recognized tick-borne pathogen of humans. International journal of systematic and evolutionary microbiology 67:2121.
+\leavevmode\vadjust pre{\hypertarget{ref-pritt2017proposal}{}}%
+Pritt, B. S., M. E. Allerdice, L. M. Sloan, C. D. Paddock, U. G. Munderloh, Y. Rikihisa, T. Tajima, S. M. Paskewitz, D. F. Neitzel, D. K. H. Johnson, and others. 2017. Proposal to reclassify ehrlichia muris as ehrlichia muris subsp. Muris subsp. Nov. And description of ehrlichia muris subsp. Eauclairensis subsp. Nov., A newly recognized tick-borne pathogen of humans. International journal of systematic and evolutionary microbiology 67:2121.
 
-\leavevmode\hypertarget{ref-qin2021dna}{}%
-Qin, C., R. Bartelme, Y. A. Chung, D. Fairbanks, Y. Lin, D. Liptzin, C. Muscarella, K. Naithani, K. Peay, P. Pellitier, and others. 2021. From dna sequences to microbial ecology: Wrangling neon soil microbe data with the neonMicrobe r package. Ecosphere 12:e03842.
+\leavevmode\vadjust pre{\hypertarget{ref-qin2021dna}{}}%
+Qin, C., R. Bartelme, Y. A. Chung, D. Fairbanks, Y. Lin, D. Liptzin, C. Muscarella, K. Naithani, K. Peay, P. Pellitier, and others. 2021. From DNA sequences to microbial ecology: Wrangling NEON soil microbe data with the neonMicrobe r package. Ecosphere 12:e03842.
 
-\leavevmode\hypertarget{ref-rainio2003ground}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-rainio2003ground}{}}%
 Rainio, J., and J. Niemelä. 2003. Ground beetles (coleoptera: Carabidae) as bioindicators. Biodiversity \& Conservation 12:487--506.
 
-\leavevmode\hypertarget{ref-ralph1993handbook}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-ralph1993handbook}{}}%
 Ralph, C. J. 1993. Handbook of field methods for monitoring landbirds. Pacific Southwest Research Station.
 
-\leavevmode\hypertarget{ref-read2018among}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-read2018among}{}}%
 Read, Q. D., J. M. Grady, P. L. Zarnetske, S. Record, B. Baiser, J. Belmaker, M.-N. Tuanmu, A. Strecker, L. Beaudrot, and K. M. Thibault. 2018. Among-species overlap in rodent body size distributions predicts species richness along a temperature gradient. Ecography 41:1718--1727.
 
-\leavevmode\hypertarget{ref-record2020novel}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-record2020novel}{}}%
 Record, S., N. M. Voelker, P. L. Zarnetske, N. I. Wisnoski, J. D. Tonkin, C. Swan, L. Marazzi, N. Lany, T. Lamy, A. Compagnoni, and others. 2020. Novel insights to be gained from applying metacommunity theory to long-term, spatially replicated biodiversity data. Frontiers in Ecology and Evolution 8:479.
 
-\leavevmode\hypertarget{ref-reichman2011challenges}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-reichman2011challenges}{}}%
 Reichman, O. J., M. B. Jones, and M. P. Schildhauer. 2011. Challenges and opportunities of open data in ecology. Science 331:703--705.
 
-\leavevmode\hypertarget{ref-rudenko2011updates}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-rudenko2011updates}{}}%
 Rudenko, N., M. Golovchenko, L. Grubhoffer, and J. H. Oliver Jr. 2011. Updates on borrelia burgdorferi sensu lato complex with respect to public health. Ticks and tick-borne diseases 2:123--128.
 
-\leavevmode\hypertarget{ref-sauer2017first}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-sauer2017first}{}}%
 Sauer, J. R., K. L. Pardieck, D. J. Ziolkowski Jr, A. C. Smith, M.-A. R. Hudson, V. Rodriguez, H. Berlanga, D. K. Niven, and W. A. Link. 2017. The first 50 years of the north american breeding bird survey. The Condor: Ornithological Applications 119:576--593.
 
-\leavevmode\hypertarget{ref-thibault2018TOS}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-thibault2018TOS}{}}%
 Thibault, K. 2018. TOS protocol and procedure: Breeding landbird abundance and diversity. NEON.DOC.014041vJ. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-thibault2019TOS}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-thibault2019TOS}{}}%
 Thibault, K., K. Tsao, Y. Springer, and L. Knapp. 2019. TOS protocol and procedure: Small mammal sampling. NEON.DOC.000481vL. NEON (National Ecological Observatory Network).
 
-\leavevmode\hypertarget{ref-thorpe2016introduction}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-thorpe2016introduction}{}}%
 Thorpe, A. S., D. T. Barnett, S. C. Elmendorf, E.-L. S. Hinckley, D. Hoekman, K. D. Jones, K. E. LeVan, C. L. Meier, L. F. Stanish, and K. M. Thibault. 2016. Introduction to the sampling designs of the n ational e cological o bservatory n etwork t errestrial o bservation s ystem. Ecosphere 7:e01627.
 
-\leavevmode\hypertarget{ref-van2007south}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-van2007south}{}}%
 Van Jaarsveld, A. S., J. C. Pauw, S. Mundree, S. Mecenero, B. W. Coetzee, and G. F. Alard. 2007. South african environmental observation network: Vision, design and status: SAEON reviews. South African Journal of Science 103:289--294.
 
-\leavevmode\hypertarget{ref-vellend2013global}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-vellend2013global}{}}%
 Vellend, M., L. Baeten, I. H. Myers-Smith, S. C. Elmendorf, R. Beauséjour, C. D. Brown, P. De Frenne, K. Verheyen, and S. Wipf. 2013. Global meta-analysis reveals no net change in local-scale plant biodiversity over time. Proceedings of the National Academy of Sciences 110:19456--19459.
 
-\leavevmode\hypertarget{ref-welti2021meta}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-welti2021meta}{}}%
 Welti, E., A. Joern, A. M. Ellison, D. Lightfoot, S. Record, N. Rodenhouse, E. Stanley, and M. Kaspari. 2021. Meta-analyses of insect temporal trends must account for the complex sampling histories inherent to many long-term monitoring efforts. Nature Ecology and Evolution.
 
-\leavevmode\hypertarget{ref-wilkinson2016fair}{}%
-Wilkinson, M. D., M. Dumontier, I. J. Aalbersberg, G. Appleton, M. Axton, A. Baak, N. Blomberg, J.-W. Boiten, L. B. da Silva Santos, P. E. Bourne, and others. 2016. The fair guiding principles for scientific data management and stewardship. Scientific data 3:1--9.
+\leavevmode\vadjust pre{\hypertarget{ref-wilkinson2016fair}{}}%
+Wilkinson, M. D., M. Dumontier, Ij. J. Aalbersberg, G. Appleton, M. Axton, A. Baak, N. Blomberg, J.-W. Boiten, L. B. da Silva Santos, P. E. Bourne, and others. 2016. The FAIR guiding principles for scientific data management and stewardship. Scientific data 3:1--9.
 
-\leavevmode\hypertarget{ref-worm2018theory}{}%
-Worm, B., and D. P. Tittensor. 2018. A theory of global biodiversity (mpb-60). Princeton University Press.
-\end{cslreferences}
+\leavevmode\vadjust pre{\hypertarget{ref-worm2018theory}{}}%
+Worm, B., and D. P. Tittensor. 2018. A theory of global biodiversity (MPB-60). Princeton University Press.
+
+\end{CSLReferences}
 
 \end{document}
