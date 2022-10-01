@@ -36,8 +36,7 @@ knitr::kable(neonDivData::data_summary[, !names(neonDivData::data_summary) %in% 
 You can install the development version of neonDivData from [Github](https://github.com/daijiang/neonDivData) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("daijiang/neonDivData")
+install.packages("neonDivData", repos = 'https://daijiang.r-universe.dev')
 ```
 
 ## Available data products
