@@ -303,6 +303,9 @@ data_fish = mutate(data_fish, pointID = gsub(".*(point.*)$", "\\1", location_id)
   relocate(pointID, .after = siteID) %>%
   filter(taxon_rank %in% c("genus", "species", "subspecies"))
 # to be consistent with the manuscript
+unique(data_fish$mean_efishtime)
+data_fish$mean_efishtime[data_fish$mean_efishtime == "NaN"] = NA
+data_fish$mean_efishtime = as.numeric(data_fish$mean_efishtime)
 
 # data_herp_bycatch seems fine
 data_macroinvertebrate = mutate(data_macroinvertebrate,
@@ -312,6 +315,7 @@ data_macroinvertebrate = mutate(data_macroinvertebrate,
 
 # data_mosquito seems fine
 data_mosquito = filter(data_mosquito, !is.infinite(value)) # remove Inf values
+str(data_mosquito)
 
 table(data_plant$sample_area_m2)
 table(data_plant$variable_name)

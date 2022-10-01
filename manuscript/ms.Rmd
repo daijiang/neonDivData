@@ -4,17 +4,17 @@ author:
   - "Daijiang Li^1,2†‡^, Sydne Record^3†‡^, Eric Sokol^4,5†‡^, Matthew E. Bitters^6^, Melissa Y. Chen^6^, Y. Anny Chung^7^, Matthew R. Helmus^8^, Ruvi Jaimes^9^, Lara Jansen^10^, Marta A. Jarzyna^11,12^, Michael G. Just^13^, Jalene M. LaMontagne^14^, Brett Melbourne^6^, Wynne Moss^6^, Kari Norman^15^, Stephanie Parker^4^, Natalie Robinson^4^, Bijan Seyednasrollah^16^, Colin Smith^17^, Sarah Spaulding^5^, Thilina Surasinghe^18^, Sarah Thomsen^19^, Phoebe Zarnetske^20,21^"
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
- bookdown::word_document2:
-  toc: no
-  number_sections: no
-  keep_md: yes
- bookdown::tufte_html2:
-  number_sections: no
-  toc: no
  bookdown::html_document2:
   number_sections: no
   theme: readable
   toc: yes
+  keep_md: yes
+ bookdown::tufte_html2:
+  number_sections: no
+  toc: no
+ bookdown::word_document2:
+  toc: no
+  number_sections: no
   keep_md: yes
  bookdown::pdf_document2:
   includes:
@@ -111,7 +111,7 @@ NEON data are designed to be maximally useful to ecologists by aligning with FAI
 
 One attractive standardized formatting style for NEON organismal data is that of ecocomDP [ecological community data design pattern, @o2021ecocomdp]. EcocomDP is the brainchild of members of the LTER network, the Environmental Data Initiative (EDI), and NEON staff, and provides a model by which data from a variety of sources may be easily transformed into consistently formatted, analysis ready community-level organismal data packages. This is done using reproducible code that maintains dataset “levels”: L0 is incoming data, L1 represents an ecocomDP data format and includes tables representing observations, sampling locations, and taxonomic information (at a minimum), and L2 is an output format. Thus far, >70 LTER organismal datasets have been harmonized to the L1 ecocomDP format through the R package [`ecocomDP`](https://github.com/EDIorg/ecocomDP) and more datasets are in the queue for processing into the ecocomDP format by EDI [@o2021ecocomdp]. 
 
-We standardized NEON organismal data into the ecocomDP format and all R code to process NEON data products can be obtained through the R package `ecocomDP`. For the major taxonomic groups included in this initial effort, NEON sampling designs and major data wrangling decisions are summarized in the Materials and Methods section. We archived the standardized data in the [EDI Data Repository](https://portal-s.edirepository.org/nis/mapbrowse?scope=edi&identifier=190&revision=2). To facilitate the usage of the standardized datasets, we also developed an R data package, [`neonDivData`](https://github.com/daijiang/neonDivData). We refer to the input data streams provided by NEON as data products, whereas the cleaned and standardized collection of data files provided here as objects within the R data package, `neonDivData`, across this paper. Standardized datasets will be maintained and updated as new data become available from the NEON portal. We hope this effort will substantially reduce data processing times for NEON data users and greatly facilitate the use of NEON organismal data to advance our understanding of Earth’s biodiversity.  
+We standardized NEON organismal data into the ecocomDP format and all R code to process NEON data products can be obtained through the R package `ecocomDP`. For the major taxonomic groups included in this initial effort, NEON sampling designs and major data wrangling decisions are summarized in the Materials and Methods section. We archived the standardized data in the [EDI Data Repository](https://doi.org/10.6073/pasta/c28dd4f6e7989003505ea02e9a92afbf). To facilitate the usage of the standardized datasets, we also developed an R data package, [`neonDivData`](https://github.com/daijiang/neonDivData). We refer to the input data streams provided by NEON as data products, whereas the cleaned and standardized collection of data files provided here as objects within the R data package, `neonDivData`, across this paper. Standardized datasets will be maintained and updated as new data become available from the NEON portal. We hope this effort will substantially reduce data processing times for NEON data users and greatly facilitate the use of NEON organismal data to advance our understanding of Earth’s biodiversity.  
 
 # Materials and Methods (or how to standardize NEON organismal data)
 
@@ -156,12 +156,12 @@ select(data_summary, taxon_group,
  kableExtra::kable_styling(bootstrap_options = c("striped", "scale_down", "condensed", "hover"), 
               latex_options = c("striped", "scale_down"),
               full_width = F) %>% 
-  column_spec(1, width = "7.5em") %>% 
-  column_spec(2, width = "6em") %>% 
-  column_spec(3, width = "12em", link = arrange(data_summary, taxon_group)$original_neon_data_doi) %>% 
-  column_spec(4, width = "12em") %>% 
-  column_spec(5:6, width = "7em") %>% 
-  column_spec(5:6, width = "9em")
+  kableExtra::column_spec(1, width = "7.5em") %>% 
+  kableExtra::column_spec(2, width = "6em") %>% 
+  kableExtra::column_spec(3, width = "12em", link = arrange(data_summary, taxon_group)$original_neon_data_doi) %>% 
+  kableExtra::column_spec(4, width = "12em") %>% 
+  kableExtra::column_spec(5:6, width = "7em") %>% 
+  kableExtra::column_spec(5:6, width = "9em")
 ```
 
 
