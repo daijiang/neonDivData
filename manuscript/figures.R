@@ -34,7 +34,9 @@ sp_rich_plant = left_join(sp_rich_plant,
                                       .groups = "drop"),
                           by = "siteID")
 sp_rich_plant = select(sp_rich_plant, longitude, latitude, siteID, nspp)
-sp_rich_plant_transf = usmap_transform(sp_rich_plant)
+sp_rich_plant_transf = usmap_transform(sp_rich_plant, 
+                                       input_names = c("longitude", "latitude"),
+                                       output_names = c("longitude.1", "latitude.1"))
 
 
 p1 = us_map +
