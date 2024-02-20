@@ -176,6 +176,7 @@ names(neon_locations)
 setdiff(neon_location$location_id, neon_locations$namedLocation) # new locations
 setdiff(neon_locations$namedLocation, neon_location$location_id) # locations from old version but not here
 # 13 not here, fine, not going to merge them
+# 26 not here, fine, not going to merge them
 filter(neon_locations, namedLocation %in% setdiff(neon_locations$namedLocation, neon_location$location_id))
 land_type = filter(neon_locations, namedLocation %in% intersect(neon_location$location_id, neon_locations$namedLocation)) %>%
   select(location_id = namedLocation, nlcdClass, aquaticSiteType) %>%

@@ -13,6 +13,7 @@ library(dplyr)
 # filter provisional data out
 table(data_algae$release)
 
+if(!dir.exists("data-raw/edi")) dir.create("data-raw/edi")
 # save all flatterned data frames to csv
 write.csv(filter(data_algae, release != "PROVISIONAL"), file = "data-raw/edi/data_algae.csv", row.names = FALSE)
 write.csv(filter(data_beetle, release != "PROVISIONAL"), file = "data-raw/edi/data_beetle.csv", row.names = FALSE)

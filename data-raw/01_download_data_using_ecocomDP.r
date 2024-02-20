@@ -4,6 +4,7 @@
 
 # devtools::install_github("EDIorg/EMLassemblyline")
 # devtools::install_github("EDIorg/ecocomDP@master")
+# devtools::install_github("EDIorg/ecocomDP@development")
 # devtools::install_github("sokole/ecocomDP@working")
 
 if(!require(devtools)) install.packages("devtools")
@@ -46,12 +47,21 @@ for(i in 1 : nrow(neon_ecocomdp_data_list)){
                                  x = list.files(my_out_dir, full.names = TRUE), 
                                  value = TRUE))
     } else { # download it
+      # if already downloaded
+      id_f = sort(grep(str_replace(str_replace(my_dp_id, "neon\\.ecocomdp", "DP1"), "\\.[0-9]{3}$", ""), 
+                  list.files(my_raw_dir, full.names = T), value = T))
+      if(length(id_f) > 1){
+        id_f_keep = id_f[length(id_f)] # keep the latest version
+        file.remove(id_f[-length(id_f)]) # remove older versions
+      }
+      
       data_list_i <- read_data(
         id = my_dp_id,
         # site= c('COMO','LECO','BART','NIWO'),
         # startdate = "2017-06",
         # enddate = "2029-02",
         neon.data.save.dir = my_raw_dir,
+        neon.data.read.path = if(length(id_f) > 0) id_f_keep else NULL,
         token = Sys.getenv("NEON_TOKEN"),
         check.size = FALSE)
     }
