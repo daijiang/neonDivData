@@ -34,20 +34,20 @@ Available taxonomic groups and their brief summaries:
 knitr::kable(neonDivData::data_summary[, !names(neonDivData::data_summary) %in% c("sites", "data_package_id")])
 ```
 
-| taxon_group        | n_taxa | n_sites | start_date | end_date   | data_package_title                                                                          | neon_ecocomdp_mapping_method | original_neon_data_product_id | original_neon_data_version    | original_neon_data_doi                                                       | r_object               | variable_names  | units                                                     |
-|:-------------------|-------:|--------:|:-----------|:-----------|:--------------------------------------------------------------------------------------------|:-----------------------------|:------------------------------|:------------------------------|:-----------------------------------------------------------------------------|:-----------------------|:----------------|:----------------------------------------------------------|
-| ALGAE              |   2279 |      34 | 2014-07-02 | 2020-07-28 | ALGAE from the NEON data product: Periphyton, seston, and phytoplankton collection          | neon.ecocomdp.20166.001.001  | DP1.20166.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/3cvp-hw55&#124;https://doi.org/10.48443/g2k4-d258> | data_algae             | cell density    | cells/cm2 OR cells/mL                                     |
-| SMALL_MAMMALS      |    149 |      46 | 2013-06-19 | 2021-11-18 | SMALL_MAMMALS from the NEON data product: Small mammal box trapping                         | neon.ecocomdp.10072.001.001  | DP1.10072.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/j1g9-2j27&#124;https://doi.org/10.48443/h3dk-3a71> | data_small_mammal      | count           | unique individuals per 100 trap nights per plot per month |
-| PLANTS             |   6544 |      47 | 2013-06-24 | 2021-10-13 | PLANTS from the NEON data product: Plant presence and percent cover                         | neon.ecocomdp.10058.001.001  | DP1.10058.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/abge-r811&#124;https://doi.org/10.48443/pr5e-1q60> | data_plant             | percent cover   | percent of plot area covered by taxon                     |
-| FISH               |    158 |      28 | 2016-03-29 | 2021-12-14 | FISH from the NEON data product: Fish electrofishing, gill netting, and fyke netting counts | neon.ecocomdp.20107.001.001  | DP1.20107.001                 | RELEASE-2022\|PROVISIONAL\|NA | <https://doi.org/10.48443/17cz-g567&#124;https://doi.org/10.48443/7p84-6j62> | data_fish              | abundance       | catch per unit effort                                     |
-| BEETLES            |    768 |      47 | 2013-07-03 | 2021-10-05 | BEETLES from the NEON data product: Ground beetles sampled from pitfall traps               | neon.ecocomdp.10022.001.001  | DP1.10022.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/tx5f-dy17&#124;https://doi.org/10.48443/xgea-hw23> | data_herp_bycatch      | abundance       | count per trap day                                        |
-| MACROINVERTEBRATES |   1373 |      34 | 2014-07-01 | 2021-07-28 | MACROINVERTEBRATES from the NEON data product: Macroinvertebrate collection                 | neon.ecocomdp.20120.001.001  | DP1.20120.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/855x-0n27&#124;https://doi.org/10.48443/gn8x-k322> | data_macroinvertebrate | density         | count per square meter                                    |
-| MOSQUITOES         |    131 |      47 | 2014-04-09 | 2021-06-11 | MOSQUITOES from the NEON data product: Mosquitoes sampled from CO2 traps                    | neon.ecocomdp.10043.001.001  | DP1.10043.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/9smm-v091&#124;https://doi.org/10.48443/c7h7-q918> | data_mosquito          | abundance       | count per trap hour                                       |
-| BIRDS              |    577 |      47 | 2013-06-05 | 2021-07-16 | BIRDS from the NEON data product: Breeding landbird point counts                            | neon.ecocomdp.10003.001.001  | DP1.10003.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/s730-dy13&#124;https://doi.org/10.48443/88sy-ah40> | data_bird              | cluster size    | count of individuals                                      |
-| TICKS              |     19 |      46 | 2014-04-02 | 2021-11-18 | TICKS from the NEON data product: Ticks sampled using drag cloths                           | neon.ecocomdp.10093.001.001  | DP1.10093.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/dx40-wr20&#124;https://doi.org/10.48443/7jh5-8s51> | data_tick              | abundance       | count per square meter                                    |
-| ZOOPLANKTON        |    166 |       7 | 2014-07-02 | 2021-07-21 | ZOOPLANKTON from the NEON data product: Zooplankton collection                              | neon.ecocomdp.20219.001.001  | DP1.20219.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/qzr1-jr79&#124;https://doi.org/10.48443/150d-yf27> | data_zooplankton       | density         | count per liter                                           |
-| TICK_PATHOGENS     |     12 |      16 | 2014-04-17 | 2020-10-01 | TICK_PATHOGENS from the NEON data product: Tick-borne pathogen status                       | neon.ecocomdp.10092.001.001  | DP1.10092.001                 | RELEASE-2022                  | <https://doi.org/10.48443/5fab-xv19&#124;https://doi.org/10.48443/nygx-dm71> | data_tick_pathogen     | positivity rate | positive tests per pathogen per sampling event            |
-| HERPTILES          |    136 |      41 | 2014-04-02 | 2021-10-06 | HERPTILES (bycatch) from the NEON data product: Ground beetles sampled from pitfall traps   | neon.ecocomdp.10022.001.002  | DP1.10022.001                 | RELEASE-2022\|PROVISIONAL     | <https://doi.org/10.48443/tx5f-dy17&#124;https://doi.org/10.48443/xgea-hw23> | data_herp_bycatch      | abundance       | count per trap day                                        |
+| taxon_group        | n_taxa | n_sites | start_date | end_date   | data_package_title                                                                          | neon_ecocomdp_mapping_method | original_neon_data_product_id | original_neon_data_version | original_neon_data_doi                                                                                                                              | r_object               | variable_names  | units                                                     |
+|:-------------------|-------:|--------:|:-----------|:-----------|:--------------------------------------------------------------------------------------------|:-----------------------------|:------------------------------|:---------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------|:----------------|:----------------------------------------------------------|
+| ALGAE              |   2221 |      34 | 2014-07-02 | 2019-11-25 | ALGAE from the NEON data product: Periphyton, seston, and phytoplankton collection          | neon.ecocomdp.20166.001.001  | DP1.20166.001                 | RELEASE-2024               | <https://doi.org/10.48443/3cvp-hw55%7Chttps://doi.org/10.48443/g2k4-d258%7Chttps://doi.org/10.48443/cebv-nn73%7Chttps://doi.org/10.48443/swyk-0p63> | data_algae             | cell density    | cells/cm2 OR cells/mL                                     |
+| SMALL_MAMMALS      |    154 |      46 | 2013-06-19 | 2022-12-14 | SMALL_MAMMALS from the NEON data product: Small mammal box trapping                         | neon.ecocomdp.10072.001.001  | DP1.10072.001                 | RELEASE-2024               | <https://doi.org/10.48443/j1g9-2j27%7Chttps://doi.org/10.48443/h3dk-3a71%7Chttps://doi.org/10.48443/p4re-p954%7Chttps://doi.org/10.48443/nvpj-4j94> | data_small_mammal      | count           | unique individuals per 100 trap nights per plot per month |
+| PLANTS             |   6664 |      47 | 2013-06-24 | 2022-10-26 | PLANTS from the NEON data product: Plant presence and percent cover                         | neon.ecocomdp.10058.001.001  | DP1.10058.001                 | RELEASE-2024               | <https://doi.org/10.48443/abge-r811%7Chttps://doi.org/10.48443/pr5e-1q60%7Chttps://doi.org/10.48443/9579-a253%7Chttps://doi.org/10.48443/c50b-qx77> | data_plant             | percent cover   | percent of plot area covered by taxon                     |
+| FISH               |    158 |      28 | 2016-03-29 | 2021-12-14 | FISH from the NEON data product: Fish electrofishing, gill netting, and fyke netting counts | neon.ecocomdp.20107.001.001  | DP1.20107.001                 | RELEASE-2024               | <https://doi.org/10.48443/17cz-g567%7Chttps://doi.org/10.48443/7p84-6j62%7Chttps://doi.org/10.48443/etgd-3s49%7Chttps://doi.org/10.48443/kb2e-va82> | data_fish              | abundance       | catch per unit effort                                     |
+| BEETLES            |    793 |      47 | 2013-07-03 | 2021-12-22 | BEETLES from the NEON data product: Ground beetles sampled from pitfall traps               | neon.ecocomdp.10022.001.001  | DP1.10022.001                 | RELEASE-2024               | <https://doi.org/10.48443/tx5f-dy17%7Chttps://doi.org/10.48443/xgea-hw23%7Chttps://doi.org/10.48443/3v35-v852%7Chttps://doi.org/10.48443/rcxn-t544> | data_herp_bycatch      | abundance       | count per trap day                                        |
+| MACROINVERTEBRATES |   1409 |      34 | 2014-07-01 | 2021-11-23 | MACROINVERTEBRATES from the NEON data product: Macroinvertebrate collection                 | neon.ecocomdp.20120.001.001  | DP1.20120.001                 | RELEASE-2024               | <https://doi.org/10.48443/855x-0n27%7Chttps://doi.org/10.48443/gn8x-k322%7Chttps://doi.org/10.48443/zj4y-4073%7Chttps://doi.org/10.48443/je35-bc57> | data_macroinvertebrate | density         | count per square meter                                    |
+| MOSQUITOES         |    133 |      47 | 2014-04-09 | 2022-12-28 | MOSQUITOES from the NEON data product: Mosquitoes sampled from CO2 traps                    | neon.ecocomdp.10043.001.001  | DP1.10043.001                 | RELEASE-2024               | <https://doi.org/10.48443/9smm-v091%7Chttps://doi.org/10.48443/c7h7-q918%7Chttps://doi.org/10.48443/bxnk-jb11%7Chttps://doi.org/10.48443/3cyq-6v47> | data_mosquito          | abundance       | count per trap hour                                       |
+| BIRDS              |    585 |      47 | 2013-06-05 | 2022-07-23 | BIRDS from the NEON data product: Breeding landbird point counts                            | neon.ecocomdp.10003.001.001  | DP1.10003.001                 | RELEASE-2024               | <https://doi.org/10.48443/s730-dy13%7Chttps://doi.org/10.48443/88sy-ah40%7Chttps://doi.org/10.48443/00pg-vm19%7Chttps://doi.org/10.48443/4a0h-fy23> | data_bird              | cluster size    | count of individuals                                      |
+| TICKS              |     20 |      46 | 2014-04-02 | 2022-11-23 | TICKS from the NEON data product: Ticks sampled using drag cloths                           | neon.ecocomdp.10093.001.001  | DP1.10093.001                 | RELEASE-2024               | <https://doi.org/10.48443/dx40-wr20%7Chttps://doi.org/10.48443/7jh5-8s51%7Chttps://doi.org/10.48443/fh83-k817%7Chttps://doi.org/10.48443/3zmh-xx57> | data_tick              | abundance       | count per square meter                                    |
+| ZOOPLANKTON        |    172 |       7 | 2014-07-02 | 2021-11-02 | ZOOPLANKTON from the NEON data product: Zooplankton collection                              | neon.ecocomdp.20219.001.001  | DP1.20219.001                 | RELEASE-2024               | <https://doi.org/10.48443/qzr1-jr79%7Chttps://doi.org/10.48443/150d-yf27%7Chttps://doi.org/10.48443/eqmn-5b37%7Chttps://doi.org/10.48443/6kxg-hb11> | data_zooplankton       | density         | count per liter                                           |
+| TICK_PATHOGENS     |     16 |      18 | 2014-04-17 | 2022-09-27 | TICK_PATHOGENS from the NEON data product: Tick-borne pathogen status                       | neon.ecocomdp.10092.001.001  | DP1.10092.001                 | RELEASE-2024               | <https://doi.org/10.48443/5fab-xv19%7Chttps://doi.org/10.48443/nygx-dm71%7Chttps://doi.org/10.48443/nyst-jp72%7Chttps://doi.org/10.48443/4d7n-w481> | data_tick_pathogen     | positivity rate | positive tests per pathogen per sampling event            |
+| HERPTILES          |    137 |      41 | 2014-04-02 | 2021-10-06 | HERPTILES (bycatch) from the NEON data product: Ground beetles sampled from pitfall traps   | neon.ecocomdp.10022.001.002  | DP1.10022.001                 | RELEASE-2024               | <https://doi.org/10.48443/tx5f-dy17%7Chttps://doi.org/10.48443/xgea-hw23%7Chttps://doi.org/10.48443/3v35-v852%7Chttps://doi.org/10.48443/rcxn-t544> | data_herp_bycatch      | abundance       | count per trap day                                        |
 
 ## Installation
 
@@ -63,280 +63,277 @@ install.packages("neonDivData", repos = 'https://daijiang.r-universe.dev')
 ``` r
 neonDivData::neon_sites
 #> # A tibble: 81 × 10
-#>    Site N…¹ siteID Domai…² domai…³ State Latit…⁴ Longi…⁵ Site …⁶ Site …⁷ Site …⁸
-#>    <chr>    <chr>  <chr>   <chr>   <chr>   <dbl>   <dbl> <chr>   <chr>   <chr>  
-#>  1 Little … LIRO   Great … D05     WI       46.0   -89.7 Reloca… Lake    Wiscon…
-#>  2 West St… WLOU   Southe… D13     CO       39.9  -106.  Reloca… Wadeab… U.S. F…
-#>  3 Pu'u Ma… PUUM   Pacifi… D20     HI       19.6  -155.  Core T… <NA>    Hawaii…
-#>  4 Flint R… FLNT   Southe… D03     GA       31.2   -84.4 Reloca… Non-wa… Privat…
-#>  5 McDiffe… MCDI   Prairi… D06     KS       38.9   -96.4 Reloca… Wadeab… Privat…
-#>  6 Lewis R… LEWI   Mid-At… D02     VA       39.1   -78.0 Reloca… Wadeab… Casey …
-#>  7 Blue Ri… BLUE   Southe… D11     OK       34.4   -96.6 Reloca… Wadeab… The Na…
-#>  8 Teakett… TECR   Pacifi… D17     CA       37.0  -119.  Core A… Wadeab… U.S. F…
-#>  9 Lower H… HOPB   Northe… D01     MA       42.5   -72.3 Core A… Wadeab… Quabbi…
-#> 10 Martha … MART   Pacifi… D16     WA       45.8  -122.  Core A… Wadeab… U.S. F…
-#> # … with 71 more rows, and abbreviated variable names ¹​`Site Name`,
-#> #   ²​`Domain Name`, ³​domainID, ⁴​Latitude, ⁵​Longitude, ⁶​`Site Type`,
-#> #   ⁷​`Site Subtype`, ⁸​`Site Host`
+#>    `Site Name`            siteID `Domain Name` domainID State Latitude Longitude
+#>    <chr>                  <chr>  <chr>         <chr>    <chr>    <dbl>     <dbl>
+#>  1 Little Rock Lake       LIRO   Great Lakes   D05      WI        46.0     -89.7
+#>  2 West St Louis Creek    WLOU   Southern Roc… D13      CO        39.9    -106. 
+#>  3 Pu'u Maka'ala Natural… PUUM   Pacific Trop… D20      HI        19.6    -155. 
+#>  4 Flint River            FLNT   Southeast     D03      GA        31.2     -84.4
+#>  5 McDiffett Creek        MCDI   Prairie Peni… D06      KS        38.9     -96.4
+#>  6 Lewis Run              LEWI   Mid-Atlantic  D02      VA        39.1     -78.0
+#>  7 Blue River             BLUE   Southern Pla… D11      OK        34.4     -96.6
+#>  8 Teakettle 2 Creek      TECR   Pacific Sout… D17      CA        37.0    -119. 
+#>  9 Lower Hop Brook        HOPB   Northeast     D01      MA        42.5     -72.3
+#> 10 Martha Creek           MART   Pacific Nort… D16      WA        45.8    -122. 
+#> # ℹ 71 more rows
+#> # ℹ 3 more variables: `Site Type` <chr>, `Site Subtype` <chr>,
+#> #   `Site Host` <chr>
 neonDivData::neon_taxa
-#> # A tibble: 12,312 × 4
-#>    taxon_id       taxon_name                                     taxon…¹ taxon…²
-#>    <chr>          <chr>                                          <chr>   <chr>  
-#>  1 NEONDREX48008  Nitzschia dissipata (Kützing) Grunow           species ALGAE  
-#>  2 NEONDREX33183  Eunotia minor (Kützing) Grunow                 species ALGAE  
-#>  3 NEONDREX186008 Psammothidium subatomoides (Hustedt) Bukhtiya… species ALGAE  
-#>  4 NEONDREX1032   Achnanthidium latecephalum Kobayashi           species ALGAE  
-#>  5 NEONDREX37311  Gomphonema parvulius (Lange-Bertalot et Reich… species ALGAE  
-#>  6 NEONDREX155017 Planothidium frequentissimum (Lange-Bertalot)… species ALGAE  
-#>  7 NEONDREX62008  Stauroneis kriegeri Patrick                    species ALGAE  
-#>  8 NEONDREX172006 Staurosira construens var. venter (Ehrenberg)… variety ALGAE  
-#>  9 NEONDREX1036   Achnanthidium rivulare Potapova et Ponader     species ALGAE  
-#> 10 NEONDREX48025  Nitzschia palea (Kützing) Smith                species ALGAE  
-#> # … with 12,302 more rows, and abbreviated variable names ¹​taxon_rank,
-#> #   ²​taxon_group
+#> # A tibble: 12,467 × 4
+#>    taxon_id       taxon_name                              taxon_rank taxon_group
+#>    <chr>          <chr>                                   <chr>      <chr>      
+#>  1 NEONDREX995034 Trachelomonas abrupta var. minor Defla… variety    ALGAE      
+#>  2 NEONDREX1010   Achnanthidium minutissimum (Kützing) C… species    ALGAE      
+#>  3 NEONDREX34030  Fragilaria vaucheriae (Kützing) Peters… species    ALGAE      
+#>  4 NEONDREX194005 Placoneis elginensis (Gregory) Cox      species    ALGAE      
+#>  5 BACILLARIOCSP  Bacillariophyceae sp.                   class      ALGAE      
+#>  6 NEONDREX189007 Rossithidium anastasiae (Kaczmarska) P… species    ALGAE      
+#>  7 NEONDREX212003 Chamaepinnularia evanida (Hustedt) Lan… species    ALGAE      
+#>  8 NEONDREX7075   Amphora copulata (Kützing) Schoeman et… species    ALGAE      
+#>  9 NEONDREX172006 Staurosira construens var. venter (Ehr… variety    ALGAE      
+#> 10 NEONDREX18013  Brachysira microcephala (Kützing) Comp… species    ALGAE      
+#> # ℹ 12,457 more rows
 neonDivData::neon_location
-#> # A tibble: 4,259 × 8
-#>    location_id             siteID plotID latit…¹ longi…² eleva…³ nlcdC…⁴ aquat…⁵
-#>    <chr>                   <chr>  <chr>    <dbl>   <dbl>   <dbl> <chr>   <chr>  
-#>  1 ABBY_001.basePlot.brd   ABBY   ABBY_…    45.8   -122.    303. evergr… <NA>   
-#>  2 ABBY_001.basePlot.div   ABBY   ABBY_…    45.8   -122.    303. evergr… <NA>   
-#>  3 ABBY_001.tickPlot.tck   ABBY   ABBY_…    45.8   -122.    298. evergr… <NA>   
-#>  4 ABBY_002.basePlot.bet   ABBY   ABBY_…    45.7   -122.    638. grassl… <NA>   
-#>  5 ABBY_002.basePlot.brd   ABBY   ABBY_…    45.7   -122.    638. grassl… <NA>   
-#>  6 ABBY_002.basePlot.div   ABBY   ABBY_…    45.7   -122.    638. grassl… <NA>   
-#>  7 ABBY_002.mammalGrid.mam ABBY   ABBY_…    45.7   -122.    624. grassl… <NA>   
-#>  8 ABBY_002.tickPlot.tck   ABBY   ABBY_…    45.7   -122.    651. grassl… <NA>   
-#>  9 ABBY_003.basePlot.bet   ABBY   ABBY_…    45.8   -122.    602. evergr… <NA>   
-#> 10 ABBY_003.basePlot.brd   ABBY   ABBY_…    45.8   -122.    602. evergr… <NA>   
-#> # … with 4,249 more rows, and abbreviated variable names ¹​latitude, ²​longitude,
-#> #   ³​elevation, ⁴​nlcdClass, ⁵​aquaticSiteType
+#> # A tibble: 4,274 × 8
+#>    location_id             siteID plotID  latitude longitude elevation nlcdClass
+#>    <chr>                   <chr>  <chr>      <dbl>     <dbl>     <dbl> <chr>    
+#>  1 ABBY_001.basePlot.brd   ABBY   ABBY_0…     45.8     -122.      303. evergree…
+#>  2 ABBY_001.basePlot.div   ABBY   ABBY_0…     45.8     -122.      303. evergree…
+#>  3 ABBY_001.tickPlot.tck   ABBY   ABBY_0…     45.8     -122.      298. evergree…
+#>  4 ABBY_002.basePlot.bet   ABBY   ABBY_0…     45.7     -122.      638. grasslan…
+#>  5 ABBY_002.basePlot.brd   ABBY   ABBY_0…     45.7     -122.      638. grasslan…
+#>  6 ABBY_002.basePlot.div   ABBY   ABBY_0…     45.7     -122.      638. grasslan…
+#>  7 ABBY_002.mammalGrid.mam ABBY   ABBY_0…     45.7     -122.      624. grasslan…
+#>  8 ABBY_002.tickPlot.tck   ABBY   ABBY_0…     45.7     -122.      651. grasslan…
+#>  9 ABBY_003.basePlot.bet   ABBY   ABBY_0…     45.8     -122.      602. evergree…
+#> 10 ABBY_003.basePlot.brd   ABBY   ABBY_0…     45.8     -122.      602. evergree…
+#> # ℹ 4,264 more rows
+#> # ℹ 1 more variable: aquaticSiteType <chr>
 neonDivData::data_algae
-#> # A tibble: 114,340 × 25
-#>    location…¹ siteID uniqu…² observation_datet…³ taxon…⁴ taxon…⁵ taxon…⁶ varia…⁷
-#>    <chr>      <chr>  <chr>   <dttm>              <chr>   <chr>   <chr>   <chr>  
-#>  1 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Nitzsc… species cell d…
-#>  2 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Eunoti… species cell d…
-#>  3 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Psammo… species cell d…
-#>  4 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Achnan… species cell d…
-#>  5 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Gompho… species cell d…
-#>  6 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Planot… species cell d…
-#>  7 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Stauro… species cell d…
-#>  8 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Stauro… variety cell d…
-#>  9 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Achnan… species cell d…
-#> 10 HOPB.AOS.… HOPB   HOPB.2… 2016-10-05 10:45:00 NEONDR… Nitzsc… species cell d…
-#> # … with 114,330 more rows, 17 more variables: value <dbl>, unit <chr>,
-#> #   sampleCondition <chr>, perBottleSampleVolume <chr>, release <chr>,
-#> #   habitatType <chr>, algalSampleType <chr>, benthicArea <chr>,
-#> #   samplingProtocolVersion <chr>, substratumSizeClass <chr>,
-#> #   samplerType <chr>, phytoDepth1 <chr>, phytoDepth2 <chr>, phytoDepth3 <chr>,
-#> #   latitude <dbl>, longitude <dbl>, elevation <dbl>, and abbreviated variable
-#> #   names ¹​location_id, ²​unique_sample_id, ³​observation_datetime, ⁴​taxon_id, …
+#> # A tibble: 110,273 × 25
+#>    location_id  siteID unique_sample_id observation_datetime taxon_id taxon_name
+#>    <chr>        <chr>  <chr>            <dttm>               <chr>    <chr>     
+#>  1 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Trachelom…
+#>  2 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Achnanthi…
+#>  3 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Fragilari…
+#>  4 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Placoneis…
+#>  5 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  BACILLA… Bacillari…
+#>  6 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Rossithid…
+#>  7 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Chamaepin…
+#>  8 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Amphora c…
+#>  9 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Staurosir…
+#> 10 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Brachysir…
+#> # ℹ 110,263 more rows
+#> # ℹ 19 more variables: taxon_rank <chr>, variable_name <chr>, value <dbl>,
+#> #   unit <chr>, sampleCondition <chr>, perBottleSampleVolume <chr>,
+#> #   release <chr>, habitatType <chr>, algalSampleType <chr>, samplerType <chr>,
+#> #   benthicArea <chr>, samplingProtocolVersion <chr>,
+#> #   substratumSizeClass <chr>, phytoDepth1 <chr>, phytoDepth2 <chr>,
+#> #   phytoDepth3 <chr>, latitude <dbl>, longitude <dbl>, elevation <dbl>
 neonDivData::data_beetle
-#> # A tibble: 71,660 × 22
-#>    location_id  siteID plotID uniqu…¹ trapID observation_datet…² taxon…³ taxon…⁴
-#>    <chr>        <chr>  <chr>  <chr>   <chr>  <dttm>              <chr>   <chr>  
-#>  1 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2016-09-13 00:00:00 PTELAM  Pteros…
-#>  2 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2016-09-13 00:00:00 SYNAME  Syntom…
-#>  3 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2016-09-27 00:00:00 AMAFAR  Amara …
-#>  4 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2017-05-17 00:00:00 PTELAM  Pteros…
-#>  5 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2017-05-31 00:00:00 OMUDEJ  Omus d…
-#>  6 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2017-05-31 00:00:00 PTELAM  Pteros…
-#>  7 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2017-06-14 00:00:00 OMUDEJ  Omus d…
-#>  8 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2017-06-14 00:00:00 SYNAME  Syntom…
-#>  9 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2017-06-28 00:00:00 HARINN  Harpal…
-#> 10 ABBY_002.ba… ABBY   ABBY_… ABBY_0… E      2018-05-01 00:00:00 PTELAM  Pteros…
-#> # … with 71,650 more rows, 14 more variables: taxon_rank <chr>,
+#> # A tibble: 81,581 × 22
+#>    location_id        siteID plotID unique_sample_id trapID observation_datetime
+#>    <chr>              <chr>  <chr>  <chr>            <chr>  <dttm>              
+#>  1 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-13 00:00:00 
+#>  2 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-13 00:00:00 
+#>  3 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-27 00:00:00 
+#>  4 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-17 00:00:00 
+#>  5 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-31 00:00:00 
+#>  6 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-31 00:00:00 
+#>  7 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-14 00:00:00 
+#>  8 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-14 00:00:00 
+#>  9 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-28 00:00:00 
+#> 10 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2018… E      2018-05-01 00:00:00 
+#> # ℹ 81,571 more rows
+#> # ℹ 16 more variables: taxon_id <chr>, taxon_name <chr>, taxon_rank <chr>,
 #> #   variable_name <chr>, value <dbl>, unit <chr>, boutID <chr>,
 #> #   nativeStatusCode <chr>, release <chr>, remarks <chr>,
 #> #   samplingProtocolVersion <chr>, trappingDays <chr>, latitude <dbl>,
-#> #   longitude <dbl>, elevation <dbl>, nlcdClass <chr>, and abbreviated variable
-#> #   names ¹​unique_sample_id, ²​observation_datetime, ³​taxon_id, ⁴​taxon_name
+#> #   longitude <dbl>, elevation <dbl>, nlcdClass <chr>
 neonDivData::data_bird
-#> # A tibble: 226,826 × 35
-#>    location_id siteID plotID pointID uniqu…¹ observation_datet…² taxon…³ taxon…⁴
-#>    <chr>       <chr>  <chr>  <chr>   <chr>   <dttm>              <chr>   <chr>  
-#>  1 BART_025.b… BART   BART_… C1      BART_0… 2015-06-14 09:23:00 BCCH    Poecil…
-#>  2 BART_025.b… BART   BART_… C1      BART_0… 2015-06-14 09:23:00 REVI    Vireo …
-#>  3 BART_025.b… BART   BART_… C1      BART_0… 2015-06-14 09:23:00 BAWW    Mnioti…
-#>  4 BART_025.b… BART   BART_… C1      BART_0… 2015-06-14 09:23:00 BTNW    Setoph…
-#>  5 BART_025.b… BART   BART_… C1      BART_0… 2015-06-14 09:23:00 BTNW    Setoph…
-#>  6 BART_025.b… BART   BART_… B1      BART_0… 2015-06-14 09:43:00 WIWR    Troglo…
-#>  7 BART_025.b… BART   BART_… B1      BART_0… 2015-06-14 09:43:00 BAWW    Mnioti…
-#>  8 BART_025.b… BART   BART_… B1      BART_0… 2015-06-14 09:43:00 WIWR    Troglo…
-#>  9 BART_025.b… BART   BART_… B1      BART_0… 2015-06-14 09:43:00 BTNW    Setoph…
-#> 10 BART_025.b… BART   BART_… A1      BART_0… 2015-06-14 10:31:00 REVI    Vireo …
-#> # … with 226,816 more rows, 27 more variables: taxon_rank <chr>,
+#> # A tibble: 264,617 × 35
+#>    location_id       siteID plotID pointID unique_sample_id observation_datetime
+#>    <chr>             <chr>  <chr>  <chr>   <chr>            <dttm>              
+#>  1 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 
+#>  2 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 
+#>  3 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 
+#>  4 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 
+#>  5 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 
+#>  6 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 
+#>  7 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 
+#>  8 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 
+#>  9 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 
+#> 10 BART_025.birdGri… BART   BART_… 1       BART_025.1.2015… 2015-06-14 10:31:00 
+#> # ℹ 264,607 more rows
+#> # ℹ 29 more variables: taxon_id <chr>, taxon_name <chr>, taxon_rank <chr>,
 #> #   variable_name <chr>, value <dbl>, unit <chr>, pointCountMinute <chr>,
 #> #   targetTaxaPresent <chr>, nativeStatusCode <chr>, observerDistance <chr>,
 #> #   detectionMethod <chr>, visualConfirmation <chr>, sexOrAge <chr>,
 #> #   release <chr>, startCloudCoverPercentage <chr>,
-#> #   endCloudCoverPercentage <chr>, startRH <chr>, endRH <chr>,
-#> #   observedHabitat <chr>, observedAirTemp <chr>, …
+#> #   endCloudCoverPercentage <chr>, startRH <chr>, endRH <chr>, …
 neonDivData::data_fish
-#> # A tibble: 6,639 × 29
-#>    location…¹ siteID pointID uniqu…² observation_datet…³ taxon…⁴ taxon…⁵ taxon…⁶
-#>    <chr>      <chr>  <chr>   <chr>   <dttm>              <chr>   <chr>   <chr>  
-#>  1 HOPB.AOS.… HOPB   point.… HOPB.2… 2017-05-01 00:00:00 RHIATR  Rhinic… species
-#>  2 HOPB.AOS.… HOPB   point.… HOPB.2… 2017-05-01 00:00:00 SALTRU  Salmo … species
-#>  3 HOPB.AOS.… HOPB   point.… HOPB.2… 2017-05-01 00:00:00 SALFON  Salvel… species
-#>  4 HOPB.AOS.… HOPB   point.… HOPB.2… 2017-10-23 00:00:00 RHIATR  Rhinic… species
-#>  5 HOPB.AOS.… HOPB   point.… HOPB.2… 2017-10-23 00:00:00 SALTRU  Salmo … species
-#>  6 HOPB.AOS.… HOPB   point.… HOPB.2… 2017-10-23 00:00:00 SALFON  Salvel… species
-#>  7 HOPB.AOS.… HOPB   point.… HOPB.2… 2017-10-23 00:00:00 SEMATR  Semoti… species
-#>  8 HOPB.AOS.… HOPB   point.… HOPB.2… 2019-05-06 00:00:00 RHIATR  Rhinic… species
-#>  9 HOPB.AOS.… HOPB   point.… HOPB.2… 2019-05-06 00:00:00 SALFON  Salvel… species
-#> 10 HOPB.AOS.… HOPB   point.… HOPB.2… 2019-05-06 00:00:00 SEMATR  Semoti… species
-#> # … with 6,629 more rows, 21 more variables: variable_name <chr>, value <dbl>,
-#> #   unit <chr>, reachID <chr>, samplerType <chr>, fixedRandomReach <chr>,
-#> #   measuredReachLength <chr>, efTime <chr>, passStartTime <chr>,
-#> #   passEndTime <chr>, mean_efishtime <chr>, release <chr>, netSetTime <chr>,
-#> #   netEndTime <chr>, netDeploymentTime <chr>, netLength <chr>, netDepth <chr>,
-#> #   efTime2 <chr>, latitude <dbl>, longitude <dbl>, elevation <dbl>, and
-#> #   abbreviated variable names ¹​location_id, ²​unique_sample_id, …
+#> # A tibble: 6,566 × 27
+#>    location_id     siteID pointID unique_sample_id observation_datetime taxon_id
+#>    <chr>           <chr>  <chr>   <chr>            <dttm>               <chr>   
+#>  1 HOPB.AOS.fish.… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00  RHIATR  
+#>  2 HOPB.AOS.fish.… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00  SALTRU  
+#>  3 HOPB.AOS.fish.… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00  SALFON  
+#>  4 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  RHIATR  
+#>  5 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  SALTRU  
+#>  6 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  SALFON  
+#>  7 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  SEMATR  
+#>  8 HOPB.AOS.fish.… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00  RHIATR  
+#>  9 HOPB.AOS.fish.… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00  SALFON  
+#> 10 HOPB.AOS.fish.… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00  SEMATR  
+#> # ℹ 6,556 more rows
+#> # ℹ 21 more variables: taxon_name <chr>, taxon_rank <chr>, variable_name <chr>,
+#> #   value <dbl>, unit <chr>, reachID <chr>, samplerType <chr>,
+#> #   fixedRandomReach <chr>, measuredReachLength <chr>, efTime <chr>,
+#> #   mean_efishtime <dbl>, release <chr>, netSetTime <chr>, netEndTime <chr>,
+#> #   netDeploymentTime <chr>, netLength <chr>, netDepth <chr>, efTime2 <chr>,
+#> #   latitude <dbl>, longitude <dbl>, elevation <dbl>
 neonDivData::data_herp_bycatch
-#> # A tibble: 2,732 × 22
-#>    location_id  siteID plotID uniqu…¹ trapID observation_datet…² taxon…³ taxon…⁴
-#>    <chr>        <chr>  <chr>  <chr>   <chr>  <dttm>              <chr>   <chr>  
-#>  1 BART_066.ba… BART   BART_… BART_0… E      2014-06-12 00:00:00 PLECIN  Pletho…
-#>  2 BART_002.ba… BART   BART_… BART_0… W      2014-06-12 00:00:00 PLECIN  Pletho…
-#>  3 BART_028.ba… BART   BART_… BART_0… W      2014-06-12 00:00:00 PLECIN  Pletho…
-#>  4 BART_066.ba… BART   BART_… BART_0… N      2014-06-26 00:00:00 PLECIN  Pletho…
-#>  5 BART_031.ba… BART   BART_… BART_0… E      2014-06-26 00:00:00 PLECIN  Pletho…
-#>  6 BART_068.ba… BART   BART_… BART_0… W      2014-06-26 00:00:00 PLECIN  Pletho…
-#>  7 BART_028.ba… BART   BART_… BART_0… N      2014-07-10 00:00:00 PLECIN  Pletho…
-#>  8 BART_002.ba… BART   BART_… BART_0… N      2014-07-10 00:00:00 PLECIN  Pletho…
-#>  9 BART_031.ba… BART   BART_… BART_0… S      2014-07-10 00:00:00 PLECIN  Pletho…
-#> 10 BART_068.ba… BART   BART_… BART_0… E      2014-07-24 00:00:00 PLECIN  Pletho…
-#> # … with 2,722 more rows, 14 more variables: taxon_rank <chr>,
+#> # A tibble: 2,766 × 22
+#>    location_id        siteID plotID unique_sample_id trapID observation_datetime
+#>    <chr>              <chr>  <chr>  <chr>            <chr>  <dttm>              
+#>  1 BART_002.basePlot… BART   BART_… BART_002.W.2014… W      2014-06-12 00:00:00 
+#>  2 BART_028.basePlot… BART   BART_… BART_028.W.2014… W      2014-06-12 00:00:00 
+#>  3 BART_066.basePlot… BART   BART_… BART_066.E.2014… E      2014-06-12 00:00:00 
+#>  4 BART_031.basePlot… BART   BART_… BART_031.E.2014… E      2014-06-26 00:00:00 
+#>  5 BART_066.basePlot… BART   BART_… BART_066.N.2014… N      2014-06-26 00:00:00 
+#>  6 BART_068.basePlot… BART   BART_… BART_068.W.2014… W      2014-06-26 00:00:00 
+#>  7 BART_002.basePlot… BART   BART_… BART_002.N.2014… N      2014-07-10 00:00:00 
+#>  8 BART_031.basePlot… BART   BART_… BART_031.S.2014… S      2014-07-10 00:00:00 
+#>  9 BART_028.basePlot… BART   BART_… BART_028.N.2014… N      2014-07-10 00:00:00 
+#> 10 BART_031.basePlot… BART   BART_… BART_031.N.2014… N      2014-07-24 00:00:00 
+#> # ℹ 2,756 more rows
+#> # ℹ 16 more variables: taxon_id <chr>, taxon_name <chr>, taxon_rank <chr>,
 #> #   variable_name <chr>, value <dbl>, unit <chr>, trappingDays <chr>,
 #> #   release <chr>, nativeStatusCode <chr>, remarksSorting <chr>,
 #> #   remarksFielddata <chr>, latitude <dbl>, longitude <dbl>, elevation <dbl>,
-#> #   plotType <chr>, nlcdClass <chr>, and abbreviated variable names
-#> #   ¹​unique_sample_id, ²​observation_datetime, ³​taxon_id, ⁴​taxon_name
+#> #   plotType <chr>, nlcdClass <chr>
 neonDivData::data_macroinvertebrate
-#> # A tibble: 106,641 × 25
-#>    location…¹ siteID uniqu…² observation_datet…³ taxon…⁴ taxon…⁵ taxon…⁶ varia…⁷
-#>    <chr>      <chr>  <chr>   <dttm>              <chr>   <chr>   <chr>   <chr>  
-#>  1 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 ABLSP   Ablabe… genus   density
-#>  2 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 BAESP   Baetid… family  density
-#>  3 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 CAESP5  Caenis… genus   density
-#>  4 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 CALFLU  Callib… species density
-#>  5 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 CERSP18 Cerato… genus   density
-#>  6 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 CHISP2  Chiron… family  density
-#>  7 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 CHISP8  Chiron… genus   density
-#>  8 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 CLISP3  Clinot… genus   density
-#>  9 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 COESP   Coenag… family  density
-#> 10 ARIK.AOS.… ARIK   ARIK.2… 2014-07-14 17:51:00 CORSP4  Corixi… family  density
-#> # … with 106,631 more rows, 17 more variables: value <dbl>, unit <chr>,
-#> #   estimatedTotalCount <chr>, individualCount <chr>, subsamplePercent <chr>,
-#> #   release <chr>, benthicArea <chr>, habitatType <chr>, samplerType <chr>,
-#> #   substratumSizeClass <chr>, remarks <chr>, ponarDepth <dbl>,
-#> #   snagLength <dbl>, snagDiameter <dbl>, latitude <dbl>, longitude <dbl>,
-#> #   elevation <dbl>, and abbreviated variable names ¹​location_id,
-#> #   ²​unique_sample_id, ³​observation_datetime, ⁴​taxon_id, ⁵​taxon_name, …
+#> # A tibble: 117,383 × 25
+#>    location_id  siteID unique_sample_id observation_datetime taxon_id taxon_name
+#>    <chr>        <chr>  <chr>            <dttm>               <chr>    <chr>     
+#>  1 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  ABLSP    Ablabesmy…
+#>  2 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  BAESP    Baetidae …
+#>  3 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CAESP5   Caenis sp.
+#>  4 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CALFLU   Callibaet…
+#>  5 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CERSP18  Ceratopog…
+#>  6 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CHISP2   Chironomi…
+#>  7 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CHISP8   Chironomu…
+#>  8 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CLISP3   Clinotany…
+#>  9 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  COESP    Coenagrio…
+#> 10 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CORSP4   Corixidae…
+#> # ℹ 117,373 more rows
+#> # ℹ 19 more variables: taxon_rank <chr>, variable_name <chr>, value <dbl>,
+#> #   unit <chr>, estimatedTotalCount <chr>, individualCount <chr>,
+#> #   subsamplePercent <chr>, release <chr>, benthicArea <chr>,
+#> #   habitatType <chr>, samplerType <chr>, substratumSizeClass <chr>,
+#> #   remarks <chr>, ponarDepth <dbl>, snagLength <dbl>, snagDiameter <dbl>,
+#> #   latitude <dbl>, longitude <dbl>, elevation <dbl>
 neonDivData::data_mosquito
-#> # A tibble: 109,212 × 26
-#>    location_id siteID uniqu…¹ subsa…² observat…³ taxon…⁴ taxon…⁵ taxon…⁶ varia…⁷
-#>    <chr>       <chr>  <chr>   <chr>   <date>     <chr>   <chr>   <chr>   <chr>  
-#>  1 BART_059.m… BART   BART_0… BART_0… 2014-06-03 AEDCOM  Aedes … species abunda…
-#>  2 BART_059.m… BART   BART_0… BART_0… 2014-06-03 AEDABS  Aedes … species abunda…
-#>  3 BART_059.m… BART   BART_0… BART_0… 2014-06-03 AEDINT  Aedes … species abunda…
-#>  4 BART_058.m… BART   BART_0… BART_0… 2014-06-03 AEDINT  Aedes … species abunda…
-#>  5 BART_058.m… BART   BART_0… BART_0… 2014-06-03 AEDCOM  Aedes … species abunda…
-#>  6 BART_060.m… BART   BART_0… BART_0… 2014-06-03 AEDCOM  Aedes … species abunda…
-#>  7 BART_060.m… BART   BART_0… BART_0… 2014-06-03 AEDABS  Aedes … species abunda…
-#>  8 BART_060.m… BART   BART_0… BART_0… 2014-06-03 AEDINT  Aedes … species abunda…
-#>  9 BART_054.m… BART   BART_0… BART_0… 2014-06-03 AEDCOM  Aedes … species abunda…
-#> 10 BART_054.m… BART   BART_0… BART_0… 2014-06-03 AEDINT  Aedes … species abunda…
-#> # … with 109,202 more rows, 17 more variables: value <dbl>, unit <chr>,
-#> #   nativeStatusCode <chr>, release <chr>, remarks_sorting <chr>,
-#> #   samplingProtocolVersion <chr>, sex <chr>, sortDate <chr>,
-#> #   subsampleWeight <chr>, totalWeight <chr>, trapHours <chr>,
-#> #   weightBelowDetection <chr>, latitude <dbl>, longitude <dbl>,
-#> #   elevation <dbl>, nlcdClass <chr>, plotType <chr>, and abbreviated variable
-#> #   names ¹​unique_sample_id, ²​subsampleID, ³​observation_datetime, ⁴​taxon_id, …
+#> # A tibble: 135,296 × 24
+#>    location_id siteID unique_sample_id subsampleID observation_datetime taxon_id
+#>    <chr>       <chr>  <chr>            <chr>       <date>               <chr>   
+#>  1 BART_059.m… BART   BART_059.201406… BART_059.2… 2014-06-03           AEDCOM  
+#>  2 BART_059.m… BART   BART_059.201406… BART_059.2… 2014-06-03           AEDINT  
+#>  3 BART_059.m… BART   BART_059.201406… BART_059.2… 2014-06-03           AEDABS  
+#>  4 BART_058.m… BART   BART_058.201406… BART_058.2… 2014-06-03           AEDCOM  
+#>  5 BART_058.m… BART   BART_058.201406… BART_058.2… 2014-06-03           AEDINT  
+#>  6 BART_060.m… BART   BART_060.201406… BART_060.2… 2014-06-03           AEDCOM  
+#>  7 BART_060.m… BART   BART_060.201406… BART_060.2… 2014-06-03           AEDABS  
+#>  8 BART_060.m… BART   BART_060.201406… BART_060.2… 2014-06-03           AEDINT  
+#>  9 BART_054.m… BART   BART_054.201406… BART_054.2… 2014-06-03           AEDCOM  
+#> 10 BART_054.m… BART   BART_054.201406… BART_054.2… 2014-06-03           AEDCAN2 
+#> # ℹ 135,286 more rows
+#> # ℹ 18 more variables: taxon_name <chr>, taxon_rank <chr>, variable_name <chr>,
+#> #   value <dbl>, unit <chr>, nativeStatusCode <chr>,
+#> #   proportionIdentified <chr>, release <chr>, remarks_sorting <chr>,
+#> #   samplingProtocolVersion <chr>, sex <chr>, sortDate <chr>, trapHours <chr>,
+#> #   latitude <dbl>, longitude <dbl>, elevation <dbl>, nlcdClass <chr>,
+#> #   plotType <chr>
 neonDivData::data_plant
-#> # A tibble: 1,034,093 × 26
-#>    location_id siteID plotID uniqu…¹ subpl…² subpl…³ subsu…⁴ observation_datet…⁵
-#>    <chr>       <chr>  <chr>  <chr>   <chr>   <chr>   <chr>   <dttm>             
-#>  1 BART_006.b… BART   BART_… BART_0… 31.4.1  31      4       2014-06-10 00:00:00
-#>  2 BART_006.b… BART   BART_… BART_0… 31.4.1  31      4       2014-06-10 00:00:00
-#>  3 BART_006.b… BART   BART_… BART_0… 41.1.1  41      1       2014-06-10 00:00:00
-#>  4 BART_006.b… BART   BART_… BART_0… 41.4.1  41      4       2014-06-10 00:00:00
-#>  5 BART_006.b… BART   BART_… BART_0… 41.4.1  41      4       2014-06-10 00:00:00
-#>  6 BART_006.b… BART   BART_… BART_0… 41.4.1  41      4       2014-06-10 00:00:00
-#>  7 BART_006.b… BART   BART_… BART_0… 32.2.1  32      2       2014-06-10 00:00:00
-#>  8 BART_006.b… BART   BART_… BART_0… 41.1.1  41      1       2014-06-10 00:00:00
-#>  9 BART_006.b… BART   BART_… BART_0… 32.4.1  32      4       2014-06-10 00:00:00
-#> 10 BART_006.b… BART   BART_… BART_0… 32.4.1  32      4       2014-06-10 00:00:00
-#> # … with 1,034,083 more rows, 18 more variables: taxon_id <chr>,
+#> # A tibble: 1,148,221 × 26
+#>    location_id siteID plotID unique_sample_id subplotID subplot_id subsubplot_id
+#>    <chr>       <chr>  <chr>  <chr>            <chr>     <chr>      <chr>        
+#>  1 BART_006.b… BART   BART_… BART_006.basePl… 40_1_3    40         1            
+#>  2 BART_006.b… BART   BART_… BART_006.basePl… 40_1_1    40         1            
+#>  3 BART_006.b… BART   BART_… BART_006.basePl… 40_1_3    40         1            
+#>  4 BART_006.b… BART   BART_… BART_006.basePl… 40_1_1    40         1            
+#>  5 BART_006.b… BART   BART_… BART_006.basePl… 41_1_1    41         1            
+#>  6 BART_006.b… BART   BART_… BART_006.basePl… 31_1_4    31         1            
+#>  7 BART_006.b… BART   BART_… BART_006.basePl… 31_1_4    31         1            
+#>  8 BART_006.b… BART   BART_… BART_006.basePl… 41_1_4    41         1            
+#>  9 BART_006.b… BART   BART_… BART_006.basePl… 32_1_2    32         1            
+#> 10 BART_006.b… BART   BART_… BART_006.basePl… 41_1_1    41         1            
+#> # ℹ 1,148,211 more rows
+#> # ℹ 19 more variables: observation_datetime <dttm>, taxon_id <chr>,
 #> #   taxon_name <chr>, taxon_rank <chr>, variable_name <chr>, value <dbl>,
 #> #   unit <chr>, presence_absence <dbl>, boutNumber <chr>,
 #> #   nativeStatusCode <chr>, heightPlantOver300cm <chr>,
 #> #   heightPlantSpecies <chr>, release <chr>, sample_area_m2 <chr>,
-#> #   latitude <dbl>, longitude <dbl>, elevation <dbl>, plotType <chr>,
-#> #   nlcdClass <chr>, and abbreviated variable names ¹​unique_sample_id, …
+#> #   latitude <dbl>, longitude <dbl>, elevation <dbl>, plotType <chr>, …
 neonDivData::data_small_mammal
-#> # A tibble: 17,279 × 22
-#>    location_id  siteID plotID uniqu…¹ observat…² taxon…³ taxon…⁴ taxon…⁵ varia…⁶
-#>    <chr>        <chr>  <chr>  <chr>   <date>     <chr>   <chr>   <chr>   <chr>  
-#>  1 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2016-08-27 MIOR    Microt… species count  
-#>  2 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2016-08-27 PEKE    Peromy… species count  
-#>  3 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2016-08-27 PEMA    Peromy… species count  
-#>  4 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2016-08-27 SOMO    Sorex … species count  
-#>  5 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2017-04-23 MIOR    Microt… species count  
-#>  6 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2017-04-23 PEMA    Peromy… species count  
-#>  7 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2017-04-23 SOMO    Sorex … species count  
-#>  8 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2017-04-23 SOSP    Sorex … genus   count  
-#>  9 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2017-04-23 SOTR    Sorex … species count  
-#> 10 ABBY_002.ma… ABBY   ABBY_… ABBY_0… 2017-04-23 SOVA    Sorex … species count  
-#> # … with 17,269 more rows, 13 more variables: value <dbl>, unit <chr>,
-#> #   year <chr>, month <chr>, n_trap_nights_per_bout_per_plot <chr>,
-#> #   n_nights_per_bout <chr>, nativeStatusCode <chr>, release <chr>,
-#> #   latitude <dbl>, longitude <dbl>, elevation <dbl>, plotType <chr>,
-#> #   nlcdClass <chr>, and abbreviated variable names ¹​unique_sample_id,
-#> #   ²​observation_datetime, ³​taxon_id, ⁴​taxon_name, ⁵​taxon_rank, ⁶​variable_name
+#> # A tibble: 19,098 × 22
+#>    location_id      siteID plotID unique_sample_id observation_datetime taxon_id
+#>    <chr>            <chr>  <chr>  <chr>            <date>               <chr>   
+#>  1 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           MIOR    
+#>  2 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           PEKE    
+#>  3 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           PEMA    
+#>  4 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           SOMO    
+#>  5 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           MIOR    
+#>  6 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           PEMA    
+#>  7 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOMO    
+#>  8 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOSP    
+#>  9 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOTR    
+#> 10 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOVA    
+#> # ℹ 19,088 more rows
+#> # ℹ 16 more variables: taxon_name <chr>, taxon_rank <chr>, variable_name <chr>,
+#> #   value <dbl>, unit <chr>, year <chr>, month <chr>,
+#> #   n_trap_nights_per_bout_per_plot <chr>, n_nights_per_bout <chr>,
+#> #   nativeStatusCode <chr>, release <chr>, latitude <dbl>, longitude <dbl>,
+#> #   elevation <dbl>, plotType <chr>, nlcdClass <chr>
 neonDivData::data_tick
-#> # A tibble: 357,235 × 22
-#>    location_id siteID plotID uniqu…¹ observation_datet…² taxon…³ taxon…⁴ taxon…⁵
-#>    <chr>       <chr>  <chr>  <chr>   <dttm>              <chr>   <chr>   <chr>  
-#>  1 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 IXOSP   Ixodid… family 
-#>  2 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 IXOSCA  Ixodes… species
-#>  3 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 AMBAME  Amblyo… species
-#>  4 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 AMBSPP  Amblyo… genus  
-#>  5 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 IXOSP2  Ixodid… order  
-#>  6 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 IXOANG  Ixodes… species
-#>  7 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 IXOPAC  Ixodes… species
-#>  8 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 DERVAR  Dermac… species
-#>  9 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 IXOSCA  Ixodes… species
-#> 10 ABBY_001.t… ABBY   ABBY_… ABBY_0… 2016-09-22 18:12:00 AMBAME  Amblyo… species
-#> # … with 357,225 more rows, 14 more variables: variable_name <chr>,
+#> # A tibble: 426,465 × 22
+#>    location_id      siteID plotID unique_sample_id observation_datetime taxon_id
+#>    <chr>            <chr>  <chr>  <chr>            <dttm>               <chr>   
+#>  1 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSP   
+#>  2 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSCA  
+#>  3 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  AMBAME  
+#>  4 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  AMBSPP  
+#>  5 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSP2  
+#>  6 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOANG  
+#>  7 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOPAC  
+#>  8 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  HAELEP  
+#>  9 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  DERVAR  
+#> 10 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSCA  
+#> # ℹ 426,455 more rows
+#> # ℹ 16 more variables: taxon_name <chr>, taxon_rank <chr>, variable_name <chr>,
 #> #   value <dbl>, unit <chr>, LifeStage <chr>, release <chr>,
 #> #   remarks_field <chr>, samplingMethod <chr>, targetTaxaPresent <chr>,
 #> #   totalSampledArea <chr>, latitude <dbl>, longitude <dbl>, elevation <dbl>,
-#> #   nlcdClass <chr>, plotType <chr>, and abbreviated variable names
-#> #   ¹​unique_sample_id, ²​observation_datetime, ³​taxon_id, ⁴​taxon_name,
-#> #   ⁵​taxon_rank
+#> #   nlcdClass <chr>, plotType <chr>
 neonDivData::data_tick_pathogen
-#> # A tibble: 8,490 × 21
-#>    location_id siteID plotID uniqu…¹ observation_datet…² taxon…³ taxon…⁴ taxon…⁵
-#>    <chr>       <chr>  <chr>  <chr>   <dttm>              <chr>   <chr>   <chr>  
-#>  1 HARV_001.t… HARV   HARV_… HARV_0… 2014-06-02 16:10:00 Borrel… Borrel… species
-#>  2 HARV_001.t… HARV   HARV_… HARV_0… 2014-06-24 13:50:00 Borrel… Borrel… species
-#>  3 HARV_001.t… HARV   HARV_… HARV_0… 2014-07-14 17:53:00 Borrel… Borrel… species
-#>  4 HARV_022.t… HARV   HARV_… HARV_0… 2015-06-03 13:30:00 Anapla… Anapla… species
-#>  5 HARV_022.t… HARV   HARV_… HARV_0… 2015-06-03 13:30:00 Babesi… Babesi… species
-#>  6 HARV_022.t… HARV   HARV_… HARV_0… 2015-06-03 13:30:00 Borrel… Borrel… species
-#>  7 HARV_022.t… HARV   HARV_… HARV_0… 2015-06-03 13:30:00 Borrel… Borrel… species
-#>  8 HARV_022.t… HARV   HARV_… HARV_0… 2015-06-03 13:30:00 Borrel… Borrel… species
-#>  9 HARV_022.t… HARV   HARV_… HARV_0… 2015-06-03 13:30:00 Borrel… Borrel… genus  
-#> 10 HARV_022.t… HARV   HARV_… HARV_0… 2015-06-03 13:30:00 Ehrlic… Ehrlic… species
-#> # … with 8,480 more rows, 13 more variables: variable_name <chr>, value <dbl>,
-#> #   unit <chr>, lifeStage <chr>, testProtocolVersion <chr>, release <chr>,
-#> #   n_tests <chr>, n_positive_tests <chr>, latitude <dbl>, longitude <dbl>,
-#> #   elevation <dbl>, nlcdClass <chr>, plotType <chr>, and abbreviated variable
-#> #   names ¹​unique_sample_id, ²​observation_datetime, ³​taxon_id, ⁴​taxon_name,
-#> #   ⁵​taxon_rank
+#> # A tibble: 12,190 × 21
+#>    location_id      siteID plotID unique_sample_id observation_datetime taxon_id
+#>    <chr>            <chr>  <chr>  <chr>            <dttm>               <chr>   
+#>  1 HARV_001.tickPl… HARV   HARV_… HARV_001.tickPl… 2014-06-02 16:10:00  Borreli…
+#>  2 HARV_001.tickPl… HARV   HARV_… HARV_001.tickPl… 2014-06-24 13:50:00  Borreli…
+#>  3 HARV_001.tickPl… HARV   HARV_… HARV_001.tickPl… 2014-07-14 17:53:00  Borreli…
+#>  4 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Anaplas…
+#>  5 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Babesia…
+#>  6 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…
+#>  7 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…
+#>  8 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…
+#>  9 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…
+#> 10 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Ehrlich…
+#> # ℹ 12,180 more rows
+#> # ℹ 15 more variables: taxon_name <chr>, taxon_rank <chr>, variable_name <chr>,
+#> #   value <dbl>, unit <chr>, lifeStage <chr>, testProtocolVersion <chr>,
+#> #   release <chr>, n_tests <chr>, n_positive_tests <chr>, latitude <dbl>,
+#> #   longitude <dbl>, elevation <dbl>, nlcdClass <chr>, plotType <chr>
 ```
 
 # Contributing
