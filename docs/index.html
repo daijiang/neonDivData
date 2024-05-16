@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
@@ -65,44 +65,28 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The goal of neonDivData is to provide cleaned NEON organismal data to
-facilitate biodiversity research. The authors of this R data package
-have all spend lots of effort to clean NEON data for our own research;
-it makes the most sense to document such processes and provide the clean
-data product so that the large community can use them readily. This will
-save us time to dig into the extensive documenations of NEON data and to
-clean up the data individually.</p>
-<p>Data products for all taxonomic groups are long data frames with
-names in the format of <code>data_xxx</code>
-(e.g. <code>data_plant</code>, <code>data_fish</code>). Location
-inforamtions are in <code>neon_location</code>; taxonomic informations
-are in <code>neon_taxa</code>.</p>
-<p>Despite the aim of this R data package is to facilitate biodiversity
-research, we keep <code>NA</code>s in data products so that information
-about sampling effort is saved. For some taxonomic groups, we removed
-observations with above genus level species identification. All codes to
-clean up the NEON data are available within our <a href="https://github.com/daijiang/neonDivData/tree/master/data-raw" class="external-link">Github
-repo</a>. Users can use them to customize their own data product if
-needed.</p>
+<p>The goal of neonDivData is to provide cleaned NEON organismal data to facilitate biodiversity research. The authors of this R data package have all spend lots of effort to clean NEON data for our own research; it makes the most sense to document such processes and provide the clean data product so that the large community can use them readily. This will save us time to dig into the extensive documenations of NEON data and to clean up the data individually.</p>
+<p>Data products for all taxonomic groups are long data frames with names in the format of <code>data_xxx</code> (e.g. <code>data_plant</code>, <code>data_fish</code>). Location inforamtions are in <code>neon_location</code>; taxonomic informations are in <code>neon_taxa</code>.</p>
+<p>Despite the aim of this R data package is to facilitate biodiversity research, we keep <code>NA</code>s in data products so that information about sampling effort is saved. For some taxonomic groups, we removed observations with above genus level species identification. All codes to clean up the NEON data are available within our <a href="https://github.com/daijiang/neonDivData/tree/master/data-raw" class="external-link">Github repo</a>. Users can use them to customize their own data product if needed.</p>
 <p>Available taxonomic groups and their brief summaries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># sites too long, don't print</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">[</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sites"</span>, <span class="st">"data_package_id"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<table class="table">
+<code class="sourceCode R"><span><span class="co"># sites too long, don't print</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">[</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_summary.html">data_summary</a></span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sites"</span>, <span class="st">"data_package_id"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<table style="width:100%;" class="table">
 <colgroup>
 <col width="4%">
 <col width="1%">
+<col width="1%">
 <col width="2%">
 <col width="2%">
-<col width="2%">
-<col width="21%">
-<col width="7%">
-<col width="7%">
-<col width="7%">
 <col width="18%">
+<col width="6%">
+<col width="6%">
 <col width="5%">
+<col width="30%">
 <col width="4%">
-<col width="13%">
+<col width="3%">
+<col width="11%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">taxon_group</th>
@@ -122,49 +106,45 @@ needed.</p>
 <tbody>
 <tr class="odd">
 <td align="left">ALGAE</td>
-<td align="right">2279</td>
+<td align="right">2221</td>
 <td align="right">34</td>
 <td align="left">2014-07-02</td>
-<td align="left">2020-07-28</td>
-<td align="left">ALGAE from the NEON data product: Periphyton, seston,
-and phytoplankton collection</td>
+<td align="left">2019-11-25</td>
+<td align="left">ALGAE from the NEON data product: Periphyton, seston, and phytoplankton collection</td>
 <td align="left">neon.ecocomdp.20166.001.001</td>
 <td align="left">DP1.20166.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/3cvp-hw55&amp;#124;https://doi.org/10.48443/g2k4-d258" class="external-link uri">https://doi.org/10.48443/3cvp-hw55&amp;#124;https://doi.org/10.48443/g2k4-d258</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/3cvp-hw55%7Chttps://doi.org/10.48443/g2k4-d258%7Chttps://doi.org/10.48443/cebv-nn73%7Chttps://doi.org/10.48443/swyk-0p63" class="external-link uri">https://doi.org/10.48443/3cvp-hw55%7Chttps://doi.org/10.48443/g2k4-d258%7Chttps://doi.org/10.48443/cebv-nn73%7Chttps://doi.org/10.48443/swyk-0p63</a></td>
 <td align="left">data_algae</td>
 <td align="left">cell density</td>
 <td align="left">cells/cm2 OR cells/mL</td>
 </tr>
 <tr class="even">
 <td align="left">SMALL_MAMMALS</td>
-<td align="right">149</td>
+<td align="right">154</td>
 <td align="right">46</td>
 <td align="left">2013-06-19</td>
-<td align="left">2021-11-18</td>
-<td align="left">SMALL_MAMMALS from the NEON data product: Small mammal
-box trapping</td>
+<td align="left">2022-12-14</td>
+<td align="left">SMALL_MAMMALS from the NEON data product: Small mammal box trapping</td>
 <td align="left">neon.ecocomdp.10072.001.001</td>
 <td align="left">DP1.10072.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/j1g9-2j27&amp;#124;https://doi.org/10.48443/h3dk-3a71" class="external-link uri">https://doi.org/10.48443/j1g9-2j27&amp;#124;https://doi.org/10.48443/h3dk-3a71</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/j1g9-2j27%7Chttps://doi.org/10.48443/h3dk-3a71%7Chttps://doi.org/10.48443/p4re-p954%7Chttps://doi.org/10.48443/nvpj-4j94" class="external-link uri">https://doi.org/10.48443/j1g9-2j27%7Chttps://doi.org/10.48443/h3dk-3a71%7Chttps://doi.org/10.48443/p4re-p954%7Chttps://doi.org/10.48443/nvpj-4j94</a></td>
 <td align="left">data_small_mammal</td>
 <td align="left">count</td>
-<td align="left">unique individuals per 100 trap nights per plot per
-month</td>
+<td align="left">unique individuals per 100 trap nights per plot per month</td>
 </tr>
 <tr class="odd">
 <td align="left">PLANTS</td>
-<td align="right">6544</td>
+<td align="right">6664</td>
 <td align="right">47</td>
 <td align="left">2013-06-24</td>
-<td align="left">2021-10-13</td>
-<td align="left">PLANTS from the NEON data product: Plant presence and
-percent cover</td>
+<td align="left">2022-10-26</td>
+<td align="left">PLANTS from the NEON data product: Plant presence and percent cover</td>
 <td align="left">neon.ecocomdp.10058.001.001</td>
 <td align="left">DP1.10058.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/abge-r811&amp;#124;https://doi.org/10.48443/pr5e-1q60" class="external-link uri">https://doi.org/10.48443/abge-r811&amp;#124;https://doi.org/10.48443/pr5e-1q60</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/abge-r811%7Chttps://doi.org/10.48443/pr5e-1q60%7Chttps://doi.org/10.48443/9579-a253%7Chttps://doi.org/10.48443/c50b-qx77" class="external-link uri">https://doi.org/10.48443/abge-r811%7Chttps://doi.org/10.48443/pr5e-1q60%7Chttps://doi.org/10.48443/9579-a253%7Chttps://doi.org/10.48443/c50b-qx77</a></td>
 <td align="left">data_plant</td>
 <td align="left">percent cover</td>
 <td align="left">percent of plot area covered by taxon</td>
@@ -175,140 +155,131 @@ percent cover</td>
 <td align="right">28</td>
 <td align="left">2016-03-29</td>
 <td align="left">2021-12-14</td>
-<td align="left">FISH from the NEON data product: Fish electrofishing,
-gill netting, and fyke netting counts</td>
+<td align="left">FISH from the NEON data product: Fish electrofishing, gill netting, and fyke netting counts</td>
 <td align="left">neon.ecocomdp.20107.001.001</td>
 <td align="left">DP1.20107.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL|NA</td>
-<td align="left"><a href="https://doi.org/10.48443/17cz-g567&amp;#124;https://doi.org/10.48443/7p84-6j62" class="external-link uri">https://doi.org/10.48443/17cz-g567&amp;#124;https://doi.org/10.48443/7p84-6j62</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/17cz-g567%7Chttps://doi.org/10.48443/7p84-6j62%7Chttps://doi.org/10.48443/etgd-3s49%7Chttps://doi.org/10.48443/kb2e-va82" class="external-link uri">https://doi.org/10.48443/17cz-g567%7Chttps://doi.org/10.48443/7p84-6j62%7Chttps://doi.org/10.48443/etgd-3s49%7Chttps://doi.org/10.48443/kb2e-va82</a></td>
 <td align="left">data_fish</td>
 <td align="left">abundance</td>
 <td align="left">catch per unit effort</td>
 </tr>
 <tr class="odd">
 <td align="left">BEETLES</td>
-<td align="right">768</td>
+<td align="right">793</td>
 <td align="right">47</td>
 <td align="left">2013-07-03</td>
-<td align="left">2021-10-05</td>
-<td align="left">BEETLES from the NEON data product: Ground beetles
-sampled from pitfall traps</td>
+<td align="left">2021-12-22</td>
+<td align="left">BEETLES from the NEON data product: Ground beetles sampled from pitfall traps</td>
 <td align="left">neon.ecocomdp.10022.001.001</td>
 <td align="left">DP1.10022.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/tx5f-dy17&amp;#124;https://doi.org/10.48443/xgea-hw23" class="external-link uri">https://doi.org/10.48443/tx5f-dy17&amp;#124;https://doi.org/10.48443/xgea-hw23</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/tx5f-dy17%7Chttps://doi.org/10.48443/xgea-hw23%7Chttps://doi.org/10.48443/3v35-v852%7Chttps://doi.org/10.48443/rcxn-t544" class="external-link uri">https://doi.org/10.48443/tx5f-dy17%7Chttps://doi.org/10.48443/xgea-hw23%7Chttps://doi.org/10.48443/3v35-v852%7Chttps://doi.org/10.48443/rcxn-t544</a></td>
 <td align="left">data_herp_bycatch</td>
 <td align="left">abundance</td>
 <td align="left">count per trap day</td>
 </tr>
 <tr class="even">
 <td align="left">MACROINVERTEBRATES</td>
-<td align="right">1373</td>
+<td align="right">1409</td>
 <td align="right">34</td>
 <td align="left">2014-07-01</td>
-<td align="left">2021-07-28</td>
-<td align="left">MACROINVERTEBRATES from the NEON data product:
-Macroinvertebrate collection</td>
+<td align="left">2021-11-23</td>
+<td align="left">MACROINVERTEBRATES from the NEON data product: Macroinvertebrate collection</td>
 <td align="left">neon.ecocomdp.20120.001.001</td>
 <td align="left">DP1.20120.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/855x-0n27&amp;#124;https://doi.org/10.48443/gn8x-k322" class="external-link uri">https://doi.org/10.48443/855x-0n27&amp;#124;https://doi.org/10.48443/gn8x-k322</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/855x-0n27%7Chttps://doi.org/10.48443/gn8x-k322%7Chttps://doi.org/10.48443/zj4y-4073%7Chttps://doi.org/10.48443/je35-bc57" class="external-link uri">https://doi.org/10.48443/855x-0n27%7Chttps://doi.org/10.48443/gn8x-k322%7Chttps://doi.org/10.48443/zj4y-4073%7Chttps://doi.org/10.48443/je35-bc57</a></td>
 <td align="left">data_macroinvertebrate</td>
 <td align="left">density</td>
 <td align="left">count per square meter</td>
 </tr>
 <tr class="odd">
 <td align="left">MOSQUITOES</td>
-<td align="right">131</td>
+<td align="right">133</td>
 <td align="right">47</td>
 <td align="left">2014-04-09</td>
-<td align="left">2021-06-11</td>
-<td align="left">MOSQUITOES from the NEON data product: Mosquitoes
-sampled from CO2 traps</td>
+<td align="left">2022-12-28</td>
+<td align="left">MOSQUITOES from the NEON data product: Mosquitoes sampled from CO2 traps</td>
 <td align="left">neon.ecocomdp.10043.001.001</td>
 <td align="left">DP1.10043.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/9smm-v091&amp;#124;https://doi.org/10.48443/c7h7-q918" class="external-link uri">https://doi.org/10.48443/9smm-v091&amp;#124;https://doi.org/10.48443/c7h7-q918</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/9smm-v091%7Chttps://doi.org/10.48443/c7h7-q918%7Chttps://doi.org/10.48443/bxnk-jb11%7Chttps://doi.org/10.48443/3cyq-6v47" class="external-link uri">https://doi.org/10.48443/9smm-v091%7Chttps://doi.org/10.48443/c7h7-q918%7Chttps://doi.org/10.48443/bxnk-jb11%7Chttps://doi.org/10.48443/3cyq-6v47</a></td>
 <td align="left">data_mosquito</td>
 <td align="left">abundance</td>
 <td align="left">count per trap hour</td>
 </tr>
 <tr class="even">
 <td align="left">BIRDS</td>
-<td align="right">577</td>
+<td align="right">585</td>
 <td align="right">47</td>
 <td align="left">2013-06-05</td>
-<td align="left">2021-07-16</td>
-<td align="left">BIRDS from the NEON data product: Breeding landbird
-point counts</td>
+<td align="left">2022-07-23</td>
+<td align="left">BIRDS from the NEON data product: Breeding landbird point counts</td>
 <td align="left">neon.ecocomdp.10003.001.001</td>
 <td align="left">DP1.10003.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/s730-dy13&amp;#124;https://doi.org/10.48443/88sy-ah40" class="external-link uri">https://doi.org/10.48443/s730-dy13&amp;#124;https://doi.org/10.48443/88sy-ah40</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/s730-dy13%7Chttps://doi.org/10.48443/88sy-ah40%7Chttps://doi.org/10.48443/00pg-vm19%7Chttps://doi.org/10.48443/4a0h-fy23" class="external-link uri">https://doi.org/10.48443/s730-dy13%7Chttps://doi.org/10.48443/88sy-ah40%7Chttps://doi.org/10.48443/00pg-vm19%7Chttps://doi.org/10.48443/4a0h-fy23</a></td>
 <td align="left">data_bird</td>
 <td align="left">cluster size</td>
 <td align="left">count of individuals</td>
 </tr>
 <tr class="odd">
 <td align="left">TICKS</td>
-<td align="right">19</td>
+<td align="right">20</td>
 <td align="right">46</td>
 <td align="left">2014-04-02</td>
-<td align="left">2021-11-18</td>
-<td align="left">TICKS from the NEON data product: Ticks sampled using
-drag cloths</td>
+<td align="left">2022-11-23</td>
+<td align="left">TICKS from the NEON data product: Ticks sampled using drag cloths</td>
 <td align="left">neon.ecocomdp.10093.001.001</td>
 <td align="left">DP1.10093.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/dx40-wr20&amp;#124;https://doi.org/10.48443/7jh5-8s51" class="external-link uri">https://doi.org/10.48443/dx40-wr20&amp;#124;https://doi.org/10.48443/7jh5-8s51</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/dx40-wr20%7Chttps://doi.org/10.48443/7jh5-8s51%7Chttps://doi.org/10.48443/fh83-k817%7Chttps://doi.org/10.48443/3zmh-xx57" class="external-link uri">https://doi.org/10.48443/dx40-wr20%7Chttps://doi.org/10.48443/7jh5-8s51%7Chttps://doi.org/10.48443/fh83-k817%7Chttps://doi.org/10.48443/3zmh-xx57</a></td>
 <td align="left">data_tick</td>
 <td align="left">abundance</td>
 <td align="left">count per square meter</td>
 </tr>
 <tr class="even">
 <td align="left">ZOOPLANKTON</td>
-<td align="right">166</td>
+<td align="right">172</td>
 <td align="right">7</td>
 <td align="left">2014-07-02</td>
-<td align="left">2021-07-21</td>
-<td align="left">ZOOPLANKTON from the NEON data product: Zooplankton
-collection</td>
+<td align="left">2021-11-02</td>
+<td align="left">ZOOPLANKTON from the NEON data product: Zooplankton collection</td>
 <td align="left">neon.ecocomdp.20219.001.001</td>
 <td align="left">DP1.20219.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/qzr1-jr79&amp;#124;https://doi.org/10.48443/150d-yf27" class="external-link uri">https://doi.org/10.48443/qzr1-jr79&amp;#124;https://doi.org/10.48443/150d-yf27</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/qzr1-jr79%7Chttps://doi.org/10.48443/150d-yf27%7Chttps://doi.org/10.48443/eqmn-5b37%7Chttps://doi.org/10.48443/6kxg-hb11" class="external-link uri">https://doi.org/10.48443/qzr1-jr79%7Chttps://doi.org/10.48443/150d-yf27%7Chttps://doi.org/10.48443/eqmn-5b37%7Chttps://doi.org/10.48443/6kxg-hb11</a></td>
 <td align="left">data_zooplankton</td>
 <td align="left">density</td>
 <td align="left">count per liter</td>
 </tr>
 <tr class="odd">
 <td align="left">TICK_PATHOGENS</td>
-<td align="right">12</td>
 <td align="right">16</td>
+<td align="right">18</td>
 <td align="left">2014-04-17</td>
-<td align="left">2020-10-01</td>
-<td align="left">TICK_PATHOGENS from the NEON data product: Tick-borne
-pathogen status</td>
+<td align="left">2022-09-27</td>
+<td align="left">TICK_PATHOGENS from the NEON data product: Tick-borne pathogen status</td>
 <td align="left">neon.ecocomdp.10092.001.001</td>
 <td align="left">DP1.10092.001</td>
-<td align="left">RELEASE-2022</td>
-<td align="left"><a href="https://doi.org/10.48443/5fab-xv19&amp;#124;https://doi.org/10.48443/nygx-dm71" class="external-link uri">https://doi.org/10.48443/5fab-xv19&amp;#124;https://doi.org/10.48443/nygx-dm71</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/5fab-xv19%7Chttps://doi.org/10.48443/nygx-dm71%7Chttps://doi.org/10.48443/nyst-jp72%7Chttps://doi.org/10.48443/4d7n-w481" class="external-link uri">https://doi.org/10.48443/5fab-xv19%7Chttps://doi.org/10.48443/nygx-dm71%7Chttps://doi.org/10.48443/nyst-jp72%7Chttps://doi.org/10.48443/4d7n-w481</a></td>
 <td align="left">data_tick_pathogen</td>
 <td align="left">positivity rate</td>
 <td align="left">positive tests per pathogen per sampling event</td>
 </tr>
 <tr class="even">
 <td align="left">HERPTILES</td>
-<td align="right">136</td>
+<td align="right">137</td>
 <td align="right">41</td>
 <td align="left">2014-04-02</td>
 <td align="left">2021-10-06</td>
-<td align="left">HERPTILES (bycatch) from the NEON data product: Ground
-beetles sampled from pitfall traps</td>
+<td align="left">HERPTILES (bycatch) from the NEON data product: Ground beetles sampled from pitfall traps</td>
 <td align="left">neon.ecocomdp.10022.001.002</td>
 <td align="left">DP1.10022.001</td>
-<td align="left">RELEASE-2022|PROVISIONAL</td>
-<td align="left"><a href="https://doi.org/10.48443/tx5f-dy17&amp;#124;https://doi.org/10.48443/xgea-hw23" class="external-link uri">https://doi.org/10.48443/tx5f-dy17&amp;#124;https://doi.org/10.48443/xgea-hw23</a></td>
+<td align="left">RELEASE-2024</td>
+<td align="left"><a href="https://doi.org/10.48443/tx5f-dy17%7Chttps://doi.org/10.48443/xgea-hw23%7Chttps://doi.org/10.48443/3v35-v852%7Chttps://doi.org/10.48443/rcxn-t544" class="external-link uri">https://doi.org/10.48443/tx5f-dy17%7Chttps://doi.org/10.48443/xgea-hw23%7Chttps://doi.org/10.48443/3v35-v852%7Chttps://doi.org/10.48443/rcxn-t544</a></td>
 <td align="left">data_herp_bycatch</td>
 <td align="left">abundance</td>
 <td align="left">count per trap day</td>
@@ -320,295 +291,296 @@ beetles sampled from pitfall traps</td>
 </h2>
 <p>You can install the development version of neonDivData from <a href="https://github.com/daijiang/neonDivData" class="external-link">Github</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"daijiang/neonDivData"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"neonDivData"</span>, repos <span class="op">=</span> <span class="st">'https://daijiang.r-universe.dev'</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="available-data-products">Available data products<a class="anchor" aria-label="anchor" href="#available-data-products"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/neon_sites.html">neon_sites</a></span>
-<span class="co">#&gt; # A tibble: 81 × 10</span>
-<span class="co">#&gt;    `Site Name`            siteID `Domain Name` domainID State Latitude Longitude</span>
-<span class="co">#&gt;    &lt;chr&gt;                  &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Little Rock Lake       LIRO   Great Lakes   D05      WI        46.0     -89.7</span>
-<span class="co">#&gt;  2 West St Louis Creek    WLOU   Southern Roc… D13      CO        39.9    -106. </span>
-<span class="co">#&gt;  3 Pu'u Maka'ala Natural… PUUM   Pacific Trop… D20      HI        19.6    -155. </span>
-<span class="co">#&gt;  4 Flint River            FLNT   Southeast     D03      GA        31.2     -84.4</span>
-<span class="co">#&gt;  5 McDiffett Creek        MCDI   Prairie Peni… D06      KS        38.9     -96.4</span>
-<span class="co">#&gt;  6 Lewis Run              LEWI   Mid-Atlantic  D02      VA        39.1     -78.0</span>
-<span class="co">#&gt;  7 Blue River             BLUE   Southern Pla… D11      OK        34.4     -96.6</span>
-<span class="co">#&gt;  8 Teakettle 2 Creek      TECR   Pacific Sout… D17      CA        37.0    -119. </span>
-<span class="co">#&gt;  9 Lower Hop Brook        HOPB   Northeast     D01      MA        42.5     -72.3</span>
-<span class="co">#&gt; 10 Martha Creek           MART   Pacific Nort… D16      WA        45.8    -122. </span>
-<span class="co">#&gt; # … with 71 more rows, and 3 more variables: `Site Type` &lt;chr&gt;,</span>
-<span class="co">#&gt; #   `Site Subtype` &lt;chr&gt;, `Site Host` &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/neon_taxa.html">neon_taxa</a></span>
-<span class="co">#&gt; # A tibble: 12,312 × 4</span>
-<span class="co">#&gt;    taxon_id       taxon_name                              taxon_rank taxon_group</span>
-<span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;                                   &lt;chr&gt;      &lt;chr&gt;      </span>
-<span class="co">#&gt;  1 NEONDREX48008  Nitzschia dissipata (Kützing) Grunow    species    ALGAE      </span>
-<span class="co">#&gt;  2 NEONDREX33183  Eunotia minor (Kützing) Grunow          species    ALGAE      </span>
-<span class="co">#&gt;  3 NEONDREX186008 Psammothidium subatomoides (Hustedt) B… species    ALGAE      </span>
-<span class="co">#&gt;  4 NEONDREX1032   Achnanthidium latecephalum Kobayashi    species    ALGAE      </span>
-<span class="co">#&gt;  5 NEONDREX37311  Gomphonema parvulius (Lange-Bertalot e… species    ALGAE      </span>
-<span class="co">#&gt;  6 NEONDREX155017 Planothidium frequentissimum (Lange-Be… species    ALGAE      </span>
-<span class="co">#&gt;  7 NEONDREX62008  Stauroneis kriegeri Patrick             species    ALGAE      </span>
-<span class="co">#&gt;  8 NEONDREX172006 Staurosira construens var. venter (Ehr… variety    ALGAE      </span>
-<span class="co">#&gt;  9 NEONDREX1036   Achnanthidium rivulare Potapova et Pon… species    ALGAE      </span>
-<span class="co">#&gt; 10 NEONDREX48025  Nitzschia palea (Kützing) Smith         species    ALGAE      </span>
-<span class="co">#&gt; # … with 12,302 more rows</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/neon_location.html">neon_location</a></span>
-<span class="co">#&gt; # A tibble: 4,259 × 8</span>
-<span class="co">#&gt;    location_id             siteID plotID  latitude longitude elevation nlcdClass</span>
-<span class="co">#&gt;    &lt;chr&gt;                   &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1 ABBY_001.basePlot.brd   ABBY   ABBY_0…     45.8     -122.      303. evergree…</span>
-<span class="co">#&gt;  2 ABBY_001.basePlot.div   ABBY   ABBY_0…     45.8     -122.      303. evergree…</span>
-<span class="co">#&gt;  3 ABBY_001.tickPlot.tck   ABBY   ABBY_0…     45.8     -122.      298. evergree…</span>
-<span class="co">#&gt;  4 ABBY_002.basePlot.bet   ABBY   ABBY_0…     45.7     -122.      638. grasslan…</span>
-<span class="co">#&gt;  5 ABBY_002.basePlot.brd   ABBY   ABBY_0…     45.7     -122.      638. grasslan…</span>
-<span class="co">#&gt;  6 ABBY_002.basePlot.div   ABBY   ABBY_0…     45.7     -122.      638. grasslan…</span>
-<span class="co">#&gt;  7 ABBY_002.mammalGrid.mam ABBY   ABBY_0…     45.7     -122.      624. grasslan…</span>
-<span class="co">#&gt;  8 ABBY_002.tickPlot.tck   ABBY   ABBY_0…     45.7     -122.      651. grasslan…</span>
-<span class="co">#&gt;  9 ABBY_003.basePlot.bet   ABBY   ABBY_0…     45.8     -122.      602. evergree…</span>
-<span class="co">#&gt; 10 ABBY_003.basePlot.brd   ABBY   ABBY_0…     45.8     -122.      602. evergree…</span>
-<span class="co">#&gt; # … with 4,249 more rows, and 1 more variable: aquaticSiteType &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_algae.html">data_algae</a></span>
-<span class="co">#&gt; # A tibble: 114,340 × 25</span>
-<span class="co">#&gt;    location_id   siteID unique_sample_id observation_dateti… taxon_id taxon_name</span>
-<span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;              &lt;chr&gt;    &lt;chr&gt;     </span>
-<span class="co">#&gt;  1 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Nitzschia…</span>
-<span class="co">#&gt;  2 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Eunotia m…</span>
-<span class="co">#&gt;  3 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Psammothi…</span>
-<span class="co">#&gt;  4 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Achnanthi…</span>
-<span class="co">#&gt;  5 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Gomphonem…</span>
-<span class="co">#&gt;  6 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Planothid…</span>
-<span class="co">#&gt;  7 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Stauronei…</span>
-<span class="co">#&gt;  8 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Staurosir…</span>
-<span class="co">#&gt;  9 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Achnanthi…</span>
-<span class="co">#&gt; 10 HOPB.AOS.rea… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00 NEONDRE… Nitzschia…</span>
-<span class="co">#&gt; # … with 114,330 more rows, and 19 more variables: taxon_rank &lt;chr&gt;,</span>
-<span class="co">#&gt; #   variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;, sampleCondition &lt;chr&gt;,</span>
-<span class="co">#&gt; #   perBottleSampleVolume &lt;chr&gt;, release &lt;chr&gt;, habitatType &lt;chr&gt;,</span>
-<span class="co">#&gt; #   algalSampleType &lt;chr&gt;, benthicArea &lt;chr&gt;, samplingProtocolVersion &lt;chr&gt;,</span>
-<span class="co">#&gt; #   substratumSizeClass &lt;chr&gt;, samplerType &lt;chr&gt;, phytoDepth1 &lt;chr&gt;,</span>
-<span class="co">#&gt; #   phytoDepth2 &lt;chr&gt;, phytoDepth3 &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   elevation &lt;dbl&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_beetle.html">data_beetle</a></span>
-<span class="co">#&gt; # A tibble: 71,660 × 22</span>
-<span class="co">#&gt;    location_id         siteID plotID unique_sample_id trapID observation_dateti…</span>
-<span class="co">#&gt;    &lt;chr&gt;               &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;  &lt;dttm&gt;             </span>
-<span class="co">#&gt;  1 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-13 00:00:00</span>
-<span class="co">#&gt;  2 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-13 00:00:00</span>
-<span class="co">#&gt;  3 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-27 00:00:00</span>
-<span class="co">#&gt;  4 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-17 00:00:00</span>
-<span class="co">#&gt;  5 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-31 00:00:00</span>
-<span class="co">#&gt;  6 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-31 00:00:00</span>
-<span class="co">#&gt;  7 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-14 00:00:00</span>
-<span class="co">#&gt;  8 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-14 00:00:00</span>
-<span class="co">#&gt;  9 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-28 00:00:00</span>
-<span class="co">#&gt; 10 ABBY_002.basePlot.… ABBY   ABBY_… ABBY_002.E.2018… E      2018-05-01 00:00:00</span>
-<span class="co">#&gt; # … with 71,650 more rows, and 16 more variables: taxon_id &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   unit &lt;chr&gt;, boutID &lt;chr&gt;, nativeStatusCode &lt;chr&gt;, release &lt;chr&gt;,</span>
-<span class="co">#&gt; #   remarks &lt;chr&gt;, samplingProtocolVersion &lt;chr&gt;, trappingDays &lt;chr&gt;,</span>
-<span class="co">#&gt; #   latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, nlcdClass &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_bird.html">data_bird</a></span>
-<span class="co">#&gt; # A tibble: 226,804 × 35</span>
-<span class="co">#&gt;    location_id        siteID plotID pointID unique_sample_id observation_dateti…</span>
-<span class="co">#&gt;    &lt;chr&gt;              &lt;chr&gt;  &lt;chr&gt;  &lt;list&gt;  &lt;chr&gt;            &lt;dttm&gt;             </span>
-<span class="co">#&gt;  1 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.C1.201… 2015-06-14 09:23:00</span>
-<span class="co">#&gt;  2 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.C1.201… 2015-06-14 09:23:00</span>
-<span class="co">#&gt;  3 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.C1.201… 2015-06-14 09:23:00</span>
-<span class="co">#&gt;  4 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.C1.201… 2015-06-14 09:23:00</span>
-<span class="co">#&gt;  5 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.C1.201… 2015-06-14 09:23:00</span>
-<span class="co">#&gt;  6 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.B1.201… 2015-06-14 09:43:00</span>
-<span class="co">#&gt;  7 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.B1.201… 2015-06-14 09:43:00</span>
-<span class="co">#&gt;  8 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.B1.201… 2015-06-14 09:43:00</span>
-<span class="co">#&gt;  9 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.B1.201… 2015-06-14 09:43:00</span>
-<span class="co">#&gt; 10 BART_025.birdGrid… BART   BART_… &lt;chr&gt;   BART_025.A1.201… 2015-06-14 10:31:00</span>
-<span class="co">#&gt; # … with 226,794 more rows, and 29 more variables: taxon_id &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   unit &lt;chr&gt;, pointCountMinute &lt;list&gt;, targetTaxaPresent &lt;list&gt;,</span>
-<span class="co">#&gt; #   nativeStatusCode &lt;list&gt;, observerDistance &lt;list&gt;, detectionMethod &lt;list&gt;,</span>
-<span class="co">#&gt; #   visualConfirmation &lt;list&gt;, sexOrAge &lt;list&gt;, release &lt;list&gt;,</span>
-<span class="co">#&gt; #   startCloudCoverPercentage &lt;list&gt;, endCloudCoverPercentage &lt;list&gt;,</span>
-<span class="co">#&gt; #   startRH &lt;list&gt;, endRH &lt;list&gt;, observedHabitat &lt;list&gt;, …</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_fish.html">data_fish</a></span>
-<span class="co">#&gt; # A tibble: 6,639 × 29</span>
-<span class="co">#&gt;    location_id      siteID pointID unique_sample_id observation_dateti… taxon_id</span>
-<span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;            &lt;dttm&gt;              &lt;chr&gt;   </span>
-<span class="co">#&gt;  1 HOPB.AOS.fish.p… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00 RHIATR  </span>
-<span class="co">#&gt;  2 HOPB.AOS.fish.p… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00 SALTRU  </span>
-<span class="co">#&gt;  3 HOPB.AOS.fish.p… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00 SALFON  </span>
-<span class="co">#&gt;  4 HOPB.AOS.fish.p… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00 RHIATR  </span>
-<span class="co">#&gt;  5 HOPB.AOS.fish.p… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00 SALTRU  </span>
-<span class="co">#&gt;  6 HOPB.AOS.fish.p… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00 SALFON  </span>
-<span class="co">#&gt;  7 HOPB.AOS.fish.p… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00 SEMATR  </span>
-<span class="co">#&gt;  8 HOPB.AOS.fish.p… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00 RHIATR  </span>
-<span class="co">#&gt;  9 HOPB.AOS.fish.p… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00 SALFON  </span>
-<span class="co">#&gt; 10 HOPB.AOS.fish.p… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00 SEMATR  </span>
-<span class="co">#&gt; # … with 6,629 more rows, and 23 more variables: taxon_name &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;,</span>
-<span class="co">#&gt; #   reachID &lt;chr&gt;, samplerType &lt;chr&gt;, fixedRandomReach &lt;chr&gt;,</span>
-<span class="co">#&gt; #   measuredReachLength &lt;chr&gt;, efTime &lt;chr&gt;, passStartTime &lt;chr&gt;,</span>
-<span class="co">#&gt; #   passEndTime &lt;chr&gt;, mean_efishtime &lt;chr&gt;, release &lt;chr&gt;, netSetTime &lt;chr&gt;,</span>
-<span class="co">#&gt; #   netEndTime &lt;chr&gt;, netDeploymentTime &lt;chr&gt;, netLength &lt;chr&gt;, netDepth &lt;chr&gt;,</span>
-<span class="co">#&gt; #   efTime2 &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_herp_bycatch.html">data_herp_bycatch</a></span>
-<span class="co">#&gt; # A tibble: 2,732 × 22</span>
-<span class="co">#&gt;    location_id         siteID plotID unique_sample_id trapID observation_dateti…</span>
-<span class="co">#&gt;    &lt;chr&gt;               &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;  &lt;dttm&gt;             </span>
-<span class="co">#&gt;  1 BART_066.basePlot.… BART   BART_… BART_066.E.2014… E      2014-06-12 00:00:00</span>
-<span class="co">#&gt;  2 BART_002.basePlot.… BART   BART_… BART_002.W.2014… W      2014-06-12 00:00:00</span>
-<span class="co">#&gt;  3 BART_028.basePlot.… BART   BART_… BART_028.W.2014… W      2014-06-12 00:00:00</span>
-<span class="co">#&gt;  4 BART_066.basePlot.… BART   BART_… BART_066.N.2014… N      2014-06-26 00:00:00</span>
-<span class="co">#&gt;  5 BART_031.basePlot.… BART   BART_… BART_031.E.2014… E      2014-06-26 00:00:00</span>
-<span class="co">#&gt;  6 BART_068.basePlot.… BART   BART_… BART_068.W.2014… W      2014-06-26 00:00:00</span>
-<span class="co">#&gt;  7 BART_028.basePlot.… BART   BART_… BART_028.N.2014… N      2014-07-10 00:00:00</span>
-<span class="co">#&gt;  8 BART_002.basePlot.… BART   BART_… BART_002.N.2014… N      2014-07-10 00:00:00</span>
-<span class="co">#&gt;  9 BART_031.basePlot.… BART   BART_… BART_031.S.2014… S      2014-07-10 00:00:00</span>
-<span class="co">#&gt; 10 BART_068.basePlot.… BART   BART_… BART_068.E.2014… E      2014-07-24 00:00:00</span>
-<span class="co">#&gt; # … with 2,722 more rows, and 16 more variables: taxon_id &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   unit &lt;chr&gt;, trappingDays &lt;chr&gt;, release &lt;chr&gt;, nativeStatusCode &lt;chr&gt;,</span>
-<span class="co">#&gt; #   remarksSorting &lt;chr&gt;, remarksFielddata &lt;chr&gt;, latitude &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, plotType &lt;chr&gt;, nlcdClass &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_macroinvertebrate.html">data_macroinvertebrate</a></span>
-<span class="co">#&gt; # A tibble: 106,641 × 25</span>
-<span class="co">#&gt;    location_id   siteID unique_sample_id observation_dateti… taxon_id taxon_name</span>
-<span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;              &lt;chr&gt;    &lt;chr&gt;     </span>
-<span class="co">#&gt;  1 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 ABLSP    Ablabesmy…</span>
-<span class="co">#&gt;  2 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 BAESP    Baetidae …</span>
-<span class="co">#&gt;  3 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 CAESP5   Caenis sp.</span>
-<span class="co">#&gt;  4 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 CALFLU   Callibaet…</span>
-<span class="co">#&gt;  5 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 CERSP18  Ceratopog…</span>
-<span class="co">#&gt;  6 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 CHISP2   Chironomi…</span>
-<span class="co">#&gt;  7 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 CHISP8   Chironomu…</span>
-<span class="co">#&gt;  8 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 CLISP3   Clinotany…</span>
-<span class="co">#&gt;  9 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 COESP    Coenagrio…</span>
-<span class="co">#&gt; 10 ARIK.AOS.rea… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00 CORSP4   Corixidae…</span>
-<span class="co">#&gt; # … with 106,631 more rows, and 19 more variables: taxon_rank &lt;chr&gt;,</span>
-<span class="co">#&gt; #   variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;, estimatedTotalCount &lt;chr&gt;,</span>
-<span class="co">#&gt; #   individualCount &lt;chr&gt;, subsamplePercent &lt;chr&gt;, release &lt;chr&gt;,</span>
-<span class="co">#&gt; #   benthicArea &lt;chr&gt;, habitatType &lt;chr&gt;, samplerType &lt;chr&gt;,</span>
-<span class="co">#&gt; #   substratumSizeClass &lt;chr&gt;, remarks &lt;chr&gt;, ponarDepth &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   snagLength &lt;dbl&gt;, snagDiameter &lt;dbl&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   elevation &lt;dbl&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_mosquito.html">data_mosquito</a></span>
-<span class="co">#&gt; # A tibble: 109,212 × 26</span>
-<span class="co">#&gt;    location_id     siteID unique_sample_id subsampleID observation_dat… taxon_id</span>
-<span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;       &lt;date&gt;           &lt;chr&gt;   </span>
-<span class="co">#&gt;  1 BART_059.mosqu… BART   BART_059.201406… BART_059.2… 2014-06-03       AEDCOM  </span>
-<span class="co">#&gt;  2 BART_059.mosqu… BART   BART_059.201406… BART_059.2… 2014-06-03       AEDABS  </span>
-<span class="co">#&gt;  3 BART_059.mosqu… BART   BART_059.201406… BART_059.2… 2014-06-03       AEDINT  </span>
-<span class="co">#&gt;  4 BART_058.mosqu… BART   BART_058.201406… BART_058.2… 2014-06-03       AEDINT  </span>
-<span class="co">#&gt;  5 BART_058.mosqu… BART   BART_058.201406… BART_058.2… 2014-06-03       AEDCOM  </span>
-<span class="co">#&gt;  6 BART_060.mosqu… BART   BART_060.201406… BART_060.2… 2014-06-03       AEDCOM  </span>
-<span class="co">#&gt;  7 BART_060.mosqu… BART   BART_060.201406… BART_060.2… 2014-06-03       AEDABS  </span>
-<span class="co">#&gt;  8 BART_060.mosqu… BART   BART_060.201406… BART_060.2… 2014-06-03       AEDINT  </span>
-<span class="co">#&gt;  9 BART_054.mosqu… BART   BART_054.201406… BART_054.2… 2014-06-03       AEDCOM  </span>
-<span class="co">#&gt; 10 BART_054.mosqu… BART   BART_054.201406… BART_054.2… 2014-06-03       AEDINT  </span>
-<span class="co">#&gt; # … with 109,202 more rows, and 20 more variables: taxon_name &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;,</span>
-<span class="co">#&gt; #   nativeStatusCode &lt;chr&gt;, release &lt;chr&gt;, remarks_sorting &lt;chr&gt;,</span>
-<span class="co">#&gt; #   samplingProtocolVersion &lt;chr&gt;, sex &lt;chr&gt;, sortDate &lt;chr&gt;,</span>
-<span class="co">#&gt; #   subsampleWeight &lt;chr&gt;, totalWeight &lt;chr&gt;, trapHours &lt;chr&gt;,</span>
-<span class="co">#&gt; #   weightBelowDetection &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   elevation &lt;dbl&gt;, nlcdClass &lt;chr&gt;, plotType &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_plant.html">data_plant</a></span>
-<span class="co">#&gt; # A tibble: 1,034,093 × 26</span>
-<span class="co">#&gt;    location_id siteID plotID unique_sample_id subplotID subplot_id subsubplot_id</span>
-<span class="co">#&gt;    &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;        </span>
-<span class="co">#&gt;  1 BART_006.b… BART   BART_… BART_006.basePl… 31.4.1    31         4            </span>
-<span class="co">#&gt;  2 BART_006.b… BART   BART_… BART_006.basePl… 31.4.1    31         4            </span>
-<span class="co">#&gt;  3 BART_006.b… BART   BART_… BART_006.basePl… 41.1.1    41         1            </span>
-<span class="co">#&gt;  4 BART_006.b… BART   BART_… BART_006.basePl… 41.4.1    41         4            </span>
-<span class="co">#&gt;  5 BART_006.b… BART   BART_… BART_006.basePl… 41.4.1    41         4            </span>
-<span class="co">#&gt;  6 BART_006.b… BART   BART_… BART_006.basePl… 41.4.1    41         4            </span>
-<span class="co">#&gt;  7 BART_006.b… BART   BART_… BART_006.basePl… 32.2.1    32         2            </span>
-<span class="co">#&gt;  8 BART_006.b… BART   BART_… BART_006.basePl… 41.1.1    41         1            </span>
-<span class="co">#&gt;  9 BART_006.b… BART   BART_… BART_006.basePl… 32.4.1    32         4            </span>
-<span class="co">#&gt; 10 BART_006.b… BART   BART_… BART_006.basePl… 32.4.1    32         4            </span>
-<span class="co">#&gt; # … with 1,034,083 more rows, and 19 more variables:</span>
-<span class="co">#&gt; #   observation_datetime &lt;dttm&gt;, taxon_id &lt;chr&gt;, taxon_name &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;,</span>
-<span class="co">#&gt; #   presence_absence &lt;dbl&gt;, boutNumber &lt;chr&gt;, nativeStatusCode &lt;chr&gt;,</span>
-<span class="co">#&gt; #   heightPlantOver300cm &lt;chr&gt;, heightPlantSpecies &lt;chr&gt;, release &lt;chr&gt;,</span>
-<span class="co">#&gt; #   sample_area_m2 &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   plotType &lt;chr&gt;, nlcdClass &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_small_mammal.html">data_small_mammal</a></span>
-<span class="co">#&gt; # A tibble: 17,279 × 22</span>
-<span class="co">#&gt;    location_id          siteID plotID unique_sample_id observation_dat… taxon_id</span>
-<span class="co">#&gt;    &lt;chr&gt;                &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;date&gt;           &lt;chr&gt;   </span>
-<span class="co">#&gt;  1 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27       MIOR    </span>
-<span class="co">#&gt;  2 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27       PEKE    </span>
-<span class="co">#&gt;  3 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27       PEMA    </span>
-<span class="co">#&gt;  4 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27       SOMO    </span>
-<span class="co">#&gt;  5 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23       MIOR    </span>
-<span class="co">#&gt;  6 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23       PEMA    </span>
-<span class="co">#&gt;  7 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23       SOMO    </span>
-<span class="co">#&gt;  8 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23       SOSP    </span>
-<span class="co">#&gt;  9 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23       SOTR    </span>
-<span class="co">#&gt; 10 ABBY_002.mammalGrid… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23       SOVA    </span>
-<span class="co">#&gt; # … with 17,269 more rows, and 16 more variables: taxon_name &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;, year &lt;chr&gt;,</span>
-<span class="co">#&gt; #   month &lt;chr&gt;, n_trap_nights_per_bout_per_plot &lt;chr&gt;,</span>
-<span class="co">#&gt; #   n_nights_per_bout &lt;chr&gt;, nativeStatusCode &lt;chr&gt;, release &lt;chr&gt;,</span>
-<span class="co">#&gt; #   latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, plotType &lt;chr&gt;,</span>
-<span class="co">#&gt; #   nlcdClass &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_tick.html">data_tick</a></span>
-<span class="co">#&gt; # A tibble: 357,235 × 22</span>
-<span class="co">#&gt;    location_id       siteID plotID unique_sample_id observation_dateti… taxon_id</span>
-<span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;              &lt;chr&gt;   </span>
-<span class="co">#&gt;  1 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 IXOSP   </span>
-<span class="co">#&gt;  2 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 IXOSCA  </span>
-<span class="co">#&gt;  3 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 AMBAME  </span>
-<span class="co">#&gt;  4 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 AMBSPP  </span>
-<span class="co">#&gt;  5 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 IXOSP2  </span>
-<span class="co">#&gt;  6 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 IXOANG  </span>
-<span class="co">#&gt;  7 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 IXOPAC  </span>
-<span class="co">#&gt;  8 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 DERVAR  </span>
-<span class="co">#&gt;  9 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 IXOSCA  </span>
-<span class="co">#&gt; 10 ABBY_001.tickPlo… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00 AMBAME  </span>
-<span class="co">#&gt; # … with 357,225 more rows, and 16 more variables: taxon_name &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;,</span>
-<span class="co">#&gt; #   LifeStage &lt;chr&gt;, release &lt;chr&gt;, remarks_field &lt;chr&gt;, samplingMethod &lt;chr&gt;,</span>
-<span class="co">#&gt; #   targetTaxaPresent &lt;chr&gt;, totalSampledArea &lt;chr&gt;, latitude &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, nlcdClass &lt;chr&gt;, plotType &lt;chr&gt;</span>
-<span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_tick_pathogen.html">data_tick_pathogen</a></span>
-<span class="co">#&gt; # A tibble: 8,490 × 21</span>
-<span class="co">#&gt;    location_id       siteID plotID unique_sample_id observation_dateti… taxon_id</span>
-<span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;              &lt;chr&gt;   </span>
-<span class="co">#&gt;  1 HARV_001.tickPlo… HARV   HARV_… HARV_001.tickPl… 2014-06-02 16:10:00 Borreli…</span>
-<span class="co">#&gt;  2 HARV_001.tickPlo… HARV   HARV_… HARV_001.tickPl… 2014-06-24 13:50:00 Borreli…</span>
-<span class="co">#&gt;  3 HARV_001.tickPlo… HARV   HARV_… HARV_001.tickPl… 2014-07-14 17:53:00 Borreli…</span>
-<span class="co">#&gt;  4 HARV_022.tickPlo… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00 Anaplas…</span>
-<span class="co">#&gt;  5 HARV_022.tickPlo… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00 Babesia…</span>
-<span class="co">#&gt;  6 HARV_022.tickPlo… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00 Borreli…</span>
-<span class="co">#&gt;  7 HARV_022.tickPlo… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00 Borreli…</span>
-<span class="co">#&gt;  8 HARV_022.tickPlo… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00 Borreli…</span>
-<span class="co">#&gt;  9 HARV_022.tickPlo… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00 Borreli…</span>
-<span class="co">#&gt; 10 HARV_022.tickPlo… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00 Ehrlich…</span>
-<span class="co">#&gt; # … with 8,480 more rows, and 15 more variables: taxon_name &lt;chr&gt;,</span>
-<span class="co">#&gt; #   taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;,</span>
-<span class="co">#&gt; #   lifeStage &lt;chr&gt;, testProtocolVersion &lt;chr&gt;, release &lt;chr&gt;, n_tests &lt;chr&gt;,</span>
-<span class="co">#&gt; #   n_positive_tests &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   nlcdClass &lt;chr&gt;, plotType &lt;chr&gt;</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/neon_sites.html">neon_sites</a></span></span>
+<span><span class="co">#&gt; # A tibble: 81 × 10</span></span>
+<span><span class="co">#&gt;    `Site Name`            siteID `Domain Name` domainID State Latitude Longitude</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                  &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 Little Rock Lake       LIRO   Great Lakes   D05      WI        46.0     -89.7</span></span>
+<span><span class="co">#&gt;  2 West St Louis Creek    WLOU   Southern Roc… D13      CO        39.9    -106. </span></span>
+<span><span class="co">#&gt;  3 Pu'u Maka'ala Natural… PUUM   Pacific Trop… D20      HI        19.6    -155. </span></span>
+<span><span class="co">#&gt;  4 Flint River            FLNT   Southeast     D03      GA        31.2     -84.4</span></span>
+<span><span class="co">#&gt;  5 McDiffett Creek        MCDI   Prairie Peni… D06      KS        38.9     -96.4</span></span>
+<span><span class="co">#&gt;  6 Lewis Run              LEWI   Mid-Atlantic  D02      VA        39.1     -78.0</span></span>
+<span><span class="co">#&gt;  7 Blue River             BLUE   Southern Pla… D11      OK        34.4     -96.6</span></span>
+<span><span class="co">#&gt;  8 Teakettle 2 Creek      TECR   Pacific Sout… D17      CA        37.0    -119. </span></span>
+<span><span class="co">#&gt;  9 Lower Hop Brook        HOPB   Northeast     D01      MA        42.5     -72.3</span></span>
+<span><span class="co">#&gt; 10 Martha Creek           MART   Pacific Nort… D16      WA        45.8    -122. </span></span>
+<span><span class="co">#&gt; # ℹ 71 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: `Site Type` &lt;chr&gt;, `Site Subtype` &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   `Site Host` &lt;chr&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/neon_taxa.html">neon_taxa</a></span></span>
+<span><span class="co">#&gt; # A tibble: 12,467 × 4</span></span>
+<span><span class="co">#&gt;    taxon_id       taxon_name                              taxon_rank taxon_group</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;                                   &lt;chr&gt;      &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt;  1 NEONDREX995034 Trachelomonas abrupta var. minor Defla… variety    ALGAE      </span></span>
+<span><span class="co">#&gt;  2 NEONDREX1010   Achnanthidium minutissimum (Kützing) C… species    ALGAE      </span></span>
+<span><span class="co">#&gt;  3 NEONDREX34030  Fragilaria vaucheriae (Kützing) Peters… species    ALGAE      </span></span>
+<span><span class="co">#&gt;  4 NEONDREX194005 Placoneis elginensis (Gregory) Cox      species    ALGAE      </span></span>
+<span><span class="co">#&gt;  5 BACILLARIOCSP  Bacillariophyceae sp.                   class      ALGAE      </span></span>
+<span><span class="co">#&gt;  6 NEONDREX189007 Rossithidium anastasiae (Kaczmarska) P… species    ALGAE      </span></span>
+<span><span class="co">#&gt;  7 NEONDREX212003 Chamaepinnularia evanida (Hustedt) Lan… species    ALGAE      </span></span>
+<span><span class="co">#&gt;  8 NEONDREX7075   Amphora copulata (Kützing) Schoeman et… species    ALGAE      </span></span>
+<span><span class="co">#&gt;  9 NEONDREX172006 Staurosira construens var. venter (Ehr… variety    ALGAE      </span></span>
+<span><span class="co">#&gt; 10 NEONDREX18013  Brachysira microcephala (Kützing) Comp… species    ALGAE      </span></span>
+<span><span class="co">#&gt; # ℹ 12,457 more rows</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/neon_location.html">neon_location</a></span></span>
+<span><span class="co">#&gt; # A tibble: 4,274 × 8</span></span>
+<span><span class="co">#&gt;    location_id             siteID plotID  latitude longitude elevation nlcdClass</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                   &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt;  1 ABBY_001.basePlot.brd   ABBY   ABBY_0…     45.8     -122.      303. evergree…</span></span>
+<span><span class="co">#&gt;  2 ABBY_001.basePlot.div   ABBY   ABBY_0…     45.8     -122.      303. evergree…</span></span>
+<span><span class="co">#&gt;  3 ABBY_001.tickPlot.tck   ABBY   ABBY_0…     45.8     -122.      298. evergree…</span></span>
+<span><span class="co">#&gt;  4 ABBY_002.basePlot.bet   ABBY   ABBY_0…     45.7     -122.      638. grasslan…</span></span>
+<span><span class="co">#&gt;  5 ABBY_002.basePlot.brd   ABBY   ABBY_0…     45.7     -122.      638. grasslan…</span></span>
+<span><span class="co">#&gt;  6 ABBY_002.basePlot.div   ABBY   ABBY_0…     45.7     -122.      638. grasslan…</span></span>
+<span><span class="co">#&gt;  7 ABBY_002.mammalGrid.mam ABBY   ABBY_0…     45.7     -122.      624. grasslan…</span></span>
+<span><span class="co">#&gt;  8 ABBY_002.tickPlot.tck   ABBY   ABBY_0…     45.7     -122.      651. grasslan…</span></span>
+<span><span class="co">#&gt;  9 ABBY_003.basePlot.bet   ABBY   ABBY_0…     45.8     -122.      602. evergree…</span></span>
+<span><span class="co">#&gt; 10 ABBY_003.basePlot.brd   ABBY   ABBY_0…     45.8     -122.      602. evergree…</span></span>
+<span><span class="co">#&gt; # ℹ 4,264 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: aquaticSiteType &lt;chr&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_algae.html">data_algae</a></span></span>
+<span><span class="co">#&gt; # A tibble: 110,273 × 25</span></span>
+<span><span class="co">#&gt;    location_id  siteID unique_sample_id observation_datetime taxon_id taxon_name</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;               &lt;chr&gt;    &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt;  1 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Trachelom…</span></span>
+<span><span class="co">#&gt;  2 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Achnanthi…</span></span>
+<span><span class="co">#&gt;  3 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Fragilari…</span></span>
+<span><span class="co">#&gt;  4 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Placoneis…</span></span>
+<span><span class="co">#&gt;  5 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  BACILLA… Bacillari…</span></span>
+<span><span class="co">#&gt;  6 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Rossithid…</span></span>
+<span><span class="co">#&gt;  7 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Chamaepin…</span></span>
+<span><span class="co">#&gt;  8 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Amphora c…</span></span>
+<span><span class="co">#&gt;  9 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Staurosir…</span></span>
+<span><span class="co">#&gt; 10 HOPB.AOS.re… HOPB   HOPB.20161005.E… 2016-10-05 10:45:00  NEONDRE… Brachysir…</span></span>
+<span><span class="co">#&gt; # ℹ 110,263 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 19 more variables: taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   unit &lt;chr&gt;, sampleCondition &lt;chr&gt;, perBottleSampleVolume &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   release &lt;chr&gt;, habitatType &lt;chr&gt;, algalSampleType &lt;chr&gt;, samplerType &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   benthicArea &lt;chr&gt;, samplingProtocolVersion &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   substratumSizeClass &lt;chr&gt;, phytoDepth1 &lt;chr&gt;, phytoDepth2 &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   phytoDepth3 &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_beetle.html">data_beetle</a></span></span>
+<span><span class="co">#&gt; # A tibble: 81,581 × 22</span></span>
+<span><span class="co">#&gt;    location_id        siteID plotID unique_sample_id trapID observation_datetime</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;              &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;  &lt;dttm&gt;              </span></span>
+<span><span class="co">#&gt;  1 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-13 00:00:00 </span></span>
+<span><span class="co">#&gt;  2 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-13 00:00:00 </span></span>
+<span><span class="co">#&gt;  3 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2016… E      2016-09-27 00:00:00 </span></span>
+<span><span class="co">#&gt;  4 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-17 00:00:00 </span></span>
+<span><span class="co">#&gt;  5 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-31 00:00:00 </span></span>
+<span><span class="co">#&gt;  6 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-05-31 00:00:00 </span></span>
+<span><span class="co">#&gt;  7 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-14 00:00:00 </span></span>
+<span><span class="co">#&gt;  8 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-14 00:00:00 </span></span>
+<span><span class="co">#&gt;  9 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2017… E      2017-06-28 00:00:00 </span></span>
+<span><span class="co">#&gt; 10 ABBY_002.basePlot… ABBY   ABBY_… ABBY_002.E.2018… E      2018-05-01 00:00:00 </span></span>
+<span><span class="co">#&gt; # ℹ 81,571 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 16 more variables: taxon_id &lt;chr&gt;, taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;, boutID &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   nativeStatusCode &lt;chr&gt;, release &lt;chr&gt;, remarks &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   samplingProtocolVersion &lt;chr&gt;, trappingDays &lt;chr&gt;, latitude &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, nlcdClass &lt;chr&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_bird.html">data_bird</a></span></span>
+<span><span class="co">#&gt; # A tibble: 264,617 × 35</span></span>
+<span><span class="co">#&gt;    location_id       siteID plotID pointID unique_sample_id observation_datetime</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;            &lt;dttm&gt;              </span></span>
+<span><span class="co">#&gt;  1 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 </span></span>
+<span><span class="co">#&gt;  2 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 </span></span>
+<span><span class="co">#&gt;  3 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 </span></span>
+<span><span class="co">#&gt;  4 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 </span></span>
+<span><span class="co">#&gt;  5 BART_025.birdGri… BART   BART_… 3       BART_025.3.2015… 2015-06-14 09:23:00 </span></span>
+<span><span class="co">#&gt;  6 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 </span></span>
+<span><span class="co">#&gt;  7 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 </span></span>
+<span><span class="co">#&gt;  8 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 </span></span>
+<span><span class="co">#&gt;  9 BART_025.birdGri… BART   BART_… 2       BART_025.2.2015… 2015-06-14 09:43:00 </span></span>
+<span><span class="co">#&gt; 10 BART_025.birdGri… BART   BART_… 1       BART_025.1.2015… 2015-06-14 10:31:00 </span></span>
+<span><span class="co">#&gt; # ℹ 264,607 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 29 more variables: taxon_id &lt;chr&gt;, taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;, pointCountMinute &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   targetTaxaPresent &lt;chr&gt;, nativeStatusCode &lt;chr&gt;, observerDistance &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   detectionMethod &lt;chr&gt;, visualConfirmation &lt;chr&gt;, sexOrAge &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   release &lt;chr&gt;, startCloudCoverPercentage &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   endCloudCoverPercentage &lt;chr&gt;, startRH &lt;chr&gt;, endRH &lt;chr&gt;, …</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_fish.html">data_fish</a></span></span>
+<span><span class="co">#&gt; # A tibble: 6,566 × 27</span></span>
+<span><span class="co">#&gt;    location_id     siteID pointID unique_sample_id observation_datetime taxon_id</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;            &lt;dttm&gt;               &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt;  1 HOPB.AOS.fish.… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00  RHIATR  </span></span>
+<span><span class="co">#&gt;  2 HOPB.AOS.fish.… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00  SALTRU  </span></span>
+<span><span class="co">#&gt;  3 HOPB.AOS.fish.… HOPB   point.… HOPB.20170501.0… 2017-05-01 00:00:00  SALFON  </span></span>
+<span><span class="co">#&gt;  4 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  RHIATR  </span></span>
+<span><span class="co">#&gt;  5 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  SALTRU  </span></span>
+<span><span class="co">#&gt;  6 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  SALFON  </span></span>
+<span><span class="co">#&gt;  7 HOPB.AOS.fish.… HOPB   point.… HOPB.20171023.0… 2017-10-23 00:00:00  SEMATR  </span></span>
+<span><span class="co">#&gt;  8 HOPB.AOS.fish.… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00  RHIATR  </span></span>
+<span><span class="co">#&gt;  9 HOPB.AOS.fish.… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00  SALFON  </span></span>
+<span><span class="co">#&gt; 10 HOPB.AOS.fish.… HOPB   point.… HOPB.20190506.0… 2019-05-06 00:00:00  SEMATR  </span></span>
+<span><span class="co">#&gt; # ℹ 6,556 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 21 more variables: taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   value &lt;dbl&gt;, unit &lt;chr&gt;, reachID &lt;chr&gt;, samplerType &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   fixedRandomReach &lt;chr&gt;, measuredReachLength &lt;chr&gt;, efTime &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   mean_efishtime &lt;dbl&gt;, release &lt;chr&gt;, netSetTime &lt;chr&gt;, netEndTime &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   netDeploymentTime &lt;chr&gt;, netLength &lt;chr&gt;, netDepth &lt;chr&gt;, efTime2 &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_herp_bycatch.html">data_herp_bycatch</a></span></span>
+<span><span class="co">#&gt; # A tibble: 2,766 × 22</span></span>
+<span><span class="co">#&gt;    location_id        siteID plotID unique_sample_id trapID observation_datetime</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;              &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;  &lt;dttm&gt;              </span></span>
+<span><span class="co">#&gt;  1 BART_002.basePlot… BART   BART_… BART_002.W.2014… W      2014-06-12 00:00:00 </span></span>
+<span><span class="co">#&gt;  2 BART_028.basePlot… BART   BART_… BART_028.W.2014… W      2014-06-12 00:00:00 </span></span>
+<span><span class="co">#&gt;  3 BART_066.basePlot… BART   BART_… BART_066.E.2014… E      2014-06-12 00:00:00 </span></span>
+<span><span class="co">#&gt;  4 BART_031.basePlot… BART   BART_… BART_031.E.2014… E      2014-06-26 00:00:00 </span></span>
+<span><span class="co">#&gt;  5 BART_066.basePlot… BART   BART_… BART_066.N.2014… N      2014-06-26 00:00:00 </span></span>
+<span><span class="co">#&gt;  6 BART_068.basePlot… BART   BART_… BART_068.W.2014… W      2014-06-26 00:00:00 </span></span>
+<span><span class="co">#&gt;  7 BART_002.basePlot… BART   BART_… BART_002.N.2014… N      2014-07-10 00:00:00 </span></span>
+<span><span class="co">#&gt;  8 BART_031.basePlot… BART   BART_… BART_031.S.2014… S      2014-07-10 00:00:00 </span></span>
+<span><span class="co">#&gt;  9 BART_028.basePlot… BART   BART_… BART_028.N.2014… N      2014-07-10 00:00:00 </span></span>
+<span><span class="co">#&gt; 10 BART_031.basePlot… BART   BART_… BART_031.N.2014… N      2014-07-24 00:00:00 </span></span>
+<span><span class="co">#&gt; # ℹ 2,756 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 16 more variables: taxon_id &lt;chr&gt;, taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   variable_name &lt;chr&gt;, value &lt;dbl&gt;, unit &lt;chr&gt;, trappingDays &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   release &lt;chr&gt;, nativeStatusCode &lt;chr&gt;, remarksSorting &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   remarksFielddata &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   plotType &lt;chr&gt;, nlcdClass &lt;chr&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_macroinvertebrate.html">data_macroinvertebrate</a></span></span>
+<span><span class="co">#&gt; # A tibble: 117,383 × 25</span></span>
+<span><span class="co">#&gt;    location_id  siteID unique_sample_id observation_datetime taxon_id taxon_name</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;               &lt;chr&gt;    &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt;  1 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  ABLSP    Ablabesmy…</span></span>
+<span><span class="co">#&gt;  2 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  BAESP    Baetidae …</span></span>
+<span><span class="co">#&gt;  3 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CAESP5   Caenis sp.</span></span>
+<span><span class="co">#&gt;  4 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CALFLU   Callibaet…</span></span>
+<span><span class="co">#&gt;  5 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CERSP18  Ceratopog…</span></span>
+<span><span class="co">#&gt;  6 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CHISP2   Chironomi…</span></span>
+<span><span class="co">#&gt;  7 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CHISP8   Chironomu…</span></span>
+<span><span class="co">#&gt;  8 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CLISP3   Clinotany…</span></span>
+<span><span class="co">#&gt;  9 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  COESP    Coenagrio…</span></span>
+<span><span class="co">#&gt; 10 ARIK.AOS.re… ARIK   ARIK.20140714.C… 2014-07-14 17:51:00  CORSP4   Corixidae…</span></span>
+<span><span class="co">#&gt; # ℹ 117,373 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 19 more variables: taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   unit &lt;chr&gt;, estimatedTotalCount &lt;chr&gt;, individualCount &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   subsamplePercent &lt;chr&gt;, release &lt;chr&gt;, benthicArea &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   habitatType &lt;chr&gt;, samplerType &lt;chr&gt;, substratumSizeClass &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   remarks &lt;chr&gt;, ponarDepth &lt;dbl&gt;, snagLength &lt;dbl&gt;, snagDiameter &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_mosquito.html">data_mosquito</a></span></span>
+<span><span class="co">#&gt; # A tibble: 135,296 × 24</span></span>
+<span><span class="co">#&gt;    location_id siteID unique_sample_id subsampleID observation_datetime taxon_id</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;       &lt;date&gt;               &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt;  1 BART_059.m… BART   BART_059.201406… BART_059.2… 2014-06-03           AEDCOM  </span></span>
+<span><span class="co">#&gt;  2 BART_059.m… BART   BART_059.201406… BART_059.2… 2014-06-03           AEDINT  </span></span>
+<span><span class="co">#&gt;  3 BART_059.m… BART   BART_059.201406… BART_059.2… 2014-06-03           AEDABS  </span></span>
+<span><span class="co">#&gt;  4 BART_058.m… BART   BART_058.201406… BART_058.2… 2014-06-03           AEDCOM  </span></span>
+<span><span class="co">#&gt;  5 BART_058.m… BART   BART_058.201406… BART_058.2… 2014-06-03           AEDINT  </span></span>
+<span><span class="co">#&gt;  6 BART_060.m… BART   BART_060.201406… BART_060.2… 2014-06-03           AEDCOM  </span></span>
+<span><span class="co">#&gt;  7 BART_060.m… BART   BART_060.201406… BART_060.2… 2014-06-03           AEDABS  </span></span>
+<span><span class="co">#&gt;  8 BART_060.m… BART   BART_060.201406… BART_060.2… 2014-06-03           AEDINT  </span></span>
+<span><span class="co">#&gt;  9 BART_054.m… BART   BART_054.201406… BART_054.2… 2014-06-03           AEDCOM  </span></span>
+<span><span class="co">#&gt; 10 BART_054.m… BART   BART_054.201406… BART_054.2… 2014-06-03           AEDCAN2 </span></span>
+<span><span class="co">#&gt; # ℹ 135,286 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 18 more variables: taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   value &lt;dbl&gt;, unit &lt;chr&gt;, nativeStatusCode &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   proportionIdentified &lt;chr&gt;, release &lt;chr&gt;, remarks_sorting &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   samplingProtocolVersion &lt;chr&gt;, sex &lt;chr&gt;, sortDate &lt;chr&gt;, trapHours &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, nlcdClass &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   plotType &lt;chr&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_plant.html">data_plant</a></span></span>
+<span><span class="co">#&gt; # A tibble: 1,148,221 × 26</span></span>
+<span><span class="co">#&gt;    location_id siteID plotID unique_sample_id subplotID subplot_id subsubplot_id</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;        </span></span>
+<span><span class="co">#&gt;  1 BART_006.b… BART   BART_… BART_006.basePl… 40_1_3    40         1            </span></span>
+<span><span class="co">#&gt;  2 BART_006.b… BART   BART_… BART_006.basePl… 40_1_1    40         1            </span></span>
+<span><span class="co">#&gt;  3 BART_006.b… BART   BART_… BART_006.basePl… 40_1_3    40         1            </span></span>
+<span><span class="co">#&gt;  4 BART_006.b… BART   BART_… BART_006.basePl… 40_1_1    40         1            </span></span>
+<span><span class="co">#&gt;  5 BART_006.b… BART   BART_… BART_006.basePl… 41_1_1    41         1            </span></span>
+<span><span class="co">#&gt;  6 BART_006.b… BART   BART_… BART_006.basePl… 31_1_4    31         1            </span></span>
+<span><span class="co">#&gt;  7 BART_006.b… BART   BART_… BART_006.basePl… 31_1_4    31         1            </span></span>
+<span><span class="co">#&gt;  8 BART_006.b… BART   BART_… BART_006.basePl… 41_1_4    41         1            </span></span>
+<span><span class="co">#&gt;  9 BART_006.b… BART   BART_… BART_006.basePl… 32_1_2    32         1            </span></span>
+<span><span class="co">#&gt; 10 BART_006.b… BART   BART_… BART_006.basePl… 41_1_1    41         1            </span></span>
+<span><span class="co">#&gt; # ℹ 1,148,211 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 19 more variables: observation_datetime &lt;dttm&gt;, taxon_id &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;, value &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   unit &lt;chr&gt;, presence_absence &lt;dbl&gt;, boutNumber &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   nativeStatusCode &lt;chr&gt;, heightPlantOver300cm &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   heightPlantSpecies &lt;chr&gt;, release &lt;chr&gt;, sample_area_m2 &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, plotType &lt;chr&gt;, …</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_small_mammal.html">data_small_mammal</a></span></span>
+<span><span class="co">#&gt; # A tibble: 19,098 × 22</span></span>
+<span><span class="co">#&gt;    location_id      siteID plotID unique_sample_id observation_datetime taxon_id</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;date&gt;               &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt;  1 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           MIOR    </span></span>
+<span><span class="co">#&gt;  2 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           PEKE    </span></span>
+<span><span class="co">#&gt;  3 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           PEMA    </span></span>
+<span><span class="co">#&gt;  4 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2016-08-27           SOMO    </span></span>
+<span><span class="co">#&gt;  5 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           MIOR    </span></span>
+<span><span class="co">#&gt;  6 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           PEMA    </span></span>
+<span><span class="co">#&gt;  7 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOMO    </span></span>
+<span><span class="co">#&gt;  8 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOSP    </span></span>
+<span><span class="co">#&gt;  9 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOTR    </span></span>
+<span><span class="co">#&gt; 10 ABBY_002.mammal… ABBY   ABBY_… ABBY_002.mammal… 2017-04-23           SOVA    </span></span>
+<span><span class="co">#&gt; # ℹ 19,088 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 16 more variables: taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   value &lt;dbl&gt;, unit &lt;chr&gt;, year &lt;chr&gt;, month &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   n_trap_nights_per_bout_per_plot &lt;chr&gt;, n_nights_per_bout &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   nativeStatusCode &lt;chr&gt;, release &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   elevation &lt;dbl&gt;, plotType &lt;chr&gt;, nlcdClass &lt;chr&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_tick.html">data_tick</a></span></span>
+<span><span class="co">#&gt; # A tibble: 426,465 × 22</span></span>
+<span><span class="co">#&gt;    location_id      siteID plotID unique_sample_id observation_datetime taxon_id</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;               &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt;  1 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSP   </span></span>
+<span><span class="co">#&gt;  2 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSCA  </span></span>
+<span><span class="co">#&gt;  3 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  AMBAME  </span></span>
+<span><span class="co">#&gt;  4 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  AMBSPP  </span></span>
+<span><span class="co">#&gt;  5 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSP2  </span></span>
+<span><span class="co">#&gt;  6 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOANG  </span></span>
+<span><span class="co">#&gt;  7 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOPAC  </span></span>
+<span><span class="co">#&gt;  8 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  HAELEP  </span></span>
+<span><span class="co">#&gt;  9 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  DERVAR  </span></span>
+<span><span class="co">#&gt; 10 ABBY_001.tickPl… ABBY   ABBY_… ABBY_001_2016-0… 2016-09-22 18:12:00  IXOSCA  </span></span>
+<span><span class="co">#&gt; # ℹ 426,455 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 16 more variables: taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   value &lt;dbl&gt;, unit &lt;chr&gt;, LifeStage &lt;chr&gt;, release &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   remarks_field &lt;chr&gt;, samplingMethod &lt;chr&gt;, targetTaxaPresent &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   totalSampledArea &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, elevation &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   nlcdClass &lt;chr&gt;, plotType &lt;chr&gt;</span></span>
+<span><span class="fu">neonDivData</span><span class="fu">::</span><span class="va"><a href="reference/data_tick_pathogen.html">data_tick_pathogen</a></span></span>
+<span><span class="co">#&gt; # A tibble: 12,190 × 21</span></span>
+<span><span class="co">#&gt;    location_id      siteID plotID unique_sample_id observation_datetime taxon_id</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;            &lt;dttm&gt;               &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt;  1 HARV_001.tickPl… HARV   HARV_… HARV_001.tickPl… 2014-06-02 16:10:00  Borreli…</span></span>
+<span><span class="co">#&gt;  2 HARV_001.tickPl… HARV   HARV_… HARV_001.tickPl… 2014-06-24 13:50:00  Borreli…</span></span>
+<span><span class="co">#&gt;  3 HARV_001.tickPl… HARV   HARV_… HARV_001.tickPl… 2014-07-14 17:53:00  Borreli…</span></span>
+<span><span class="co">#&gt;  4 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Anaplas…</span></span>
+<span><span class="co">#&gt;  5 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Babesia…</span></span>
+<span><span class="co">#&gt;  6 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…</span></span>
+<span><span class="co">#&gt;  7 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…</span></span>
+<span><span class="co">#&gt;  8 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…</span></span>
+<span><span class="co">#&gt;  9 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Borreli…</span></span>
+<span><span class="co">#&gt; 10 HARV_022.tickPl… HARV   HARV_… HARV_022.tickPl… 2015-06-03 13:30:00  Ehrlich…</span></span>
+<span><span class="co">#&gt; # ℹ 12,180 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 15 more variables: taxon_name &lt;chr&gt;, taxon_rank &lt;chr&gt;, variable_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   value &lt;dbl&gt;, unit &lt;chr&gt;, lifeStage &lt;chr&gt;, testProtocolVersion &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   release &lt;chr&gt;, n_tests &lt;chr&gt;, n_positive_tests &lt;chr&gt;, latitude &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   longitude &lt;dbl&gt;, elevation &lt;dbl&gt;, nlcdClass &lt;chr&gt;, plotType &lt;chr&gt;</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
 <h1 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h1>
-<p>Contributions are welcome. You can provide comments and feedback or
-ask questions by filing an issue on Github <a href="https://github.com/daijiang/neonDivData/issues" class="external-link">here</a> or making
-pull requests.</p>
+<p>Contributions are welcome. You can provide comments and feedback or ask questions by filing an issue on Github <a href="https://github.com/daijiang/neonDivData/issues" class="external-link">here</a> or making pull requests.</p>
 </div>
 <div class="section level1">
 <h1 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h1>
-<p>Please note that the ‘neonDivData’ project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By
-contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the ‘neonDivData’ project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 
   </div>
@@ -673,18 +645,12 @@ contributing to this project, you agree to abide by its terms.</p>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Daijiang Li, Sydne Record, Eric Sokol, Matthew Bitters,
-Melissa Chen, Anny Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen,
-Marta Jarzyna, Michael Just, Jalene LaMontagne, Brett Melbourne, Wynne
-Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan
-Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah
-Thomsen, Phoebe Zarnetske.</p>
+<p>Developed by Daijiang Li, Sydne Record, Eric Sokol, Matthew Bitters, Melissa Chen, Anny Chung, Matthew Helmus, Ruvi Jaimes, Lara Jansen, Marta Jarzyna, Michael Just, Jalene LaMontagne, Brett Melbourne, Wynne Moss, Kari Norman, Stephanie Parker, Natalie Robinson, Bijan Seyednasrollah, Colin Smith, Sarah Spaulding, Thilina Surasinghe, Sarah Thomsen, Phoebe Zarnetske.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
