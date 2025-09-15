@@ -9,7 +9,10 @@
 
 if(!require(devtools)) install.packages("devtools")
 if(!require(tidyverse)) install.packages("tidyverse", dependencies = TRUE)
-if(!require(ecocomDP)) devtools::install_github("EDIorg/ecocomDP@master")
+if(!require(ecocomDP)) install.packages("ecocomDP")
+# # install.packages("remotes")
+# remotes::install_github("EDIorg/ecocomDP")
+# remotes::install_github("EDIorg/ecocomDP", ref = "development")
 
 library(ecocomDP)
 library(tidyverse)
@@ -25,6 +28,12 @@ if(!dir.exists(my_raw_dir)) dir.create(my_raw_dir)
 
 # get list of available NEON data products
 neon_ecocomdp_data_list <- ecocomDP::search_data("NEON")
+
+# remove by catch of herp data https://github.com/EDIorg/ecocomDP/issues/157 
+# no update for fish yet https://github.com/EDIorg/ecocomDP/issues/156 
+
+neon_ecocomdp_data_list = filter(neon_ecocomdp_data_list, !id %in% c("neon.ecocomdp.10022.001.002",
+                                                                    "neon.ecocomdp.20107.001.001"))
 
 # initialize log table
 data_set_log <- data.frame()
@@ -50,9 +59,9 @@ for(i in 1 : nrow(neon_ecocomdp_data_list)){
       # if already downloaded
       id_f = sort(grep(str_replace(str_replace(my_dp_id, "neon\\.ecocomdp", "DP1"), "\\.[0-9]{3}$", ""), 
                   list.files(my_raw_dir, full.names = T), value = T))
-      if(length(id_f) > 1){
+      if(length(id_f) > 0){
         id_f_keep = id_f[length(id_f)] # keep the latest version
-        file.remove(id_f[-length(id_f)]) # remove older versions
+        # file.remove(id_f[-length(id_f)]) # remove older versions
       }
       
       data_list_i <- read_data(
@@ -72,10 +81,10 @@ for(i in 1 : nrow(neon_ecocomdp_data_list)){
     if(length(data_list_i) > 0 && nrow(data_flat_i) > 0){
       
       release_info <- data_flat_i[,grepl("(?i)release", names(data_flat_i))] %>%
-        unlist() %>% unique() %>% paste(.,collapse = "|")
+        unlist() %>% unique() %>% paste(., collapse = "|")
       
       release_doi <- data_list_i$metadata$orig_NEON_data_product_info$releases$productDoi.url %>%
-        unique() %>% paste(.,collapse = "|")
+        unique() %>% paste(., collapse = "|")
       
       # get data set info for log
       data_set_log_i <- data.frame(
@@ -128,7 +137,7 @@ for(i in 1 : nrow(neon_ecocomdp_data_list)){
   })
   
   # indexing
-  message(paste0("Finished ",my_dp_id, " | ", i, " out of ", nrow(neon_ecocomdp_data_list)))
+  message(paste0("Finished ", my_dp_id, " | ", i, " out of ", nrow(neon_ecocomdp_data_list)))
 }
 
 
