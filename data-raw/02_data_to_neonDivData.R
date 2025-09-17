@@ -144,6 +144,11 @@ n_distinct(data_loc_df$location_id)
 tax_var = c("taxon_id", "taxon_name", "taxon_rank", "taxon_group")
 neon_taxa = lapply(data_all, function(x) dplyr::distinct(dplyr::select(x, all_of(tax_var))))
 neon_taxa = bind_rows(neon_taxa) %>% distinct()
+
+# it is possible that we lost taxa from current year to next year!!
+neon_taxa = bind_rows(neon_taxa, neonDivData::neon_taxa) |> 
+  distinct() |> arrange(taxon_group)
+
 usethis::use_data(neon_taxa, overwrite = TRUE)
 
 # Location info ----
@@ -216,6 +221,11 @@ neon_location[-which(neon_location$location_id == "SOAP_026.basePlot.brd" & is.n
 
 neon_location = distinct(neon_location)
 
+# it is possible that we lost plots from current year to next year!!
+neon_location = bind_rows(neon_location, neonDivData::neon_location) |> 
+  distinct() |> 
+  group_by(location_id) |> slice_head(n = 1) |> ungroup()
+
 usethis::use_data(neon_location, overwrite = TRUE)
 
 # decide to keep all location information in the observation data frames
@@ -280,8 +290,8 @@ map(data_all2, dim)
 data_algae = data_all2[[grep(pattern = "ALGAE", x = names(data_all2))]]
 data_beetle = data_all2[[grep(pattern = "BEETLE", x = names(data_all2))]]
 data_bird = data_all2[[grep(pattern = "BIRD", x = names(data_all2))]]
-data_fish = data_all2[[grep(pattern = "FISH", x = names(data_all2))]]
-data_herp_bycatch = data_all2[[grep(pattern = "HERPTILE", x = names(data_all2))]]
+# data_fish = data_all2[[grep(pattern = "FISH", x = names(data_all2))]]
+# data_herp_bycatch = data_all2[[grep(pattern = "HERPTILE", x = names(data_all2))]]
 data_macroinvertebrate = data_all2[[grep(pattern = "MACROINVERTEBRATE", x = names(data_all2))]]
 data_mosquito = data_all2[[grep(pattern = "MOSQUITOE", x = names(data_all2))]]
 data_plant = data_all2[[grep(pattern = "PLANT", x = names(data_all2))]]
