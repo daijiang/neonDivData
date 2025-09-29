@@ -341,6 +341,10 @@ data_plant = mutate(data_plant,
   relocate(subplot_id, subsubplot_id, .after = subplotID) %>%
   relocate(presence_absence, .after = unit)
 
+data_plant = mutate(data_plant, sample_area_m2 = str_extract(subplotID, "_[0-9]+_?"),
+                    sample_area_m2 = str_remove_all(sample_area_m2, "_"),
+                    sample_area_m2 = as.integer(sample_area_m2))
+
 data_small_mammal
 
 # data_tick = select(data_tick, -neon_sample_id) # just plotID + date
