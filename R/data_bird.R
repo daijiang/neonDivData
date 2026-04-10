@@ -2,7 +2,7 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10003.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10003.001>.
 #'
-#' The bird data provided by NEON is already well organized. We only removed some columns that likely won't be used in biodiversity studies. These columns include: 'identifiedBy', 'measuredBy', 'laboratoryName', 'samplingImpractical', 'samplingImpracticalRemarks', 'publicationDate', 'technicianID', 'observerInstitutionName', 'evaluationMethod', and 'evaluationScore'. If any of these information is important for the specific question asked by users, they should modify our code accordingly or download the raw data from NEON data portal directly. We also removed records without 'taxon_id'.
+#' The bird data provided by NEON is already well organized. We only removed some columns that likely won't be used in biodiversity studies. These columns include: 'identifiedBy', 'measuredBy', 'laboratoryName', 'samplingImpractical', 'samplingImpracticalRemarks', 'publicationDate', 'technicianID', 'observerInstitutionName', 'evaluationMethod', and 'evaluationScore'. If any of these information is important for the specific question asked by users, they should modify our code accordingly or download the raw data from NEON data portal directly. We retained records without a 'taxon_id' (where `value` is `NA`) to preserve sampling effort for surveys where no birds were observed.
 #'
 #' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]). The sampling protocol has evolved over time, so users are advised to check whether the `samplingProtocolVersion` fits their data requirements and subset as necessary.
 #'
@@ -15,7 +15,7 @@
 #' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
-#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
+#' - `taxon_name`:  Scientific name, associated with the taxonID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
 #' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
 #' - `variable_name`: The variable name(s) represented by the `value` column.
