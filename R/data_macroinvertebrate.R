@@ -1,31 +1,30 @@
-#' Macroinvertebrate data
+#' Aquatic macroinvertebrate density data
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.20120.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.20120.001>.
 #'
-#' Here, we:
-#' 1. Removed field samples that had logistical issues (`samplingImpractical`!="OK")
-#' 2. Removed duplicate records in the field data table
-#' 3. Used count data that were already corrected for subsampling at the external taxonomy lab (`estimatedTotalCount`)
-#' 4. Summed `estimatedTotalCount` by `scientificName` per `sampleID` in inv_taxonomyProcessed to collapse `sizeClass` and `lifeStage`
-#' 5. Calculated density by dividing `estimatedTotalCount` from the inv_taxonomyProcessed table by `benthicArea` from the `inv_fieldData` table to standardize density by area sampled
-#' 
-#' 
+#' To clean the data, we:
+#'
+#' 1. Deduplicated `inv_fieldData` by `sampleID` using `slice(1)` to guard against NEON's known aquatic duplicate metadata issue.
+#' 2. Filtered `inv_taxonomyProcessed` to `targetTaxaPresent == "Y"`; summed `estimatedTotalCount` and `individualCount` across size-class records sharing the same `sampleID` and `acceptedTaxonID`.
+#' 3. Inner-joined taxonomy to field data (inner join required because `benthicArea` is needed to compute density; records without field metadata are dropped).
+#' 4. Density = `estimatedTotalCount / benthicArea` (count per square meter).
+#'
 #' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #' @format A data frame (also a tibble) with the following columns:
 #'
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
-#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
+#' - `unique_sample_id`: Identity of unique samples (equals `sampleID`).
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
-#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
+#' - `taxon_name`: Scientific name, associated with the taxonID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
 #' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
 #' - `variable_name`: The variable name(s) represented by the `value` column.
-#' - `value`: Value of the variable(s) specified by `variable_name`.
+#' - `value`: Density (count per square meter).
 #' - `unit`: Unit of the values in the `value` column.
-#' - `estimatedTotalCount`: Estimated total count.
-#' - `individualCount`: Individual count.
+#' - `estimatedTotalCount`: Estimated total count (summed across size classes).
+#' - `individualCount`: Raw individual count (summed across size classes).
 #' - `subsamplePercent`: Percent of the total sample contained in the subsample.
 #' - `release`: Version of data release by NEON.
 #' - `benthicArea`: Area sampled (square meter).
@@ -34,8 +33,8 @@
 #' - `substratumSizeClass`: Size class of the substratum sampled.
 #' - `remarks`: Remarks of record.
 #' - `ponarDepth`: Depth (meter) of petite ponar sample.
-#' - `snagLength`: Length (centimeter) of snag sampled.
-#' - `snagDiameter`: Diameter (centimeter) of snag sampled.
+#' - `snagLength`: Length (meter) of snag sampled.
+#' - `snagDiameter`: Diameter (meter) of snag sampled.
 #' - `latitude`: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `longitude`: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 #' - `elevation`: Elevation (in meters) above sea level.

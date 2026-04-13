@@ -7,19 +7,18 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
-\item \code{location_id}: Location id.
+\item \code{location_id}: Location id (named location).
 \item \code{siteID}: NEON site code.
-\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}).
 \item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
-\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
-of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_id}: Accepted taxon code.
+\item \code{taxon_name}: Scientific name associated with the taxon ID.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
-\item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{value}: Density (count per liter).
+\item \code{unit}: Unit of the values in the \code{value} column (\code{"count per liter"}).
 \item \code{release}: Version of data release by NEON.
-\item \code{samplerType}:	Type of sampler used to collect the sample.
+\item \code{samplerType}: Type of sampler used to collect the sample.
 \item \code{towsTrapsVolume}: Sample volume (liter) collected for zooplankton.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
@@ -33,17 +32,18 @@ data_zooplankton
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.20219.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.20219.001}. Zooplankton are collected from the water column of lakes near NEON sensor infrastructure. The type of sampler used depends on the depth of water at the sampling location. Multiple tows or traps are collected at each location and composited into a single sample. Zooplankton sampling is quantitative and based on the volume of water collected during sampling.
 }
 \details{
-Here, we:
-\itemize{
-\item Only keep those with \code{sampleCondition} to be "condition OK" for the \code{zoo_taxonomyProcessed} table.
-\item Combined the \code{zoo_fieldData} and the \code{zoo_taxonomyProcessed}.
-\item Calculated zooplankton density as the ratio of \code{adjCountPerBottle} and \code{towsTrapsVolume}.
+To clean the data, we:
+\enumerate{
+\item Deduplicated \code{zoo_fieldData} by \code{sampleID} using \code{slice(1)} to guard against NEON's known aquatic duplicate metadata issue.
+\item Filtered \code{zoo_taxonomyProcessed} to \code{sampleCondition == "condition OK"} (case-insensitive); summed \code{adjCountPerBottle} across size-class measurement records sharing the same \code{sampleID} and \code{taxonID}. \code{adjCountPerBottle} is already corrected for subsampling by the laboratory.
+\item Inner-joined taxonomy to field data (inner join required because \code{towsTrapsVolume} is needed to compute density; records without field metadata are dropped).
+\item Density = \code{sum(adjCountPerBottle) / towsTrapsVolume} (count per liter), per user guide equation 2.
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
 }
 \author{
-Lara Jansen; Stephanie Parker
+Lara Jansen, Stephanie Parker
 }
 \keyword{datasets}

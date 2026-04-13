@@ -46,8 +46,13 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \details{
 To process data we:
 \enumerate{
-\item Remove all records that are designated as "dead", "escaped", or "nontarget".
-\item Remove all records designated as recaptures (i.e., only first captures are retained)
+\item Filter nights from \code{mam_perplotnight} where \code{samplingImpractical} is not \code{"OK"} (field added 2020; pre-2020 records without this field are retained).
+\item Compute trapping effort as the number of unique trap coordinates deployed per night-uid, summed across all valid nights within a bout per plot (\code{n_trap_nights_per_bout_per_plot}).
+\item Identify bouts using \code{eventID} from \code{mam_perplotnight}; fall back to year_month for records lacking an \code{eventID}.
+\item Retain only capture records with \code{trapStatus} \code{"5 - capture"} or \code{"4 - more than 1 capture in one trap"}, restricting to taxa identified to genus or finer rank.
+\item Resolve within-bout recaptures: tagged individuals (non-missing \code{tagID}) are counted once per bout; untagged individuals (missing \code{tagID}) are each treated as unique using their row identifier.
+\item Compute \code{value} as \code{100 * raw_count / n_trap_nights_per_bout_per_plot} (unique individuals per 100 trap nights per plot per month).
+\item Retain effort-only rows (bouts with no qualifying captures) with \code{taxon_id}, \code{taxon_name}, \code{taxon_rank}, and \code{value} set to \code{NA}.
 }
 }
 \note{

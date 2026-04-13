@@ -10,21 +10,21 @@ A data frame (also a tibble) with the following columns:
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{unique_sample_id}: Identity of unique samples (\code{plotID_collectDate}).
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
-\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+\item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{value}: Abundance (count per square meter).
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{LifeStage}: Life stage of the sample ('Adult', 'Larva', or 'Nymph').
+\item \code{LifeStage}: Life stage of the tick (\code{Larva}, \code{Nymph}, or \code{Adult}).
 \item \code{release}: Version of data release by NEON.
 \item \code{remarks_field}: Technician notes; free text comments accompanying the record.
 \item \code{samplingMethod}: Name or code for the method used to collect or test a sample.
 \item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
-\item \code{totalSampledArea}: Total area sampled (square Meter).
+\item \code{totalSampledArea}: Total area sampled (square meter).
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
@@ -39,23 +39,13 @@ data_tick
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10093.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10093.001}.
 }
 \details{
-Here, we:
+To clean the data, we:
 \enumerate{
-\item Removed field samples that had logistical issues (\code{samplingImpractical}!="OK")
-\item Removed field samples that had  were not counted yet (e.g. 2019 data) e.g. require non NA values in \code{adultCount}, \code{nymphCount}, and \code{larvaCount}
-\item Removed samples that had field counts but no associated taxonomy record, e.g. ticks were present in the field but there was no associated \code{sampleID} in the taxonomy (mostly 2019 records that haven't been ID'd yet). Also remove records in the taxonomy table that have no associated field data (\code{sampleID} present in taxonomy table but not field table). Records removed are mostly legacy.
-\item Removed any sample in the taxonomy dataset that did not have a \code{sampleCondition} of "OK", or has an NA in \code{identifiedDate} or \code{acceptedTaxonID}
-\item Removed samples in the taxonomy dataset that had \code{remarks} indicating a mis-identification. This included the following remarks: ("insect", "mite", "not a tick", "NOT A TICK", "arachnid", "spider").
-\item Created a \code{lifeStage} column: this was either Nymph, Larvae, or Adult. Any tick that was sexed (e.g. \code{sexOrAge} was Male or Female) was assigned to the Adult lifestage. The Nymph or Larvae assignments were taken from the \code{sexOrAge} column.
-\item Widened the taxonomy data so that each column is a unique taxonomicID_lifestage and each row is a sample. In doing so, we dropped the Sex information and summed M and F counts into a total adult count (i.e. we grouped by \code{sampleID}, \code{acceptedTaxonID}, and \code{lifeStage} and summed counts).
-\item Left-joined the tick field data to tick taxonomy data using the \code{sampleID}. This retains 0 counts from the field data which will not have a record in the taxonomy table.
-\item For any record where no ticks were found in the field (\code{targetTaxaPresent}=="N"), assigned 0s to all taxonomicID_lifestage columns.
-\item For records where ticks were mis-id'd (see step 5) and there are no tick counts, adjusted the field count to 0.
-\item Fixed count discrepancies between field and lab (note that as of 2019 counts may ONLY come from lab so this may not be necessary in future). Note that the lab count was used as the source of final counts per species-lifestage. When discrepancies were minor we trusted the lab counts. When discrepancies were larger, we used the following decisions:
-11a. In cases where the field count total was greater than the taxonomic count total AND the discrepancy was in the larval stages, we assumed the lab stopped ID'ing after a certain count. We added the additional, un-ID'd "field" larvae to \code{IXOSP2_Larva} (the highest taxonomic ID)
-11b. In other cases where field count was greater than the taxonomic count and there were \code{remarks_field} we assumed the remarks were about lost ticks (a common remark). We assigned any un-identified ticks to IXOSP2.
-11c. Some counts did not match because there were too many samples sent to the lab and the invoice limit was reached. If the taxonomy table contained remarks about "invoice limit" or "billing limit" for a given sample ID, we trusted the field counts and added any difference between field and lab counts to the IXOSP2 column. \emph{Note this was a conservative decision but one could reasonably assume that counts assigned to IXOSP2 would really belong to whatever lower order taxonomy was commonly ID'd for the remaining samples.}.
-11d. Removed any remaining samples where field and lab counts were off by >30\% and there was no obvious explanation.
+\item Mapped life stage from \code{tck_taxonomyProcessed} sex/age codes to \code{Larva}, \code{Nymph}, or \code{Adult}; rows with unmappable values are dropped.
+\item Aggregated taxonomy counts by \code{sampleID}, \code{acceptedTaxonID}, and \code{LifeStage}; concatenated \code{release} values.
+\item Applied the IXOSP2 reconciliation fix: when field counts (from \code{tck_fielddata}) exceed lab counts for a given life stage, the difference is assigned to Order Ixodida (\code{IXOSP2}, \code{"Ixodida sp."}) rather than using fragile string-matching.
+\item Left-joined downward from field effort to lab taxonomy to preserve empty drag events (\code{targetTaxaPresent == "N"}), which receive \code{individualCount = 0}.
+\item Abundance = \code{individualCount / totalSampledArea} (count per square meter); invalid or non-finite values are dropped except for empty drag rows.
 }
 }
 \note{

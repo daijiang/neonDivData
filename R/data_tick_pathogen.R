@@ -4,29 +4,28 @@
 #'
 #' To clean the data, we:
 #'
-#' 1. Removed samples with flagged quality checks
-#' 2. Removed samples with missing metadata (domain/site/plotID; Lat/Long; plotType; nlcdClass, elevation, collectDate, subsampleID, batchID, testingID, testPathogenName
-#' 3. Removed samples where sampleCondition!=“OK”
-#' 4. Removed samples where testResult==NA
-#' 5. Removed samples where HardTick DNA Quality (under testPathogenName) are not ‘Positive’, and then removed hardtack DNA and Ixodes pacificus tests.
-#' 6. Combined B. burgdeferi and B burgdeferi sensu lato into a single test pathogen type (B. burgedferi sensu lato)
+#' 1. Removed tests from batches that failed quality criteria (`criteriaMet != "Y"` in `tck_pathogenqa`).
+#' 2. Removed samples where `sampleCondition != "OK"` or `testResult` is `NA`.
+#' 3. Applied the DNA quality fix: identified ticks (`testingID`) whose `HardTick DNA Quality` test was not `"Positive"` and dropped all test rows for those ticks (not just the DNA quality row itself), because pathogen results from ticks with degraded DNA are unreliable.
+#' 4. Removed `HardTick DNA Quality` and `Ixodes pacificus` test rows; unified `"Borrelia burgdorferi"` into `"Borrelia burgdorferi sensu lato"`.
+#' 5. Extracted `lifeStage` from the last dot-delimited segment of `subsampleID`.
+#' 6. Aggregated to one row per location x date x pathogen x life stage: `value` = `n_positive_test / n_tests`.
 #'
 #' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #' @format A data frame (also a tibble) with the following columns:
 #'
-#' - `location_id`: Location id.
+#' - `location_id`: Location id (named location).
 #' - `siteID`: NEON site code.
-#' - `plotID`: Plot identifier (NEON site code_XXX).
-#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
+#' - `plotID`: Plot identifier.
+#' - `unique_sample_id`: Identity of unique samples (`namedLocation_collectDate`).
 #' - `observation_datetime`: Observation date and time.
-#' - `taxon_id`: Accepted species code, based on one or more sources.
-#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
-#'  of the lowest level taxonomic rank that can be determined.
-#' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
+#' - `taxon_id`: Pathogen name (standardized).
+#' - `taxon_name`: Pathogen name (same as `taxon_id`).
+#' - `taxon_rank`: Taxonomic rank inferred from name (`"genus"` for sp./spp. names, otherwise `"species"`).
 #' - `variable_name`: The variable name(s) represented by the `value` column.
-#' - `value`: Value of the variable(s) specified by `variable_name`.
-#' - `unit`: Unit of the values in the `value` column.
-#' - `lifeStage`: Life stage of the host (all Nymph).
+#' - `value`: Positivity rate (`n_positive_test / n_tests`).
+#' - `unit`: Unit of the values in the `value` column (`"positive tests per pathogen per sampling event"`).
+#' - `lifeStage`: Life stage of the host tick (extracted from `subsampleID`).
 #' - `testProtocolVersion`: The protocol version used to test the sample.
 #' - `release`: Version of data release by NEON.
 #' - `n_tests`: Number of tests conducted.

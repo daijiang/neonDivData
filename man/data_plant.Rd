@@ -34,6 +34,7 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{elevation}: Elevation (in meters) above sea level.
 \item \code{plotType}: NEON plot type in which sampling occurred: tower, distributed or gradient.
 \item \code{nlcdClass}: National Land Cover Database Vegetation Type Name.
+\item \code{release}: Version of data release by NEON.
 }
 }
 \source{

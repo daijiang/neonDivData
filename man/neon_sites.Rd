@@ -12,7 +12,7 @@ A data frame with the following columns:
 \item \verb{Domain Name}: Full domain name.
 \item \code{domainID}: Unique identifier of the NEON domain.
 \item \code{State}: The state name of the site locates in.
-\item \code{Latitude}: Latitide of the site  (in decimal degrees, WGS84).
+\item \code{Latitude}: Latitude of the site  (in decimal degrees, WGS84).
 \item \code{Longitude}: Longitude of the site (in decimal degrees, WGS84).
 \item \verb{Site Type}: The type of the site (e.g. Core Terrestrial).
 \item \verb{Site Subtype}: Second level site type, for aquatic sites only (e.g. Lake, Wadeable Stream, Non-wadeable River).
