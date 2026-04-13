@@ -2,14 +2,12 @@
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10043.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10043.001>.
 #'
-#' To clean the data and preserve sampling effort, we performed the following steps:
-#' 1. Extracted the `mos_trapping` table as the base dataset, filtering for records where traps were successfully deployed (`trapHours > 0`).
-#' 2. Downward joined the `mos_sorting` and `mos_expertTaxonomistIDProcessed` tables to retain empty traps (zero-catch) for sampling effort tracking.
-#' 3. Replaced 0 counts with `NA` where no `taxonID` was provided by the expert taxonomist.
-#' 4. Handled split-vial laboratory processing by summing counts of duplicate `taxonID`s within the same `sampleID`, while keeping `sex` distinct.
-#' 5. Calculated estimated total individuals using the modern NEON `proportionIdentified` column. For older archived data, this was calculated backward-compatibly using `subsampleWeight / totalWeight`.
-#' 6. Filtered out compromised samples (`sampleCondition != "No known compromise"`) and coarse taxonomic identifications (`taxonRank == "family"`).
-#' 7. Calculated final abundance (`value`) as the estimated total individuals divided by `trapHours`.
+#' To clean the data, we:
+#'
+#' 1. Joined `mos_trapping` to `mos_sorting` to `mos_expertTaxonomistIDProcessed`.
+#' 2. Filtered to `targetTaxaPresent == "Y"`, `sampleCondition == "No known compromise"`, and `taxonRank != "family"`.
+#' 3. Estimated total individuals per subsample = `individualCount / proportionIdentified`.
+#' 4. Abundance = estimated total individuals / `trapHours` (count per trap hour).
 #'
 #' @note Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]). We retained records without a `taxon_id` (where `value` is `NA`) to preserve sampling effort for traps that caught zero mosquitoes.
 #'
@@ -17,19 +15,18 @@
 #'
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
-#' - `unique_sample_id`: Identity of unique samples, usually it has location and date information.
+#' - `unique_sample_id`: Identity of unique samples (equals `sampleID`).
 #' - `subsampleID`: Unique identifier associated with each subsample per sampleID.
 #' - `observation_datetime`: Observation date and time.
 #' - `taxon_id`: Accepted species code, based on one or more sources.
-#' - `taxon_name`:  Scientific name, associated with the taxonID. This is the name
+#' - `taxon_name`: Scientific name, associated with the taxonID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
 #' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
 #' - `variable_name`: The variable name(s) represented by the `value` column.
-#' - `value`: Value of the variable(s) specified by `variable_name` (abundance). `NA` represents a trap that caught zero target taxa.
+#' - `value`: Abundance (count per trap hour); `NA` for zero-catch traps.
 #' - `unit`: Unit of the values in the `value` column ('count per trap hour').
 #' - `nativeStatusCode`: The process by which the taxon became established in the location.
-#' 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
-#' 'N': Native; 'I': Introduced; 'UNK': Status unknown.
+#' 'A': Presumed absent; 'N': Native; 'I': Introduced; 'UNK': Status unknown.
 #' - `proportionIdentified`: Proportion of the total catch that was subsampled and identified.
 #' - `release`: Version of data release by NEON.
 #' - `remarks_sorting`: Technician notes; free text comments accompanying the sorting record.

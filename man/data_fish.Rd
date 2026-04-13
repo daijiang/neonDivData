@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_fish}
 \alias{data_fish}
-\title{Fish survey data collected by NEON}
+\title{Fish survey data collected by NEON (Discontinued for now)}
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{

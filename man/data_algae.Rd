@@ -9,27 +9,26 @@ A data frame (also a tibble) with the following columns:
 \itemize{
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
-\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}).
 \item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
-\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
-of the lowest level taxonomic rank that can be determined.
+\item \code{taxon_id}: Accepted taxon code.
+\item \code{taxon_name}: Scientific name associated with the taxon ID.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
-\item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{sampleCondition}: Condition of samples.
-\item \code{perBottleSampleVolume}: Per bottle sample volumn (milliliter).
+\item \code{value}: Cell density value.
+\item \code{unit}: Either \code{cells/mL} (water column) or \code{cells/cm2} (benthic).
+\item \code{sampleCondition}: Condition of the sample (all \code{"Condition OK"}).
+\item \code{perBottleSampleVolume}: Sample volume per bottle (milliliter); fallback-filled where originally missing.
 \item \code{release}: Version of data release by NEON.
 \item \code{habitatType}: Habitat type sampled.
 \item \code{algalSampleType}: Type of algal sample collected.
-\item \code{benthicArea}: Area of the benthos sampled (square Meter).
+\item \code{samplerType}: Type of sampler used to collect the sample.
+\item \code{benthicArea}: Area of the benthos sampled (square meter).
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format NEON.DOC.######vX.
 \item \code{substratumSizeClass}: Size class of the substratum sampled.
-\item \code{samplerType}: Type of sampler used to collect the sample.
-\item \code{phytoDepth1}: First phytoplankton sample depth (meter) at sampling location
-\item \code{phytoDepth2}: Second phytoplankton sample depth (meter) at sampling location
-\item \code{phytoDepth3}: Third phytoplankton sample depth (meter) at sampling location
+\item \code{phytoDepth1}: First phytoplankton sample depth (meter) at sampling location.
+\item \code{phytoDepth2}: Second phytoplankton sample depth (meter) at sampling location.
+\item \code{phytoDepth3}: Third phytoplankton sample depth (meter) at sampling location.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
@@ -42,12 +41,14 @@ data_algae
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.20166.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.20166.001}.
 }
 \details{
-Here, we:
-\itemize{
-\item Only records from the ‘alg_biomass’ with the ‘analysis_type’ taxonomy were used for the observation table.
-\item Combined the preservative sample volume  and lab’s recorded volumes from the ‘alg_biomass’ file and ‘alg_tax_long’ for total sample volume. If missing ‘perBottleSampleVolume’, they were created using NEON domain lab volumes. This new volume column was labeled ‘perBSVol’.
-\item Combined ‘Alg_field_data’ with ‘alg_biomass’ via ‘parentSampleID’ to add in field conditions and ‘benthicArea’.
-\item Corrected sample units from ‘cellsperBottle’ to density by dividing ‘algalParameterValue’ updated sample volume ‘perBSVol. Benthic samples units were then corrected to density by multiplying ‘algalParameterValue’ by ‘fieldSampleVolume’ and dividing by ‘benthicArea’ sampled.
+To clean the data, we:
+\enumerate{
+\item Filtered \code{alg_biomass} to \code{analysisType == "taxonomy"} records only.
+\item Computed a fallback bottle volume (\code{preservativeVolume + labSampleVolume}) used when \code{perBottleSampleVolume} is \code{NA} or \code{0}.
+\item Joined \code{alg_taxonomyProcessed} to \code{alg_biomass} to \code{alg_fieldData} via \code{sampleID} and \code{parentSampleID}.
+\item Filtered to \code{algalParameterUnit == "cellsPerBottle"} and \code{sampleCondition == "Condition OK"}.
+\item Computed cell density: water column samples (\code{seston}/\code{phytoplankton}) as cells/mL; benthic samples as cells/cm².
+\item Resolved within-sample duplicates by summing density across records sharing the same \code{sampleID} and \code{acceptedTaxonID}.
 }
 }
 \note{

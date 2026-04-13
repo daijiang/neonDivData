@@ -3,26 +3,27 @@
 \docType{data}
 \name{neon_taxa}
 \alias{neon_taxa}
-\title{Taxanomic names of all groups}
+\title{Taxonomic names of all groups}
 \format{
 A data frame with the following columns:
 \itemize{
-\item \code{taxon_id}: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the \code{acceptedTaxonID} column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have \code{acceptedTaxonID} and we just renamed it to \code{taxon_id} for these groups following other groups.
-\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_name}: Scientific name associated with the taxon ID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
-\item \code{taxon_group}: The taxonomic group that the location information can be used for.
-Note that some taxa groups may have the same 'plotID' but their
-latitude/longitude may differ slightly, which justifies the need of this column.
+\item \code{taxon_group}: The taxonomic group the taxon belongs to (e.g. \code{"ALGAE"}, \code{"BEETLES"}).
 }
 }
 \usage{
 neon_taxa
 }
 \description{
-This data frame was put together from each data product.
+This data frame was assembled from all taxonomic data products in the package.
+It is updated each release by \verb{data-raw/02_clean_save_data.R} and preserves
+taxa from previous releases so that names are not lost between NEON data versions.
 }
 \note{
-Some taxonomic groups used \code{taxonID} (renamed as \code{taxon_id} here) in the data product while other groups used \code{acceptedTaxonID}. In addition, all data were from NEON and we did not do extra clean up.
+NEON source tables use either \code{taxonID} or \code{acceptedTaxonID} depending on
+the data product. Both are standardized to \code{taxon_id} here.
 }
 \keyword{datasets}

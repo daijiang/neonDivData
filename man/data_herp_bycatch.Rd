@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_herp_bycatch}
 \alias{data_herp_bycatch}
-\title{Vertebrate Herpetofauna Bycatch sampled from pitfall traps}
+\title{Vertebrate Herpetofauna Bycatch sampled from pitfall traps (Discontinued for now)}
 \format{
 A data frame (tibble) with the following columns:
 \itemize{

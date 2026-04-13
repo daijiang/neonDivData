@@ -7,19 +7,18 @@
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
-\item \code{location_id}: Location id.
+\item \code{location_id}: Location id (named location).
 \item \code{siteID}: NEON site code.
-\item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{plotID}: Plot identifier.
+\item \code{unique_sample_id}: Identity of unique samples (\code{namedLocation_collectDate}).
 \item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
-\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
-of the lowest level taxonomic rank that can be determined.
-\item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
+\item \code{taxon_id}: Pathogen name (standardized).
+\item \code{taxon_name}: Pathogen name (same as \code{taxon_id}).
+\item \code{taxon_rank}: Taxonomic rank inferred from name (\code{"genus"} for sp./spp. names, otherwise \code{"species"}).
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
-\item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{lifeStage}: Life stage of the host (all Nymph).
+\item \code{value}: Positivity rate (\code{n_positive_test / n_tests}).
+\item \code{unit}: Unit of the values in the \code{value} column (\code{"positive tests per pathogen per sampling event"}).
+\item \code{lifeStage}: Life stage of the host tick (extracted from \code{subsampleID}).
 \item \code{testProtocolVersion}: The protocol version used to test the sample.
 \item \code{release}: Version of data release by NEON.
 \item \code{n_tests}: Number of tests conducted.
@@ -40,12 +39,12 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \details{
 To clean the data, we:
 \enumerate{
-\item Removed samples with flagged quality checks
-\item Removed samples with missing metadata (domain/site/plotID; Lat/Long; plotType; nlcdClass, elevation, collectDate, subsampleID, batchID, testingID, testPathogenName
-\item Removed samples where sampleCondition!=“OK”
-\item Removed samples where testResult==NA
-\item Removed samples where HardTick DNA Quality (under testPathogenName) are not ‘Positive’, and then removed hardtack DNA and Ixodes pacificus tests.
-\item Combined B. burgdeferi and B burgdeferi sensu lato into a single test pathogen type (B. burgedferi sensu lato)
+\item Removed tests from batches that failed quality criteria (\code{criteriaMet != "Y"} in \code{tck_pathogenqa}).
+\item Removed samples where \code{sampleCondition != "OK"} or \code{testResult} is \code{NA}.
+\item Applied the DNA quality fix: identified ticks (\code{testingID}) whose \verb{HardTick DNA Quality} test was not \code{"Positive"} and dropped all test rows for those ticks (not just the DNA quality row itself), because pathogen results from ticks with degraded DNA are unreliable.
+\item Removed \verb{HardTick DNA Quality} and \verb{Ixodes pacificus} test rows; unified \code{"Borrelia burgdorferi"} into \code{"Borrelia burgdorferi sensu lato"}.
+\item Extracted \code{lifeStage} from the last dot-delimited segment of \code{subsampleID}.
+\item Aggregated to one row per location x date x pathogen x life stage: \code{value} = \code{n_positive_test / n_tests}.
 }
 }
 \note{

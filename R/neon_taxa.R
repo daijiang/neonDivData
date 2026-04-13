@@ -1,17 +1,18 @@
-#' Taxanomic names of all groups
+#' Taxonomic names of all groups
 #'
-#' This data frame was put together from each data product.
+#' This data frame was assembled from all taxonomic data products in the package.
+#' It is updated each release by `data-raw/02_clean_save_data.R` and preserves
+#' taxa from previous releases so that names are not lost between NEON data versions.
 #'
-#' @note Some taxonomic groups used `taxonID` (renamed as `taxon_id` here) in the data product while other groups used `acceptedTaxonID`. In addition, all data were from NEON and we did not do extra clean up.
+#' @note NEON source tables use either `taxonID` or `acceptedTaxonID` depending on
+#' the data product. Both are standardized to `taxon_id` here.
 #'
 #' @format A data frame with the following columns:
 #'
-#' - `taxon_id`: Species code, based on one or more sources. For algae, macroinvertebrate, and tick, this is from the `acceptedTaxonID` column (which was removed here) so that all taxonomic groups have the same variable name. In another word, algae, macroinvertebrate, and tick only have `acceptedTaxonID` and we just renamed it to `taxon_id` for these groups following other groups.
-#' - `taxon_name`:	Scientific name, associated with the taxonID. This is the name
+#' - `taxon_id`: Accepted species code, based on one or more sources.
+#' - `taxon_name`: Scientific name associated with the taxon ID. This is the name
 #'  of the lowest level taxonomic rank that can be determined.
 #' - `taxon_rank`: The lowest level taxonomic rank that can be determined for the individual or specimen.
-#' - `taxon_group`: The taxonomic group that the location information can be used for.
-#' Note that some taxa groups may have the same 'plotID' but their
-#' latitude/longitude may differ slightly, which justifies the need of this column.
+#' - `taxon_group`: The taxonomic group the taxon belongs to (e.g. `"ALGAE"`, `"BEETLES"`).
 #'
 "neon_taxa"

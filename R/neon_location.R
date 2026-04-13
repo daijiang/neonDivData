@@ -6,7 +6,6 @@
 #'
 #' @format A data frame with the following columns:
 #'
-
 #' - `location_id`: Location id.
 #' - `siteID`: NEON site code.
 #' - `plotID`: Plot identifier (NEON site code_XXX).

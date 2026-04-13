@@ -3,9 +3,13 @@
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10072.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10072.001>.
 #'
 #' To process data we:
-#' 1. Remove all records that are designated as "dead", "escaped", or "nontarget".
-#' 2. Remove all records designated as recaptures (i.e., only first captures are retained)
-
+#' 1. Filter nights from `mam_perplotnight` where `samplingImpractical` is not `"OK"` (field added 2020; pre-2020 records without this field are retained).
+#' 2. Compute trapping effort as the number of unique trap coordinates deployed per night-uid, summed across all valid nights within a bout per plot (`n_trap_nights_per_bout_per_plot`).
+#' 3. Identify bouts using `eventID` from `mam_perplotnight`; fall back to year_month for records lacking an `eventID`.
+#' 4. Retain only capture records with `trapStatus` `"5 - capture"` or `"4 - more than 1 capture in one trap"`, restricting to taxa identified to genus or finer rank.
+#' 5. Resolve within-bout recaptures: tagged individuals (non-missing `tagID`) are counted once per bout; untagged individuals (missing `tagID`) are each treated as unique using their row identifier.
+#' 6. Compute `value` as `100 * raw_count / n_trap_nights_per_bout_per_plot` (unique individuals per 100 trap nights per plot per month).
+#' 7. Retain effort-only rows (bouts with no qualifying captures) with `taxon_id`, `taxon_name`, `taxon_rank`, and `value` set to `NA`.
 #'
 #' @note  Details of locations (e.g. latitude/longitude coordinates can be found in [neon_location]).
 #' @format A data frame (also a tibble) with the following columns:

@@ -1,4 +1,4 @@
-#' Vertebrate Herpetofauna Bycatch sampled from pitfall traps
+#' Vertebrate Herpetofauna Bycatch sampled from pitfall traps (Discontinued for now)
 #'
 #' This dataset was derived from [NEON data portal](https://data.neonscience.org) with data product ID 'DP1.10022.001'. Details about this data product can be found at <https://data.neonscience.org/data-products/DP1.10022.001>.
 #'

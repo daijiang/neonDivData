@@ -3,31 +3,32 @@
 \docType{data}
 \name{data_beetle}
 \alias{data_beetle}
-\title{Ground beetles sampled from pitfall traps}
+\title{Ground beetle abundance data}
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
-\item \code{trapID}: Identifier for trap.
-\item \code{observation_datetime}: Observation date and time.
+\item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}).
+\item \code{trapID}: Identifier for the trap.
+\item \code{observation_datetime}: Observation date (collection date).
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
-\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+\item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{value}: Abundance (count per trap day); \code{NA} for zero-catch events.
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{boutID}: Identifier for bout.
+\item \code{boutID}: Sampling bout identifier (\code{siteID_collectDate}).
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
-'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location;
-'N': Native; 'I': Introduced; 'UNK': Status unknown.
+'A': Presumed absent; 'N': Native; 'I': Introduced; 'UNK': Status unknown.
 \item \code{release}: Version of data release by NEON.
-\item \code{remarks}: Remarks (techinical notes) of record.
+\item \code{remarks}: Remarks (technical notes) of record.
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
-\item \code{trappingDays}: Decimal days between trap setting and collecting events.
+\item \code{samplingImpractical}: Flag indicating whether sampling was impractical.
+\item \code{trapConditionFlag}: Consolidated trap condition flag from cup, lid, and fluid level status.
+\item \code{trappingDays}: Number of days between trap setting and collecting events.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
@@ -41,15 +42,13 @@ data_beetle
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.10022.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.10022.001}.
 }
 \details{
-To process data we:
+To clean the data, we:
 \enumerate{
-\item Remove all non-carabid bycatch samples.
-\item Use the most expert taxonomy when available.
-\item Update abundances based on new taxonomy.
-\item Create a boutID that identifies all trap collection events at a site in the same bout (replacing eventID).
-\item Update collectDate to reference the most common collection day in a bout, maintaining one collectDate per bout.
-\item Create a new \code{trappingDays} column for the number of days a trap was set before being collected.
-\item Correct trap days to account for entries where the trap set date was not updated based on a previous collection.
+\item Filtered \code{bet_fielddata} to \code{sampleCollected == "Y"}; computed \code{trappingDays} from set/collect dates; adjusted for traps collected multiple times from the same set date; consolidated trap condition issues into \code{trapConditionFlag} from \code{cupStatus}, \code{lidStatus}, and \code{fluidLevel}.
+\item Built a taxonomy resolution hierarchy: Expert ID overrides Parataxonomist ID; both override Sorting taxonomy. Unpinned \verb{other carabid} individuals are excluded because their sorting-level taxonomy is too coarse (2013-2016 protocol).
+\item Computed unpinned counts per subsample (sorting total minus pinned individuals); clamped to zero where anomalous.
+\item Left-joined downward from field effort to taxonomy to preserve zero-catch trap events (\code{value = NA}).
+\item Abundance = \code{count / trappingDays} (count per trap day).
 }
 }
 \note{

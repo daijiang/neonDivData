@@ -3,23 +3,23 @@
 \docType{data}
 \name{data_macroinvertebrate}
 \alias{data_macroinvertebrate}
-\title{Macroinvertebrate data}
+\title{Aquatic macroinvertebrate density data}
 \format{
 A data frame (also a tibble) with the following columns:
 \itemize{
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
-\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
+\item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}).
 \item \code{observation_datetime}: Observation date and time.
 \item \code{taxon_id}: Accepted species code, based on one or more sources.
-\item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
+\item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{value}: Density (count per square meter).
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{estimatedTotalCount}: Estimated total count.
-\item \code{individualCount}: Individual count.
+\item \code{estimatedTotalCount}: Estimated total count (summed across size classes).
+\item \code{individualCount}: Raw individual count (summed across size classes).
 \item \code{subsamplePercent}: Percent of the total sample contained in the subsample.
 \item \code{release}: Version of data release by NEON.
 \item \code{benthicArea}: Area sampled (square meter).
@@ -28,8 +28,8 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{substratumSizeClass}: Size class of the substratum sampled.
 \item \code{remarks}: Remarks of record.
 \item \code{ponarDepth}: Depth (meter) of petite ponar sample.
-\item \code{snagLength}: Length (centimeter) of snag sampled.
-\item \code{snagDiameter}: Diameter (centimeter) of snag sampled.
+\item \code{snagLength}: Length (meter) of snag sampled.
+\item \code{snagDiameter}: Diameter (meter) of snag sampled.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
@@ -42,13 +42,12 @@ data_macroinvertebrate
 This dataset was derived from \href{https://data.neonscience.org}{NEON data portal} with data product ID 'DP1.20120.001'. Details about this data product can be found at \url{https://data.neonscience.org/data-products/DP1.20120.001}.
 }
 \details{
-Here, we:
+To clean the data, we:
 \enumerate{
-\item Removed field samples that had logistical issues (\code{samplingImpractical}!="OK")
-\item Removed duplicate records in the field data table
-\item Used count data that were already corrected for subsampling at the external taxonomy lab (\code{estimatedTotalCount})
-\item Summed \code{estimatedTotalCount} by \code{scientificName} per \code{sampleID} in inv_taxonomyProcessed to collapse \code{sizeClass} and \code{lifeStage}
-\item Calculated density by dividing \code{estimatedTotalCount} from the inv_taxonomyProcessed table by \code{benthicArea} from the \code{inv_fieldData} table to standardize density by area sampled
+\item Deduplicated \code{inv_fieldData} by \code{sampleID} using \code{slice(1)} to guard against NEON's known aquatic duplicate metadata issue.
+\item Filtered \code{inv_taxonomyProcessed} to \code{targetTaxaPresent == "Y"}; summed \code{estimatedTotalCount} and \code{individualCount} across size-class records sharing the same \code{sampleID} and \code{acceptedTaxonID}.
+\item Inner-joined taxonomy to field data (inner join required because \code{benthicArea} is needed to compute density; records without field metadata are dropped).
+\item Density = \code{estimatedTotalCount / benthicArea} (count per square meter).
 }
 }
 \note{
