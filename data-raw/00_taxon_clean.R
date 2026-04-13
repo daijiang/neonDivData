@@ -24,7 +24,7 @@ resolve_neon_duplicates <- function(df, group_cols, sum_col) {
     dplyr::bind_rows(df_no_dups, df_corrected)
 }
 
-
+# plant =====
 #' Clean NEON Plant Data
 #' @param neon_data_list DP1.10058.001 raw data
 #' @importFrom dplyr select mutate filter bind_rows rename distinct any_of as_tibble
@@ -121,7 +121,7 @@ clean_neon_plant <- function(neon_data_list) {
             "observation_datetime", "taxon_id", "taxon_name", "taxon_rank",
             "variable_name", "value", "unit", "presence_absence", "boutNumber",
             "nativeStatusCode", "heightPlantOver300cm", "heightPlantSpecies", "sample_area_m2",
-            "latitude", "longitude", "elevation", "plotType", "nlcdClass"
+            "latitude", "longitude", "elevation", "plotType", "nlcdClass", "release"
         ))) |>
         dplyr::distinct() |>
         dplyr::as_tibble()

@@ -44,6 +44,7 @@
 #' - `elevation`: Elevation (in meters) above sea level.
 #' - `plotType`: NEON plot type in which sampling occurred: tower, distributed or gradient.
 #' - `nlcdClass`: National Land Cover Database Vegetation Type Name.
+#' - `release`: Version of data release by NEON.
 #'
 #'
 #' @source <https://data.neonscience.org>

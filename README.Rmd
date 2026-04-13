@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Update of RELEASE-2025
+# Update of RELEASE-2026
 
 Note that Fish and By catch herp have not been updated this time. By catch herps likely will be removed in future release given their design was not suitable for diversity data. Fish data are currently under updating by NEON.
 
