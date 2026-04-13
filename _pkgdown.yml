@@ -9,8 +9,6 @@ reference:
       - data_algae
       - data_beetle
       - data_bird
-      - data_fish
-      - data_herp_bycatch
       - data_macroinvertebrate
       - data_mosquito
       - data_plant
