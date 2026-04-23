@@ -35,6 +35,8 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{plotType}: NEON plot type in which sampling occurred: tower, distributed or gradient.
 \item \code{nlcdClass}: National Land Cover Database Vegetation Type Name.
 \item \code{release}: Version of data release by NEON.
+\item \code{accepted_wcvp_name}: WCVP-accepted full scientific name (binomial or trinomial with authors) for species-, subspecies-, and variety-level taxa. For names matched to WCVP synonyms, this is the accepted name; for names with no acceptable WCVP match, this falls back to the original NEON \code{taxon_name}. Genus-level and speciesGroup-level taxa retain their original NEON names.
+\item \code{accepted_wcvp_name_binomial}: Binomial (genus + specific epithet, without authors) extracted from \code{accepted_wcvp_name}. Useful for joining with other datasets that use binomial names only.
 }
 }
 \source{
@@ -53,6 +55,16 @@ Here, we:
 \item Removed 1 m^2 data with \code{targetTaxaPresent = N}
 \item Removed rows missing values for plotID, subplotID, boutNumber, endDate, and/or taxonID
 \item Removed duplicate taxa between nested subplots (each taxon should be represented once for the bout/plotID/year). For example, if a taxon/date/bout/plot combo is present in 1 m^2 data, remove from 10 m^2 and above
+\item Standardized taxon names against the World Checklist of Vascular Plants (WCVP) using the \code{rWCVP} package. Specifically:
+\itemize{
+\item Only species-, subspecies-, and variety-level taxa were matched; genus-level and speciesGroup-level taxa were excluded.
+\item NEON scientific names (which include author strings) were split into name and author components before matching. For subspecies and variety names, the rank keyword (\code{subsp.}, \code{ssp.}, or \code{var.}) was used to locate the split point; for species-level names, the first two tokens were taken as the name and the remainder as the author.
+\item Names were matched against WCVP using \code{wcvp_match_names(fuzzy = TRUE)}.
+\item All exact matches (both "Exact with author" and "Exact without author") were accepted, as minor author-string formatting differences between NEON and WCVP conventions do not indicate a different taxon.
+\item Fuzzy matches (edit distance or phonetic) were accepted only when match similarity >= 0.9 and edit distance == 1.
+\item For names matched to WCVP synonyms, the name was replaced with the corresponding WCVP-accepted name. The standardized names are stored in \code{accepted_wcvp_name} and \code{accepted_wcvp_name_binomial}; the original NEON name is retained in \code{taxon_name}.
+\item Names with no acceptable WCVP match retain their original NEON name in both \code{accepted_wcvp_name} and \code{accepted_wcvp_name_binomial}.
+}
 \item Stacked species occurrence from different scales into a long data frame. Therefore,
 \itemize{
 \item to get the species list at 1 m^2 scale, we need all the data with \code{sample_area_m2 == 1} (e.g. \code{dplyr::filter(plants, sample_area_m2 == 1)}); the unique sample unit id can then be generated with \code{paste(plants$plotID, plants$subplot_id, plants$subsubplot_id, sep = "_")}

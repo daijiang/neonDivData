@@ -16,6 +16,8 @@ reference:
       - data_tick
       - data_tick_pathogen
       - data_zooplankton
+      - data_fish
+      - data_herp_bycatch
   - title: "Location data"
     desc: "Information about locations"
     contents:

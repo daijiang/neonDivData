@@ -221,7 +221,7 @@ neonDivData::data_mosquito
 #> #   latitude <dbl>, longitude <dbl>, elevation <dbl>, nlcdClass <chr>,
 #> #   plotType <chr>
 neonDivData::data_plant
-#> # A tibble: 1,343,848 × 25
+#> # A tibble: 1,343,848 × 28
 #>    location_id siteID plotID unique_sample_id subplotID subplot_id subsubplot_id
 #>    <chr>       <chr>  <chr>  <chr>            <chr>     <chr>      <chr>        
 #>  1 BART_006.b… BART   BART_… BART_006.basePl… 40_1_1    40         1            
@@ -235,12 +235,12 @@ neonDivData::data_plant
 #>  9 BART_006.b… BART   BART_… BART_006.basePl… 31_1_1    31         1            
 #> 10 BART_006.b… BART   BART_… BART_006.basePl… 31_1_4    31         4            
 #> # ℹ 1,343,838 more rows
-#> # ℹ 18 more variables: observation_datetime <dttm>, taxon_id <chr>,
+#> # ℹ 21 more variables: observation_datetime <dttm>, taxon_id <chr>,
 #> #   taxon_name <chr>, taxon_rank <chr>, variable_name <chr>, value <dbl>,
 #> #   unit <chr>, presence_absence <dbl>, boutNumber <int>,
 #> #   nativeStatusCode <chr>, heightPlantOver300cm <chr>,
 #> #   heightPlantSpecies <int>, sample_area_m2 <dbl>, latitude <dbl>,
-#> #   longitude <dbl>, elevation <dbl>, plotType <chr>, nlcdClass <chr>
+#> #   longitude <dbl>, elevation <dbl>, plotType <chr>, nlcdClass <chr>, …
 neonDivData::data_small_mammal
 #> # A tibble: 25,918 × 22
 #>    location_id      siteID plotID unique_sample_id observation_datetime taxon_id
