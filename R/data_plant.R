@@ -8,7 +8,15 @@
 #' 1. Removed 1 m^2 data with `targetTaxaPresent = N`
 #' 2. Removed rows missing values for plotID, subplotID, boutNumber, endDate, and/or taxonID
 #' 3. Removed duplicate taxa between nested subplots (each taxon should be represented once for the bout/plotID/year). For example, if a taxon/date/bout/plot combo is present in 1 m^2 data, remove from 10 m^2 and above
-#' 4. Stacked species occurrence from different scales into a long data frame. Therefore,
+#' 4. Standardized taxon names against the World Checklist of Vascular Plants (WCVP) using the `rWCVP` package. Specifically:
+#'     + Only species-, subspecies-, and variety-level taxa were matched; genus-level and speciesGroup-level taxa were excluded.
+#'     + NEON scientific names (which include author strings) were split into name and author components before matching. For subspecies and variety names, the rank keyword (`subsp.`, `ssp.`, or `var.`) was used to locate the split point; for species-level names, the first two tokens were taken as the name and the remainder as the author.
+#'     + Names were matched against WCVP using `wcvp_match_names(fuzzy = TRUE)`.
+#'     + All exact matches (both "Exact with author" and "Exact without author") were accepted, as minor author-string formatting differences between NEON and WCVP conventions do not indicate a different taxon.
+#'     + Fuzzy matches (edit distance or phonetic) were accepted only when match similarity >= 0.9 and edit distance == 1.
+#'     + For names matched to WCVP synonyms, the name was replaced with the corresponding WCVP-accepted name. The standardized names are stored in `accepted_wcvp_name` and `accepted_wcvp_name_binomial`; the original NEON name is retained in `taxon_name`.
+#'     + Names with no acceptable WCVP match retain their original NEON name in both `accepted_wcvp_name` and `accepted_wcvp_name_binomial`.
+#' 5. Stacked species occurrence from different scales into a long data frame. Therefore,
 #'     + to get the species list at 1 m^2 scale, we need all the data with `sample_area_m2 == 1` (e.g. `dplyr::filter(plants, sample_area_m2 == 1)`); the unique sample unit id can then be generated with `paste(plants$plotID, plants$subplot_id, plants$subsubplot_id, sep = "_")`
 #'     + to get the species list at 10 m^2 scale, we need all the data with `sample_area_m2 <= 10` (e.g. `dplyr::filter(plants, sample_area_m2 <= 10)`); the unique sample unit id can then be generated with `paste(plants$plotID, plants$subplot_id, plants$subsubplot_id, sep = "_")`
 #'     + to get the species list at 100 m^2 scale, we need use the whole data set since the maximum value of `sample_area_m2` is 100 (i.e. a 10 m by 10 m subplot); the unique sample unit id can then be generated with `paste(plants$plotID, plants$subplot_id, sep = "_")`
@@ -45,6 +53,8 @@
 #' - `plotType`: NEON plot type in which sampling occurred: tower, distributed or gradient.
 #' - `nlcdClass`: National Land Cover Database Vegetation Type Name.
 #' - `release`: Version of data release by NEON.
+#' - `accepted_wcvp_name`: WCVP-accepted full scientific name (binomial or trinomial with authors) for species-, subspecies-, and variety-level taxa. For names matched to WCVP synonyms, this is the accepted name; for names with no acceptable WCVP match, this falls back to the original NEON `taxon_name`. Genus-level and speciesGroup-level taxa retain their original NEON names.
+#' - `accepted_wcvp_name_binomial`: Binomial (genus + specific epithet, without authors) extracted from `accepted_wcvp_name`. Useful for joining with other datasets that use binomial names only.
 #'
 #'
 #' @source <https://data.neonscience.org>
@@ -55,5 +65,3 @@
 
 #' @importFrom tibble tibble
 NULL
-
-
