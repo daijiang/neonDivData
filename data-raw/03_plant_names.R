@@ -26,6 +26,8 @@ if (!requireNamespace("rWCVPdata", quietly = TRUE)) {
         "https://matildabrown.r-universe.dev",
         "https://cloud.r-project.org"
     ))
+    devtools::install_github("matildabrown/rWCVPdata")
+    rWCVPdata::wcvp_check_version()
 }
 
 library(rWCVP)
@@ -111,6 +113,8 @@ matches <- wcvp_match_names(
 # Re-attach the original columns needed downstream
 matches <- left_join(matches, taxa, by = c("taxon_id", "input_name", "input_author"))
 
+filter(matches, str_detect(input_name, "Coenogonium missouriense"))
+
 count(matches, match_type)
 summary(matches$wcvp_author_edit_distance)
 summary(matches$match_similarity)
@@ -147,11 +151,66 @@ best <- best |>
             str_detect(match_type, "Exact") ~ TRUE,
             # Fuzzy within conservative threshold
             str_detect(match_type, "Fuzzy") &
-                !is.na(match_similarity) & match_similarity >= 0.85 &
-                !is.na(match_edit_distance) & match_edit_distance <= 3 ~ TRUE,
+                !is.na(match_similarity) & match_similarity >= 0.9 &
+                !is.na(match_edit_distance) & match_edit_distance <= 2 ~ TRUE,
             TRUE ~ FALSE
         )
     )
+
+# ── 5b. Retry unaccepted / unmatched taxa with binomial-only input ─────────────
+# Some names fail or are rejected with the full trinomial + author; retry with
+# just the binomial (genus + specific epithet) and no author, which gives WCVP
+# a better chance of finding the right taxon.
+
+retry_ids <- union(
+    best$taxon_id[!best$match_accepted], # matched but not accepted
+    setdiff(taxa$taxon_id, best$taxon_id) # never matched
+)
+cat("Retrying", length(retry_ids), "taxa with binomial-only names\n")
+
+retry_taxa <- taxa |>
+    filter(taxon_id %in% retry_ids) |>
+    mutate(
+        input_name   = str_extract(taxon_name, "^\\S+\\s+\\S+"),
+        input_author = NA_character_
+    )
+
+retry_matches <- wcvp_match_names(
+    retry_taxa |> select(taxon_id, input_name, input_author),
+    name_col     = "input_name",
+    author_col   = "input_author",
+    fuzzy        = TRUE,
+    progress_bar = TRUE
+)
+
+retry_best <- retry_matches |>
+    filter(!is.na(wcvp_id)) |>
+    group_by(taxon_id) |>
+    arrange(
+        desc(str_detect(match_type, "Exact")),
+        tidyr::replace_na(wcvp_author_edit_distance, Inf),
+        desc(wcvp_status == "Accepted"),
+        desc(coalesce(match_similarity, 1.0)),
+        .by_group = TRUE
+    ) |>
+    slice_head(n = 1) |>
+    ungroup() |>
+    mutate(
+        match_accepted = case_when(
+            str_detect(match_type, "Exact") ~ TRUE,
+            str_detect(match_type, "Fuzzy") &
+                !is.na(match_similarity) & match_similarity >= 0.9 &
+                !is.na(match_edit_distance) & match_edit_distance <= 2 ~ TRUE,
+            TRUE ~ FALSE
+        )
+    )
+
+# Keep original accepted results; fill in retry results for the rest
+already_accepted <- filter(best, match_accepted)$taxon_id
+best <- bind_rows(
+    filter(best, match_accepted), # keep original accepted
+    filter(retry_best, !taxon_id %in% already_accepted) # retry for rejected/unmatched
+)
 
 # ── 6. Retrieve the WCVP accepted name (follow synonym → accepted chain) ──────
 # wcvp_accepted_id is always the accepted plant_name_id (itself for Accepted names,
@@ -188,6 +247,9 @@ lookup <- taxa |>
         name_changed = !is.na(accepted_name) & accepted_name != taxon_name
     )
 
+filter(lookup, str_detect(taxon_name, "Coenogonium missouriense")) |>
+    select(taxon_name, input_name, accepted_name)
+
 cat("\n=== WCVP name standardisation results ===\n")
 cat("Match type breakdown:\n")
 print(count(lookup, match_type, match_accepted))
@@ -207,6 +269,21 @@ cat(
     sum(is.na(lookup$match_type) | lookup$match_type == "No match"), "\n"
 )
 
+filter(matches, taxon_id %in% filter(lookup, match_accepted == FALSE | is.na(match_accepted))$taxon_id) 
+
+# manually checking
+
+lookup$accepted_name[lookup$input_name == "Croton setigerus"] <- "Croton setiger"
+lookup$accepted_name[lookup$input_name == "Eubotrys racemosa"] <- "Eubotrys racemosus"
+lookup$accepted_name[lookup$input_name == "Gypsoplaca macrophylla"] <- "Gypsophila microphylla"
+lookup$accepted_name[lookup$input_name == "Marah fabaceus"] <- "Marah fabacea"
+lookup$accepted_name[lookup$input_name == "Marah horridus"] <- "Marah horrida"
+lookup$accepted_name[lookup$input_name == "Nama hispidum"] <- "Nama hispida"
+lookup$accepted_name[lookup$input_name == "Opuntia triacantha"] <- "Opuntia triacanthos"
+lookup$accepted_name[lookup$input_name == "Smilax lasioneura"] <- "Smilax lasioneuron"
+lookup$accepted_name[lookup$input_name == "Urochloa distachya"] <- "Urochloa distachyos"
+
+
 write.csv(lookup, "data-raw/plant_name_lookup.csv", row.names = FALSE)
 message("Lookup table written to data-raw/plant_name_lookup.csv")
 
@@ -216,6 +293,9 @@ count(lookup, name_changed) |> print(n = Inf)
 name_map <- lookup |>
     filter(!is.na(accepted_name)) |>
     select(taxon_id, accepted_name)
+
+n_distinct(data_plant$taxon_id) # 7047
+n_distinct(name_map$taxon_id) # 5919
 
 data_plant <- data_plant |>
     select(-c(accepted_wcvp_name, accepted_wcvp_name_binomial)) |>
@@ -236,7 +316,7 @@ select(data_plant, taxon_name, accepted_wcvp_name, accepted_wcvp_name_binomial) 
     arrange(accepted_wcvp_name_binomial) |>
     write.csv("data-raw/plant_name_lookup_applied.csv", row.names = FALSE)
 
-sort(unique(data_plant$accepted_wcvp_name_binomial))
+sort(unique(data_plant$accepted_wcvp_name_binomial)) |> length()
 
 usethis::use_data(data_plant, overwrite = TRUE)
 message("data_plant saved with WCVP-accepted taxon names.")
