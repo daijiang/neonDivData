@@ -17,13 +17,13 @@
 .PHONY: all download clean-data plants check
 
 # Sentinel file touched after step 1 completes (avoids re-downloading if RDS files exist)
-SENTINEL   := data-raw/NEON_raw_data/.last_download
+SENTINEL   = data-raw/NEON_raw_data/.last_download
 
 # Track neon_taxa.rda as a proxy for all step-2 outputs
-CLEAN_DONE := data/neon_taxa.rda
+CLEAN_DONE = data/neon_taxa.rda
 
 # Step-3 output: plant name lookup cache (also updates data/data_plant.rda)
-LOOKUP     := data-raw/plant_name_lookup.csv
+LOOKUP     = data-raw/plant_name_lookup.csv
 
 # ── Default target ────────────────────────────────────────────────────────────
 all: $(LOOKUP)
