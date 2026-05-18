@@ -60,6 +60,36 @@ neonDivData::data_tick
 neonDivData::data_tick_pathogen
 ```
 
+# Annual data update
+
+NEON releases new data each January. The package is updated annually, typically in March, by running the pipeline in `data-raw/` locally and pushing the rebuilt package data to GitHub.
+
+**Prerequisites:** a NEON API token (register at [data.neonscience.org](https://data.neonscience.org)) stored in your `.Renviron` as `NEON_TOKEN=your_token_here`.
+
+**Steps:**
+
+```bash
+# 1. Remove the download sentinel to trigger a fresh download
+rm -f data-raw/NEON_raw_data/.last_download
+
+# 2. Run the full pipeline (download ~1-2 days, cleaning ~1 hour)
+make all
+
+# 3. Rebuild documentation and check the package
+Rscript -e "devtools::document()"
+make check
+```
+
+`make all` runs three scripts in sequence, skipping any step whose outputs are already up to date:
+
+| Step | Script | What it does |
+|------|--------|--------------|
+| 1 | `data-raw/01_download_data.R` | Downloads all 10 NEON data products via `neonUtilities`; saves timestamped RDS files |
+| 2 | `data-raw/02_clean_save_data.R` | Cleans each taxon and saves `data/*.rda` package objects |
+| 3 | `data-raw/03_plant_names.R` | Standardizes plant names against WCVP; updates `data/data_plant.rda` and `data-raw/plant_name_lookup.csv` |
+
+If the download is interrupted, re-run `make all` and it will resume from step 2 if the RDS files are present, or repeat only the failed taxon downloads if you re-run step 1 manually. To force a specific step without re-running earlier ones, use `make download`, `make clean-data`, or `make plants`.
+
 # Contributing
 
 Contributions are welcome. You can provide comments and feedback or ask questions by filing an issue on Github [here](https://github.com/daijiang/neonDivData/issues) or making pull requests.
