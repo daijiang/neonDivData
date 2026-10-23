@@ -18,7 +18,8 @@ A data frame (also a tibble) with the following columns:
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Positivity rate (\code{n_positive_test / n_tests}).
 \item \code{unit}: Unit of the values in the \code{value} column (\code{"positive tests per pathogen per sampling event"}).
-\item \code{lifeStage}: Life stage of the host tick (extracted from \code{subsampleID}).
+\item \code{vector_taxon_id}: NEON taxon code of the tested tick (e.g. \code{IXOSCA} = Ixodes scapularis, \code{AMBAME} = Amblyomma americanum, \code{HAELON} = Haemaphysalis longicornis).
+\item \code{lifeStage}: Life stage of the host tick (\code{N} = nymph, \code{L} = larva; extracted from \code{subsampleID}).
 \item \code{testProtocolVersion}: The protocol version used to test the sample.
 \item \code{release}: Version of data release by NEON.
 \item \code{n_tests}: Number of tests conducted.
@@ -39,16 +40,20 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \details{
 To clean the data, we:
 \enumerate{
-\item Removed tests from batches that failed quality criteria (\code{criteriaMet != "Y"} in \code{tck_pathogenqa}).
+\item Removed tests from batches that failed quality criteria (\code{criteriaMet != "Y"} in \code{tck_pathogenqa}). QA records are linked by batch only from 2021 onward, and all batches in the current release met the criteria.
 \item Removed samples where \code{sampleCondition != "OK"} or \code{testResult} is \code{NA}.
 \item Applied the DNA quality fix: identified ticks (\code{testingID}) whose \verb{HardTick DNA Quality} test was not \code{"Positive"} and dropped all test rows for those ticks (not just the DNA quality row itself), because pathogen results from ticks with degraded DNA are unreliable.
-\item Removed \verb{HardTick DNA Quality} and \verb{Ixodes pacificus} test rows; unified \code{"Borrelia burgdorferi"} into \code{"Borrelia burgdorferi sensu lato"}.
-\item Extracted \code{lifeStage} from the last dot-delimited segment of \code{subsampleID}.
-\item Aggregated to one row per location x date x pathogen x life stage: \code{value} = \code{n_positive_test / n_tests}.
+\item Removed assays that are not pathogens: \verb{HardTick DNA Quality} and the tick species confirmation tests (\verb{Ixodes pacificus}, \verb{Ixodes scapularis}, \verb{Amblyomma americanum}, \verb{Dermacentor variabilis}, \verb{Haemaphysalis longicornis}; added 2021-2022). Unified \code{"Borrelia burgdorferi"} into \code{"Borrelia burgdorferi sensu lato"}.
+\item Extracted the vector tick taxon (\code{vector_taxon_id}) and \code{lifeStage} from \code{subsampleID} (\code{plotID.date.vectorTaxonID.lifeStage}).
+\item Aggregated to one row per location x date x vector taxon x pathogen x life stage: \code{value} = \code{n_positive_test / n_tests}.
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Vector species.} Each tick genus is tested for a different pathogen panel (e.g. Borrelia burgdorferi s.l., Babesia, and Anaplasma in Ixodes; Ehrlichia and Francisella in Amblyomma), and prevalence differs strongly among tick species. Always analyze positivity rates within \code{vector_taxon_id}. The panel also determines which pathogen rows exist, so the absence of a pathogen row means it was not tested, not that it was absent.
+
+\strong{Interpretation.} \verb{Borrelia sp.} is a genus-level screen; ticks positive for any Borrelia species are also positive for \verb{Borrelia sp.}, so do not sum positives across Borrelia rows. Some pathogens (e.g. Rickettsia parkeri and Rickettsia philipii) were added to the panel only in 2022. Many rows are based on few tests (\code{n_tests}); weight by \code{n_tests} rather than averaging \code{value}. \code{taxon_id} is the pathogen name, not a NEON taxon code. This dataset has no zero rows: a rate of 0 means the pathogen was tested and not detected.
 }
 \author{
 Melissa Chen, Wynne Moss, Brendan Hobart, Matt Bitters

@@ -12,3 +12,5 @@
 .claude
 ^\.positai$
 ^\.claude$
+^Makefile$
+^inst/neon_user_guides$

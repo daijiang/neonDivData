@@ -12,23 +12,25 @@ A data frame (also a tibble) with the following columns:
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
 \item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}).
 \item \code{trapID}: Identifier for the trap.
-\item \code{observation_datetime}: Observation date (collection date).
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{observation_datetime}: Collection date of the trap.
+\item \code{taxon_id}: Accepted species code, based on one or more sources. \code{NA} for zero rows.
 \item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Abundance (count per trap day); \code{NA} for zero-catch events.
+\item \code{value}: Abundance (count per trap day); \code{0} for zero-catch samples.
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{boutID}: Sampling bout identifier (\code{siteID_collectDate}).
+\item \code{boutID}: Sampling bout identifier (\code{siteID_boutDate}, where the bout date is the most common collection date of the bout; collection can span two days).
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
 'A': Presumed absent; 'N': Native; 'I': Introduced; 'UNK': Status unknown.
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus in the same sample.
 \item \code{release}: Version of data release by NEON.
 \item \code{remarks}: Remarks (technical notes) of record.
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
-\item \code{samplingImpractical}: Flag indicating whether sampling was impractical.
-\item \code{trapConditionFlag}: Consolidated trap condition flag from cup, lid, and fluid level status.
-\item \code{trappingDays}: Number of days between trap setting and collecting events.
+\item \code{samplingImpractical}: Reason sampling was impractical; \code{NA} if sampling was OK.
+\item \code{sampleCondition}: Non-OK condition of the field sample; \code{NA} if OK.
+\item \code{trapConditionFlag}: Cup, lid, and fluid level problems; \code{NA} if none.
+\item \code{trappingDays}: Number of days the trap was set before this collection (numeric).
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
@@ -44,15 +46,20 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \details{
 To clean the data, we:
 \enumerate{
-\item Filtered \code{bet_fielddata} to \code{sampleCollected == "Y"}; computed \code{trappingDays} from set/collect dates; adjusted for traps collected multiple times from the same set date; consolidated trap condition issues into \code{trapConditionFlag} from \code{cupStatus}, \code{lidStatus}, and \code{fluidLevel}.
-\item Built a taxonomy resolution hierarchy: Expert ID overrides Parataxonomist ID; both override Sorting taxonomy. Unpinned \verb{other carabid} individuals are excluded because their sorting-level taxonomy is too coarse (2013-2016 protocol).
+\item Filtered \code{bet_fielddata} to \code{sampleCollected == "Y"}. \code{trappingDays} is the number of days since the trap was set, or since its previous collection when a trap was collected more than once from the same set date. Placeholder \code{eventID}s in a few 2014-2015 records were rebuilt from site, year, and week.
+\item Built a taxonomy resolution hierarchy: Expert ID overrides Parataxonomist ID; both override Sorting taxonomy. For the rare individuals with more than one expert record, the most recent expert ID was used. Unpinned \verb{other carabid} individuals are excluded because their sorting-level taxonomy is too coarse (2013-2016 protocol).
 \item Computed unpinned counts per subsample (sorting total minus pinned individuals); clamped to zero where anomalous.
-\item Left-joined downward from field effort to taxonomy to preserve zero-catch trap events (\code{value = NA}).
+\item Dropped collected samples with no record at all in \code{bet_sorting} (mostly 2013-2014); these were never processed, so their catch is unknown.
+\item Left-joined downward from field effort to taxonomy so that sorted samples with no carabids are kept as zero rows.
 \item Abundance = \code{count / trappingDays} (count per trap day).
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Zero rows.} A trap sample that was collected and sorted but contained no carabids is kept as one row with \code{taxon_id = NA} and \code{value = 0}. This zero-row convention is shared by all neonDivData observation datasets.
+
+\strong{Flags.} Trap and sample problems are flagged rather than removed: \code{trapConditionFlag} lists cup, lid, and fluid level problems (e.g. "lid: Disturbed; fluid: High"; user guide section 5.4), \code{sampleCondition} gives non-OK sample conditions (e.g. "sample incomplete"), and \code{samplingImpractical} is carried through. All are \code{NA} when no problem was recorded. \code{redundant_genus} marks genus-level records that co-occur with a finer identification of the same genus in the same sample.
 }
 \author{
 Kari Norman

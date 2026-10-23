@@ -11,25 +11,28 @@ A data frame (also a tibble) with the following columns:
 \item \code{siteID}: NEON site code.
 \item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}).
 \item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_id}: Accepted species code, based on one or more sources. \code{NA} for zero rows.
 \item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Density (count per square meter).
+\item \code{value}: Density (count per square meter); \code{0} for zero rows.
 \item \code{unit}: Unit of the values in the \code{value} column.
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus in the same sample.
 \item \code{estimatedTotalCount}: Estimated total count (summed across size classes).
 \item \code{individualCount}: Raw individual count (summed across size classes).
-\item \code{subsamplePercent}: Percent of the total sample contained in the subsample.
+\item \code{subsamplePercent}: Percent of the total sample contained in the subsample (character; multiple values are separated by "|").
 \item \code{release}: Version of data release by NEON.
+\item \code{sampleCondition}: Non-OK conditions of the taxonomy records (separated by "|"); \code{NA} if all OK.
+\item \code{dataQF}: NEON data quality flag for the field sample; \code{NA} if none.
 \item \code{benthicArea}: Area sampled (square meter).
 \item \code{habitatType}: Habitat type sampled.
 \item \code{samplerType}: Type of sampler used to collect the sample.
 \item \code{substratumSizeClass}: Size class of the substratum sampled.
 \item \code{remarks}: Remarks of record.
 \item \code{ponarDepth}: Depth (meter) of petite ponar sample.
-\item \code{snagLength}: Length (meter) of snag sampled.
-\item \code{snagDiameter}: Diameter (meter) of snag sampled.
+\item \code{snagLength}: Length (centimeter) of snag sampled.
+\item \code{snagDiameter}: Diameter (centimeter) of snag sampled.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
@@ -44,14 +47,19 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \details{
 To clean the data, we:
 \enumerate{
-\item Deduplicated \code{inv_fieldData} by \code{sampleID} using \code{slice(1)} to guard against NEON's known aquatic duplicate metadata issue.
-\item Filtered \code{inv_taxonomyProcessed} to \code{targetTaxaPresent == "Y"}; summed \code{estimatedTotalCount} and \code{individualCount} across size-class records sharing the same \code{sampleID} and \code{acceptedTaxonID}.
+\item Deduplicated \code{inv_fieldData} by \code{sampleID} using \code{slice(1)} as a guard against duplicate field records (none occur in the current release).
+\item Filtered \code{inv_taxonomyProcessed} to \code{targetTaxaPresent == "Y"} and non-missing \code{estimatedTotalCount}; summed \code{estimatedTotalCount} and \code{individualCount} across size-class records sharing the same \code{sampleID} and \code{acceptedTaxonID} (user guide section 3.10).
+\item Kept processed samples with no target taxa (\code{targetTaxaPresent == "N"}) as zero rows.
 \item Inner-joined taxonomy to field data (inner join required because \code{benthicArea} is needed to compute density; records without field metadata are dropped).
-\item Density = \code{estimatedTotalCount / benthicArea} (count per square meter).
+\item Density = \code{estimatedTotalCount / benthicArea} (count per square meter, user guide equation 1).
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Zero rows.} A processed sample with no target taxa is kept as one row with \code{taxon_id = NA} and \code{value = 0}. This zero-row convention is shared by all neonDivData observation datasets.
+
+\strong{Flags.} \code{sampleCondition} lists non-OK conditions of the taxonomy records (e.g. "damaged, affecting taxonomy"), and \code{dataQF} gives NEON field quality flags (e.g. "kicknet with incorrect mouth size used", which underestimates density); both are \code{NA} when no problem was recorded. \code{redundant_genus} marks genus-level records that co-occur with a finer identification of the same genus in the same sample; many macroinvertebrates are identified only to family or higher, so check \code{taxon_rank} before estimating richness.
 }
 \author{
 Stephanie Parker, Eric Sokol

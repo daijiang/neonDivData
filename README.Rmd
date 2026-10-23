@@ -26,7 +26,22 @@ The goal of neonDivData is to provide cleaned NEON organismal data to facilitate
 
 Data products for all taxonomic groups are long data frames with names in the format of `data_xxx` (e.g. `data_plant`, `data_fish`). Location inforamtions are in `neon_location`; taxonomic informations are in `neon_taxa`.
 
-Despite the aim of this R data package is to facilitate biodiversity research, we keep `NA`s in data products so that information about sampling effort is saved. For some taxonomic groups, we removed observations with above genus level species identification. All codes to clean up the NEON data are available within our [Github repo](https://github.com/daijiang/neonDivData/tree/master/data-raw). Users can use them to customize their own data product if needed.
+## Notes for users
+
+**Zero rows (sampling effort).** Every observation dataset keeps samples that were collected and processed but contained no target taxa, as one row per sample with `taxon_id = NA` and `value = 0`. Use these rows to recover sampling effort (e.g. for occupancy or abundance models); drop them (`!is.na(taxon_id)`) for species lists. `value = NA` never means zero: it marks presence-only records (plant 10 m² and 100 m² subplots) or detections whose count was not recorded (a few bird records). Algae, zooplankton, and tick pathogen data have no zero rows.
+
+**Flag columns.** Questionable records are flagged rather than removed, so users can decide how to handle them:
+
+- `redundant_genus` (all datasets except tick pathogens): `TRUE` for a genus-level record that co-occurs with a finer identification of the same genus in the same sample. Drop these records to avoid inflating species richness.
+- `sampleCondition` (algae, beetle, macroinvertebrate, mosquito, tick, zooplankton), `trapConditionFlag` (beetle, mosquito), and `dataQF` (macroinvertebrate): NEON sample and trap quality problems; `NA` when no problem was recorded.
+- `target_taxon` (small mammal): `FALSE` for incidental captures of non-target taxa such as shrews.
+- `incidental_observation` (bird): `TRUE` for birds observed outside the timed point count.
+- `sampled_scales_m2` (plant): which subplot scales were surveyed; since 2019 the 10 and 100 m² scales are surveyed only every other year.
+- `species_group_assigned` (plant): `TRUE` for NEON speciesGroup records (e.g. "Fraxinus americana/pennsylvanica") whose WCVP name columns give one assigned member species; drop these for species-specific analyses.
+- `count_source` (tick) and `count_method` (algae): how counts were derived.
+- `vector_taxon_id` (tick pathogen): the tested tick species; always analyze pathogen prevalence within vector species.
+
+See the help page of each dataset (e.g. `?data_beetle`) for details. Higher-rank identifications were removed for some taxonomic groups. All code to clean the NEON data is available in our [Github repo](https://github.com/daijiang/neonDivData/tree/master/data-raw); users can modify it to build their own data products.
 
 Available taxonomic groups and their brief summaries:
 

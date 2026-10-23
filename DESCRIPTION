@@ -1,7 +1,7 @@
 Package: neonDivData
 Type: Package
 Title: Standardized NEON Organismal Data for Biodiversity Research
-Version: 0.2.3
+Version: 0.3.0
 Authors@R: c(
     person(given = "Daijiang", family = "Li", email = "daijianglee@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0925-3421")),
     person(given = "Sydne", family = "Record", role = c("aut")),
@@ -37,7 +37,6 @@ LazyData: true
 LazyDataCompression: xz
 Depends: 
     R (>= 3.5)
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Imports: 
     tibble
@@ -47,3 +46,4 @@ Suggests:
     lubridate,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

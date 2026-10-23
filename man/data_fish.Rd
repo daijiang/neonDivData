@@ -41,7 +41,6 @@ of the lowest level taxonomic rank that can be determined.
 }
 \source{
 \url{https://data.neonscience.org}; https://data.neonscience.org/data-products/DP1.20107.001#collectionAndProcessing
-#' @referencesJensen, Jensen, B., S. Parker, and C. Scott. 2017. Neon user guide to fish electrofishing, gill netting, and fyke netting counts (NEON.DP1.20107). NEON, National Ecological Observatory Network, Boulder, CO, USA.
 }
 \usage{
 data_fish
@@ -61,6 +60,9 @@ Sampling methods and the design are detailed here: https://www.neonscience.org/d
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+}
+\references{
+Jensen, B., S. Parker, and C. Scott. 2017. Neon user guide to fish electrofishing, gill netting, and fyke netting counts (NEON.DP1.20107). NEON, National Ecological Observatory Network, Boulder, CO, USA.
 }
 \author{
 Stephanie Parker, Thilina Surasinghe

@@ -25,3 +25,66 @@ test_that("nativeStatusCode", {
   expect_true("nativeStatusCode" %in% names(data_plant))
   expect_true("nativeStatusCode" %in% names(data_small_mammal))
 })
+
+# datasets rebuilt by data-raw/02_clean_save_data.R (fish and herp bycatch are discontinued)
+current_data <- list(
+  algae = data_algae, beetle = data_beetle, bird = data_bird,
+  macroinvertebrate = data_macroinvertebrate, mosquito = data_mosquito,
+  plant = data_plant, small_mammal = data_small_mammal, tick = data_tick,
+  tick_pathogen = data_tick_pathogen, zooplankton = data_zooplankton
+)
+
+test_that("zero-catch rows have taxon_id = NA and value = 0", {
+  for (nm in names(current_data)) {
+    x <- current_data[[nm]]
+    zero <- x[is.na(x$taxon_id), ]
+    expect_true(all(zero$value == 0), info = nm)
+  }
+  # these datasets must keep zero-catch samples to preserve sampling effort
+  for (nm in c("beetle", "bird", "macroinvertebrate", "mosquito", "plant", "small_mammal", "tick")) {
+    expect_gt(sum(is.na(current_data[[nm]]$taxon_id)), 0, label = nm)
+  }
+})
+
+test_that("at most one zero row per sample, and none in samples with taxa", {
+  # columns identifying one sample in each dataset with zero rows
+  sample_keys <- list(
+    beetle = "unique_sample_id", bird = c("unique_sample_id", "plotID", "pointID"),
+    macroinvertebrate = "unique_sample_id", mosquito = "unique_sample_id",
+    plant = c("unique_sample_id", "subplotID"), small_mammal = "unique_sample_id",
+    tick = "unique_sample_id"
+  )
+  for (nm in names(sample_keys)) {
+    x <- current_data[[nm]]
+    # small mammal: non-target captures may sit next to a zero row by design
+    if (nm == "small_mammal") x <- x[!x$target_taxon %in% FALSE, ]
+    key <- do.call(paste, unname(as.list(x[sample_keys[[nm]]])))
+    zero_keys <- key[is.na(x$taxon_id)]
+    expect_false(anyDuplicated(zero_keys) > 0, info = nm)
+    expect_false(any(zero_keys %in% key[!is.na(x$taxon_id)]), info = nm)
+  }
+})
+
+test_that("observation_datetime is POSIXct in all datasets", {
+  for (nm in names(current_data)) {
+    expect_s3_class(current_data[[nm]]$observation_datetime, "POSIXct")
+  }
+})
+
+test_that("flag columns are present", {
+  for (nm in setdiff(names(current_data), "tick_pathogen")) {
+    expect_true("redundant_genus" %in% names(current_data[[nm]]), info = nm)
+  }
+  expect_true("vector_taxon_id" %in% names(data_tick_pathogen))
+  expect_true("target_taxon" %in% names(data_small_mammal))
+})
+
+test_that("tick species-ID assays are not reported as pathogens", {
+  host_tests <- c("Amblyomma americanum", "Ixodes scapularis", "Dermacentor variabilis",
+                  "Haemaphysalis longicornis", "Ixodes pacificus", "HardTick DNA Quality")
+  expect_false(any(data_tick_pathogen$taxon_id %in% host_tests))
+})
+
+test_that("neon_taxa has no missing taxon_id", {
+  expect_false(any(is.na(neon_taxa$taxon_id)))
+})

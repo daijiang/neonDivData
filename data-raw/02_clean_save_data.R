@@ -46,27 +46,41 @@ clean_neon_data <- function(neon_data_list, taxon) {
 
 raw_dir <- "data-raw/NEON_raw_data/"
 
-# Return the most recent RDS file for a given taxon prefix.
-# Files are named <prefix>_<dpID>_<YYYYMMDD>.RDS so alphabetical sort gives latest.
-latest_rds <- function(prefix, dir = raw_dir) {
+neon_product_ids <- c(
+    algae             = "DP1.20166.001",
+    beetle            = "DP1.10022.001",
+    bird              = "DP1.10003.001",
+    macroinvertebrate = "DP1.20120.001",
+    mosquito          = "DP1.10043.001",
+    plant             = "DP1.10058.001",
+    small_mammal      = "DP1.10072.001",
+    tick              = "DP1.10093.001",
+    tick_pathogen     = "DP1.10092.001",
+    zooplankton       = "DP1.20219.001"
+)
+
+# Return the most recent RDS file for a NEON data product.
+# Matches both <taxon>_<dpID>_<stamp>.RDS (01_download_data.R) and older
+# <dpID>_<stamp>.RDS names; the latest is chosen by the trailing date stamp
+# (YYYYMMDD, optionally followed by HHMM[SS]), not by file name.
+latest_rds <- function(dpid, dir = raw_dir) {
     files <- list.files(dir,
-        pattern = paste0("^", prefix, "_DP.*\\.RDS$"),
+        pattern = paste0("(^|_)", gsub(".", "\\.", dpid, fixed = TRUE), "_\\d{8,14}\\.RDS$"),
         full.names = TRUE
     )
-    if (!length(files)) stop("No RDS file found for prefix: ", prefix)
-    sort(files, decreasing = TRUE)[[1]]
+    if (!length(files)) stop("No RDS file found for product: ", dpid)
+    stamp <- sub(".*_(\\d{8,14})\\.RDS$", "\\1", basename(files))
+    stamp <- formatC(stamp, width = 14, flag = "-") |> gsub(pattern = " ", replacement = "0")
+    files[order(stamp, decreasing = TRUE)][[1]]
 }
 
-taxon_names <- c(
-    "algae", "beetle", "bird", "macroinvertebrate", "mosquito",
-    "plant", "small_mammal", "tick", "tick_pathogen", "zooplankton"
-)
+taxon_names <- names(neon_product_ids)
 
 # Read, dispatch to clean_neon_data(), store results
 cleaned <- setNames(vector("list", length(taxon_names)), taxon_names)
 
 for (taxon in taxon_names) {
-    f <- latest_rds(taxon)
+    f <- latest_rds(neon_product_ids[[taxon]])
     message("--- Reading ", basename(f), " ---")
     raw <- readRDS(f)
     message("--- Cleaning ", taxon, " ---")
@@ -89,32 +103,9 @@ data_tick_pathogen <- cleaned$tick_pathogen
 data_zooplankton <- cleaned$zooplankton
 
 
-# =============================================================================
-# 2. Post-processing (legacy steps from 02_data_to_neonDivData.R)
-# =============================================================================
-
-# Macroinvertebrate: ponarDepth / snagLength / snagDiameter arrive as character
-# from NEON's raw tables and are not coerced inside clean_neon_macroinvertebrate().
-data_macroinvertebrate <- data_macroinvertebrate |>
-    mutate(
-        ponarDepth   = as.numeric(ponarDepth),
-        snagLength   = as.numeric(snagLength),
-        snagDiameter = as.numeric(snagDiameter)
-    )
-
-### Decided to keep non-finite values in the cleaned datasets for now to keep sampling effort.
-# # Drop non-finite values from all taxa except plant.
-# # For plant, NA in value = presence/absence record (not a missing count), so we
-# # keep those rows intentionally.
-# data_algae             <- filter(data_algae,             is.finite(value))
-# data_beetle            <- filter(data_beetle,            is.finite(value))
-# data_bird              <- filter(data_bird,              is.finite(value))
-# data_macroinvertebrate <- filter(data_macroinvertebrate, is.finite(value))
-# data_mosquito          <- filter(data_mosquito,          is.finite(value))
-# data_small_mammal      <- filter(data_small_mammal,      is.finite(value))
-# data_tick              <- filter(data_tick,              is.finite(value))
-# data_tick_pathogen     <- filter(data_tick_pathogen,     is.finite(value))
-# data_zooplankton       <- filter(data_zooplankton,       is.finite(value))
+# Zero-catch convention (all observation datasets): a sample that was collected
+# and processed but contained no target taxa is kept as ONE row with
+# taxon_id = NA and value = 0, so sampling effort is preserved.
 
 # =============================================================================
 # 3. neon_taxa
@@ -135,17 +126,38 @@ taxon_group_map <- c(
     zooplankton       = "ZOOPLANKTON"
 )
 
-neon_taxa <- mapply(
+neon_taxa_new <- mapply(
     function(dat, grp) {
-        distinct(select(dat, any_of(c("taxon_id", "taxon_name", "taxon_rank")))) |>
+        count(dat, across(any_of(c("taxon_id", "taxon_name", "taxon_rank")))) |>
             mutate(taxon_group = grp)
     },
     cleaned, taxon_group_map,
     SIMPLIFY = FALSE
 ) |>
     bind_rows() |>
-    distinct() |>
-    bind_rows(neonDivData::neon_taxa) |> # preserve taxa from previous release
+    filter(!is.na(taxon_id)) |> # zero-catch rows
+    # NEON occasionally uses one taxon_id with two names within a release (e.g. a
+    # name update applied to only some records); keep the most frequent name
+    group_by(taxon_group, taxon_id) |>
+    slice_max(n, n = 1, with_ties = FALSE) |>
+    ungroup() |>
+    select(-n)
+
+# Preserve taxa from the previous release, but when a taxon_id is still in use
+# keep only its current name/rank (avoids one taxon_id listed under two names).
+neon_taxa <- neonDivData::neon_taxa |>
+    filter(!is.na(taxon_id)) |>
+    # entries created by earlier cleaning bugs: tick species-ID assays reported
+    # as pathogens, and the old order-level placeholder for unidentified ticks
+    filter(
+        !(taxon_group == "TICK_PATHOGENS" & taxon_id %in% c(
+            "Amblyomma americanum", "Ixodes scapularis", "Dermacentor variabilis",
+            "Haemaphysalis longicornis", "Ixodes pacificus", "HardTick DNA Quality"
+        )),
+        !(taxon_group == "TICKS" & taxon_id == "IXOSP2")
+    ) |>
+    anti_join(neon_taxa_new, by = c("taxon_group", "taxon_id")) |>
+    bind_rows(neon_taxa_new) |>
     distinct() |>
     arrange(taxon_group, taxon_id)
 
@@ -194,19 +206,6 @@ use_data(neon_location, overwrite = TRUE)
 # 5. data_summary
 # One row per taxon group; computed directly from the cleaned data.
 # =============================================================================
-
-neon_product_ids <- c(
-    algae             = "DP1.20166.001",
-    beetle            = "DP1.10022.001",
-    bird              = "DP1.10003.001",
-    macroinvertebrate = "DP1.20120.001",
-    mosquito          = "DP1.10043.001",
-    plant             = "DP1.10058.001",
-    small_mammal      = "DP1.10072.001",
-    tick              = "DP1.10093.001",
-    tick_pathogen     = "DP1.10092.001",
-    zooplankton       = "DP1.20219.001"
-)
 
 data_summary <- mapply(
     function(dat, taxon, dpid, grp) {

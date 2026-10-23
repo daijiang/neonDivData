@@ -11,17 +11,20 @@ A data frame (also a tibble) with the following columns:
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
 \item \code{pointID}: Identifier for a point location.
-\item \code{unique_sample_id}: Identity of unique samples (equals \code{eventID}).
+\item \code{unique_sample_id}: Identity of the sampling bout at a site (equals \code{eventID}, e.g. \code{BRD.HARV.2019.1}); a single point count is identified by \code{unique_sample_id}, \code{plotID}, and \code{pointID} together (point numbers repeat across plots).
 \item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_id}: Accepted species code, based on one or more sources. \code{NA} for zero rows.
 \item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Cluster size (count of individuals observed); \code{NA} for zero-bird points.
+\item \code{value}: Cluster size (count of individuals observed); \code{0} for zero-bird points; \code{NA} when a bird was detected but its cluster size was not recorded.
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{pointCountMinute}: The minute of sampling within the point count period.
+\item \code{boutNumber}: Sampling bout within the season (most points are surveyed twice per year).
+\item \code{pointCountMinute}: The minute of sampling within the point count period; 88 = observed outside the count; \code{NA} for zero rows.
+\item \code{incidental_observation}: \code{TRUE} when \code{pointCountMinute == 88}.
 \item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa.
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus in the same point count.
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
 'A': Presumed absent; 'N': Native; 'I': Introduced; 'UNK': Status unknown.
 \item \code{observerDistance}: Radial distance between the observer and the individual(s) being observed (meter).
@@ -37,7 +40,7 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{observedAirTemp}: The air temperature (Celsius) measured with a handheld weather meter.
 \item \code{kmPerHourObservedWindSpeed}: The average wind speed measured with a handheld weather meter, in kilometers per hour.
 \item \code{samplingProtocolVersion}: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.
-\item \code{remarks}: Remarks of record.
+\item \code{remarks}: Remarks recorded for the point count (from \code{brd_perpoint}).
 \item \code{clusterCode}: Alphabetic code (A-Z) linking clusters of individuals of the same species spanning multiple records.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
@@ -56,13 +59,25 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 To clean the data, we:
 \enumerate{
 \item Filtered \code{brd_perpoint} to \code{samplingImpractical == "OK"} to retain only surveyed points.
-\item Left-joined downward from point survey records to \code{brd_countdata} to preserve zero-bird survey points.
-\item Retained valid cluster size values and zero-bird survey rows; \code{value} = cluster size (count of individuals).
-\item \code{unique_sample_id} = \code{eventID}.
+\item Left-joined downward from point survey records to \code{brd_countdata} by \code{eventID}, \code{plotID}, and \code{pointID} to preserve zero-bird survey points. Points without any count record were dropped.
+\item Kept every detection record. Rows that look identical (same species, minute, distance, and cluster size) are separate detections and are not collapsed.
+\item Collapsed each point count with no birds detected (all minutes \code{targetTaxaPresent == "N"}) into one zero row. Minute-level \code{targetTaxaPresent == "N"} rows at points where birds were detected in other minutes carry no information and were dropped.
+\item \code{value} = cluster size (count of individuals); \code{unique_sample_id} = \code{eventID}.
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}). The sampling protocol has evolved over time, so users are advised to check whether the \code{samplingProtocolVersion} fits their data requirements and subset as necessary.
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}); coordinates are for the plot (grid) center, not the point. The sampling protocol has evolved over time, so users are advised to check whether the \code{samplingProtocolVersion} fits their data requirements and subset as necessary.
+
+\strong{Zero rows.} A point count with no birds detected is kept as one row with \code{taxon_id = NA} and \code{value = 0}. This zero-row convention is shared by all neonDivData observation datasets.
+
+\strong{Records to consider removing.} Each row is one detection (one cluster in one minute), so counts for a species at a point must be summed. Before analysis, consider:
+\itemize{
+\item \code{incidental_observation == TRUE} (\code{pointCountMinute == 88}): birds observed outside the timed count, with unknown location (user guide section 3.5).
+\item Flyovers (\code{detectionMethod}), which have no distance measured.
+\item Records not identified to species (\code{taxon_rank} of class, family, subfamily, genus, or speciesGroup, e.g. "Aves sp." or slash taxa); \code{redundant_genus} marks genus-level records that co-occur with a species of the same genus in the same point count.
+\item Detections with an unknown cluster size (\code{value = NA}).
+\item Most points are surveyed twice per season (\code{boutNumber}).
+}
 }
 \author{
 Daijiang Li, Eric Sokol

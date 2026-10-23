@@ -10,17 +10,20 @@ A data frame (also a tibble) with the following columns:
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{unique_sample_id}: Identity of unique samples, usually it has location and date information.
-\item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{unique_sample_id}: Identity of unique samples (\code{location_id_eventID}, one plot-bout).
+\item \code{observation_datetime}: Date of the last trapping night of the bout.
+\item \code{taxon_id}: Accepted species code, based on one or more sources. \code{NA} for zero rows.
 \item \code{taxon_name}:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Value of the variable(s) specified by \code{variable_name}.
+\item \code{value}: Unique individuals per 100 trap nights per plot per bout; \code{0} for zero rows.
 \item \code{unit}: Unit of the values in the \code{value} column.
-\item \code{year}: Observation year.
-\item \code{month}: Observation month.
+\item \code{n_individuals}: Number of unique individuals captured in the plot-bout.
+\item \code{target_taxon}: \code{FALSE} for taxa that are not NEON small mammal targets; \code{NA} for zero rows.
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus in the same plot-bout.
+\item \code{year}: Year of the first trapping night of the bout.
+\item \code{month}: Month of the first trapping night of the bout.
 \item \code{n_trap_nights_per_bout_per_plot}: Number of trap nights per bout per plot.
 \item \code{n_nights_per_bout}: Number of nights per bout.
 \item \code{nativeStatusCode}: Whether the species is a native or non-native species.
@@ -47,16 +50,21 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 To process data we:
 \enumerate{
 \item Filter nights from \code{mam_perplotnight} where \code{samplingImpractical} is not \code{"OK"} (field added 2020; pre-2020 records without this field are retained).
-\item Compute trapping effort as the number of unique trap coordinates deployed per night-uid, summed across all valid nights within a bout per plot (\code{n_trap_nights_per_bout_per_plot}).
-\item Identify bouts using \code{eventID} from \code{mam_perplotnight}; fall back to year_month for records lacking an \code{eventID}.
+\item Identify bouts using \code{eventID} from \code{mam_perplotnight} (site x year x week).
+\item Compute trapping effort as the number of unique trap coordinates actually set per night (traps with status \code{"1 - trap not set"} and placeholder coordinates such as \code{"XX"} are excluded), summed across all valid nights within a bout per plot (\code{n_trap_nights_per_bout_per_plot}).
 \item Retain only capture records with \code{trapStatus} \code{"5 - capture"} or \code{"4 - more than 1 capture in one trap"}, restricting to taxa identified to genus or finer rank.
-\item Resolve within-bout recaptures: tagged individuals (non-missing \code{tagID}) are counted once per bout; untagged individuals (missing \code{tagID}) are each treated as unique using their row identifier.
-\item Compute \code{value} as \code{100 * raw_count / n_trap_nights_per_bout_per_plot} (unique individuals per 100 trap nights per plot per month).
-\item Retain effort-only rows (bouts with no qualifying captures) with \code{taxon_id}, \code{taxon_name}, \code{taxon_rank}, and \code{value} set to \code{NA}.
+\item Resolve within-bout recaptures: tagged individuals (non-missing \code{tagID}) are counted once per plot per bout; untagged individuals (missing \code{tagID}) are each treated as unique using their row identifier. When recaptures of one individual were assigned different taxa, the most frequent identification is used.
+\item Compute \code{value} as \code{100 * n_individuals / n_trap_nights_per_bout_per_plot} (unique individuals per 100 trap nights per plot per bout). Effort and captures are both aggregated by plot and bout, including bouts that span two months.
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Zero rows.} A plot-bout in which no target small mammal was captured is kept as one row with \code{taxon_id = NA}, \code{value = 0}, and \code{n_individuals = 0}. This zero-row convention is shared by all neonDivData observation datasets.
+
+\strong{Non-target taxa.} NEON targets cricetid, heteromyid, and murid rodents and small sciurids; shrews, moles, rabbits and pikas, weasels, opossums, large tree squirrels, and pocket gophers are captured only incidentally (user guide section 3). These captures are kept with \code{target_taxon = FALSE}. To analyze target taxa only, use \code{dplyr::filter(data_small_mammal, target_taxon | is.na(taxon_id))}; plot-bouts with only non-target captures already have a zero row.
+
+\strong{Comparability.} Diversity grids are trapped one night per bout and pathogen grids three nights per bout (\code{n_nights_per_bout}), so unique individuals per 100 trap nights is lower on three-night grids as recaptures accumulate. Use \code{n_individuals} with \code{n_nights_per_bout} (or mark-recapture models on the NEON data) when comparing grid types. \code{redundant_genus} marks genus-level records that co-occur with a finer identification of the same genus in the same plot-bout.
 }
 \author{
 Marta Jarzyna

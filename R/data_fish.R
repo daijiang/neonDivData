@@ -45,7 +45,7 @@
 #' - `elevation`: Elevation (in meters) above sea level.
 #'
 #' @source <https://data.neonscience.org>; https://data.neonscience.org/data-products/DP1.20107.001#collectionAndProcessing
-#' #' @referencesJensen, Jensen, B., S. Parker, and C. Scott. 2017. Neon user guide to fish electrofishing, gill netting, and fyke netting counts (NEON.DP1.20107). NEON, National Ecological Observatory Network, Boulder, CO, USA.
+#' @references Jensen, B., S. Parker, and C. Scott. 2017. Neon user guide to fish electrofishing, gill netting, and fyke netting counts (NEON.DP1.20107). NEON, National Ecological Observatory Network, Boulder, CO, USA.
 #'
 #' @author Stephanie Parker, Thilina Surasinghe
 #'

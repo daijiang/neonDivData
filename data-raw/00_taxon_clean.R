@@ -24,6 +24,39 @@ resolve_neon_duplicates <- function(df, group_cols, sum_col) {
     dplyr::bind_rows(df_no_dups, df_corrected)
 }
 
+#' Flag genus-level records that co-occur with a finer ID of the same genus
+#'
+#' Adds a logical column `redundant_genus`: TRUE when a record is identified only
+#' to genus and the same sample also contains a record of that genus identified
+#' to subgenus, species group, species, or below. Such genus-level records may
+#' represent the same organisms and inflate naive richness counts.
+#' @noRd
+flag_redundant_genus <- function(df, sample_cols = "unique_sample_id") {
+    finer_ranks <- c("subgenus", "speciesgroup", "species", "subspecies", "variety", "form")
+    genus <- stringr::word(df$taxon_name, 1)
+    sample_key <- do.call(paste, c(unname(as.list(df[sample_cols])), sep = "|"))
+    is_finer <- tolower(df$taxon_rank) %in% finer_ranks
+    finer_keys <- unique(paste(sample_key, genus)[is_finer])
+    df$redundant_genus <- tolower(df$taxon_rank) %in% "genus" &
+        paste(sample_key, genus) %in% finer_keys
+    df
+}
+
+#' Prefix a status value unless it is missing or one of the OK values
+#' @noRd
+flag_value <- function(x, prefix, ok = character()) {
+    dplyr::if_else(is.na(x) | tolower(x) %in% tolower(ok), NA_character_, paste0(prefix, x))
+}
+
+#' Combine several flag vectors into one "; "-separated string (NA if none set)
+#' @noRd
+collapse_flags <- function(...) {
+    m <- cbind(...)
+    out <- apply(m, 1, function(r) paste(r[!is.na(r)], collapse = "; "))
+    out[out == ""] <- NA_character_
+    out
+}
+
 # plant =====
 #' Clean NEON Plant Data
 #' @param neon_data_list DP1.10058.001 raw data
@@ -32,81 +65,166 @@ resolve_neon_duplicates <- function(df, group_cols, sum_col) {
 #' @importFrom stringr str_extract str_remove str_detect
 #'
 clean_neon_plant <- function(neon_data_list) {
-    # 1. Process 1m2 Data
-    div_1m2_pla <- neon_data_list$div_1m2Data |>
-        dplyr::filter(divDataType == "plantSpecies") |>
-        dplyr::filter(targetTaxaPresent != "N") |>
-        tidyr::drop_na(plotID, subplotID, boutNumber, endDate, taxonID) |>
+    # 0. HELPERS
+    # Morphospecies resolutions (user guide 3.7, 3.9): field morphospecies are later
+    # resolved in div_morphospecies; update records by joining on siteID +
+    # morphospeciesID. Only unambiguous (1:1) resolutions are applied.
+    morpho <- neon_data_list$div_morphospecies |>
+        dplyr::filter(!is.na(morphospeciesID), !is.na(taxonID)) |>
+        dplyr::distinct(
+            siteID, morphospeciesID, taxonID, scientificName, taxonRank,
+            nativeStatusCode, identificationQualifier
+        ) |>
+        dplyr::add_count(siteID, morphospeciesID) |>
+        dplyr::filter(n == 1) |>
+        dplyr::select(
+            siteID, morphospeciesID,
+            ms_taxonID = taxonID, ms_scientificName = scientificName,
+            ms_taxonRank = taxonRank, ms_nativeStatusCode = nativeStatusCode,
+            ms_identificationQualifier = identificationQualifier
+        )
+
+    resolve_morpho <- function(df) {
+        df |>
+            dplyr::left_join(morpho, by = c("siteID", "morphospeciesID"), na_matches = "never") |>
+            dplyr::mutate(
+                morphospecies_resolved = !is.na(ms_taxonID),
+                taxonID = dplyr::coalesce(ms_taxonID, taxonID),
+                scientificName = dplyr::coalesce(ms_scientificName, scientificName),
+                taxonRank = dplyr::coalesce(ms_taxonRank, taxonRank),
+                nativeStatusCode = dplyr::coalesce(ms_nativeStatusCode, nativeStatusCode),
+                identificationQualifier = dplyr::if_else(
+                    morphospecies_resolved, ms_identificationQualifier, identificationQualifier
+                ),
+                # Unresolved morphospecies sharing a coarse code (e.g. 2PLANT) are distinct taxa
+                taxon_key = dplyr::if_else(
+                    !morphospecies_resolved & !is.na(morphospeciesID),
+                    paste(taxonID, morphospeciesID, sep = "|"),
+                    taxonID
+                )
+            ) |>
+            dplyr::select(-dplyr::starts_with("ms_"))
+    }
+
+    # Some subplots were surveyed on two dates within one eventID (repeat surveys,
+    # often by different observers). Keep the first survey of each subplot-event.
+    keep_first_survey <- function(df) {
+        df |>
+            dplyr::group_by(plotID, eventID, subplotID) |>
+            dplyr::filter(endDate == min(endDate)) |>
+            dplyr::ungroup()
+    }
+
+    # Parse subplotID ("31_1_1" = 1m2, "31_10_1" = 10m2, "31_100" = 100m2)
+    add_subplot_parts <- function(df) {
+        df |>
+            dplyr::mutate(
+                sample_area_m2 = dplyr::case_when(
+                    grepl("^\\d+_100$", subplotID) ~ 100,
+                    grepl("^\\d+_10_\\d+$", subplotID) ~ 10,
+                    grepl("^\\d+_1_\\d+$", subplotID) ~ 1
+                ),
+                subplot_id = stringr::str_extract(subplotID, "^[0-9]+"),
+                subsubplot_id = dplyr::if_else(
+                    sample_area_m2 < 100, stringr::str_extract(subplotID, "[0-9]+$"), NA_character_
+                )
+            )
+    }
+
+    # 1. 1m2 DATA (percent cover); surveyed subplots only
+    div_1m2 <- neon_data_list$div_1m2Data |>
+        dplyr::filter(divDataType == "plantSpecies", targetTaxaPresent %in% c("Y", "N")) |>
+        tidyr::drop_na(plotID, subplotID, eventID, endDate) |>
+        keep_first_survey() |>
+        resolve_morpho() |>
+        add_subplot_parts() |>
+        dplyr::filter(!is.na(sample_area_m2))
+
+    # Same-date duplicate records of one taxon in one subplot: keep the highest cover
+    div_1m2_pla <- div_1m2 |>
+        dplyr::filter(targetTaxaPresent == "Y", !is.na(taxonID)) |>
+        dplyr::arrange(dplyr::desc(percentCover)) |>
+        dplyr::distinct(plotID, eventID, subplotID, taxon_key, .keep_all = TRUE) |>
         dplyr::mutate(
-            year = substr(as.character(endDate), 1, 4),
-            primaryKey = paste(plotID, boutNumber, year, taxonID, subplotID, sep = "_"),
-            # Map the base plot removal directly to key3 for the cross-table join
-            # e.g., change from BART_006_1_2014_ACSA3_32_1_2 to ...32_2 (point to the 10m2 area)
-            key2 = paste(plotID, boutNumber, year, taxonID, stringr::str_replace(subplotID, "_1_", "_"), sep = "_"),
-            # e.g., change from BART_006_1_2014_ACSA3_32_2 to ...32 (point to the 100m2 area)
-            key3 = stringr::str_remove(key2, "_[0-9]$"),
-            sample_area_m2 = 1,
             variable_name = "percent cover",
             value = percentCover,
             unit = "percent of plot area covered by taxon"
-        ) |>
-        as_tibble()
+        )
 
-    # select(div_1m2_pla, primaryKey, key2, key3) |> unique() |> head(20) |> as.data.frame()
+    # 2. 10m2 AND 100m2 DATA (presence only)
+    div_10_100 <- neon_data_list$div_10m2Data100m2Data |>
+        dplyr::filter(targetTaxaPresent %in% c("Y", "N")) |>
+        tidyr::drop_na(plotID, subplotID, eventID, endDate) |>
+        keep_first_survey() |>
+        resolve_morpho() |>
+        add_subplot_parts() |>
+        dplyr::filter(!is.na(sample_area_m2))
 
-    # 2. Process 10m2 and 100m2 Data
-    div_10_100_m2 <- neon_data_list$div_10m2Data100m2Data |>
-        tidyr::drop_na(plotID, subplotID, boutNumber, endDate, taxonID) |>
-        dplyr::filter(targetTaxaPresent != "N") |>
-        dplyr::mutate(
-            year = substr(as.character(endDate), 1, 4),
-            primaryKey = paste(plotID, boutNumber, year, taxonID, subplotID, sep = "_"),
-            # point to the 10m2 area, e.g., 32_2
-            key2 = paste(plotID, boutNumber, year, taxonID, stringr::str_replace(subplotID, "_10_", "_"), sep = "_"),
-            # point to the 100m2 area, e.g., 32
-            key3 = stringr::str_remove(key2, "_[0-9]{1,3}$") # _1 or _2 or _100 etc.
-        ) |>
-        as_tibble()
+    div_10_100_pla <- div_10_100 |>
+        dplyr::filter(targetTaxaPresent == "Y", !is.na(taxonID)) |>
+        dplyr::distinct(plotID, eventID, subplotID, taxon_key, .keep_all = TRUE)
 
-    # select(div_10_100_m2, primaryKey, key2, key3) |> unique() |> head(20) |> as.data.frame()
+    # 3. NESTING (user guide 3.9): 10m2 records should exclude taxa already found in
+    # the nested 1m2 subplot, and 100m2 records taxa found in any nested 1m2/10m2
+    # subplot. Enforce this defensively.
+    div_10m2 <- div_10_100_pla |>
+        dplyr::filter(sample_area_m2 == 10) |>
+        dplyr::anti_join(div_1m2_pla,
+            by = c("plotID", "eventID", "subplot_id", "subsubplot_id", "taxon_key")
+        )
 
-    # 3. NEON CUMULATIVE NESTING LOGIC (Using updated underscore regex)
-    # Drop species already found in 1m2
-    div_10_100_m2_2 <- dplyr::filter(div_10_100_m2, !key2 %in% unique(div_1m2_pla$key2))
+    div_100m2 <- div_10_100_pla |>
+        dplyr::filter(sample_area_m2 == 100) |>
+        dplyr::anti_join(
+            dplyr::bind_rows(div_1m2_pla, div_10m2),
+            by = c("plotID", "eventID", "subplot_id", "taxon_key")
+        )
 
-    # Isolate 10m2 species
-    div_10_100_m2_3 <- dplyr::filter(div_10_100_m2_2, stringr::str_detect(primaryKey, "_10_"))
-
-    # Isolate 100m2 species (removing those already in 1m2 or 10m2)
-    div_10_100_m2_4 <- dplyr::filter(
-        div_10_100_m2_2, stringr::str_detect(key2, "_100$"),
-        !key3 %in% unique(c(div_1m2_pla$key3, div_10_100_m2_3$key3))
-    )
-
-    div_10_100_m2_final <- dplyr::bind_rows(
-        dplyr::mutate(div_10_100_m2_3, sample_area_m2 = 10),
-        dplyr::mutate(div_10_100_m2_4, sample_area_m2 = 100)
-    ) |>
+    div_10_100_final <- dplyr::bind_rows(div_10m2, div_100m2) |>
         dplyr::mutate(
             variable_name = "presence absence",
             value = NA_real_,
             unit = NA_character_
         )
 
-    # 4. Stack Data and format variables
-    data_plant <- dplyr::bind_rows(div_1m2_pla, div_10_100_m2_final) |>
-        dplyr::distinct() |>
-        dplyr::filter(taxonRank %in% c("variety", "subspecies", "species", "speciesGroup", "genus")) |>
+    # 4. ZERO ROWS: 1m2 subplots surveyed with no plant species present
+    div_1m2_zero <- div_1m2 |>
+        dplyr::group_by(plotID, eventID, subplotID) |>
+        dplyr::filter(all(targetTaxaPresent == "N")) |>
+        dplyr::slice(1) |>
+        dplyr::ungroup() |>
         dplyr::mutate(
-            # Safely extract subplot strings regardless of character length
-            subplot_id = stringr::str_extract(subplotID, "^[0-9]+"),
-            subsubplot_id = stringr::str_extract(subplotID, "(?<=_)[0-9]+$"),
-            observation_datetime = as.POSIXct(endDate, tz = "UTC"),
-            unique_sample_id = paste0(namedLocation, "_", subplot_id, "_", year, "-", boutNumber),
-            presence_absence = 1
+            dplyr::across(c(taxonID, scientificName, taxonRank, nativeStatusCode), ~NA_character_),
+            variable_name = "percent cover",
+            value = 0,
+            unit = "percent of plot area covered by taxon"
         )
 
-    # 5. Select and map to neonDivData flat format
+    # 5. SAMPLING EFFORT: which scales were surveyed in each 100m2 subplot x event.
+    # Since 2019 the 10m2 and 100m2 scales are surveyed only every other year.
+    sampled_scales <- dplyr::bind_rows(div_1m2, div_10_100) |>
+        dplyr::distinct(plotID, eventID, subplot_id, sample_area_m2) |>
+        dplyr::group_by(plotID, eventID, subplot_id) |>
+        dplyr::summarise(
+            sampled_scales_m2 = paste(sort(unique(sample_area_m2)), collapse = ","),
+            .groups = "drop"
+        )
+
+    # 6. Stack Data and format variables
+    data_plant <- dplyr::bind_rows(div_1m2_pla, div_10_100_final, div_1m2_zero) |>
+        dplyr::filter(
+            taxonRank %in% c("variety", "subspecies", "species", "speciesGroup", "genus") |
+                is.na(taxonID)
+        ) |>
+        dplyr::left_join(sampled_scales, by = c("plotID", "eventID", "subplot_id")) |>
+        dplyr::mutate(
+            year = substr(as.character(endDate), 1, 4),
+            observation_datetime = as.POSIXct(endDate, tz = "UTC"),
+            unique_sample_id = paste0(namedLocation, "_", subplot_id, "_", year, "-", boutNumber),
+            presence_absence = dplyr::if_else(is.na(taxonID), 0, 1)
+        )
+
+    # 7. Select and map to neonDivData flat format
     final_tibble <- data_plant |>
         dplyr::rename(
             location_id = namedLocation,
@@ -116,11 +234,13 @@ clean_neon_plant <- function(neon_data_list) {
             latitude = decimalLatitude,
             longitude = decimalLongitude
         ) |>
+        flag_redundant_genus() |>
         dplyr::select(dplyr::any_of(c(
             "location_id", "siteID", "plotID", "unique_sample_id", "subplotID", "subplot_id", "subsubplot_id",
             "observation_datetime", "taxon_id", "taxon_name", "taxon_rank",
             "variable_name", "value", "unit", "presence_absence", "boutNumber",
-            "nativeStatusCode", "heightPlantOver300cm", "heightPlantSpecies", "sample_area_m2",
+            "nativeStatusCode", "identificationQualifier", "morphospeciesID", "redundant_genus",
+            "heightPlantOver300cm", "heightPlantSpecies", "sample_area_m2", "sampled_scales_m2",
             "latitude", "longitude", "elevation", "plotType", "nlcdClass", "release"
         ))) |>
         dplyr::distinct() |>
@@ -140,33 +260,44 @@ clean_neon_bird <- function(neon_data_list) {
     # 1. Extract the tables
     # Base table: Point counts. Keep only points that were actually surveyed.
     brd_point <- neon_data_list$brd_perpoint |>
-        dplyr::filter(samplingImpractical == "OK") |>
-        dplyr::distinct()
+        dplyr::filter(samplingImpractical == "OK")
 
+    # Keep only count-level columns (plus join keys) so point-level fields are not
+    # duplicated. Do not distinct(): count rows identical except for uid are
+    # separate detections (user guide 3.8).
+    join_cols <- c("eventID", "plotID", "pointID")
     brd_count <- neon_data_list$brd_countdata |>
-        dplyr::distinct()
+        dplyr::select(dplyr::all_of(c(join_cols, setdiff(names(neon_data_list$brd_countdata), names(brd_point)))))
 
-    # 2. Join DOWNWARD from Point to Count to preserve zero-bird surveys
-    join_cols <- intersect(names(brd_count), names(brd_point))
-    join_cols <- setdiff(join_cols, c("uid", "startDate", "identifiedBy", "measuredBy", "remarks", "publicationDate"))
-
+    # 2. Join DOWNWARD from Point to Count to preserve zero-bird surveys (QSG keys)
     brd_dat <- brd_point |>
-        dplyr::left_join(
-            dplyr::select(brd_count, -dplyr::any_of(c("uid", "startDate", "identifiedBy", "measuredBy", "samplingImpractical", "samplingImpracticalRemarks"))),
-            by = join_cols,
-            relationship = "many-to-many" # Silences warning for multiple birds per point
-        )
+        dplyr::left_join(brd_count, by = join_cols, relationship = "one-to-many") |>
+        # Points with no count records at all cannot be interpreted; drop them
+        dplyr::filter(!is.na(targetTaxaPresent))
 
-    # 3. Clean and map variables
+    # 3. Zero-bird points: NEON records one targetTaxaPresent == "N" row per minute.
+    # Collapse each zero-bird point count to a single row with value 0.
+    brd_zero <- brd_dat |>
+        dplyr::group_by(eventID, plotID, pointID) |>
+        dplyr::filter(all(targetTaxaPresent == "N")) |>
+        dplyr::slice(1) |>
+        dplyr::ungroup() |>
+        dplyr::mutate(pointCountMinute = NA_real_, clusterSize = 0)
+
     brd_dat <- brd_dat |>
-        # Keep valid bird counts OR rows where clusterSize became NA (empty surveys)
-        dplyr::filter(is.finite(clusterSize) | is.na(clusterSize) | targetTaxaPresent == "N") |>
+        dplyr::filter(targetTaxaPresent == "Y") |>
+        dplyr::bind_rows(brd_zero)
+
+    # 4. Clean and map variables
+    brd_dat <- brd_dat |>
         dplyr::mutate(
             observation_datetime = as.POSIXct(startDate, tz = "UTC"),
             variable_name = "cluster size",
             unit = "count of individuals",
             value = clusterSize,
-            unique_sample_id = eventID
+            unique_sample_id = eventID,
+            # pointCountMinute 88 = observed outside the timed count (user guide 3.5)
+            incidental_observation = pointCountMinute %in% 88
         ) |>
         dplyr::rename(
             location_id = namedLocation,
@@ -177,19 +308,21 @@ clean_neon_bird <- function(neon_data_list) {
             longitude = decimalLongitude
         )
 
-    # 4. Format exactly to the neonDivData target tibble
+    # 5. Format exactly to the neonDivData target tibble
+    # No distinct() here: identical-looking rows are separate detections.
     final_tibble <- brd_dat |>
+        flag_redundant_genus(sample_cols = c("unique_sample_id", "plotID", "pointID")) |>
         dplyr::select(dplyr::any_of(c(
             "location_id", "siteID", "plotID", "pointID", "unique_sample_id",
             "observation_datetime", "taxon_id", "taxon_name", "taxon_rank",
-            "variable_name", "value", "unit", "pointCountMinute", "targetTaxaPresent",
+            "variable_name", "value", "unit", "boutNumber", "pointCountMinute",
+            "incidental_observation", "targetTaxaPresent", "redundant_genus",
             "nativeStatusCode", "observerDistance", "detectionMethod", "visualConfirmation",
             "sexOrAge", "release", "startCloudCoverPercentage", "endCloudCoverPercentage",
             "startRH", "endRH", "observedHabitat", "observedAirTemp",
             "kmPerHourObservedWindSpeed", "samplingProtocolVersion", "remarks",
             "clusterCode", "latitude", "longitude", "elevation", "nlcdClass", "plotType"
         ))) |>
-        dplyr::distinct() |>
         dplyr::as_tibble()
 
     return(final_tibble)
@@ -204,77 +337,104 @@ clean_neon_bird <- function(neon_data_list) {
 #' @importFrom tidyr drop_na
 #'
 clean_neon_mosquito <- function(neon_data_list) {
-    # 1. Base table is TRAPPING to preserve zero-catch effort
+    # 1. Base table is TRAPPING to preserve zero-catch effort.
+    # Zero-catch traps (targetTaxaPresent == "N") have no sampleID, so sampleID is
+    # NOT required here. samplingImpractical is NA in older records (treat as OK).
     mos_trapping <- neon_data_list$mos_trapping |>
-        tidyr::drop_na(collectDate, eventID, namedLocation, sampleID) |>
-        dplyr::filter(as.numeric(trapHours) > 0) |> # Trap must have actually been deployed
-        dplyr::distinct()
+        dplyr::filter(
+            is.na(samplingImpractical) | samplingImpractical == "OK",
+            targetTaxaPresent %in% c("Y", "N", "U"),
+            as.numeric(trapHours) > 0 # Trap must have actually been deployed
+        ) |>
+        tidyr::drop_na(collectDate, namedLocation) |>
+        dplyr::select(
+            namedLocation, siteID, plotID, plotType, nlcdClass,
+            decimalLatitude, decimalLongitude, elevation,
+            collectDate, trapHours, nightOrDay, eventID, sampleID,
+            samplingProtocolVersion, fanStatus, catchCupStatus, CO2Status,
+            sampleCondition_trapping = sampleCondition,
+            targetTaxaPresent_trapping = targetTaxaPresent,
+            release_trapping = release
+        ) |>
+        dplyr::distinct() |>
+        dplyr::mutate(
+            # Zero-catch traps lack a sampleID; build one from plot and collection
+            # time (UTC). NEON sampleIDs use local time, so the made-up ids get a
+            # distinct format ("plotID.YYYYMMDDTHHMMZ.empty") that cannot collide.
+            unique_sample_id = dplyr::coalesce(
+                sampleID,
+                paste(plotID, format(collectDate, "%Y%m%dT%H%MZ", tz = "UTC"), "empty", sep = ".")
+            )
+        )
 
     # 2. Extract Sorting and Expert ID tables
     mos_sorting <- neon_data_list$mos_sorting |>
         tidyr::drop_na(sampleID, subsampleID) |>
-        dplyr::rename(dplyr::any_of(c(remarks_sorting = "remarks"))) |> # Ensure remarks maps to remarks_sorting
+        dplyr::select(
+            sampleID, subsampleID, sortDate, proportionIdentified,
+            sampleCondition_sorting = sampleCondition,
+            remarks_sorting = remarks
+        ) |>
         dplyr::distinct()
 
     mos_expert <- neon_data_list$mos_expertTaxonomistIDProcessed |>
         tidyr::drop_na(subsampleID) |>
+        dplyr::select(
+            subsampleID, individualCount, taxonID, scientificName, taxonRank,
+            nativeStatusCode, sex,
+            targetTaxaPresent_expert = targetTaxaPresent,
+            sampleCondition_expert = sampleCondition,
+            release_expert = release
+        ) |>
         dplyr::distinct()
-
-    # Clear individualCount if 0 and no taxonID (blanks/unidentified)
-    mos_expert$individualCount[mos_expert$individualCount == 0 & is.na(mos_expert$taxonID)] <- NA
 
     # 3. Join DOWNWARD from Trapping to preserve all deployed traps
     mos_dat <- mos_trapping |>
-        dplyr::left_join(
-            dplyr::select(mos_sorting, -dplyr::any_of(c("uid", "collectDate", "domainID", "namedLocation", "plotID", "setDate", "siteID", "targetTaxaPresent"))),
-            by = c("sampleID", "sampleCode"),
-            suffix = c("_trapping", "_sorting"),
-            relationship = "many-to-many"
+        dplyr::left_join(mos_sorting,
+            by = "sampleID", na_matches = "never", relationship = "many-to-many"
         ) |>
-        dplyr::left_join(
-            dplyr::select(mos_expert, -dplyr::any_of(c("uid", "collectDate", "domainID", "namedLocation", "plotID", "setDate", "siteID", "targetTaxaPresent"))),
-            by = c("subsampleID", "subsampleCode"),
-            suffix = c("", "_expertID"),
-            relationship = "many-to-many"
+        dplyr::left_join(mos_expert,
+            by = "subsampleID", na_matches = "never", relationship = "many-to-many"
         )
 
-    # 4. Handle duplicates securely (Keeping sex distinct)
+    # 4. Handle duplicate expert records (keeping sex distinct)
     mos_dat <- resolve_neon_duplicates(
         mos_dat,
-        group_cols = c("sampleID", "taxonID", "sex"),
+        group_cols = c("unique_sample_id", "taxonID", "sex"),
         sum_col = "individualCount"
     )
 
-    # 5. Math and Filtering
+    # 5. Classify rows: counted taxa vs true zeros; drop the rest
+    # (e.g. family-level IDs, uncertain traps without expert IDs)
     mos_dat <- mos_dat |>
         dplyr::mutate(
-            # BACKWARD COMPATIBILITY: Calculate proportionIdentified for older data
-            proportionIdentified = if ("totalWeight" %in% names(mos_dat) && "subsampleWeight" %in% names(mos_dat)) {
-                dplyr::coalesce(as.numeric(proportionIdentified), as.numeric(subsampleWeight) / as.numeric(totalWeight))
-            } else {
-                as.numeric(proportionIdentified)
-            },
-
-            # Estimated total = ID'd count / proportion of the subsample identified
-            estimated_totIndividuals = ifelse(targetTaxaPresent == "N", NA_real_,
-                ifelse(!is.na(individualCount), round(individualCount / proportionIdentified), NA_real_)
+            is_count = !is.na(taxonID) & !(taxonRank %in% "family") &
+                !is.na(individualCount) & individualCount > 0,
+            is_zero = is.na(taxonID) &
+                (targetTaxaPresent_trapping == "N" | targetTaxaPresent_expert %in% "N")
+        ) |>
+        dplyr::filter(is_count | is_zero) |>
+        # a sample is a zero only if no taxon was counted in it; keep one zero row
+        dplyr::group_by(unique_sample_id) |>
+        dplyr::filter(!(is_zero & any(is_count))) |>
+        dplyr::ungroup() |>
+        dplyr::distinct(unique_sample_id, taxonID, sex, .keep_all = TRUE) |>
+        dplyr::mutate(
+            proportionIdentified = as.numeric(proportionIdentified),
+            # Estimated total = ID'd count / proportion of the sample identified
+            estimated_totIndividuals = dplyr::if_else(
+                is_zero, 0, round(individualCount / proportionIdentified)
             )
         ) |>
-        dplyr::filter(
-            sampleCondition == "No known compromise",
-            # Keep traps that caught nothing OR traps with valid species-level IDs
-            (targetTaxaPresent == "N") | (!is.na(taxonID) & taxonRank != "family")
-        ) |>
-        dplyr::filter(
-            is.na(estimated_totIndividuals) | (is.finite(estimated_totIndividuals) & estimated_totIndividuals >= 0)
-        )
+        dplyr::filter(is.finite(estimated_totIndividuals), estimated_totIndividuals >= 0)
 
     # 6. Target column layout (Strict order)
     target_cols <- c(
         "location_id", "siteID", "unique_sample_id", "subsampleID", "observation_datetime",
         "taxon_id", "taxon_name", "taxon_rank", "variable_name", "value", "unit",
-        "nativeStatusCode", "proportionIdentified", "release", "remarks_sorting",
-        "samplingProtocolVersion", "sex", "sortDate", "trapHours", "latitude",
+        "nativeStatusCode", "redundant_genus", "proportionIdentified", "release", "remarks_sorting",
+        "samplingProtocolVersion", "sex", "sortDate", "trapHours", "nightOrDay",
+        "sampleCondition", "trapConditionFlag", "latitude",
         "longitude", "elevation", "nlcdClass", "plotType"
     )
 
@@ -285,7 +445,19 @@ clean_neon_mosquito <- function(neon_data_list) {
             variable_name = "abundance",
             value = estimated_totIndividuals / as.numeric(trapHours),
             unit = "count per trap hour",
-            unique_sample_id = sampleID
+            release = dplyr::coalesce(release_expert, release_trapping),
+            # Sample quality from all three processing steps (NA = no known compromise)
+            sampleCondition = collapse_flags(
+                flag_value(sampleCondition_trapping, "trapping: ", "No known compromise"),
+                flag_value(sampleCondition_sorting, "sorting: ", "No known compromise"),
+                flag_value(sampleCondition_expert, "expert ID: ", "No known compromise")
+            ),
+            # Trap operation problems (QSG data quality section)
+            trapConditionFlag = collapse_flags(
+                flag_value(fanStatus, "fan: ", "On"),
+                flag_value(catchCupStatus, "catch cup: ", "OK"),
+                flag_value(CO2Status, "CO2: ", "Present")
+            )
         ) |>
         dplyr::rename(
             location_id = namedLocation,
@@ -295,6 +467,7 @@ clean_neon_mosquito <- function(neon_data_list) {
             latitude = decimalLatitude,
             longitude = decimalLongitude
         ) |>
+        flag_redundant_genus() |>
         # Select forces the exact subset and order of target_cols
         dplyr::select(dplyr::any_of(target_cols)) |>
         dplyr::distinct() |>
@@ -329,35 +502,38 @@ clean_neon_beetle <- function(neon_data_list) {
         dplyr::mutate(
             setDate = as.Date(setDate),
             collectDate = as.Date(collectDate),
-            eventID = stringr::str_remove_all(eventID, "[.]"),
-            trappingDays = as.numeric(difftime(collectDate, setDate, units = "days")),
+            # A few 2014-2015 records carry placeholder eventIDs shared across sites
+            # and years (e.g. "bet_fielddata_in"); rebuild those as SITE.YEAR.WEEK.
+            eventID = dplyr::if_else(
+                grepl("^[A-Z]{4}\\.\\d{4}\\.\\d{1,2}$", eventID),
+                eventID,
+                paste(siteID, lubridate::isoyear(collectDate), lubridate::isoweek(collectDate), sep = ".")
+            ),
 
-            # Consolidate trap condition flags per user guide section 5.4
-            # cupStatus, lidStatus, fluidLevel can each indicate sample quality issues
-            trapConditionFlag = dplyr::case_when(
-                !is.na(cupStatus) & cupStatus != "OK" ~ paste0("cup:", cupStatus),
-                !is.na(lidStatus) & lidStatus != "OK" ~ paste0("lid:", lidStatus),
-                !is.na(fluidLevel) & fluidLevel != "OK" ~ paste0("fluid:", fluidLevel),
-                TRUE ~ NA_character_
+            # Consolidate trap condition flags per user guide section 5.4.
+            # cupStatus, lidStatus, fluidLevel can each indicate sample quality issues;
+            # all non-OK values are kept (raw OK values are "Ok" / "Ok, washer used").
+            trapConditionFlag = collapse_flags(
+                flag_value(cupStatus, "cup: ", "Ok"),
+                flag_value(lidStatus, "lid: ", c("Ok", "Ok, washer used")),
+                flag_value(fluidLevel, "fluid: ", "Ok")
             )
         ) |>
-        # Adjust trappingDays for traps collected multiple times from the same setDate
+        # Trapping days: traps collected more than once from the same setDate count
+        # days since the previous collection, not since setDate
         dplyr::group_by(namedLocation, trapID, setDate) |>
+        dplyr::arrange(collectDate, .by_group = TRUE) |>
         dplyr::mutate(
-            n_collect = dplyr::n_distinct(collectDate),
-            diffTrappingDays = trappingDays - min(trappingDays, na.rm = TRUE),
-            trappingDays = dplyr::if_else(
-                n_collect > 1 & diffTrappingDays > 0,
-                diffTrappingDays,
-                trappingDays
-            )
+            trappingDays = as.numeric(collectDate - dplyr::coalesce(dplyr::lag(collectDate), setDate))
         ) |>
         dplyr::ungroup() |>
-        # Harmonize collectDate within bout (collection can span 2 dates per user guide 3.2)
-        dplyr::group_by(eventID) |>
-        dplyr::mutate(collectDate = Mode(collectDate)) |>
+        # Bout date = most common collectDate within the site x eventID (collection can
+        # span 2 dates per user guide 3.2). The actual collectDate is kept for
+        # observation_datetime.
+        dplyr::group_by(siteID, eventID) |>
+        dplyr::mutate(boutDate = Mode(collectDate)) |>
         dplyr::ungroup() |>
-        dplyr::mutate(boutID = paste(siteID, as.character(collectDate), sep = "_")) |>
+        dplyr::mutate(boutID = paste(siteID, as.character(boutDate), sep = "_")) |>
         dplyr::distinct()
 
     # --------------------------------------------------------------------------
@@ -397,6 +573,10 @@ clean_neon_beetle <- function(neon_data_list) {
     # bet_expertTaxonomistIDProcessed -> relationship is many-to-one here
     # --------------------------------------------------------------------------
     exp_dat <- neon_data_list$bet_expertTaxonomistIDProcessed |>
+        # Rare individuals with >1 expert record: keep the most recent ID
+        dplyr::group_by(individualID) |>
+        dplyr::slice_max(identifiedDate, n = 1, with_ties = FALSE) |>
+        dplyr::ungroup() |>
         dplyr::select(
             individualID,
             exp_taxonID = taxonID,
@@ -496,10 +676,18 @@ clean_neon_beetle <- function(neon_data_list) {
 
     # --------------------------------------------------------------------------
     # 8. DOWNWARD JOIN (Preserves Zero-Catch Effort Rows)
+    # Samples with no bet_sorting record at all were never processed (nearly every
+    # pitfall sample contains some bycatch), so they are dropped rather than
+    # treated as zeros. Sorted samples with no carabids are true zeros (value 0).
     # --------------------------------------------------------------------------
+    sorted_samples <- unique(neon_data_list$bet_sorting$sampleID)
+    carabid_samples <- unique(sort_dat$sampleID)
+
     bet_dat <- field_dat |>
-        dplyr::left_join(final_tax, by = "sampleID", relationship = "many-to-many") |>
+        dplyr::filter(sampleID %in% sorted_samples) |>
+        dplyr::left_join(final_tax, by = "sampleID", relationship = "one-to-many") |>
         dplyr::mutate(
+            count = dplyr::if_else(is.na(taxonID) & !sampleID %in% carabid_samples, 0, count),
             # Guard against trappingDays == 0 producing Inf
             abundance = dplyr::if_else(
                 !is.na(count) & !is.na(trappingDays) & trappingDays > 0,
@@ -509,22 +697,22 @@ clean_neon_beetle <- function(neon_data_list) {
             variable_name = "abundance",
             unit = "count per trap day",
             unique_sample_id = sampleID,
-            observation_datetime = as.Date(collectDate)
+            observation_datetime = as.POSIXct(collectDate, tz = "UTC")
         ) |>
-        # Keep zero-catch rows (NA abundance) and valid non-negative rows
-        dplyr::filter(is.na(abundance) | (is.finite(abundance) & abundance >= 0))
+        dplyr::filter(is.finite(abundance), abundance >= 0)
 
     # --------------------------------------------------------------------------
     # 9. FORMAT AND RETURN
-    # samplingImpractical and trapConditionFlag included for downstream filtering
+    # samplingImpractical, sampleCondition and trapConditionFlag included for
+    # downstream filtering
     # --------------------------------------------------------------------------
     target_cols <- c(
         "location_id", "siteID", "plotID", "unique_sample_id", "trapID",
         "observation_datetime", "taxon_id", "taxon_name", "taxon_rank",
         "variable_name", "value", "unit",
-        "boutID", "nativeStatusCode", "release", "remarks",
-        "samplingProtocolVersion", "samplingImpractical", "trapConditionFlag",
-        "trappingDays", "latitude", "longitude", "elevation", "nlcdClass"
+        "boutID", "nativeStatusCode", "redundant_genus", "release", "remarks",
+        "samplingProtocolVersion", "samplingImpractical", "sampleCondition",
+        "trapConditionFlag", "trappingDays", "latitude", "longitude", "elevation", "nlcdClass"
     )
 
     final_tibble <- bet_dat |>
@@ -537,7 +725,11 @@ clean_neon_beetle <- function(neon_data_list) {
             latitude    = decimalLatitude,
             longitude   = decimalLongitude
         ) |>
-        dplyr::mutate(trappingDays = as.character(trappingDays)) |>
+        dplyr::mutate(
+            sampleCondition = dplyr::na_if(sampleCondition, "OK"),
+            samplingImpractical = dplyr::na_if(samplingImpractical, "OK")
+        ) |>
+        flag_redundant_genus() |>
         dplyr::select(dplyr::any_of(target_cols)) |>
         dplyr::distinct() |>
         dplyr::as_tibble()
@@ -567,11 +759,11 @@ clean_neon_small_mammal <- function(neon_data_list) {
             collectDate = as.Date(collectDate),
             year = as.character(lubridate::year(collectDate)),
             month = as.character(lubridate::month(collectDate)),
-            # eventID is the authoritative bout identifier in perplotnight;
-            # fall back to year_month when missing (pre-2020 or data gap)
+            # eventID (SITE.YEAR.WEEK) is the authoritative bout identifier;
+            # fall back to site_year_month if it is ever missing
             bout = dplyr::if_else(
                 is.na(eventID) | eventID == "",
-                paste(year, month, sep = "_"),
+                paste(siteID, year, month, sep = "_"),
                 eventID
             )
         ) |>
@@ -590,12 +782,18 @@ clean_neon_small_mammal <- function(neon_data_list) {
 
     # --------------------------------------------------------------------------
     # 3. EFFORT CALCULATION
-    # n_trap_nights_per_night_uid = unique trap positions (trapCoordinate) set
-    # per nightUID.  Sum across nights in a bout = n_trap_nights_per_bout_per_plot.
-    # Use inner_join so only pertrapnight records with a valid perplotnight entry
-    # (i.e., sampling was not impractical) contribute to effort.
+    # n_trap_nights_per_night_uid = unique trap positions (trapCoordinate) that
+    # were actually set per nightUID. Traps with status "1 - trap not set" and
+    # placeholder coordinates (e.g. "XX", "AX"; captures with an uncertain trap
+    # location) do not add trap nights. Sum across nights in a bout =
+    # n_trap_nights_per_bout_per_plot. Effort and captures are both aggregated by
+    # plot x bout (bouts can cross a month boundary).
     # --------------------------------------------------------------------------
     trap_effort <- trap_dat |>
+        dplyr::filter(
+            trapStatus != "1 - trap not set",
+            grepl("^[A-J]([1-9]|10)$", trapCoordinate)
+        ) |>
         dplyr::group_by(nightuid) |>
         dplyr::summarise(
             n_trap_nights_per_night_uid = dplyr::n_distinct(trapCoordinate),
@@ -607,16 +805,18 @@ clean_neon_small_mammal <- function(neon_data_list) {
         dplyr::mutate(
             n_trap_nights_per_night_uid = tidyr::replace_na(n_trap_nights_per_night_uid, 0L)
         ) |>
-        dplyr::group_by(location_id = namedLocation, siteID, plotID, bout, year, month) |>
+        dplyr::group_by(location_id = namedLocation, siteID, plotID, bout) |>
         dplyr::summarise(
             n_trap_nights_per_bout_per_plot = sum(n_trap_nights_per_night_uid, na.rm = TRUE),
             n_nights_per_bout = dplyr::n_distinct(nightuid),
-            observation_datetime = as.Date(max(collectDate)),
+            year = dplyr::first(year[collectDate == min(collectDate)]),
+            month = dplyr::first(month[collectDate == min(collectDate)]),
+            observation_datetime = as.POSIXct(max(collectDate), tz = "UTC"),
             release = paste(unique(release), collapse = "|"),
             .groups = "drop"
         ) |>
         dplyr::filter(n_trap_nights_per_bout_per_plot > 0) |>
-        dplyr::mutate(unique_sample_id = paste(location_id, year, month, sep = "_"))
+        dplyr::mutate(unique_sample_id = paste(location_id, bout, sep = "_"))
 
     # --------------------------------------------------------------------------
     # 4. CAPTURES: restrict to valid (non-impractical) nights via inner_join,
@@ -635,11 +835,12 @@ clean_neon_small_mammal <- function(neon_data_list) {
 
     # --------------------------------------------------------------------------
     # 5. RECAPTURE RESOLUTION
-    # Within each bout, a tagged individual (tagID) should be counted only once.
+    # Within each plot x bout, a tagged individual (tagID) is counted only once
+    # (an individual caught on two plots in one bout counts on both plots).
     # Untagged individuals (NA / blank tagID) cannot be tracked across nights;
     # use the pertrapnight uid (unique per row) as a proxy so every untagged
-    # capture is treated as a distinct individual — avoids the ecocomDP bug
-    # where !duplicated(tagID) drops all but the first NA in a group.
+    # capture is treated as a distinct individual. When recaptures of one
+    # individual carry different taxonIDs, the most frequent ID is used.
     # --------------------------------------------------------------------------
     cap_dat <- cap_dat |>
         dplyr::mutate(
@@ -648,14 +849,25 @@ clean_neon_small_mammal <- function(neon_data_list) {
                 TRUE ~ paste("untagged", uid, sep = "_")
             )
         ) |>
-        dplyr::group_by(bout) |>
-        dplyr::filter(!duplicated(tag_key)) |>
-        dplyr::ungroup()
+        dplyr::add_count(namedLocation, bout, tag_key, taxonID, name = "n_id") |>
+        dplyr::arrange(dplyr::desc(n_id), collectDate) |>
+        dplyr::distinct(namedLocation, bout, tag_key, .keep_all = TRUE)
 
     # --------------------------------------------------------------------------
     # 6. AGGREGATE CAPTURES per location x bout x taxon
-    # nativeStatusCode: collapse if multiple values exist (edge case)
+    # Guide section 3: shrews, moles, large squirrels, rabbits, weasels, etc. are
+    # not target small mammals (incidental captures); they are kept but flagged.
     # --------------------------------------------------------------------------
+    non_target_genera <- c(
+        "Blarina", "Sorex", "Cryptotis", "Notiosorex", # shrews
+        "Condylura", "Neurotrichus", "Parascalops", "Scalopus", "Scapanus", # moles
+        "Sylvilagus", "Lepus", "Ochotona", # lagomorphs
+        "Mustela", "Neogale", # weasels
+        "Didelphis", # opossum
+        "Sciurus", "Tamiasciurus", # large tree squirrels
+        "Geomys", "Thomomys" # pocket gophers (fossorial)
+    )
+
     cap_agg <- cap_dat |>
         dplyr::group_by(
             location_id      = namedLocation,
@@ -665,24 +877,32 @@ clean_neon_small_mammal <- function(neon_data_list) {
             taxon_rank       = taxonRank,
             nativeStatusCode
         ) |>
-        dplyr::summarise(raw_count = dplyr::n(), .groups = "drop")
+        dplyr::summarise(raw_count = dplyr::n(), .groups = "drop") |>
+        dplyr::mutate(target_taxon = !stringr::word(taxon_name, 1) %in% non_target_genera)
 
     # --------------------------------------------------------------------------
-    # 7. JOIN EFFORT WITH CAPTURES (left join preserves zero-catch bouts)
+    # 7. JOIN EFFORT WITH CAPTURES
+    # Plot-bouts with no target small mammal captured get one zero row
+    # (taxon_id = NA, value = 0); non-target captures are kept as extra rows.
     # --------------------------------------------------------------------------
+    target_bouts <- dplyr::filter(cap_agg, target_taxon) |>
+        dplyr::distinct(location_id, bout)
+
+    zero_dat <- effort_dat |>
+        dplyr::anti_join(target_bouts, by = c("location_id", "bout")) |>
+        dplyr::mutate(raw_count = 0L)
+
     mam_dat <- effort_dat |>
-        dplyr::left_join(cap_agg,
+        dplyr::inner_join(cap_agg,
             by = c("location_id", "bout"),
-            relationship = "many-to-many"
+            relationship = "one-to-many"
         ) |>
+        dplyr::bind_rows(zero_dat) |>
         dplyr::mutate(
             variable_name = "count",
-            unit = "unique individuals per 100 trap nights per plot per month",
-            value = dplyr::if_else(
-                !is.na(raw_count) & n_trap_nights_per_bout_per_plot > 0,
-                100 * raw_count / n_trap_nights_per_bout_per_plot,
-                NA_real_
-            )
+            unit = "unique individuals per 100 trap nights per plot per bout",
+            n_individuals = raw_count,
+            value = 100 * raw_count / n_trap_nights_per_bout_per_plot
         )
 
     # --------------------------------------------------------------------------
@@ -705,18 +925,20 @@ clean_neon_small_mammal <- function(neon_data_list) {
 
     # --------------------------------------------------------------------------
     # 9. FINAL COLUMN LAYOUT
-    # Zero-catch effort rows (taxon_id = NA, value = NA) are retained so that
+    # Zero-catch effort rows (taxon_id = NA, value = 0) are retained so that
     # downstream users can use full sampling effort for occupancy modelling.
     # --------------------------------------------------------------------------
     target_cols <- c(
         "location_id", "siteID", "plotID", "unique_sample_id", "observation_datetime",
         "taxon_id", "taxon_name", "taxon_rank", "variable_name", "value", "unit",
+        "n_individuals", "target_taxon", "redundant_genus",
         "year", "month", "n_trap_nights_per_bout_per_plot", "n_nights_per_bout",
         "nativeStatusCode", "release", "latitude", "longitude", "elevation",
         "plotType", "nlcdClass"
     )
 
     final_tibble <- final_dat |>
+        flag_redundant_genus() |>
         dplyr::select(dplyr::any_of(target_cols)) |>
         dplyr::distinct() |>
         dplyr::as_tibble()
@@ -747,7 +969,50 @@ clean_neon_algae <- function(neon_data_list) {
         dplyr::select(parentSampleID, sampleID, fieldSampleVolume, estPerBottleSampleVolume) |>
         dplyr::distinct()
 
-    # 3. JOIN TAXONOMY + BIOMASS; resolve perBottleSampleVolume
+    # 3. RECONCILE DIATOM COUNTS (user guide 3.9)
+    # Soft algae + diatom counts ("soft algae") are quantitative; diatom slide
+    # counts give species-level RELATIVE abundance only. Following the guide, the
+    # total diatom count from the soft-algae analysis (D) is split among slide taxa
+    # by their slide proportions, and replaces the soft-algae diatom records.
+    # When a sample has slide data but no soft-algae diatoms (D = 0), the slide
+    # cellsPerBottle values are used as reported. Adding both analyses together
+    # would double count diatoms.
+    diatom_classes <- c("Bacillariophyceae", "Coscinodiscophyceae", "Mediophyceae")
+
+    alg_cells <- alg_tax |>
+        dplyr::filter(algalParameterUnit == "cellsPerBottle", !is.na(acceptedTaxonID)) |>
+        dplyr::mutate(algalParameterValue = as.numeric(algalParameterValue))
+
+    soft <- dplyr::filter(alg_cells, algalAnalysisMethod == "soft algae")
+
+    soft_diatom_total <- soft |>
+        dplyr::filter(class %in% diatom_classes) |>
+        dplyr::group_by(sampleID) |>
+        dplyr::summarise(D = sum(algalParameterValue, na.rm = TRUE), .groups = "drop")
+
+    slide <- alg_cells |>
+        dplyr::filter(algalAnalysisMethod == "diatom slide") |>
+        dplyr::group_by(sampleID) |>
+        dplyr::mutate(p = algalParameterValue / sum(algalParameterValue, na.rm = TRUE)) |>
+        dplyr::ungroup() |>
+        dplyr::left_join(soft_diatom_total, by = "sampleID") |>
+        dplyr::mutate(
+            use_prop = !is.na(D) & D > 0,
+            algalParameterValue = dplyr::if_else(use_prop, p * D, algalParameterValue),
+            count_method = dplyr::if_else(
+                use_prop,
+                "diatom slide proportion x soft algae diatom count",
+                "diatom slide count"
+            )
+        ) |>
+        dplyr::select(-p, -D, -use_prop)
+
+    alg_tax <- soft |>
+        dplyr::filter(!(class %in% diatom_classes & sampleID %in% slide$sampleID)) |>
+        dplyr::mutate(count_method = "soft algae count") |>
+        dplyr::bind_rows(slide)
+
+    # 4. JOIN TAXONOMY + BIOMASS; resolve perBottleSampleVolume
     alg_tax_bio <- alg_tax |>
         dplyr::left_join(alg_biomass_sub, by = "sampleID", relationship = "many-to-many") |>
         dplyr::mutate(
@@ -759,7 +1024,7 @@ clean_neon_algae <- function(neon_data_list) {
             )
         )
 
-    # 4. JOIN WITH FIELD DATA (drop columns already in alg_tax_bio except join key)
+    # 5. JOIN WITH FIELD DATA (drop columns already in alg_tax_bio except join key)
     join_cols <- intersect(names(alg_tax_bio), names(alg_field))
     join_cols <- setdiff(join_cols, "parentSampleID")
 
@@ -767,14 +1032,14 @@ clean_neon_algae <- function(neon_data_list) {
         dplyr::left_join(
             dplyr::select(alg_field, -dplyr::any_of(join_cols)),
             by = "parentSampleID",
+            na_matches = "never",
             relationship = "many-to-many"
         )
 
-    # 5. COMPUTE DENSITY; filter to valid records
+    # 6. COMPUTE DENSITY; filter to valid records
+    # sampleCondition is kept as a column for users to filter (not filtered here)
     alg_dat <- alg_dat |>
-        dplyr::filter(algalParameterUnit == "cellsPerBottle") |>
         dplyr::mutate(
-            algalParameterValue = as.numeric(algalParameterValue),
             fieldSampleVolume = as.numeric(fieldSampleVolume),
             benthicArea = as.numeric(benthicArea),
             density = dplyr::case_when(
@@ -790,13 +1055,13 @@ clean_neon_algae <- function(neon_data_list) {
             )
         ) |>
         dplyr::filter(
-            sampleCondition == "Condition OK",
             !is.na(density),
             density >= 0,
             is.finite(density)
         )
 
-    # 6. RESOLVE DUPLICATES: same sampleID + acceptedTaxonID → sum densities
+    # 7. RESOLVE DUPLICATES: same sampleID + acceptedTaxonID → sum densities
+    # (distinct morphotypes / size records of one taxon within an analysis)
     dup_agg <- alg_dat |>
         dplyr::group_by(sampleID, acceptedTaxonID) |>
         dplyr::summarise(density_sum = sum(density, na.rm = TRUE), .groups = "drop")
@@ -809,11 +1074,11 @@ clean_neon_algae <- function(neon_data_list) {
         dplyr::mutate(density = density_sum) |>
         dplyr::select(-density_sum)
 
-    # 7. FINAL COLUMN LAYOUT (match existing data_algae column order)
+    # 8. FINAL COLUMN LAYOUT (match existing data_algae column order)
     target_cols <- c(
         "location_id", "siteID", "unique_sample_id", "observation_datetime",
         "taxon_id", "taxon_name", "taxon_rank",
-        "variable_name", "value", "unit",
+        "variable_name", "value", "unit", "count_method", "redundant_genus",
         "sampleCondition", "perBottleSampleVolume", "release",
         "habitatType", "algalSampleType", "samplerType",
         "benthicArea", "samplingProtocolVersion", "substratumSizeClass",
@@ -825,7 +1090,8 @@ clean_neon_algae <- function(neon_data_list) {
         dplyr::mutate(
             observation_datetime = as.POSIXct(collectDate, tz = "UTC"),
             variable_name        = "cell density",
-            unique_sample_id     = sampleID
+            unique_sample_id     = sampleID,
+            sampleCondition      = dplyr::na_if(sampleCondition, "Condition OK")
         ) |>
         dplyr::rename(
             location_id = namedLocation,
@@ -837,6 +1103,7 @@ clean_neon_algae <- function(neon_data_list) {
             latitude    = decimalLatitude,
             longitude   = decimalLongitude
         ) |>
+        flag_redundant_genus() |>
         dplyr::select(dplyr::any_of(target_cols)) |>
         dplyr::distinct() |>
         dplyr::as_tibble()
@@ -861,33 +1128,56 @@ clean_neon_macroinvertebrate <- function(neon_data_list) {
         dplyr::ungroup()
 
     # 2. TAXONOMY PROCESSED: filter to target taxa, aggregate across size classes
-    inv_tax <- neon_data_list$inv_taxonomyProcessed |>
-        dplyr::filter(targetTaxaPresent == "Y") |>
+    # Records with NA estimatedTotalCount (mostly damaged samples) are dropped
+    # before summing so that a taxon with only NA counts does not become 0.
+    inv_tax_raw <- neon_data_list$inv_taxonomyProcessed
+
+    inv_tax <- inv_tax_raw |>
+        dplyr::filter(targetTaxaPresent == "Y", !is.na(estimatedTotalCount)) |>
         dplyr::group_by(sampleID, acceptedTaxonID, scientificName, taxonRank) |>
         dplyr::summarise(
-            estimatedTotalCount = sum(estimatedTotalCount, na.rm = TRUE),
+            estimatedTotalCount = sum(estimatedTotalCount),
             individualCount = sum(individualCount, na.rm = TRUE),
             subsamplePercent = paste(unique(subsamplePercent), collapse = "|"),
+            sampleCondition = paste(sort(setdiff(stats::na.omit(sampleCondition), "condition OK")), collapse = "|"),
+            release = paste(unique(release), collapse = "|"),
+            .groups = "drop"
+        )
+
+    # Zero samples: processed samples with no target taxa (targetTaxaPresent == "N")
+    inv_zero <- inv_tax_raw |>
+        dplyr::group_by(sampleID) |>
+        dplyr::filter(all(targetTaxaPresent == "N")) |>
+        dplyr::summarise(
+            estimatedTotalCount = 0,
+            individualCount = 0,
+            sampleCondition = paste(sort(setdiff(stats::na.omit(sampleCondition), "condition OK")), collapse = "|"),
             release = paste(unique(release), collapse = "|"),
             .groups = "drop"
         )
 
     # 3. JOIN AND COMPUTE DENSITY
     # inner_join: records without matching field data cannot have a valid density
-    inv_dat <- inv_tax |>
+    inv_dat <- dplyr::bind_rows(inv_tax, inv_zero) |>
         dplyr::inner_join(
             dplyr::select(
                 inv_field,
                 sampleID, namedLocation, siteID, collectDate,
                 benthicArea, habitatType, samplerType, substratumSizeClass,
-                remarks, ponarDepth, snagLength, snagDiameter,
+                remarks, ponarDepth, snagLength, snagDiameter, dataQF,
                 decimalLatitude, decimalLongitude, elevation
             ),
             by = "sampleID"
         ) |>
         dplyr::mutate(
-            benthicArea = as.numeric(benthicArea),
-            density     = estimatedTotalCount / benthicArea
+            benthicArea  = as.numeric(benthicArea),
+            ponarDepth   = as.numeric(ponarDepth),
+            snagLength   = as.numeric(snagLength),
+            snagDiameter = as.numeric(snagDiameter),
+            density      = dplyr::if_else(
+                is.na(acceptedTaxonID), 0, estimatedTotalCount / benthicArea
+            ),
+            sampleCondition = dplyr::na_if(sampleCondition, "")
         ) |>
         dplyr::filter(!is.na(density), density >= 0, is.finite(density))
 
@@ -895,9 +1185,9 @@ clean_neon_macroinvertebrate <- function(neon_data_list) {
     target_cols <- c(
         "location_id", "siteID", "unique_sample_id", "observation_datetime",
         "taxon_id", "taxon_name", "taxon_rank",
-        "variable_name", "value", "unit",
+        "variable_name", "value", "unit", "redundant_genus",
         "estimatedTotalCount", "individualCount", "subsamplePercent",
-        "release", "benthicArea", "habitatType", "samplerType",
+        "release", "sampleCondition", "dataQF", "benthicArea", "habitatType", "samplerType",
         "substratumSizeClass", "remarks", "ponarDepth", "snagLength",
         "snagDiameter", "latitude", "longitude", "elevation"
     )
@@ -918,6 +1208,7 @@ clean_neon_macroinvertebrate <- function(neon_data_list) {
             latitude    = decimalLatitude,
             longitude   = decimalLongitude
         ) |>
+        flag_redundant_genus() |>
         dplyr::select(dplyr::any_of(target_cols)) |>
         dplyr::distinct() |>
         dplyr::as_tibble()
@@ -942,15 +1233,21 @@ clean_neon_tick <- function(neon_data_list) {
         dplyr::mutate(
             larvaCount = as.numeric(larvaCount),
             nymphCount = as.numeric(nymphCount),
-            adultCount = as.numeric(adultCount)
+            adultCount = as.numeric(adultCount),
+            # A few drags coded "no ticks" do have lab-identified ticks
+            targetTaxaPresent = dplyr::if_else(
+                sampleID %in% neon_data_list$tck_taxonomyProcessed$sampleID,
+                "Y", targetTaxaPresent
+            )
         ) |>
         dplyr::rename(remarks_field = remarks, release_field = release)
 
     # 2. LAB TAXONOMY DATA: standardize LifeStage, aggregate across sex classes
     # Drop records with unrecognised sexOrAge to avoid NA LifeStage creating a
-    # spurious "NA" column in the pivot_wider lab summary below.
+    # spurious "NA" column in the pivot_wider lab summary below. Lab
+    # sampleCondition is not filtered: damaged ticks are still identified and counted.
     tck_tax <- neon_data_list$tck_taxonomyProcessed |>
-        dplyr::filter(sampleCondition == "OK", !is.na(acceptedTaxonID), !is.na(individualCount)) |>
+        dplyr::filter(!is.na(acceptedTaxonID), !is.na(individualCount)) |>
         dplyr::mutate(
             LifeStage = dplyr::case_when(
                 sexOrAge %in% c("Male", "Female", "Adult") ~ "Adult",
@@ -965,11 +1262,17 @@ clean_neon_tick <- function(neon_data_list) {
             individualCount = sum(individualCount, na.rm = TRUE),
             release_tax = paste(unique(release), collapse = "|"),
             .groups = "drop"
-        )
+        ) |>
+        dplyr::mutate(count_source = "lab")
 
-    # 3. RECONCILE MISSING COUNTS (the IXOSP2 fix)
-    # When field counts exceed lab counts (subsampling, transit loss), assign the
-    # difference to Order Ixodida (IXOSP2) rather than using fragile string-matching.
+    # 3. RECONCILE MISSING COUNTS
+    # 2014-2018 only: field staff counted ticks by life stage, and the lab did not
+    # always identify every tick (invoice limits, subsampling of >500 larvae; user
+    # guide 3, 3.3, 5.4). Field counts stopped in 2019. When field counts exceed
+    # lab counts, the unidentified remainder is added as "Ixodidae sp." (IXOSP),
+    # the code NEON itself uses for unidentified ticks. The per-stage excess is
+    # capped so the sample total equals max(field total, lab total); this avoids
+    # double counting ticks that field staff assigned to the wrong life stage.
     lab_summary <- tck_tax |>
         dplyr::group_by(sampleID, LifeStage) |>
         dplyr::summarise(lab_sum = sum(individualCount, na.rm = TRUE), .groups = "drop") |>
@@ -984,21 +1287,37 @@ clean_neon_tick <- function(neon_data_list) {
         dplyr::filter(targetTaxaPresent == "Y") |>
         dplyr::left_join(lab_summary, by = "sampleID") |>
         dplyr::mutate(
-            Larva = pmax(0, tidyr::replace_na(larvaCount, 0) - tidyr::replace_na(Larva, 0)),
-            Nymph = pmax(0, tidyr::replace_na(nymphCount, 0) - tidyr::replace_na(Nymph, 0)),
-            Adult = pmax(0, tidyr::replace_na(adultCount, 0) - tidyr::replace_na(Adult, 0))
+            dplyr::across(c(Larva, Nymph, Adult), ~ tidyr::replace_na(.x, 0)),
+            dplyr::across(c(larvaCount, nymphCount, adultCount), ~ tidyr::replace_na(.x, 0)),
+            total_excess = pmax(0, (larvaCount + nymphCount + adultCount) - (Larva + Nymph + Adult)),
+            Larva = pmax(0, larvaCount - Larva),
+            Nymph = pmax(0, nymphCount - Nymph),
+            Adult = pmax(0, adultCount - Adult)
         ) |>
-        dplyr::select(sampleID, Larva, Nymph, Adult) |>
+        dplyr::select(sampleID, total_excess, Larva, Nymph, Adult) |>
         tidyr::pivot_longer(
             cols      = c(Larva, Nymph, Adult),
             names_to  = "LifeStage",
-            values_to = "individualCount"
+            values_to = "stage_excess"
         ) |>
-        dplyr::filter(individualCount > 0) |>
+        # Allocate the capped total across stages in proportion to each stage's
+        # excess (largest-remainder rounding keeps whole ticks)
+        dplyr::group_by(sampleID) |>
         dplyr::mutate(
-            acceptedTaxonID = "IXOSP2",
-            scientificName  = "Ixodida sp.",
-            taxonRank       = "order"
+            raw = if (sum(stage_excess) > 0) stage_excess * total_excess / sum(stage_excess) else 0,
+            individualCount = floor(raw),
+            remainder_rank = rank(-(raw - individualCount), ties.method = "first"),
+            individualCount = individualCount +
+                (remainder_rank <= (total_excess[1] - sum(individualCount)))
+        ) |>
+        dplyr::ungroup() |>
+        dplyr::filter(individualCount > 0) |>
+        dplyr::select(sampleID, LifeStage, individualCount) |>
+        dplyr::mutate(
+            acceptedTaxonID = "IXOSP",
+            scientificName  = "Ixodidae sp.",
+            taxonRank       = "family",
+            count_source    = "field count excess"
         )
 
     # 4. COMBINE LAB COUNTS AND RECONCILED MISSING COUNTS
@@ -1007,6 +1326,7 @@ clean_neon_tick <- function(neon_data_list) {
         dplyr::summarise(
             individualCount = sum(individualCount, na.rm = TRUE),
             release = paste(stats::na.omit(unique(release_tax)), collapse = "|"),
+            count_source = paste(sort(unique(count_source)), collapse = " + "),
             .groups = "drop"
         )
 
@@ -1031,7 +1351,8 @@ clean_neon_tick <- function(neon_data_list) {
     target_cols <- c(
         "location_id", "siteID", "plotID", "unique_sample_id", "observation_datetime",
         "taxon_id", "taxon_name", "taxon_rank", "variable_name", "value", "unit",
-        "LifeStage", "release", "remarks_field", "samplingMethod", "targetTaxaPresent",
+        "LifeStage", "count_source", "redundant_genus", "release", "remarks_field",
+        "sampleCondition", "samplingMethod", "targetTaxaPresent",
         "totalSampledArea", "latitude", "longitude", "elevation", "nlcdClass", "plotType"
     )
 
@@ -1041,6 +1362,7 @@ clean_neon_tick <- function(neon_data_list) {
             variable_name = "abundance",
             unit = "count per square meter",
             unique_sample_id = paste(plotID, collectDate, sep = "_"),
+            sampleCondition = dplyr::na_if(sampleCondition, "No known compromise"),
             release = dplyr::if_else(
                 is.na(release) | release == "",
                 release_field,
@@ -1056,6 +1378,7 @@ clean_neon_tick <- function(neon_data_list) {
             latitude    = decimalLatitude,
             longitude   = decimalLongitude
         ) |>
+        flag_redundant_genus(sample_cols = c("unique_sample_id", "LifeStage")) |>
         dplyr::select(dplyr::any_of(target_cols)) |>
         dplyr::distinct() |>
         dplyr::as_tibble()
@@ -1107,15 +1430,20 @@ clean_neon_tick_pathogen <- function(neon_data_list) {
 
     path_dat <- path_dat |>
         dplyr::filter(!(testingID %in% failed_dna_ticks)) |>
+        # Drop non-pathogen assays: the DNA quality control and the tick species
+        # confirmation PCRs (added 2021-2022), which are not pathogens
         dplyr::filter(
-            !testPathogenName %in% c("HardTick DNA Quality", "Ixodes pacificus")
+            !testPathogenName %in% c(
+                "HardTick DNA Quality", "Ixodes pacificus", "Ixodes scapularis",
+                "Amblyomma americanum", "Dermacentor variabilis", "Haemaphysalis longicornis"
+            )
         )
 
     # 4. TAXONOMY CLEANUP AND LIFESTAGE EXTRACTION
     # Unify Borrelia burgdorferi and Borrelia burgdorferi sensu lato
     # (mutually exclusive per testingID; verified in source data).
-    # lifeStage = last dot-delimited segment of subsampleID
-    # (subsampleID format: plotID.date.vectorSpecies.lifeStage)
+    # subsampleID format: plotID.date.vectorTaxonID.lifeStage
+    # lifeStage = 4th segment; vector_taxon_id = 3rd segment (tick taxonID).
     path_dat <- path_dat |>
         dplyr::mutate(
             testPathogenName = dplyr::if_else(
@@ -1124,26 +1452,29 @@ clean_neon_tick_pathogen <- function(neon_data_list) {
                 testPathogenName
             ),
             lifeStage = sub(".*\\.", "", subsampleID),
+            vector_taxon_id = stringr::str_split_i(subsampleID, stringr::fixed("."), 3),
             pos_result = dplyr::if_else(testResult == "Positive", 1L, 0L)
         )
 
     # 5. SPATIAL METADATA (one representative row per namedLocation)
+    # Use the most frequent coordinates so the choice does not depend on row order
     loc_meta <- path_dat |>
-        dplyr::select(
+        dplyr::count(
             namedLocation, siteID, plotID,
             decimalLatitude, decimalLongitude, elevation,
             nlcdClass, plotType
         ) |>
-        dplyr::distinct() |>
-        dplyr::group_by(namedLocation) |>
-        dplyr::slice(1) |>
-        dplyr::ungroup()
+        dplyr::arrange(namedLocation, dplyr::desc(n), decimalLatitude, decimalLongitude) |>
+        dplyr::distinct(namedLocation, .keep_all = TRUE) |>
+        dplyr::select(-n)
 
     # 6. AGGREGATE POSITIVITY RATES
-    # One row per location x date x pathogen x lifeStage
+    # One row per location x date x vector species x pathogen x lifeStage.
+    # Vector species must not be pooled: each tick genus is tested for a different
+    # pathogen panel and prevalence differs strongly among species (guide 3, 3.8).
     path_agg <- path_dat |>
         dplyr::group_by(
-            namedLocation, collectDate, testPathogenName, lifeStage
+            namedLocation, collectDate, vector_taxon_id, testPathogenName, lifeStage
         ) |>
         dplyr::summarise(
             n_tests = dplyr::n(),
@@ -1170,7 +1501,7 @@ clean_neon_tick_pathogen <- function(neon_data_list) {
     target_cols <- c(
         "location_id", "siteID", "plotID", "unique_sample_id",
         "observation_datetime", "taxon_id", "taxon_name", "taxon_rank",
-        "variable_name", "value", "unit", "lifeStage",
+        "variable_name", "value", "unit", "vector_taxon_id", "lifeStage",
         "testProtocolVersion", "release", "n_tests", "n_positive_test",
         "latitude", "longitude", "elevation", "nlcdClass", "plotType"
     )
@@ -1212,19 +1543,25 @@ clean_neon_zooplankton <- function(neon_data_list) {
         dplyr::slice(1) |>
         dplyr::ungroup()
 
-    # 2. TAXONOMY DATA: Filter and aggregate by taxon
-    # Sum adjCountPerBottle to safely collapse size-class measurements for the same taxon.
-    # User guide (Eq. 2): density = SUM(adjCountPerBottle) / towsTrapsVolume, where the
-    # sum is taken over all records for a given sampleID before dividing by volume.
-    # tolower() guards against NEON's occasional casing changes ("condition OK" vs "Condition OK").
+    # 2. TAXONOMY DATA: aggregate by taxon
+    # Sum adjCountPerBottle to safely collapse size-class / life-stage records for the
+    # same taxon. User guide (Eq. 2): density = SUM(adjCountPerBottle) / towsTrapsVolume,
+    # where the sum is taken over all records for a given sampleID before dividing.
+    # sampleCondition is NOT filtered: most non-OK values are life-stage notes
+    # ("other (specified in remarks)") or affect lengths only. Non-OK values are
+    # carried in the output for users to filter.
     zoo_tax <- neon_data_list$zoo_taxonomyProcessed |>
-        dplyr::filter(tolower(sampleCondition) == "condition ok") |>
+        dplyr::filter(!is.na(adjCountPerBottle)) |>
         dplyr::group_by(sampleID, taxonID, scientificName, taxonRank) |>
         dplyr::summarise(
-            adjCountPerBottle = sum(adjCountPerBottle, na.rm = TRUE),
+            adjCountPerBottle = sum(adjCountPerBottle),
+            sampleCondition   = paste(sort(unique(
+                sampleCondition[!is.na(sampleCondition) & tolower(sampleCondition) != "condition ok"]
+            )), collapse = "|"),
             release           = paste(unique(stats::na.omit(release)), collapse = "|"),
             .groups           = "drop"
-        )
+        ) |>
+        dplyr::mutate(sampleCondition = dplyr::na_if(sampleCondition, ""))
 
     # 3. JOIN FIELD DATA AND CALCULATE DENSITY
     # inner_join: towsTrapsVolume is required to compute density; drop records without it.
@@ -1253,7 +1590,7 @@ clean_neon_zooplankton <- function(neon_data_list) {
     target_cols <- c(
         "location_id", "siteID", "unique_sample_id", "observation_datetime",
         "taxon_id", "taxon_name", "taxon_rank", "variable_name", "value",
-        "unit", "release", "samplerType", "towsTrapsVolume",
+        "unit", "redundant_genus", "release", "sampleCondition", "samplerType", "towsTrapsVolume",
         "latitude", "longitude", "elevation"
     )
 
@@ -1273,6 +1610,7 @@ clean_neon_zooplankton <- function(neon_data_list) {
             latitude    = decimalLatitude,
             longitude   = decimalLongitude
         ) |>
+        flag_redundant_genus() |>
         dplyr::select(dplyr::any_of(target_cols)) |>
         dplyr::distinct() |>
         dplyr::as_tibble()

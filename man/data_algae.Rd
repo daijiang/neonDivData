@@ -17,7 +17,9 @@ A data frame (also a tibble) with the following columns:
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Cell density value.
 \item \code{unit}: Either \code{cells/mL} (water column) or \code{cells/cm2} (benthic).
-\item \code{sampleCondition}: Condition of the sample (all \code{"Condition OK"}).
+\item \code{count_method}: How the count was obtained: "soft algae count", "diatom slide proportion x soft algae diatom count", or "diatom slide count".
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus in the same sample.
+\item \code{sampleCondition}: Non-OK condition of the taxonomy sample; \code{NA} if OK.
 \item \code{perBottleSampleVolume}: Sample volume per bottle (milliliter); fallback-filled where originally missing.
 \item \code{release}: Version of data release by NEON.
 \item \code{habitatType}: Habitat type sampled.
@@ -44,15 +46,22 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 To clean the data, we:
 \enumerate{
 \item Filtered \code{alg_biomass} to \code{analysisType == "taxonomy"} records only.
-\item Computed a fallback bottle volume (\code{preservativeVolume + labSampleVolume}) used when \code{perBottleSampleVolume} is \code{NA} or \code{0}.
-\item Joined \code{alg_taxonomyProcessed} to \code{alg_biomass} to \code{alg_fieldData} via \code{sampleID} and \code{parentSampleID}.
-\item Filtered to \code{algalParameterUnit == "cellsPerBottle"} and \code{sampleCondition == "Condition OK"}.
-\item Computed cell density: water column samples (\code{seston}/\code{phytoplankton}) as cells/mL; benthic samples as cells/cm².
-\item Resolved within-sample duplicates by summing density across records sharing the same \code{sampleID} and \code{acceptedTaxonID}.
+\item Computed a fallback bottle volume (\code{preservativeVolume + labSampleVolume}, user guide equation 1) used when \code{perBottleSampleVolume} is \code{NA} or \code{0} (2014 samples).
+\item Kept \code{alg_taxonomyProcessed} records with \code{algalParameterUnit == "cellsPerBottle"} and a taxon ID.
+\item Reconciled diatom counts following user guide section 3.9. Soft algae + diatom counts are quantitative, while diatom slide counts give species-level relative abundance only. For samples with both, the total diatom count from the soft algae analysis was split among slide taxa in proportion to their slide counts, and replaced the soft algae diatom records. When a sample had slide data but no soft algae diatoms, slide counts were used as reported. Adding both analyses would double count diatoms. The method used for each record is given in \code{count_method}.
+\item Joined taxonomy to \code{alg_biomass} and \code{alg_fieldData} via \code{sampleID} and \code{parentSampleID}.
+\item Computed cell density: water column samples (\code{seston}/\code{phytoplankton}) as cells/mL; benthic samples as cells/cm² (cells per bottle / bottle volume x field sample volume / benthic area).
+\item Resolved within-sample duplicates (separate morphotype or size records of one taxon) by summing density across records sharing the same \code{sampleID} and \code{acceptedTaxonID}.
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Temporal coverage.} NEON did not analyze algal taxonomy between November 2020 and December 2023, and the data product was suspended in 2024 (user guide section 3.3). Samples collected in late 2020 were counted only as natural units or valves, not cells, so cell density in this dataset ends in July 2020.
+
+\strong{Zero rows.} Algal samples always contain cells, so this dataset has no zero rows (the zero-row convention of the other datasets does not apply).
+
+\strong{Flags.} \code{sampleCondition} gives non-OK conditions of the taxonomy sample; \code{NA} if OK. Seston taxonomy exists only for 2014-2017 and has very low counts. \code{redundant_genus} marks genus-level records that co-occur with a finer identification of the same genus in the same sample.
 }
 \author{
 Lara Jansen

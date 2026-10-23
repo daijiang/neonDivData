@@ -6,8 +6,9 @@
 
 # L2 data frames that will be available in this data package
 
-if(!require(neonDivData)) devtools::install_github("daijiang/neonDivData")
-library(neonDivData)
+# Load the local package so the freshly rebuilt data/ are exported (not the
+# version installed from GitHub)
+devtools::load_all()
 library(dplyr)
 
 # filter provisional data out
@@ -18,6 +19,7 @@ if(!dir.exists("data-raw/edi")) dir.create("data-raw/edi")
 write.csv(filter(data_algae, release != "PROVISIONAL"), file = "data-raw/edi/data_algae.csv", row.names = FALSE)
 write.csv(filter(data_beetle, release != "PROVISIONAL"), file = "data-raw/edi/data_beetle.csv", row.names = FALSE)
 write.csv(filter(data_bird, release != "PROVISIONAL"), file = "data-raw/edi/data_bird.csv", row.names = FALSE)
+# fish and herp bycatch are discontinued (last updated with RELEASE-2024)
 write.csv(filter(data_fish, release != "PROVISIONAL"), file = "data-raw/edi/data_fish.csv", row.names = FALSE)
 write.csv(filter(data_herp_bycatch, release != "PROVISIONAL"), file = "data-raw/edi/data_herp_bycatch.csv", row.names = FALSE)
 write.csv(filter(data_macroinvertebrate, release != "PROVISIONAL"), file = "data-raw/edi/data_macroinvertebrate.csv", row.names = FALSE)
@@ -41,6 +43,3 @@ write.csv(neon_taxa, file = "data-raw/edi/neon_taxa.csv", row.names = FALSE)
 write.csv(data_summary, file = "data-raw/edi/data_summary.csv", row.names = FALSE)
 
 # how to deposit csv files to EDI? Or just rds file?
-
-# remove all RDS files
-system("rm -r data-raw/neon_div_data data-raw/NEON_raw_data")

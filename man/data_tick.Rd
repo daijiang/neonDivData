@@ -10,18 +10,21 @@ A data frame (also a tibble) with the following columns:
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
 \item \code{plotID}: Plot identifier (NEON site code_XXX).
-\item \code{unique_sample_id}: Identity of unique samples (\code{plotID_collectDate}).
+\item \code{unique_sample_id}: Identity of unique samples (\code{plotID_collectDate}, where collectDate includes the time).
 \item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_id}: Accepted species code, based on one or more sources. \code{NA} for zero rows.
 \item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Abundance (count per square meter).
+\item \code{value}: Abundance (count per square meter); \code{0} for zero rows.
 \item \code{unit}: Unit of the values in the \code{value} column.
 \item \code{LifeStage}: Life stage of the tick (\code{Larva}, \code{Nymph}, or \code{Adult}).
+\item \code{count_source}: Source of the count: "lab", "field count excess", or "field count excess + lab"; \code{NA} for zero rows.
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus and life stage in the same sample.
 \item \code{release}: Version of data release by NEON.
 \item \code{remarks_field}: Technician notes; free text comments accompanying the record.
+\item \code{sampleCondition}: Non-OK condition of the field sample; \code{NA} if no known compromise.
 \item \code{samplingMethod}: Name or code for the method used to collect or test a sample.
 \item \code{targetTaxaPresent}: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').
 \item \code{totalSampledArea}: Total area sampled (square meter).
@@ -41,15 +44,22 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \details{
 To clean the data, we:
 \enumerate{
-\item Mapped life stage from \code{tck_taxonomyProcessed} sex/age codes to \code{Larva}, \code{Nymph}, or \code{Adult}; rows with unmappable values are dropped.
+\item Kept field samples with \code{samplingImpractical} of \code{OK} or missing. Drags coded as having no ticks (\code{targetTaxaPresent == "N"}) that nonetheless have lab-identified ticks were recoded to \code{"Y"}.
+\item Mapped life stage from \code{tck_taxonomyProcessed} sex/age codes to \code{Larva}, \code{Nymph}, or \code{Adult}; rows with unmappable values are dropped. Lab records are not filtered on \code{sampleCondition}, because damaged ticks are still identified and counted.
 \item Aggregated taxonomy counts by \code{sampleID}, \code{acceptedTaxonID}, and \code{LifeStage}; concatenated \code{release} values.
-\item Applied the IXOSP2 reconciliation fix: when field counts (from \code{tck_fielddata}) exceed lab counts for a given life stage, the difference is assigned to Order Ixodida (\code{IXOSP2}, \code{"Ixodida sp."}) rather than using fragile string-matching.
-\item Left-joined downward from field effort to lab taxonomy to preserve empty drag events (\code{targetTaxaPresent == "N"}), which receive \code{individualCount = 0}.
-\item Abundance = \code{individualCount / totalSampledArea} (count per square meter); invalid or non-finite values are dropped except for empty drag rows.
+\item Reconciled field and lab counts (2014-2018 only; see note): when field counts exceed lab counts, the unidentified remainder is added as \verb{Ixodidae sp.} (\code{IXOSP}, family rank), the code NEON itself uses for unidentified ticks. The remainder is capped so the sample total equals the larger of the field and lab totals, avoiding double counts when field staff assigned ticks to the wrong life stage.
+\item Left-joined downward from field effort to lab taxonomy to preserve empty drag events (\code{targetTaxaPresent == "N"}).
+\item Abundance = \code{individualCount / totalSampledArea} (count per square meter). Samples with ticks but no usable counts (e.g. lost samples after 2018 without lab data) are dropped.
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Zero rows.} A drag with no ticks is kept as one row with \code{taxon_id = NA} and \code{value = 0}. This zero-row convention is shared by all neonDivData observation datasets.
+
+\strong{Protocol change in 2019.} From 2014 to 2018, field staff counted ticks by life stage, and the lab did not always identify every tick (invoice limits, subsampling of large larval samples). Field counts stopped in 2019; since then the lab counts every tick. \code{count_source} shows whether a count comes from the lab, from the field-count remainder, or both. Abundance of \code{IXOSP} (especially larvae) is therefore much higher before 2019.
+
+\strong{Flags.} \code{sampleCondition} gives non-OK field sample conditions (e.g. "Entire sample lost", "Tick count estimated"); \code{NA} if no compromise. \code{samplingMethod} distinguishes drag and flag sampling, which differ in efficiency. \code{redundant_genus} marks genus-level records that co-occur with a finer identification of the same genus and life stage in the same sample.
 }
 \author{
 Wynne Moss, Melissa Chen, Brendan Hobart, Matt Bitters

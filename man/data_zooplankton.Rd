@@ -17,7 +17,9 @@ A data frame (also a tibble) with the following columns:
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
 \item \code{value}: Density (count per liter).
 \item \code{unit}: Unit of the values in the \code{value} column (\code{"count per liter"}).
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus in the same sample.
 \item \code{release}: Version of data release by NEON.
+\item \code{sampleCondition}: Non-OK conditions of the taxonomy records (separated by "|"); \code{NA} if all OK.
 \item \code{samplerType}: Type of sampler used to collect the sample.
 \item \code{towsTrapsVolume}: Sample volume (liter) collected for zooplankton.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
@@ -35,13 +37,17 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 To clean the data, we:
 \enumerate{
 \item Deduplicated \code{zoo_fieldData} by \code{sampleID} using \code{slice(1)} to guard against NEON's known aquatic duplicate metadata issue.
-\item Filtered \code{zoo_taxonomyProcessed} to \code{sampleCondition == "condition OK"} (case-insensitive); summed \code{adjCountPerBottle} across size-class measurement records sharing the same \code{sampleID} and \code{taxonID}. \code{adjCountPerBottle} is already corrected for subsampling by the laboratory.
+\item Summed \code{adjCountPerBottle} across size-class and life-stage records sharing the same \code{sampleID} and \code{taxonID}. \code{adjCountPerBottle} is already corrected for subsampling by the laboratory. Records are not filtered on \code{sampleCondition}: most non-OK values are life-stage notes ("other (specified in remarks)", e.g. "Copepodids") or affect body length measurements only.
 \item Inner-joined taxonomy to field data (inner join required because \code{towsTrapsVolume} is needed to compute density; records without field metadata are dropped).
 \item Density = \code{sum(adjCountPerBottle) / towsTrapsVolume} (count per liter), per user guide equation 2.
 }
 }
 \note{
 Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Zero rows.} NEON reports no zooplankton samples without target taxa, so this dataset has no zero rows (the zero-row convention of the other datasets does not apply).
+
+\strong{Flags.} \code{sampleCondition} lists non-OK conditions of the taxonomy records (separated by "|"); \code{NA} if all OK. Consider excluding "damaged, affecting analysis". Tow net (whole water column) and Schindler trap samples differ in volume and depth sampled (\code{samplerType}), so check comparability before pooling. \code{redundant_genus} marks genus-level records that co-occur with a finer identification of the same genus in the same sample.
 }
 \author{
 Lara Jansen, Stephanie Parker

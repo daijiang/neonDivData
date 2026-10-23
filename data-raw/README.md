@@ -10,11 +10,10 @@ after NEON releases their updated annual data.
 
 - A valid NEON API token stored in the environment variable `NEON_TOKEN`
   (add to `~/.Renviron` or set via `Sys.setenv(NEON_TOKEN = "...")`).
-- R packages: `neonUtilities`, `rWCVP`, `rWCVPdata`, `tidyverse`, `usethis`,
-  `devtools`.
-- `rWCVPdata` must be up to date — run `rWCVPdata::wcvp_check_version()` to
-  confirm. Reinstall from the r-universe if the WCVP database has been updated
-  (see `03_plant_names.R` header for install commands).
+- R packages: `neonUtilities`, `tidyverse`, `usethis`, `devtools`.
+- Access to the shared plant name base (`sp_names_all.rds` from the
+  `species_name_standardization` project on bot211). Set `SP_NAME_BASE` to its
+  path if it is not at the default server location (see Step 3).
 - Run all scripts from the **package root** (not from inside `data-raw/`), e.g.
   open the project in RStudio or set the working directory with
   `setwd("<repo root>")`.
@@ -82,51 +81,41 @@ source("data-raw/02_clean_save_data.R")
 
 **Script:** `03_plant_names.R`
 
-Matches species-, subspecies-, and variety-level plant taxa against the World
-Checklist of Vascular Plants (WCVP) and adds two new columns to `data_plant`:
-`accepted_wcvp_name` (full name with authors) and `accepted_wcvp_name_binomial`
-(genus + epithet only). Genus-level and speciesGroup-level taxa are excluded
-from matching. Original NEON names are always preserved in `taxon_name`.
+Joins species-, subspecies-, and variety-level plant taxa against the shared
+plant name base (`species_name_standardization` project), which standardizes
+raw names against the World Checklist of Vascular Plants (WCVP) with `rWCVP`.
+Adds three columns to `data_plant`: `accepted_wcvp_name`,
+`accepted_wcvp_name_binomial`, and `species_group_assigned`. Original NEON
+names are always preserved in `taxon_name`.
 
 ```r
+# default: /media/dli/Data/common_data/species_name_standardization/data_output/sp_names_all.rds
+Sys.setenv(SP_NAME_BASE = "<path to a local copy of sp_names_all.rds>")
 source("data-raw/03_plant_names.R")
 ```
 
-**Incremental caching:** `plant_name_lookup.csv` acts as a cache. On each run
-the script reads that file, skips any `taxon_id` already present, and only
-sends genuinely new taxa through the (slow) WCVP matching steps. The cache
-stores the `rWCVPdata` version it was built with; if the installed version
-differs a warning is printed. To force a full re-match (e.g. after a major
-WCVP release), delete `plant_name_lookup.csv` before running the script.
+**Join on the raw name.** The join uses `sp_original` = NEON `taxon_name`
+*with* its authorship, never the canonical name: the same canonical name can
+resolve to different accepted taxa depending on its author (homonyms).
 
-**Matching workflow (two-pass, applied to new taxa only):**
+**New NEON names.** Names not yet in the name base keep their NEON name and are
+listed with `in_name_base = FALSE` in `plant_name_lookup.csv`. Each year, add
+the new `data_plant` names to the name base (register neonDivData as a source
+in its `code/01_collect_raw_names.R` and re-run its pipeline), then re-run this
+step.
 
-1. **Pass 1 — full name + author.** NEON names are split into name and author
-   components (using the `subsp.`/`ssp.`/`var.` keyword as the split point for
-   infraspecific taxa) and matched with `wcvp_match_names(fuzzy = TRUE)`.
-   - All exact matches are accepted.
-   - Fuzzy matches are accepted when similarity ≥ 0.9 and edit distance ≤ 2.
-
-2. **Pass 2 — binomial only.** Taxa still unmatched or rejected after pass 1
-   are retried with just the binomial (first two tokens of `taxon_name`, no
-   author). The same acceptance thresholds apply. Accepted pass-2 results fill
-   in for the rejected pass-1 results; original accepted results are never
-   overwritten.
+**speciesGroup taxa** (e.g. "Fraxinus americana/pennsylvanica") are assigned
+to one member species (first-listed by default or, if it is not recorded at
+that site, the first later-listed member that is) and flagged with
+`species_group_assigned = TRUE`.
 
 **Outputs:**
-- `data-raw/plant_name_lookup.csv` — cumulative matching details for all
-  species-level taxa (new results appended each year). Includes a `wcvp_version`
-  column recording which WCVP release each row was matched against.
+- `data-raw/plant_name_lookup.csv`: every species-level NEON taxon with its
+  name-base match (`match_way`, `resolved_match_type`, accepted name and IDs)
+  and the WCVP version.
 - `data-raw/plant_name_lookup_applied.csv` — the before/after name table
   (`taxon_name` → `accepted_wcvp_name` → `accepted_wcvp_name_binomial`).
-- `data/data_plant.rda` — updated with the two new WCVP columns.
-
-**Notes:**
-- Inspect the "New taxa matched this run" section of the console output and the
-  new rows in `plant_name_lookup.csv`. Add manual overrides for any wrong or
-  missing matches inside the clearly marked block in `03_plant_names.R`.
-- If `rWCVPdata` has been updated to a new WCVP release, delete
-  `plant_name_lookup.csv` and re-run to remap all taxa against the new database.
+- `data/data_plant.rda`: updated with the WCVP columns.
 
 ---
 
@@ -192,7 +181,7 @@ git push origin v0.3.0
 | `02_clean_save_data.R` | Clean + save all `data/*.rda` package datasets |
 | `03_plant_names.R` | WCVP name standardisation for `data_plant` |
 | `03_save_to_EDI.R` | Export CSVs for EDI deposit |
-| `plant_name_lookup.csv` | WCVP match details for all plant taxa (audit trail) |
+| `plant_name_lookup.csv` | Name-base (WCVP) match details for all species-level plant taxa (audit trail) |
 | `plant_name_lookup_applied.csv` | Before/after plant name table |
 | `NEON_raw_data/` | Timestamped raw RDS downloads (not committed to git) |
 | `edi/` | CSV exports for EDI (not committed to git) |

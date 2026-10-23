@@ -9,18 +9,19 @@ A data frame (also a tibble) with the following columns:
 \itemize{
 \item \code{location_id}: Location id.
 \item \code{siteID}: NEON site code.
-\item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}).
+\item \code{unique_sample_id}: Identity of unique samples (equals \code{sampleID}; \code{plotID.YYYYMMDDTHHMMZ.empty} for empty traps).
 \item \code{subsampleID}: Unique identifier associated with each subsample per sampleID.
 \item \code{observation_datetime}: Observation date and time.
-\item \code{taxon_id}: Accepted species code, based on one or more sources.
+\item \code{taxon_id}: Accepted species code, based on one or more sources. \code{NA} for zero rows.
 \item \code{taxon_name}: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.
 \item \code{taxon_rank}: The lowest level taxonomic rank that can be determined for the individual or specimen.
 \item \code{variable_name}: The variable name(s) represented by the \code{value} column.
-\item \code{value}: Abundance (count per trap hour); \code{NA} for zero-catch traps.
+\item \code{value}: Abundance (count per trap hour); \code{0} for zero-catch traps.
 \item \code{unit}: Unit of the values in the \code{value} column ('count per trap hour').
 \item \code{nativeStatusCode}: The process by which the taxon became established in the location.
 'A': Presumed absent; 'N': Native; 'I': Introduced; 'UNK': Status unknown.
+\item \code{redundant_genus}: \code{TRUE} for genus-level records that co-occur with a finer identification of the same genus in the same sample.
 \item \code{proportionIdentified}: Proportion of the total catch that was subsampled and identified.
 \item \code{release}: Version of data release by NEON.
 \item \code{remarks_sorting}: Technician notes; free text comments accompanying the sorting record.
@@ -28,6 +29,9 @@ of the lowest level taxonomic rank that can be determined.
 \item \code{sex}: M for male, F for female, U for unknown.
 \item \code{sortDate}: Date sample was sorted.
 \item \code{trapHours}: Number of hours between trap setting and collecting events.
+\item \code{nightOrDay}: Whether the trap was deployed during the night or the day.
+\item \code{sampleCondition}: Non-OK sample conditions from trapping, sorting, and expert identification; \code{NA} if none.
+\item \code{trapConditionFlag}: Trap operation problems (fan, catch cup, CO2); \code{NA} if none.
 \item \code{latitude}: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{longitude}: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.
 \item \code{elevation}: Elevation (in meters) above sea level.
@@ -44,14 +48,20 @@ This dataset was derived from \href{https://data.neonscience.org}{NEON data port
 \details{
 To clean the data, we:
 \enumerate{
-\item Joined \code{mos_trapping} to \code{mos_sorting} to \code{mos_expertTaxonomistIDProcessed}.
-\item Filtered to \code{targetTaxaPresent == "Y"}, \code{sampleCondition == "No known compromise"}, and \code{taxonRank != "family"}.
-\item Estimated total individuals per subsample = \code{individualCount / proportionIdentified}.
+\item Kept deployed trap-nights from \code{mos_trapping} (\code{trapHours > 0}; \code{samplingImpractical} of \code{OK} or missing; \code{targetTaxaPresent} of \code{Y}, \code{N}, or \code{U}).
+\item Left-joined \code{mos_trapping} to \code{mos_sorting} (by \code{sampleID}) and to \code{mos_expertTaxonomistIDProcessed} (by \code{subsampleID}), keeping traps that caught nothing.
+\item Summed duplicate expert records of the same taxon and sex within a sample.
+\item Kept expert identifications below family rank, and zero rows for traps (or identified subsamples) with no target taxa. Uncertain traps (\code{targetTaxaPresent == "U"}) without expert identifications were dropped.
+\item Estimated total individuals per sample = \code{individualCount / proportionIdentified} (equivalent to the weight-based correction in the NEON user guide).
 \item Abundance = estimated total individuals / \code{trapHours} (count per trap hour).
 }
 }
 \note{
-Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}). We retained records without a \code{taxon_id} (where \code{value} is \code{NA}) to preserve sampling effort for traps that caught zero mosquitoes.
+Details of locations (e.g. latitude/longitude coordinates can be found in \link{neon_location}).
+
+\strong{Zero rows.} A trap-night that caught no mosquitoes is kept as one row with \code{taxon_id = NA} and \code{value = 0}. NEON does not assign a \code{sampleID} to empty traps, so their \code{unique_sample_id} is built from the plot and the collection time in UTC (\code{plotID.YYYYMMDDTHHMMZ.empty}); this format differs from NEON sampleIDs, which use local time, so the two cannot collide. This zero-row convention is shared by all neonDivData observation datasets.
+
+\strong{Flags.} Compromised samples and trap problems are flagged rather than removed: \code{sampleCondition} collects non-OK conditions from trapping, sorting, and expert identification (e.g. "trapping: Cold chain broken"), and \code{trapConditionFlag} collects fan, catch cup, and CO2 problems (e.g. "fan: Off; CO2: Absent"). Both are \code{NA} when no problem was recorded. Genus-level identifications are kept; \code{redundant_genus} marks those that co-occur with a finer identification of the same genus in the same sample. Day and night traps are distinguished by \code{nightOrDay}.
 }
 \author{
 Natalie Robinson, Daijiang Li
