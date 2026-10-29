@@ -85,6 +85,23 @@ test_that("tick species-ID assays are not reported as pathogens", {
   expect_false(any(data_tick_pathogen$taxon_id %in% host_tests))
 })
 
+test_that("plant WCVP binomials are Genus + epithet, and species are not split", {
+  sp <- data_plant[data_plant$taxon_rank %in% c("species", "subspecies", "variety"), ]
+  bin <- unique(sp$accepted_wcvp_name_binomial)
+  # Genus + epithet (hybrid sign allowed); no "Taraxacum sect." style values
+  expect_true(all(grepl("^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$", bin)),
+              info = paste(head(bin[!grepl("^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$", bin)]), collapse = "; "))
+  # a subspecies/variety must not keep its old NEON binomial when its species
+  # resolved to a different accepted binomial (one species under two names)
+  neon_bin <- sub("^(\\S+ \\S+).*", "\\1", sp$taxon_name)
+  species_bin <- tapply(sp$accepted_wcvp_name_binomial[sp$taxon_rank == "species"],
+                        neon_bin[sp$taxon_rank == "species"], function(x) x[1])
+  infra <- sp$taxon_rank != "species"
+  parent <- species_bin[neon_bin[infra]]
+  split <- !is.na(parent) & parent != neon_bin[infra] & sp$accepted_wcvp_name_binomial[infra] == neon_bin[infra]
+  expect_false(any(split), info = paste(unique(sp$taxon_name[infra][split]), collapse = "; "))
+})
+
 test_that("neon_taxa has no missing taxon_id", {
   expect_false(any(is.na(neon_taxa$taxon_id)))
 })

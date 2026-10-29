@@ -75,22 +75,67 @@ write.csv(lookup, "data-raw/plant_name_lookup.csv", row.names = FALSE)
 message("Lookup table written to data-raw/plant_name_lookup.csv")
 
 # ── 8. Update data_plant ─────────────────────────────────────────────────────
-# Names without an accepted WCVP name (not in the name base, no match, or
-# deliberately left unresolved there) keep their original NEON name.
+# accepted_wcvp_name: the accepted WCVP name; names without one (not in the name
+# base, no match, or deliberately left unresolved there) keep their NEON name,
+# except autonyms ("Polygonum scandens L. var. scandens"), which are the species
+# itself and take the species' accepted name.
+#
+# accepted_wcvp_name_binomial, in order of preference:
+#   1. the accepted binomial from the name base;
+#   2. for subspecies/varieties without one, the accepted binomial of their NEON
+#      species, so a species is never split between its accepted name and its
+#      old NEON name (e.g. "Fallopia scandens" vs "Polygonum scandens");
+#   3. the NEON binomial. This also covers accepted names that are not species
+#      (WCVP holds the dandelion aggregate "Taraxacum sect. Taraxacum" as the
+#      accepted name of Taraxacum officinale; its binomial is left blank in the
+#      name base, and the NEON binomial "Taraxacum officinale" is used).
+neon_binomial <- function(x) {
+    b <- str_replace(str_extract(x, "^×? ?\\S+ ×? ?\\S+"), " spp[.]$", " sp.")
+    coalesce(b, x) # one-word names, e.g. "×Triticosecale"
+}
+
+# accepted name / binomial of each NEON species (most common if a binomial has
+# several NEON spellings or authors)
+species_res <- lookup |>
+    filter(taxon_rank == "species", !is.na(accepted_taxon_name)) |>
+    mutate(binom = word(taxon_name, 1, 2)) |>
+    count(binom, sp_name = accepted_taxon_name, sp_binomial = accepted_wcvp_name_binomial) |>
+    group_by(binom) |>
+    slice_max(n, n = 1, with_ties = FALSE) |>
+    ungroup() |>
+    select(-n)
+
 name_map <- lookup |>
-    filter(!is.na(accepted_taxon_name)) |>
-    select(taxon_id, accepted_name = accepted_taxon_name, accepted_binomial = accepted_wcvp_name_binomial)
+    mutate(
+        binom = word(taxon_name, 1, 2),
+        infra_epithet = str_match(taxon_name, " (?:var|ssp|subsp)\\. ([a-z-]+)")[, 2],
+        autonym = taxon_rank != "species" & infra_epithet %in% word(taxon_name, 2)
+    ) |>
+    left_join(species_res, by = "binom") |>
+    mutate(
+        # defensive: never take a base "binomial" that is not Genus + epithet
+        base_binomial = if_else(
+            str_detect(accepted_wcvp_name_binomial, "^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$") %in% TRUE,
+            accepted_wcvp_name_binomial, NA_character_
+        ),
+        sp_binomial = if_else(
+            str_detect(sp_binomial, "^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$") %in% TRUE,
+            sp_binomial, NA_character_
+        ),
+        accepted_name = coalesce(accepted_taxon_name, if_else(autonym, sp_name, NA_character_)),
+        accepted_binomial = coalesce(
+            base_binomial,
+            if_else(taxon_rank != "species" & is.na(accepted_taxon_name), sp_binomial, NA_character_)
+        )
+    ) |>
+    select(taxon_id, accepted_name, accepted_binomial)
 
 data_plant <- data_plant |>
     select(-any_of(c("accepted_wcvp_name", "accepted_wcvp_name_binomial", "species_group_assigned"))) |>
     left_join(name_map, by = "taxon_id") |>
     mutate(
         accepted_wcvp_name = coalesce(accepted_name, taxon_name),
-        accepted_wcvp_name_binomial = coalesce(
-            accepted_binomial,
-            str_replace(str_extract(taxon_name, "^×? ?\\S+ ×? ?\\S+"), " spp[.]$", " sp."),
-            taxon_name # one-word names, e.g. "×Triticosecale"
-        )
+        accepted_wcvp_name_binomial = coalesce(accepted_binomial, neon_binomial(taxon_name))
     ) |>
     select(-accepted_name, -accepted_binomial)
 

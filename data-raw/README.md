@@ -104,6 +104,14 @@ the new `data_plant` names to the name base (register neonDivData as a source
 in its `code/01_collect_raw_names.R` and re-run its pipeline), then re-run this
 step.
 
+**Fallbacks.** Names without an accepted WCVP name keep their NEON name,
+except autonyms ("Polygonum scandens L. var. scandens"), which take the
+accepted name of their NEON species. Subspecies and varieties without an
+accepted name take the accepted binomial of their species, so no species is
+split between two binomials. A base binomial that is not Genus + epithet (WCVP's
+"Taraxacum sect. Taraxacum" for *T. officinale*) is ignored and the NEON
+binomial is used.
+
 **speciesGroup taxa** (e.g. "Fraxinus americana/pennsylvanica") are assigned
 to one member species (first-listed by default or, if it is not recorded at
 that site, the first later-listed member that is) and flagged with
