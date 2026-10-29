@@ -88,9 +88,10 @@ test_that("tick species-ID assays are not reported as pathogens", {
 test_that("plant WCVP binomials are Genus + epithet, and species are not split", {
   sp <- data_plant[data_plant$taxon_rank %in% c("species", "subspecies", "variety"), ]
   bin <- unique(sp$accepted_wcvp_name_binomial)
-  # Genus + epithet (hybrid sign allowed); no "Taraxacum sect." style values
-  expect_true(all(grepl("^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$", bin)),
-              info = paste(head(bin[!grepl("^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$", bin)]), collapse = "; "))
+  # Genus + epithet (hybrid sign allowed) or a section aggregate
+  # ("Taraxacum sect. Taraxacum"); no truncated "Taraxacum sect." style values
+  pat <- "^×? ?[A-Z][^ ]* (×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*|sect\\. [A-Z][a-z-]+)$"
+  expect_true(all(grepl(pat, bin)), info = paste(head(bin[!grepl(pat, bin)]), collapse = "; "))
   # a subspecies/variety must not keep its old NEON binomial when its species
   # resolved to a different accepted binomial (one species under two names)
   neon_bin <- sub("^(\\S+ \\S+).*", "\\1", sp$taxon_name)

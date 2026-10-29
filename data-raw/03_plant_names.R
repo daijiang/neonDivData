@@ -81,14 +81,16 @@ message("Lookup table written to data-raw/plant_name_lookup.csv")
 # itself and take the species' accepted name.
 #
 # accepted_wcvp_name_binomial, in order of preference:
-#   1. the accepted binomial from the name base;
+#   1. the accepted binomial from the name base. Like the name base, this keeps
+#      section aggregates: WCVP holds "Taraxacum sect. Taraxacum" as the accepted
+#      name of Taraxacum officinale, and that is its binomial too;
 #   2. for subspecies/varieties without one, the accepted binomial of their NEON
 #      species, so a species is never split between its accepted name and its
 #      old NEON name (e.g. "Fallopia scandens" vs "Polygonum scandens");
-#   3. the NEON binomial. This also covers accepted names that are not species
-#      (WCVP holds the dandelion aggregate "Taraxacum sect. Taraxacum" as the
-#      accepted name of Taraxacum officinale; its binomial is left blank in the
-#      name base, and the NEON binomial "Taraxacum officinale" is used).
+#   3. the NEON binomial.
+# Genus + epithet (hybrid sign allowed), or a section aggregate
+binomial_pattern <- "^×? ?[A-Z][^ ]* (×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*|sect\\. [A-Z][a-z-]+)$"
+
 neon_binomial <- function(x) {
     b <- str_replace(str_extract(x, "^×? ?\\S+ ×? ?\\S+"), " spp[.]$", " sp.")
     coalesce(b, x) # one-word names, e.g. "×Triticosecale"
@@ -113,15 +115,12 @@ name_map <- lookup |>
     ) |>
     left_join(species_res, by = "binom") |>
     mutate(
-        # defensive: never take a base "binomial" that is not Genus + epithet
+        # defensive: never take a base "binomial" of another shape
         base_binomial = if_else(
-            str_detect(accepted_wcvp_name_binomial, "^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$") %in% TRUE,
+            str_detect(accepted_wcvp_name_binomial, binomial_pattern) %in% TRUE,
             accepted_wcvp_name_binomial, NA_character_
         ),
-        sp_binomial = if_else(
-            str_detect(sp_binomial, "^×? ?[A-Z][^ ]* ×? ?[a-zà-öø-ÿ][a-zà-öø-ÿ-]*$") %in% TRUE,
-            sp_binomial, NA_character_
-        ),
+        sp_binomial = if_else(str_detect(sp_binomial, binomial_pattern) %in% TRUE, sp_binomial, NA_character_),
         accepted_name = coalesce(accepted_taxon_name, if_else(autonym, sp_name, NA_character_)),
         accepted_binomial = coalesce(
             base_binomial,

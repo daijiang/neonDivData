@@ -108,9 +108,9 @@ step.
 except autonyms ("Polygonum scandens L. var. scandens"), which take the
 accepted name of their NEON species. Subspecies and varieties without an
 accepted name take the accepted binomial of their species, so no species is
-split between two binomials. A base binomial that is not Genus + epithet (WCVP's
-"Taraxacum sect. Taraxacum" for *T. officinale*) is ignored and the NEON
-binomial is used.
+split between two binomials. Section aggregates are kept as in the name base:
+WCVP's "Taraxacum sect. Taraxacum" for *T. officinale* is both the accepted
+name and the binomial.
 
 **speciesGroup taxa** (e.g. "Fraxinus americana/pennsylvanica") are assigned
 to one member species (first-listed by default or, if it is not recorded at
