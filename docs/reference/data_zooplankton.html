@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -59,7 +59,9 @@
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
 <li><p><code>value</code>: Density (count per liter).</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column (<code>"count per liter"</code>).</p></li>
+<li><p><code>redundant_genus</code>: <code>TRUE</code> for genus-level records that co-occur with a finer identification of the same genus in the same sample.</p></li>
 <li><p><code>release</code>: Version of data release by NEON.</p></li>
+<li><p><code>sampleCondition</code>: Non-OK conditions of the taxonomy records (separated by "|"); <code>NA</code> if all OK.</p></li>
 <li><p><code>samplerType</code>: Type of sampler used to collect the sample.</p></li>
 <li><p><code>towsTrapsVolume</code>: Sample volume (liter) collected for zooplankton.</p></li>
 <li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
@@ -69,13 +71,15 @@
     <div id="details">
     <h2>Details</h2>
     <p>To clean the data, we:</p><ol><li><p>Deduplicated <code>zoo_fieldData</code> by <code>sampleID</code> using <code>slice(1)</code> to guard against NEON's known aquatic duplicate metadata issue.</p></li>
-<li><p>Filtered <code>zoo_taxonomyProcessed</code> to <code>sampleCondition == "condition OK"</code> (case-insensitive); summed <code>adjCountPerBottle</code> across size-class measurement records sharing the same <code>sampleID</code> and <code>taxonID</code>. <code>adjCountPerBottle</code> is already corrected for subsampling by the laboratory.</p></li>
+<li><p>Summed <code>adjCountPerBottle</code> across size-class and life-stage records sharing the same <code>sampleID</code> and <code>taxonID</code>. <code>adjCountPerBottle</code> is already corrected for subsampling by the laboratory. Records are not filtered on <code>sampleCondition</code>: most non-OK values are life-stage notes ("other (specified in remarks)", e.g. "Copepodids") or affect body length measurements only.</p></li>
 <li><p>Inner-joined taxonomy to field data (inner join required because <code>towsTrapsVolume</code> is needed to compute density; records without field metadata are dropped).</p></li>
 <li><p>Density = <code>sum(adjCountPerBottle) / towsTrapsVolume</code> (count per liter), per user guide equation 2.</p></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
     <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>).</p>
+<p><strong>Zero rows.</strong> NEON reports no zooplankton samples without target taxa, so this dataset has no zero rows (the zero-row convention of the other datasets does not apply).</p>
+<p><strong>Flags.</strong> <code>sampleCondition</code> lists non-OK conditions of the taxonomy records (separated by "|"); <code>NA</code> if all OK. Consider excluding "damaged, affecting analysis". Tow net (whole water column) and Schindler trap samples differ in volume and depth sampled (<code>samplerType</code>), so check comparability before pooling. <code>redundant_genus</code> marks genus-level records that co-occur with a finer identification of the same genus in the same sample.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -94,7 +98,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

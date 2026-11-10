@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -60,7 +60,8 @@
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
 <li><p><code>value</code>: Positivity rate (<code>n_positive_test / n_tests</code>).</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column (<code>"positive tests per pathogen per sampling event"</code>).</p></li>
-<li><p><code>lifeStage</code>: Life stage of the host tick (extracted from <code>subsampleID</code>).</p></li>
+<li><p><code>vector_taxon_id</code>: NEON taxon code of the tested tick (e.g. <code>IXOSCA</code> = Ixodes scapularis, <code>AMBAME</code> = Amblyomma americanum, <code>HAELON</code> = Haemaphysalis longicornis).</p></li>
+<li><p><code>lifeStage</code>: Life stage of the host tick (<code>N</code> = nymph, <code>L</code> = larva; extracted from <code>subsampleID</code>).</p></li>
 <li><p><code>testProtocolVersion</code>: The protocol version used to test the sample.</p></li>
 <li><p><code>release</code>: Version of data release by NEON.</p></li>
 <li><p><code>n_tests</code>: Number of tests conducted.</p></li>
@@ -73,16 +74,18 @@
 </ul></div>
     <div id="details">
     <h2>Details</h2>
-    <p>To clean the data, we:</p><ol><li><p>Removed tests from batches that failed quality criteria (<code>criteriaMet != "Y"</code> in <code>tck_pathogenqa</code>).</p></li>
+    <p>To clean the data, we:</p><ol><li><p>Removed tests from batches that failed quality criteria (<code>criteriaMet != "Y"</code> in <code>tck_pathogenqa</code>). QA records are linked by batch only from 2021 onward, and all batches in the current release met the criteria.</p></li>
 <li><p>Removed samples where <code>sampleCondition != "OK"</code> or <code>testResult</code> is <code>NA</code>.</p></li>
 <li><p>Applied the DNA quality fix: identified ticks (<code>testingID</code>) whose <code>HardTick DNA Quality</code> test was not <code>"Positive"</code> and dropped all test rows for those ticks (not just the DNA quality row itself), because pathogen results from ticks with degraded DNA are unreliable.</p></li>
-<li><p>Removed <code>HardTick DNA Quality</code> and <code>Ixodes pacificus</code> test rows; unified <code>"Borrelia burgdorferi"</code> into <code>"Borrelia burgdorferi sensu lato"</code>.</p></li>
-<li><p>Extracted <code>lifeStage</code> from the last dot-delimited segment of <code>subsampleID</code>.</p></li>
-<li><p>Aggregated to one row per location x date x pathogen x life stage: <code>value</code> = <code>n_positive_test / n_tests</code>.</p></li>
+<li><p>Removed assays that are not pathogens: <code>HardTick DNA Quality</code> and the tick species confirmation tests (<code>Ixodes pacificus</code>, <code>Ixodes scapularis</code>, <code>Amblyomma americanum</code>, <code>Dermacentor variabilis</code>, <code>Haemaphysalis longicornis</code>; added 2021-2022). Unified <code>"Borrelia burgdorferi"</code> into <code>"Borrelia burgdorferi sensu lato"</code>.</p></li>
+<li><p>Extracted the vector tick taxon (<code>vector_taxon_id</code>) and <code>lifeStage</code> from <code>subsampleID</code> (<code>plotID.date.vectorTaxonID.lifeStage</code>).</p></li>
+<li><p>Aggregated to one row per location x date x vector taxon x pathogen x life stage: <code>value</code> = <code>n_positive_test / n_tests</code>.</p></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
     <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>).</p>
+<p><strong>Vector species.</strong> Each tick genus is tested for a different pathogen panel (e.g. Borrelia burgdorferi s.l., Babesia, and Anaplasma in Ixodes; Ehrlichia and Francisella in Amblyomma), and prevalence differs strongly among tick species. Always analyze positivity rates within <code>vector_taxon_id</code>. The panel also determines which pathogen rows exist, so the absence of a pathogen row means it was not tested, not that it was absent.</p>
+<p><strong>Interpretation.</strong> <code>Borrelia sp.</code> is a genus-level screen; ticks positive for any Borrelia species are also positive for <code>Borrelia sp.</code>, so do not sum positives across Borrelia rows. Some pathogens (e.g. Rickettsia parkeri and Rickettsia philipii) were added to the panel only in 2022. Many rows are based on few tests (<code>n_tests</code>); weight by <code>n_tests</code> rather than averaging <code>value</code>. <code>taxon_id</code> is the pathogen name, not a NEON taxon code. This dataset has no zero rows: a rate of 0 means the pathogen was tested and not detected.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -101,7 +104,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

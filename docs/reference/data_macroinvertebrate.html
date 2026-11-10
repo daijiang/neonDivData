@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -53,39 +53,45 @@
 <li><p><code>siteID</code>: NEON site code.</p></li>
 <li><p><code>unique_sample_id</code>: Identity of unique samples (equals <code>sampleID</code>).</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
-<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
+<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources. <code>NA</code> for zero rows.</p></li>
 <li><p><code>taxon_name</code>: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
-<li><p><code>value</code>: Density (count per square meter).</p></li>
+<li><p><code>value</code>: Density (count per square meter); <code>0</code> for zero rows.</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
+<li><p><code>redundant_genus</code>: <code>TRUE</code> for genus-level records that co-occur with a finer identification of the same genus in the same sample.</p></li>
 <li><p><code>estimatedTotalCount</code>: Estimated total count (summed across size classes).</p></li>
 <li><p><code>individualCount</code>: Raw individual count (summed across size classes).</p></li>
-<li><p><code>subsamplePercent</code>: Percent of the total sample contained in the subsample.</p></li>
+<li><p><code>subsamplePercent</code>: Percent of the total sample contained in the subsample (character; multiple values are separated by "|").</p></li>
 <li><p><code>release</code>: Version of data release by NEON.</p></li>
+<li><p><code>sampleCondition</code>: Non-OK conditions of the taxonomy records (separated by "|"); <code>NA</code> if all OK.</p></li>
+<li><p><code>dataQF</code>: NEON data quality flag for the field sample; <code>NA</code> if none.</p></li>
 <li><p><code>benthicArea</code>: Area sampled (square meter).</p></li>
 <li><p><code>habitatType</code>: Habitat type sampled.</p></li>
 <li><p><code>samplerType</code>: Type of sampler used to collect the sample.</p></li>
 <li><p><code>substratumSizeClass</code>: Size class of the substratum sampled.</p></li>
 <li><p><code>remarks</code>: Remarks of record.</p></li>
 <li><p><code>ponarDepth</code>: Depth (meter) of petite ponar sample.</p></li>
-<li><p><code>snagLength</code>: Length (meter) of snag sampled.</p></li>
-<li><p><code>snagDiameter</code>: Diameter (meter) of snag sampled.</p></li>
+<li><p><code>snagLength</code>: Length (centimeter) of snag sampled.</p></li>
+<li><p><code>snagDiameter</code>: Diameter (centimeter) of snag sampled.</p></li>
 <li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>elevation</code>: Elevation (in meters) above sea level.</p></li>
 </ul></div>
     <div id="details">
     <h2>Details</h2>
-    <p>To clean the data, we:</p><ol><li><p>Deduplicated <code>inv_fieldData</code> by <code>sampleID</code> using <code>slice(1)</code> to guard against NEON's known aquatic duplicate metadata issue.</p></li>
-<li><p>Filtered <code>inv_taxonomyProcessed</code> to <code>targetTaxaPresent == "Y"</code>; summed <code>estimatedTotalCount</code> and <code>individualCount</code> across size-class records sharing the same <code>sampleID</code> and <code>acceptedTaxonID</code>.</p></li>
+    <p>To clean the data, we:</p><ol><li><p>Deduplicated <code>inv_fieldData</code> by <code>sampleID</code> using <code>slice(1)</code> as a guard against duplicate field records (none occur in the current release).</p></li>
+<li><p>Filtered <code>inv_taxonomyProcessed</code> to <code>targetTaxaPresent == "Y"</code> and non-missing <code>estimatedTotalCount</code>; summed <code>estimatedTotalCount</code> and <code>individualCount</code> across size-class records sharing the same <code>sampleID</code> and <code>acceptedTaxonID</code> (user guide section 3.10).</p></li>
+<li><p>Kept processed samples with no target taxa (<code>targetTaxaPresent == "N"</code>) as zero rows.</p></li>
 <li><p>Inner-joined taxonomy to field data (inner join required because <code>benthicArea</code> is needed to compute density; records without field metadata are dropped).</p></li>
-<li><p>Density = <code>estimatedTotalCount / benthicArea</code> (count per square meter).</p></li>
+<li><p>Density = <code>estimatedTotalCount / benthicArea</code> (count per square meter, user guide equation 1).</p></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
     <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>).</p>
+<p><strong>Zero rows.</strong> A processed sample with no target taxa is kept as one row with <code>taxon_id = NA</code> and <code>value = 0</code>. This zero-row convention is shared by all neonDivData observation datasets.</p>
+<p><strong>Flags.</strong> <code>sampleCondition</code> lists non-OK conditions of the taxonomy records (e.g. "damaged, affecting taxonomy"), and <code>dataQF</code> gives NEON field quality flags (e.g. "kicknet with incorrect mouth size used", which underestimates density); both are <code>NA</code> when no problem was recorded. <code>redundant_genus</code> marks genus-level records that co-occur with a finer identification of the same genus in the same sample; many macroinvertebrates are identified only to family or higher, so check <code>taxon_rank</code> before estimating richness.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -104,7 +110,7 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

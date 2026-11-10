@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -59,7 +59,9 @@
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
 <li><p><code>value</code>: Cell density value.</p></li>
 <li><p><code>unit</code>: Either <code>cells/mL</code> (water column) or <code>cells/cm2</code> (benthic).</p></li>
-<li><p><code>sampleCondition</code>: Condition of the sample (all <code>"Condition OK"</code>).</p></li>
+<li><p><code>count_method</code>: How the count was obtained: "soft algae count", "diatom slide proportion x soft algae diatom count", or "diatom slide count".</p></li>
+<li><p><code>redundant_genus</code>: <code>TRUE</code> for genus-level records that co-occur with a finer identification of the same genus in the same sample.</p></li>
+<li><p><code>sampleCondition</code>: Non-OK condition of the taxonomy sample; <code>NA</code> if OK.</p></li>
 <li><p><code>perBottleSampleVolume</code>: Sample volume per bottle (milliliter); fallback-filled where originally missing.</p></li>
 <li><p><code>release</code>: Version of data release by NEON.</p></li>
 <li><p><code>habitatType</code>: Habitat type sampled.</p></li>
@@ -78,15 +80,19 @@
     <div id="details">
     <h2>Details</h2>
     <p>To clean the data, we:</p><ol><li><p>Filtered <code>alg_biomass</code> to <code>analysisType == "taxonomy"</code> records only.</p></li>
-<li><p>Computed a fallback bottle volume (<code>preservativeVolume + labSampleVolume</code>) used when <code>perBottleSampleVolume</code> is <code>NA</code> or <code>0</code>.</p></li>
-<li><p>Joined <code>alg_taxonomyProcessed</code> to <code>alg_biomass</code> to <code>alg_fieldData</code> via <code>sampleID</code> and <code>parentSampleID</code>.</p></li>
-<li><p>Filtered to <code>algalParameterUnit == "cellsPerBottle"</code> and <code>sampleCondition == "Condition OK"</code>.</p></li>
-<li><p>Computed cell density: water column samples (<code>seston</code>/<code>phytoplankton</code>) as cells/mL; benthic samples as cells/cm².</p></li>
-<li><p>Resolved within-sample duplicates by summing density across records sharing the same <code>sampleID</code> and <code>acceptedTaxonID</code>.</p></li>
+<li><p>Computed a fallback bottle volume (<code>preservativeVolume + labSampleVolume</code>, user guide equation 1) used when <code>perBottleSampleVolume</code> is <code>NA</code> or <code>0</code> (2014 samples).</p></li>
+<li><p>Kept <code>alg_taxonomyProcessed</code> records with <code>algalParameterUnit == "cellsPerBottle"</code> and a taxon ID.</p></li>
+<li><p>Reconciled diatom counts following user guide section 3.9. Soft algae + diatom counts are quantitative, while diatom slide counts give species-level relative abundance only. For samples with both, the total diatom count from the soft algae analysis was split among slide taxa in proportion to their slide counts, and replaced the soft algae diatom records. When a sample had slide data but no soft algae diatoms, slide counts were used as reported. Adding both analyses would double count diatoms. The method used for each record is given in <code>count_method</code>.</p></li>
+<li><p>Joined taxonomy to <code>alg_biomass</code> and <code>alg_fieldData</code> via <code>sampleID</code> and <code>parentSampleID</code>.</p></li>
+<li><p>Computed cell density: water column samples (<code>seston</code>/<code>phytoplankton</code>) as cells/mL; benthic samples as cells/cm² (cells per bottle / bottle volume x field sample volume / benthic area).</p></li>
+<li><p>Resolved within-sample duplicates (separate morphotype or size records of one taxon) by summing density across records sharing the same <code>sampleID</code> and <code>acceptedTaxonID</code>.</p></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
     <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>).</p>
+<p><strong>Temporal coverage.</strong> NEON did not analyze algal taxonomy between November 2020 and December 2023, and the data product was suspended in 2024 (user guide section 3.3). Samples collected in late 2020 were counted only as natural units or valves, not cells, so cell density in this dataset ends in July 2020.</p>
+<p><strong>Zero rows.</strong> Algal samples always contain cells, so this dataset has no zero rows (the zero-row convention of the other datasets does not apply).</p>
+<p><strong>Flags.</strong> <code>sampleCondition</code> gives non-OK conditions of the taxonomy sample; <code>NA</code> if OK. Seston taxonomy exists only for 2014-2017 and has very low counts. <code>redundant_genus</code> marks genus-level records that co-occur with a finer identification of the same genus in the same sample.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -105,7 +111,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -52,18 +52,21 @@
     <p>A data frame (also a tibble) with the following columns:</p><ul><li><p><code>location_id</code>: Location id.</p></li>
 <li><p><code>siteID</code>: NEON site code.</p></li>
 <li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
-<li><p><code>unique_sample_id</code>: Identity of unique samples (<code>plotID_collectDate</code>).</p></li>
+<li><p><code>unique_sample_id</code>: Identity of unique samples (<code>plotID_collectDate</code>, where collectDate includes the time).</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
-<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
+<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources. <code>NA</code> for zero rows.</p></li>
 <li><p><code>taxon_name</code>: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
-<li><p><code>value</code>: Abundance (count per square meter).</p></li>
+<li><p><code>value</code>: Abundance (count per square meter); <code>0</code> for zero rows.</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
 <li><p><code>LifeStage</code>: Life stage of the tick (<code>Larva</code>, <code>Nymph</code>, or <code>Adult</code>).</p></li>
+<li><p><code>count_source</code>: Source of the count: "lab", "field count excess", or "field count excess + lab"; <code>NA</code> for zero rows.</p></li>
+<li><p><code>redundant_genus</code>: <code>TRUE</code> for genus-level records that co-occur with a finer identification of the same genus and life stage in the same sample.</p></li>
 <li><p><code>release</code>: Version of data release by NEON.</p></li>
 <li><p><code>remarks_field</code>: Technician notes; free text comments accompanying the record.</p></li>
+<li><p><code>sampleCondition</code>: Non-OK condition of the field sample; <code>NA</code> if no known compromise.</p></li>
 <li><p><code>samplingMethod</code>: Name or code for the method used to collect or test a sample.</p></li>
 <li><p><code>targetTaxaPresent</code>: Indicator of whether the sample contained individuals of the target taxa ('Y' or 'N').</p></li>
 <li><p><code>totalSampledArea</code>: Total area sampled (square meter).</p></li>
@@ -75,15 +78,19 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 </ul></div>
     <div id="details">
     <h2>Details</h2>
-    <p>To clean the data, we:</p><ol><li><p>Mapped life stage from <code>tck_taxonomyProcessed</code> sex/age codes to <code>Larva</code>, <code>Nymph</code>, or <code>Adult</code>; rows with unmappable values are dropped.</p></li>
+    <p>To clean the data, we:</p><ol><li><p>Kept field samples with <code>samplingImpractical</code> of <code>OK</code> or missing. Drags coded as having no ticks (<code>targetTaxaPresent == "N"</code>) that nonetheless have lab-identified ticks were recoded to <code>"Y"</code>.</p></li>
+<li><p>Mapped life stage from <code>tck_taxonomyProcessed</code> sex/age codes to <code>Larva</code>, <code>Nymph</code>, or <code>Adult</code>; rows with unmappable values are dropped. Lab records are not filtered on <code>sampleCondition</code>, because damaged ticks are still identified and counted.</p></li>
 <li><p>Aggregated taxonomy counts by <code>sampleID</code>, <code>acceptedTaxonID</code>, and <code>LifeStage</code>; concatenated <code>release</code> values.</p></li>
-<li><p>Applied the IXOSP2 reconciliation fix: when field counts (from <code>tck_fielddata</code>) exceed lab counts for a given life stage, the difference is assigned to Order Ixodida (<code>IXOSP2</code>, <code>"Ixodida sp."</code>) rather than using fragile string-matching.</p></li>
-<li><p>Left-joined downward from field effort to lab taxonomy to preserve empty drag events (<code>targetTaxaPresent == "N"</code>), which receive <code>individualCount = 0</code>.</p></li>
-<li><p>Abundance = <code>individualCount / totalSampledArea</code> (count per square meter); invalid or non-finite values are dropped except for empty drag rows.</p></li>
+<li><p>Reconciled field and lab counts (2014-2018 only; see note): when field counts exceed lab counts, the unidentified remainder is added as <code>Ixodidae sp.</code> (<code>IXOSP</code>, family rank), the code NEON itself uses for unidentified ticks. The remainder is capped so the sample total equals the larger of the field and lab totals, avoiding double counts when field staff assigned ticks to the wrong life stage.</p></li>
+<li><p>Left-joined downward from field effort to lab taxonomy to preserve empty drag events (<code>targetTaxaPresent == "N"</code>).</p></li>
+<li><p>Abundance = <code>individualCount / totalSampledArea</code> (count per square meter). Samples with ticks but no usable counts (e.g. lost samples after 2018 without lab data) are dropped.</p></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
     <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>).</p>
+<p><strong>Zero rows.</strong> A drag with no ticks is kept as one row with <code>taxon_id = NA</code> and <code>value = 0</code>. This zero-row convention is shared by all neonDivData observation datasets.</p>
+<p><strong>Protocol change in 2019.</strong> From 2014 to 2018, field staff counted ticks by life stage, and the lab did not always identify every tick (invoice limits, subsampling of large larval samples). Field counts stopped in 2019; since then the lab counts every tick. <code>count_source</code> shows whether a count comes from the lab, from the field-count remainder, or both. Abundance of <code>IXOSP</code> (especially larvae) is therefore much higher before 2019.</p>
+<p><strong>Flags.</strong> <code>sampleCondition</code> gives non-OK field sample conditions (e.g. "Entire sample lost", "Tick count estimated"); <code>NA</code> if no compromise. <code>samplingMethod</code> distinguishes drag and flag sampling, which differ in efficiency. <code>redundant_genus</code> marks genus-level records that co-occur with a finer identification of the same genus and life stage in the same sample.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -102,7 +109,7 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

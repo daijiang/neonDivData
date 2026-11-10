@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -51,18 +51,19 @@
     <h2>Format</h2>
     <p>A data frame (also a tibble) with the following columns:</p><ul><li><p><code>location_id</code>: Location id.</p></li>
 <li><p><code>siteID</code>: NEON site code.</p></li>
-<li><p><code>unique_sample_id</code>: Identity of unique samples (equals <code>sampleID</code>).</p></li>
+<li><p><code>unique_sample_id</code>: Identity of unique samples (equals <code>sampleID</code>; <code>plotID.YYYYMMDDTHHMMZ.empty</code> for empty traps).</p></li>
 <li><p><code>subsampleID</code>: Unique identifier associated with each subsample per sampleID.</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
-<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
+<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources. <code>NA</code> for zero rows.</p></li>
 <li><p><code>taxon_name</code>: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
-<li><p><code>value</code>: Abundance (count per trap hour); <code>NA</code> for zero-catch traps.</p></li>
+<li><p><code>value</code>: Abundance (count per trap hour); <code>0</code> for zero-catch traps.</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column ('count per trap hour').</p></li>
 <li><p><code>nativeStatusCode</code>: The process by which the taxon became established in the location.
 'A': Presumed absent; 'N': Native; 'I': Introduced; 'UNK': Status unknown.</p></li>
+<li><p><code>redundant_genus</code>: <code>TRUE</code> for genus-level records that co-occur with a finer identification of the same genus in the same sample.</p></li>
 <li><p><code>proportionIdentified</code>: Proportion of the total catch that was subsampled and identified.</p></li>
 <li><p><code>release</code>: Version of data release by NEON.</p></li>
 <li><p><code>remarks_sorting</code>: Technician notes; free text comments accompanying the sorting record.</p></li>
@@ -70,6 +71,9 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>sex</code>: M for male, F for female, U for unknown.</p></li>
 <li><p><code>sortDate</code>: Date sample was sorted.</p></li>
 <li><p><code>trapHours</code>: Number of hours between trap setting and collecting events.</p></li>
+<li><p><code>nightOrDay</code>: Whether the trap was deployed during the night or the day.</p></li>
+<li><p><code>sampleCondition</code>: Non-OK sample conditions from trapping, sorting, and expert identification; <code>NA</code> if none.</p></li>
+<li><p><code>trapConditionFlag</code>: Trap operation problems (fan, catch cup, CO2); <code>NA</code> if none.</p></li>
 <li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>elevation</code>: Elevation (in meters) above sea level.</p></li>
@@ -78,14 +82,18 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 </ul></div>
     <div id="details">
     <h2>Details</h2>
-    <p>To clean the data, we:</p><ol><li><p>Joined <code>mos_trapping</code> to <code>mos_sorting</code> to <code>mos_expertTaxonomistIDProcessed</code>.</p></li>
-<li><p>Filtered to <code>targetTaxaPresent == "Y"</code>, <code>sampleCondition == "No known compromise"</code>, and <code>taxonRank != "family"</code>.</p></li>
-<li><p>Estimated total individuals per subsample = <code>individualCount / proportionIdentified</code>.</p></li>
+    <p>To clean the data, we:</p><ol><li><p>Kept deployed trap-nights from <code>mos_trapping</code> (<code>trapHours &gt; 0</code>; <code>samplingImpractical</code> of <code>OK</code> or missing; <code>targetTaxaPresent</code> of <code>Y</code>, <code>N</code>, or <code>U</code>).</p></li>
+<li><p>Left-joined <code>mos_trapping</code> to <code>mos_sorting</code> (by <code>sampleID</code>) and to <code>mos_expertTaxonomistIDProcessed</code> (by <code>subsampleID</code>), keeping traps that caught nothing.</p></li>
+<li><p>Summed duplicate expert records of the same taxon and sex within a sample.</p></li>
+<li><p>Kept expert identifications below family rank, and zero rows for traps (or identified subsamples) with no target taxa. Uncertain traps (<code>targetTaxaPresent == "U"</code>) without expert identifications were dropped.</p></li>
+<li><p>Estimated total individuals per sample = <code>individualCount / proportionIdentified</code> (equivalent to the weight-based correction in the NEON user guide).</p></li>
 <li><p>Abundance = estimated total individuals / <code>trapHours</code> (count per trap hour).</p></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
-    <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>). We retained records without a <code>taxon_id</code> (where <code>value</code> is <code>NA</code>) to preserve sampling effort for traps that caught zero mosquitoes.</p>
+    <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>).</p>
+<p><strong>Zero rows.</strong> A trap-night that caught no mosquitoes is kept as one row with <code>taxon_id = NA</code> and <code>value = 0</code>. NEON does not assign a <code>sampleID</code> to empty traps, so their <code>unique_sample_id</code> is built from the plot and the collection time in UTC (<code>plotID.YYYYMMDDTHHMMZ.empty</code>); this format differs from NEON sampleIDs, which use local time, so the two cannot collide. This zero-row convention is shared by all neonDivData observation datasets.</p>
+<p><strong>Flags.</strong> Compromised samples and trap problems are flagged rather than removed: <code>sampleCondition</code> collects non-OK conditions from trapping, sorting, and expert identification (e.g. "trapping: Cold chain broken"), and <code>trapConditionFlag</code> collects fan, catch cup, and CO2 problems (e.g. "fan: Off; CO2: Absent"). Both are <code>NA</code> when no problem was recorded. Genus-level identifications are kept; <code>redundant_genus</code> marks those that co-occur with a finer identification of the same genus in the same sample. Day and night traps are distinguished by <code>nightOrDay</code>.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -104,7 +112,7 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

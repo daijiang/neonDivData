@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -52,33 +52,40 @@
     <p>A data frame (also a tibble) with the following columns:</p><ul><li><p><code>location_id</code>: Location id.</p></li>
 <li><p><code>siteID</code>: NEON site code.</p></li>
 <li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
-<li><p><code>unique_sample_id</code>: Identity of unique samples, usually it has location and date information.</p></li>
-<li><p><code>subplotID</code>: This is the NEON provided subplot ID in the format of <code>subplot_id</code>, then <code>subsubplot_id</code> and 1 or 10 (m^2); if the sampling unit is 100 m^2, the values are 31, 32, 40, and 41.</p></li>
-<li><p><code>subplot_id</code>: Subplot ID; each plot normally has four 100 m^2 subplots (31, 32, 40, 41).</p></li>
-<li><p><code>subsubplot_id</code>: Subsubplot ID (1, 2, 3, 4) for sampling units at 1 m^2 or 10 m^2.</p></li>
+<li><p><code>unique_sample_id</code>: Identity of the 100 m² subplot in one sampling event, in the format <code>location_id_subplot_id_year-boutNumber</code>.</p></li>
+<li><p><code>subplotID</code>: This is the NEON provided subplot ID in the format of <code>subplot_id</code>, then 1 or 10 (m²), then <code>subsubplot_id</code> (e.g. <code>31_1_1</code>, <code>31_10_1</code>); if the sampling unit is 100 m², the format is <code>subplot_id_100</code> (e.g. <code>31_100</code>).</p></li>
+<li><p><code>subplot_id</code>: Subplot ID; each plot normally has four 100 m² subplots (31, 32, 40, 41).</p></li>
+<li><p><code>subsubplot_id</code>: Subsubplot ID (1, 2, 3, 4) for sampling units at 1 m² or 10 m²; <code>NA</code> for 100 m² records.</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
-<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
+<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources. <code>NA</code> for zero rows.</p></li>
 <li><p><code>taxon_name</code>:	Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
-<li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen. Values are 'genus', 'species', 'speciesGroup', 'subSpecies', or 'variety.' Species accounts for the majority of the entries. <em>Higher ranks have already been filtered out</em> because we think they are too vague for biodiversity research.</p></li>
+<li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen. Values are 'genus', 'species', 'speciesGroup', 'subspecies', or 'variety'. Species accounts for the majority of the entries. <em>Higher ranks have already been filtered out</em> because we think they are too vague for biodiversity research.</p></li>
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
-<li><p><code>value</code>: Value of the variable(s) specified by <code>variable_name</code>. If the individual was observed out of 1 square meter subplots, the value will be <code>NA</code> (i.e., <em>presence only</em>).</p></li>
+<li><p><code>value</code>: Percent cover for 1 m² records (<code>0</code> for zero rows). For 10 m² and 100 m² records the value is <code>NA</code> (i.e., <em>presence only</em>); a small number of 1 m² records (mostly 2014-2018) also lack a cover estimate.</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
-<li><p><code>presence_absence</code>: All 1s since every record represent a species.</p></li>
+<li><p><code>presence_absence</code>: 1 for records of a taxon; 0 for zero rows.</p></li>
 <li><p><code>boutNumber</code>: Number of sampling bout, most sites sample only 1 bout.</p></li>
 <li><p><code>nativeStatusCode</code>: Whether the species is a native or non-native species. 'A': Presumed absent, due to lack of data indicating a taxon's presence in a given location; 'N': Native; 'N?': Probably Native; 'I': Introduced; 'I?': Probably Introduced; 'NI': Native and Introduced, some infrataxa are native and others are introduced; 'NI?': Probably Native and Introduced, some infrataxa are native and others are introduced; 'UNK': Status unknown.</p></li>
+<li><p><code>identificationQualifier</code>: NEON identification qualifier (e.g. "cf. species", "aff. species"), indicating uncertain identifications.</p></li>
+<li><p><code>morphospeciesID</code>: Field morphospecies identifier, if the record was first identified as a morphospecies.</p></li>
+<li><p><code>redundant_genus</code>: <code>TRUE</code> for genus-level records that co-occur with a finer identification of the same genus in the same <code>unique_sample_id</code>.</p></li>
 <li><p><code>heightPlantOver300cm</code>: Indicator of whether individuals of the species in the sample are taller than 300 cm.</p></li>
 <li><p><code>heightPlantSpecies</code>: Ocular estimate of the height (centimeter) of the plant species (if height is &lt; 300 cm).</p></li>
-<li><p><code>release</code>: Version of data release by NEON.</p></li>
 <li><p><code>sample_area_m2</code>: The area of the sampling unit that the observed plant was located in. Potential values are 1, 10, or 100.</p></li>
+<li><p><code>sampled_scales_m2</code>: Nested scales (m²) that were actually surveyed in this 100 m² subplot during this sampling event; the same value is repeated on every row of the subplot-event. Each 100 m² subplot contains two 1 m² quadrats and two 10 m² subplots. Since 2019, NEON surveys the 1 m² quadrats every year but the 10 m² and 100 m² scales only every other year (and in half of the plots in 2018). Values:</p><ul><li><p><code>"1,10,100"</code>: full survey; the records give the complete species list of the 100 m² subplot.</p></li>
+<li><p><code>"1"</code>: only the 1 m² quadrats were surveyed; the records cover about 2 m² of the subplot, so its species list is far from complete (e.g. subplot 31 of HARV_001 has 21-26 species in fully surveyed years but 4-10 in 1 m²-only years).</p></li>
+<li><p>Other combinations (e.g. <code>"1,10"</code>, <code>"10,100"</code>): partial surveys with one scale missing; rare (&lt;1% of subplot-events).</p></li>
+</ul><p>For species lists at 10 m², 100 m², or 400 m² (plot) scale, keep only full surveys, e.g. <code>dplyr::filter(data_plant, sampled_scales_m2 == "1,10,100")</code>; otherwise richness appears to drop every other year as a sampling artifact. Analyses at the 1 m² scale (percent cover, quadrat richness) need no filter.</p></li>
 <li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>elevation</code>: Elevation (in meters) above sea level.</p></li>
 <li><p><code>plotType</code>: NEON plot type in which sampling occurred: tower, distributed or gradient.</p></li>
 <li><p><code>nlcdClass</code>: National Land Cover Database Vegetation Type Name.</p></li>
 <li><p><code>release</code>: Version of data release by NEON.</p></li>
-<li><p><code>accepted_wcvp_name</code>: WCVP-accepted full scientific name (binomial or trinomial with authors) for species-, subspecies-, and variety-level taxa. For names matched to WCVP synonyms, this is the accepted name; for names with no acceptable WCVP match, this falls back to the original NEON <code>taxon_name</code>. Genus-level and speciesGroup-level taxa retain their original NEON names.</p></li>
-<li><p><code>accepted_wcvp_name_binomial</code>: Binomial (genus + specific epithet, without authors) extracted from <code>accepted_wcvp_name</code>. Useful for joining with other datasets that use binomial names only.</p></li>
+<li><p><code>accepted_wcvp_name</code>: WCVP-accepted scientific name (binomial or trinomial, without authors) for species-, subspecies-, and variety-level taxa. For names matched to WCVP synonyms, this is the accepted name; for names with no accepted WCVP name, this falls back to the original NEON <code>taxon_name</code> (with authors). Genus-level taxa retain their original NEON names; speciesGroup taxa are assigned to one member species (see <code>species_group_assigned</code>).</p></li>
+<li><p><code>accepted_wcvp_name_binomial</code>: Binomial (genus + specific epithet, without authors) of <code>accepted_wcvp_name</code>, or the section name for the <em>Taraxacum</em> aggregate (see step 6 above). When <code>accepted_wcvp_name</code> has no accepted WCVP name, this falls back to the binomial of the NEON species. Useful for joining with other datasets that use binomial names only.</p></li>
+<li><p><code>species_group_assigned</code>: <code>TRUE</code> for NEON speciesGroup records whose WCVP name columns give one assigned member species rather than a confirmed identification.</p></li>
 </ul></div>
     <div id="source">
     <h2>Source</h2>
@@ -87,26 +94,33 @@ of the lowest level taxonomic rank that can be determined.</p></li>
     <div id="details">
     <h2>Details</h2>
     <p>The detailed design of NEON plant survey can be found in <a href="https://esajournals.onlinelibrary.wiley.com/doi/10.1002/ecs2.2603" class="external-link">Barnett et al. 2019</a>.
-Here, we:</p><ol><li><p>Removed 1 m^2 data with <code>targetTaxaPresent = N</code></p></li>
-<li><p>Removed rows missing values for plotID, subplotID, boutNumber, endDate, and/or taxonID</p></li>
-<li><p>Removed duplicate taxa between nested subplots (each taxon should be represented once for the bout/plotID/year). For example, if a taxon/date/bout/plot combo is present in 1 m^2 data, remove from 10 m^2 and above</p></li>
-<li><p>Standardized taxon names against the World Checklist of Vascular Plants (WCVP) using the <code>rWCVP</code> package. Specifically:</p><ul><li><p>Only species-, subspecies-, and variety-level taxa were matched; genus-level and speciesGroup-level taxa were excluded.</p></li>
-<li><p>NEON scientific names (which include author strings) were split into name and author components before matching. For subspecies and variety names, the rank keyword (<code>subsp.</code>, <code>ssp.</code>, or <code>var.</code>) was used to locate the split point; for species-level names, the first two tokens were taken as the name and the remainder as the author.</p></li>
-<li><p>Names were matched against WCVP using <code>wcvp_match_names(fuzzy = TRUE)</code>.</p></li>
-<li><p>All exact matches (both "Exact with author" and "Exact without author") were accepted, as minor author-string formatting differences between NEON and WCVP conventions do not indicate a different taxon.</p></li>
-<li><p>Fuzzy matches (edit distance or phonetic) were accepted only when match similarity &gt;= 0.9 and edit distance == 1.</p></li>
-<li><p>For names matched to WCVP synonyms, the name was replaced with the corresponding WCVP-accepted name. The standardized names are stored in <code>accepted_wcvp_name</code> and <code>accepted_wcvp_name_binomial</code>; the original NEON name is retained in <code>taxon_name</code>.</p></li>
-<li><p>Names with no acceptable WCVP match retain their original NEON name in both <code>accepted_wcvp_name</code> and <code>accepted_wcvp_name_binomial</code>.</p></li>
+Here, we:</p><ol><li><p>Kept surveyed subplots only (<code>targetTaxaPresent</code> of <code>Y</code> or <code>N</code>; records flagged <code>samplingImpractical</code> have no taxa) and removed rows missing plotID, subplotID, eventID, or endDate.</p></li>
+<li><p>Applied morphospecies resolutions from <code>div_morphospecies</code> (joined by <code>siteID</code> and <code>morphospeciesID</code>, NEON user guide sections 3.7 and 3.9), so field morphospecies later identified to genus or species carry the resolved <code>taxon_id</code>, <code>taxon_name</code>, and <code>taxon_rank</code>. Only unambiguous (one-to-one) resolutions were applied. Unresolved morphospecies that share a coarse code (e.g. <code>2PLANT</code>) are kept as distinct taxa and can be told apart by <code>morphospeciesID</code>.</p></li>
+<li><p>Where a subplot was surveyed on two dates within one sampling event (repeat surveys), kept the first survey. Where the same taxon was recorded twice in one subplot survey, kept the record with the highest percent cover.</p></li>
+<li><p>Removed duplicate taxa between nested subplots (each taxon should be represented once per subplot per event). If a taxon is present in a 1 m² subplot, it is removed from the 10 m² subplot containing it; if present in any nested 1 or 10 m² subplot, it is removed from the 100 m² subplot.</p></li>
+<li><p>Kept taxa identified to genus, speciesGroup, species, subspecies, or variety.</p></li>
+<li><p>Standardized taxon names against the World Checklist of Vascular Plants (WCVP) by joining species-, subspecies-, and variety-level NEON names against a shared plant name base built with the <code>rWCVP</code> package (WCVP version recorded in <code>data-raw/plant_name_lookup.csv</code>). Specifically:</p><ul><li><p>The join uses the full NEON name including authorship, because the same name can refer to different taxa depending on its author (homonyms).</p></li>
+<li><p>In the name base, raw names are split into canonical name and authorship, matched exactly first and fuzzily only when needed, and synonyms are followed to the WCVP-accepted name. Fuzzy matches whose author contradicts the matched WCVP record, and names whose candidate matches disagree on the accepted taxon, are left unresolved rather than guessed.</p></li>
+<li><p>The accepted names are stored in <code>accepted_wcvp_name</code> and <code>accepted_wcvp_name_binomial</code>; the original NEON name is retained in <code>taxon_name</code>.</p></li>
+<li><p>Subspecies and varieties are matched as their own taxa, not as their species, even though NEON writes the species author before the rank (e.g. "Circaea lutetiana L. ssp. canadensis (L.) Asch. &amp; Magnus" resolves to <em>Circaea canadensis</em>).</p></li>
+<li><p>Names with no accepted WCVP name (not in the name base, no match, or unresolved) and genus-level taxa retain their original NEON name, with one exception: autonyms (e.g. "Polygonum scandens L. var. scandens") are the species itself and take the accepted name of their NEON species.</p></li>
+<li><p>Subspecies and varieties with no accepted WCVP name take the accepted binomial of their NEON species, so a species is not split between its accepted name and its old NEON name (e.g. <em>Fallopia scandens</em> vs <em>Polygonum scandens</em>).</p></li>
+<li><p>WCVP treats <em>Taraxacum officinale</em> as the aggregate "Taraxacum sect. Taraxacum". As in the shared plant name base, these records carry that name in both <code>accepted_wcvp_name</code> and <code>accepted_wcvp_name_binomial</code>; the original NEON name is kept in <code>taxon_name</code>.</p></li>
+<li><p>speciesGroup taxa (groups of species that observers could not tell apart, e.g. "Fraxinus americana/pennsylvanica") were assigned to one member species in <code>accepted_wcvp_name</code> and <code>accepted_wcvp_name_binomial</code>: the first-listed member by default or, if it is not recorded as a species at the same site, the first later-listed member that is. Parts that name only a genus (e.g. "Andropogon L.") are never assigned. These records are flagged with <code>species_group_assigned = TRUE</code>; the original NEON name is kept in <code>taxon_name</code>.</p></li>
 </ul></li>
-<li><p>Stacked species occurrence from different scales into a long data frame. Therefore,</p><ul><li><p>to get the species list at 1 m^2 scale, we need all the data with <code>sample_area_m2 == 1</code> (e.g. <code>dplyr::filter(plants, sample_area_m2 == 1)</code>); the unique sample unit id can then be generated with <code>paste(plants$plotID, plants$subplot_id, plants$subsubplot_id, sep = "_")</code></p></li>
-<li><p>to get the species list at 10 m^2 scale, we need all the data with <code>sample_area_m2 &lt;= 10</code> (e.g. <code>dplyr::filter(plants, sample_area_m2 &lt;= 10)</code>); the unique sample unit id can then be generated with <code>paste(plants$plotID, plants$subplot_id, plants$subsubplot_id, sep = "_")</code></p></li>
-<li><p>to get the species list at 100 m^2 scale, we need use the whole data set since the maximum value of <code>sample_area_m2</code> is 100 (i.e. a 10 m by 10 m subplot); the unique sample unit id can then be generated with <code>paste(plants$plotID, plants$subplot_id, sep = "_")</code></p></li>
-<li><p>to get the species list at 400 m^2 scale (i.e. one plot with four subplots), we need aggregate the data at <code>plotID</code> level (the sample unit is the plot now).</p></li>
+<li><p>Stacked species occurrence from different scales into a long data frame. A sampling event is identified by <code>plotID</code>, <code>boutNumber</code>, and the year of <code>observation_datetime</code> (or <code>unique_sample_id</code>, which combines them with the 100 m² subplot). Always include the event when building sample units, otherwise all years are pooled. Therefore,</p><ul><li><p>to get the species list at 1 m² scale, we need all the data with <code>sample_area_m2 == 1</code> (e.g. <code>dplyr::filter(plants, sample_area_m2 == 1)</code>); the sample unit is <code>unique_sample_id</code> plus <code>subsubplot_id</code> (or <code>unique_sample_id</code> plus <code>subplotID</code>).</p></li>
+<li><p>to get the species list at 10 m² scale, we need all the data with <code>sample_area_m2 &lt;= 10</code>; the sample unit is <code>unique_sample_id</code> plus <code>subsubplot_id</code>.</p></li>
+<li><p>to get the species list at 100 m² scale, we need use the whole data set since the maximum value of <code>sample_area_m2</code> is 100 (i.e. a 10 m by 10 m subplot); the sample unit is <code>unique_sample_id</code>.</p></li>
+<li><p>to get the species list at 400 m² scale (i.e. one plot with four subplots), aggregate the data by <code>plotID</code>, <code>boutNumber</code>, and year.</p></li>
 </ul></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
     <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>).</p>
+<p><strong>Zero rows.</strong> A 1 m² subplot that was surveyed but contained no plant species is kept as one row with <code>taxon_id = NA</code>, <code>value = 0</code>, and <code>presence_absence = 0</code>. This zero-row convention is shared by all neonDivData observation datasets.</p>
+<p><strong>Sampling effort.</strong> Since 2019, the 10 m² and 100 m² scales are surveyed only every other year (and in half of the plots in 2018), while 1 m² subplots are surveyed every year. Use <code>sampled_scales_m2</code> to restrict analyses to subplots where all scales were surveyed (<code>sampled_scales_m2 == "1,10,100"</code>) before comparing 100 m² or 400 m² species lists among plots or years.</p>
+<p><strong>speciesGroup records.</strong> About 0.7% of records are NEON speciesGroup taxa that were assigned to one member species in the WCVP name columns (<code>species_group_assigned = TRUE</code>). For most of these, the assigned species is the only member recorded at that site, or both members occur there, so the assignment does not add a spurious species. Use the assigned binomial for community-level analyses (e.g. richness, composition); drop flagged records for species-specific analyses of either member; or collapse them to genus for a conservative richness estimate.</p>
+<p><strong>Flags.</strong> <code>redundant_genus</code> marks genus-level records that co-occur with a finer identification of the same genus in the same <code>unique_sample_id</code>; drop them (<code>!redundant_genus</code>) to avoid inflating species richness. <code>identificationQualifier</code> (e.g. "cf. species") marks uncertain identifications.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -129,7 +143,7 @@ Here, we:</p><ol><li><p>Removed 1 m^2 data with <code>targetTaxaPresent = N</cod
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

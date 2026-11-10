@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -53,17 +53,20 @@
 <li><p><code>siteID</code>: NEON site code.</p></li>
 <li><p><code>plotID</code>: Plot identifier (NEON site code_XXX).</p></li>
 <li><p><code>pointID</code>: Identifier for a point location.</p></li>
-<li><p><code>unique_sample_id</code>: Identity of unique samples (equals <code>eventID</code>).</p></li>
+<li><p><code>unique_sample_id</code>: Identity of the sampling bout at a site (equals <code>eventID</code>, e.g. <code>BRD.HARV.2019.1</code>); a single point count is identified by <code>unique_sample_id</code>, <code>plotID</code>, and <code>pointID</code> together (point numbers repeat across plots).</p></li>
 <li><p><code>observation_datetime</code>: Observation date and time.</p></li>
-<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources.</p></li>
+<li><p><code>taxon_id</code>: Accepted species code, based on one or more sources. <code>NA</code> for zero rows.</p></li>
 <li><p><code>taxon_name</code>: Scientific name, associated with the taxonID. This is the name
 of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>taxon_rank</code>: The lowest level taxonomic rank that can be determined for the individual or specimen.</p></li>
 <li><p><code>variable_name</code>: The variable name(s) represented by the <code>value</code> column.</p></li>
-<li><p><code>value</code>: Cluster size (count of individuals observed); <code>NA</code> for zero-bird points.</p></li>
+<li><p><code>value</code>: Cluster size (count of individuals observed); <code>0</code> for zero-bird points; <code>NA</code> when a bird was detected but its cluster size was not recorded.</p></li>
 <li><p><code>unit</code>: Unit of the values in the <code>value</code> column.</p></li>
-<li><p><code>pointCountMinute</code>: The minute of sampling within the point count period.</p></li>
+<li><p><code>boutNumber</code>: Sampling bout within the season (most points are surveyed twice per year).</p></li>
+<li><p><code>pointCountMinute</code>: The minute of sampling within the point count period; 88 = observed outside the count; <code>NA</code> for zero rows.</p></li>
+<li><p><code>incidental_observation</code>: <code>TRUE</code> when <code>pointCountMinute == 88</code>.</p></li>
 <li><p><code>targetTaxaPresent</code>: Indicator of whether the sample contained individuals of the target taxa.</p></li>
+<li><p><code>redundant_genus</code>: <code>TRUE</code> for genus-level records that co-occur with a finer identification of the same genus in the same point count.</p></li>
 <li><p><code>nativeStatusCode</code>: The process by which the taxon became established in the location.
 'A': Presumed absent; 'N': Native; 'I': Introduced; 'UNK': Status unknown.</p></li>
 <li><p><code>observerDistance</code>: Radial distance between the observer and the individual(s) being observed (meter).</p></li>
@@ -79,7 +82,7 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 <li><p><code>observedAirTemp</code>: The air temperature (Celsius) measured with a handheld weather meter.</p></li>
 <li><p><code>kmPerHourObservedWindSpeed</code>: The average wind speed measured with a handheld weather meter, in kilometers per hour.</p></li>
 <li><p><code>samplingProtocolVersion</code>: The NEON document number and version where detailed information regarding the sampling method used is available; format 'NEON.DOC.######vX'.</p></li>
-<li><p><code>remarks</code>: Remarks of record.</p></li>
+<li><p><code>remarks</code>: Remarks recorded for the point count (from <code>brd_perpoint</code>).</p></li>
 <li><p><code>clusterCode</code>: Alphabetic code (A-Z) linking clusters of individuals of the same species spanning multiple records.</p></li>
 <li><p><code>latitude</code>: The geographic latitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
 <li><p><code>longitude</code>: The geographic longitude (in decimal degrees, WGS84) of the geographic center of the reference area.</p></li>
@@ -90,14 +93,21 @@ of the lowest level taxonomic rank that can be determined.</p></li>
     <div id="details">
     <h2>Details</h2>
     <p>To clean the data, we:</p><ol><li><p>Filtered <code>brd_perpoint</code> to <code>samplingImpractical == "OK"</code> to retain only surveyed points.</p></li>
-<li><p>Left-joined downward from point survey records to <code>brd_countdata</code> to preserve zero-bird survey points.</p></li>
-<li><p>Retained valid cluster size values and zero-bird survey rows; <code>value</code> = cluster size (count of individuals).</p></li>
-<li><p><code>unique_sample_id</code> = <code>eventID</code>.</p></li>
+<li><p>Left-joined downward from point survey records to <code>brd_countdata</code> by <code>eventID</code>, <code>plotID</code>, and <code>pointID</code> to preserve zero-bird survey points. Points without any count record were dropped.</p></li>
+<li><p>Kept every detection record. Rows that look identical (same species, minute, distance, and cluster size) are separate detections and are not collapsed.</p></li>
+<li><p>Collapsed each point count with no birds detected (all minutes <code>targetTaxaPresent == "N"</code>) into one zero row. Minute-level <code>targetTaxaPresent == "N"</code> rows at points where birds were detected in other minutes carry no information and were dropped.</p></li>
+<li><p><code>value</code> = cluster size (count of individuals); <code>unique_sample_id</code> = <code>eventID</code>.</p></li>
 </ol></div>
     <div id="note">
     <h2>Note</h2>
-    <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>). The sampling protocol has evolved over time, so users are advised to check whether the <code>samplingProtocolVersion</code> fits their data requirements and subset as necessary.</p>
-    </div>
+    <p>Details of locations (e.g. latitude/longitude coordinates can be found in <a href="neon_location.html">neon_location</a>); coordinates are for the plot (grid) center, not the point. The sampling protocol has evolved over time, so users are advised to check whether the <code>samplingProtocolVersion</code> fits their data requirements and subset as necessary.</p>
+<p><strong>Zero rows.</strong> A point count with no birds detected is kept as one row with <code>taxon_id = NA</code> and <code>value = 0</code>. This zero-row convention is shared by all neonDivData observation datasets.</p>
+<p><strong>Records to consider removing.</strong> Each row is one detection (one cluster in one minute), so counts for a species at a point must be summed. Before analysis, consider:</p><ul><li><p><code>incidental_observation == TRUE</code> (<code>pointCountMinute == 88</code>): birds observed outside the timed count, with unknown location (user guide section 3.5).</p></li>
+<li><p>Flyovers (<code>detectionMethod</code>), which have no distance measured.</p></li>
+<li><p>Records not identified to species (<code>taxon_rank</code> of class, family, subfamily, genus, or speciesGroup, e.g. "Aves sp." or slash taxa); <code>redundant_genus</code> marks genus-level records that co-occur with a species of the same genus in the same point count.</p></li>
+<li><p>Detections with an unknown cluster size (<code>value = NA</code>).</p></li>
+<li><p>Most points are surveyed twice per season (<code>boutNumber</code>).</p></li>
+</ul></div>
     <div id="author">
     <h2>Author</h2>
     <p>Daijiang Li, Eric Sokol</p>
@@ -115,7 +125,7 @@ of the lowest level taxonomic rank that can be determined.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

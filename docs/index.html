@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">neonDivData</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -68,7 +68,30 @@
 <!-- badges: end -->
 <p>The goal of neonDivData is to provide cleaned NEON organismal data to facilitate biodiversity research. The authors of this R data package have all spend lots of effort to clean NEON data for our own research; it makes the most sense to document such processes and provide the clean data product so that the large community can use them readily. This will save us time to dig into the extensive documenations of NEON data and to clean up the data individually.</p>
 <p>Data products for all taxonomic groups are long data frames with names in the format of <code>data_xxx</code> (e.g. <code>data_plant</code>, <code>data_fish</code>). Location inforamtions are in <code>neon_location</code>; taxonomic informations are in <code>neon_taxa</code>.</p>
-<p>Despite the aim of this R data package is to facilitate biodiversity research, we keep <code>NA</code>s in data products so that information about sampling effort is saved. For some taxonomic groups, we removed observations with above genus level species identification. All codes to clean up the NEON data are available within our <a href="https://github.com/daijiang/neonDivData/tree/master/data-raw" class="external-link">Github repo</a>. Users can use them to customize their own data product if needed.</p>
+<div class="section level2">
+<h2 id="notes-for-users">Notes for users<a class="anchor" aria-label="anchor" href="#notes-for-users"></a>
+</h2>
+<p><strong>Zero rows (sampling effort).</strong> Every observation dataset keeps samples that were collected and processed but contained no target taxa, as one row per sample with <code>taxon_id = NA</code> and <code>value = 0</code>. Use these rows to recover sampling effort (e.g. for occupancy or abundance models); drop them (<code>!is.na(taxon_id)</code>) for species lists. <code>value = NA</code> never means zero: it marks presence-only records (plant 10 m² and 100 m² subplots) or detections whose count was not recorded (a few bird records). Algae, zooplankton, and tick pathogen data have no zero rows.</p>
+<p><strong>Flag columns.</strong> Questionable records are flagged rather than removed, so users can decide how to handle them:</p>
+<ul>
+<li>
+<code>redundant_genus</code> (all datasets except tick pathogens): <code>TRUE</code> for a genus-level record that co-occurs with a finer identification of the same genus in the same sample. Drop these records to avoid inflating species richness.</li>
+<li>
+<code>sampleCondition</code> (algae, beetle, macroinvertebrate, mosquito, tick, zooplankton), <code>trapConditionFlag</code> (beetle, mosquito), and <code>dataQF</code> (macroinvertebrate): NEON sample and trap quality problems; <code>NA</code> when no problem was recorded.</li>
+<li>
+<code>target_taxon</code> (small mammal): <code>FALSE</code> for incidental captures of non-target taxa such as shrews.</li>
+<li>
+<code>incidental_observation</code> (bird): <code>TRUE</code> for birds observed outside the timed point count.</li>
+<li>
+<code>sampled_scales_m2</code> (plant): which subplot scales were surveyed; since 2019 the 10 and 100 m² scales are surveyed only every other year.</li>
+<li>
+<code>species_group_assigned</code> (plant): <code>TRUE</code> for NEON speciesGroup records (e.g. “Fraxinus americana/pennsylvanica”) whose WCVP name columns give one assigned member species; drop these for species-specific analyses.</li>
+<li>
+<code>count_source</code> (tick) and <code>count_method</code> (algae): how counts were derived.</li>
+<li>
+<code>vector_taxon_id</code> (tick pathogen): the tested tick species; always analyze pathogen prevalence within vector species.</li>
+</ul>
+<p>See the help page of each dataset (e.g. <code><a href="reference/data_beetle.html">?data_beetle</a></code>) for details. Higher-rank identifications were removed for some taxonomic groups. All code to clean the NEON data is available in our <a href="https://github.com/daijiang/neonDivData/tree/master/data-raw" class="external-link">Github repo</a>; users can modify it to build their own data products.</p>
 <p>Available taxonomic groups and their brief summaries:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># sites too long, don't print</span></span>
@@ -85,7 +108,7 @@
 <col width="11%">
 <col width="11%">
 </colgroup>
-<thead><tr>
+<thead><tr class="header">
 <th align="left">taxon_group</th>
 <th align="left">neon_product_id</th>
 <th align="left">r_object</th>
@@ -97,7 +120,7 @@
 <th align="left">units</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td align="left">ALGAE</td>
 <td align="left">DP1.20166.001</td>
 <td align="left">data_algae</td>
@@ -108,7 +131,7 @@
 <td align="left">cell density</td>
 <td align="left">cells/cm2 OR cells/mL</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left">BEETLES</td>
 <td align="left">DP1.10022.001</td>
 <td align="left">data_beetle</td>
@@ -119,7 +142,7 @@
 <td align="left">abundance</td>
 <td align="left">count per trap day</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="left">BIRDS</td>
 <td align="left">DP1.10003.001</td>
 <td align="left">data_bird</td>
@@ -130,7 +153,7 @@
 <td align="left">cluster size</td>
 <td align="left">count of individuals</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left">MACROINVERTEBRATES</td>
 <td align="left">DP1.20120.001</td>
 <td align="left">data_macroinvertebrate</td>
@@ -141,7 +164,7 @@
 <td align="left">density</td>
 <td align="left">count per square meter</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="left">MOSQUITOES</td>
 <td align="left">DP1.10043.001</td>
 <td align="left">data_mosquito</td>
@@ -152,7 +175,7 @@
 <td align="left">abundance</td>
 <td align="left">count per trap hour</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left">PLANTS</td>
 <td align="left">DP1.10058.001</td>
 <td align="left">data_plant</td>
@@ -163,7 +186,7 @@
 <td align="left">percent cover OR presence absence</td>
 <td align="left">percent of plot area covered by taxon</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="left">SMALL_MAMMALS</td>
 <td align="left">DP1.10072.001</td>
 <td align="left">data_small_mammal</td>
@@ -174,7 +197,7 @@
 <td align="left">count</td>
 <td align="left">unique individuals per 100 trap nights per plot per month</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left">TICKS</td>
 <td align="left">DP1.10093.001</td>
 <td align="left">data_tick</td>
@@ -185,7 +208,7 @@
 <td align="left">abundance</td>
 <td align="left">count per square meter</td>
 </tr>
-<tr>
+<tr class="odd">
 <td align="left">TICK_PATHOGENS</td>
 <td align="left">DP1.10092.001</td>
 <td align="left">data_tick_pathogen</td>
@@ -196,7 +219,7 @@
 <td align="left">positivity rate</td>
 <td align="left">positive tests per pathogen per sampling event</td>
 </tr>
-<tr>
+<tr class="even">
 <td align="left">ZOOPLANKTON</td>
 <td align="left">DP1.20219.001</td>
 <td align="left">data_zooplankton</td>
@@ -209,6 +232,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -456,6 +480,54 @@
 </div>
 </div>
 <div class="section level1">
+<h1 id="annual-data-update">Annual data update<a class="anchor" aria-label="anchor" href="#annual-data-update"></a>
+</h1>
+<p>NEON releases new data each January. The package is updated annually, typically in March, by running the pipeline in <code>data-raw/</code> locally and pushing the rebuilt package data to GitHub.</p>
+<p><strong>Prerequisites:</strong> a NEON API token (register at <a href="https://data.neonscience.org" class="external-link">data.neonscience.org</a>) stored in your <code>.Renviron</code> as <code>NEON_TOKEN=your_token_here</code>.</p>
+<p><strong>Steps:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># 1. Remove the download sentinel to trigger a fresh download</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-f</span> data-raw/NEON_raw_data/.last_download</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># 2. Run the full pipeline (download ~1-2 days, cleaning ~1 hour)</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">make</span> all</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co"># 3. Rebuild documentation and check the package</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">"devtools::document()"</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="fu">make</span> check</span></code></pre></div>
+<p><code>make all</code> runs three scripts in sequence, skipping any step whose outputs are already up to date:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Step</th>
+<th>Script</th>
+<th>What it does</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><code>data-raw/01_download_data.R</code></td>
+<td>Downloads all 10 NEON data products via <code>neonUtilities</code>; saves timestamped RDS files</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><code>data-raw/02_clean_save_data.R</code></td>
+<td>Cleans each taxon and saves <code>data/*.rda</code> package objects</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><code>data-raw/03_plant_names.R</code></td>
+<td>Standardizes plant names against WCVP; updates <code>data/data_plant.rda</code> and <code>data-raw/plant_name_lookup.csv</code>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If the download is interrupted, re-run <code>make all</code> and it will resume from step 2 if the RDS files are present, or repeat only the failed taxon downloads if you re-run step 1 manually. To force a specific step without re-running earlier ones, use <code>make download</code>, <code>make clean-data</code>, or <code>make plants</code>.</p>
+</div>
+<div class="section level1">
 <h1 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h1>
 <p>Contributions are welcome. You can provide comments and feedback or ask questions by filing an issue on Github <a href="https://github.com/daijiang/neonDivData/issues" class="external-link">here</a> or making pull requests.</p>
@@ -533,7 +605,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer>
